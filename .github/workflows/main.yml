@@ -18,7 +18,7 @@ on:
 # 테스트, 빌드, 배포 단위로 명시
 # 각각의 job은 Runner라는 컨테이너에서 개별적으로 실행
 jobs:
-  # job의 타이틀
+  # 프로젝트 코드 테스트 With Jest
   test:
     # ubuntu-20.04 환경의 Runner에서 실행
     runs-on: ubuntu-20.04
