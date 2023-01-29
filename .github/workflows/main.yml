@@ -4,7 +4,7 @@ name: VOG-NEST-CICD
 
 # 환경변수
 env:
-  DOCKER_IMAGE: ghcr.io/${{ secrets.VOG_NEST_GITHUB_ACTOR }}/vog-api-server-img:latest
+  DOCKER_IMAGE: ghcr.io/${{ secrets.VOG_NEST_GITHUB_ACTOR }}/vog-api-server-img
   DOCKER_CONTAINER: vog-api-server
 
 # 이벤트
