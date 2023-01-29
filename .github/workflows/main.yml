@@ -26,9 +26,9 @@ jobs:
     # node 환경 셋업
     # 의존성 설치 및 테스트 진행
     steps:
-    - name: checkout source code
+    - name: Checkout Source Code
       uses: actions/checkout@v3
-    - name: Setup node.js 16.x
+    - name: Setup node.js 16.19.0
       uses: actions/setup-node@v3
       with:
         node-version: 16.19.0
@@ -46,7 +46,7 @@ jobs:
     # Github Container Registry 로그인
     # 도커 이미지 빌드 후 ghcr에 push
     steps:
-    - name: Checkout source code
+    - name: Checkout Source Code
       uses: actions/checkout@v3
     - name: Set up docker build
       id: buildx
@@ -57,7 +57,7 @@ jobs:
         registry: ghcr.io
         username: ${{ github.actor }}
         password: ${{ secrets.VOG_GHCR_TOKEN }}
-    - name: Build and push
+    - name: Build and Push
       id: docker_build
       uses: docker/build-push-action@v3
       with:
@@ -79,7 +79,7 @@ jobs:
         registry: ghcr.io
         username: ${{ github.actor }}
         password: ${{ secrets.VOG_GHCR_TOKEN }}
-    - name: run docker
+    - name: Run docker
       run: |
           docker stop ${{ env.DOCKER_CONTAINER }} && docker rm ${{ env.DOCKER_CONTAINER }} && docker rmi ${{ env.DOCKER_IMAGE }}:latest
           docker run -d -p 80:3000 --name ${{ env.DOCKER_CONTAINER }} --restart always ${{ env.DOCKER_IMAGE }}:latest
