@@ -62,7 +62,7 @@ jobs:
       uses: docker/build-push-action@v3
       with:
         push: true
-        tags: ghcr.io/${{ secrets.VOG_NEST_GITHUB_ACTOR }}/${{ env.DOCKER_IMAGE_TITLE }}:latest
+        tags: ghcr.io/${{ secrets.VOG_NEST_GITHUB_ACTOR }}/${{ env.DOCKER_IMAGE }}:latest
 
   # ec2 환경에 배포
   deploy:
