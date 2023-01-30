@@ -15,7 +15,6 @@ RUN npm install
 RUN npm run build
 
 # PORT(3000) 개방
-
 EXPOSE 3000
 
 # 서버 실행
