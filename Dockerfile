@@ -14,8 +14,8 @@ RUN npm install
 # NEST.JS 빌드
 RUN npm run build
 
-# IP(*), PORT(3000) 개방
-ENV HOST 0.0.0.0
+# PORT(3000) 개방
+
 EXPOSE 3000
 
 # 서버 실행
