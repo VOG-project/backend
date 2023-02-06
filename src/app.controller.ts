@@ -1,4 +1,4 @@
-import { Controller, Get } from '@nestjs/common';
+import { Controller, Get, HttpException } from '@nestjs/common';
 import { AppService } from './app.service';
 
 @Controller()
@@ -7,6 +7,7 @@ export class AppController {
 
   @Get()
   getHello(): string {
+    throw new HttpException('api is broken', 401);
     return this.appService.getHello();
   }
 
