@@ -1,5 +1,6 @@
 import { Entity, Column, PrimaryGeneratedColumn, Check } from 'typeorm';
 import { Common } from 'src/commonEntities/common.entity';
+import { IsEmail, IsString, IsInt, IsNotEmpty } from 'class-validator';
 
 @Entity({
   engine: 'InnoDB',
@@ -7,6 +8,8 @@ import { Common } from 'src/commonEntities/common.entity';
 @Check(`"sex IN ("남", "여")"`)
 export class Users extends Common {
   @PrimaryGeneratedColumn()
+  @IsInt()
+  @IsNotEmpty()
   id: number;
 
   @Column({
@@ -14,6 +17,8 @@ export class Users extends Common {
     length: 20,
     unique: true,
   })
+  @IsEmail()
+  @IsNotEmpty()
   email: string;
 
   @Column({
@@ -21,6 +26,8 @@ export class Users extends Common {
     length: 20,
     unique: true,
   })
+  @IsString()
+  @IsNotEmpty()
   password: string;
 
   @Column({
@@ -28,6 +35,8 @@ export class Users extends Common {
     length: 10,
     unique: true,
   })
+  @IsString()
+  @IsNotEmpty()
   nickname: string;
 
   @Column({
@@ -35,5 +44,7 @@ export class Users extends Common {
     length: 2,
     unique: true,
   })
+  @IsString()
+  @IsNotEmpty()
   sex: string;
 }
