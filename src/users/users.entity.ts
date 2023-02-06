@@ -1,10 +1,11 @@
 import { Entity, Column, PrimaryGeneratedColumn, Check } from 'typeorm';
+import { Common } from 'src/commonEntities/common.entity';
 
 @Entity({
   engine: 'InnoDB',
 })
 @Check(`"sex IN ("남", "여")"`)
-export class Users {
+export class Users extends Common {
   @PrimaryGeneratedColumn()
   id: number;
 
