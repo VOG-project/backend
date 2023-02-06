@@ -1,6 +1,8 @@
 import { Entity, Column, PrimaryGeneratedColumn, Check } from 'typeorm';
 
-@Entity()
+@Entity({
+  engine: 'InnoDB',
+})
 @Check(`"sex IN ("남", "여")"`)
 export class Users {
   @PrimaryGeneratedColumn()
