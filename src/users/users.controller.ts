@@ -31,7 +31,7 @@ export class UsersController {
     description: 'Error',
   })
   @Post('register')
-  async register(@Body() body: UserRegisterRequestDto): Promise<any> {
+  async register(@Body() body: UserRegisterRequestDto): Promise<string> {
     return this.usersService.register(body);
   }
 }
