@@ -1,10 +1,4 @@
-import {
-  Controller,
-  Get,
-  HttpException,
-  UseFilters,
-  UseInterceptors,
-} from '@nestjs/common';
+import { Controller, UseFilters, UseInterceptors } from '@nestjs/common';
 import { AppService } from './app.service';
 import { HttpExceptionFilter } from './filters/http-exception.filter';
 import { SuccessInterceptor } from './interceptors/success.interceptor';
@@ -14,15 +8,4 @@ import { SuccessInterceptor } from './interceptors/success.interceptor';
 @UseInterceptors(SuccessInterceptor)
 export class AppController {
   constructor(private readonly appService: AppService) {}
-
-  @Get()
-  getHello(): string {
-    throw new HttpException('api is broken', 401);
-    return this.appService.getHello();
-  }
-
-  @Get('bye')
-  getBye(): string {
-    return this.appService.getBye();
-  }
 }

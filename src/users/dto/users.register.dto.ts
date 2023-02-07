@@ -1,19 +1,17 @@
-import { IsEmail, IsNotEmpty, IsString } from 'class-validator';
+import { Users } from './../users.entity';
+import { PickType } from '@nestjs/swagger';
 
-export class UserRequestDto {
-  @IsEmail()
-  @IsNotEmpty()
-  email: string;
+export class UserRegisterRequestDto extends PickType(Users, [
+  'email',
+  'password',
+  'nickname',
+  'sex',
+] as const) {}
 
-  @IsString()
-  @IsNotEmpty()
-  password: string;
-
-  @IsString()
-  @IsNotEmpty()
-  nickname: string;
-
-  @IsString()
-  @IsNotEmpty()
-  sex: string;
-}
+export class UserRegisterResponseDto extends PickType(Users, [
+  'id',
+  'email',
+  'nickname',
+  'sex',
+  'updated_at',
+]) {}

@@ -1,12 +1,5 @@
-import {
-  Injectable,
-  UnauthorizedException,
-  HttpException,
-} from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
-import { UserRequestDto } from './dto/users.register.dto';
-import { Users } from './users.entity';
+import { Injectable, HttpException } from '@nestjs/common';
+import { UserRegisterRequestDto } from './dto/users.register.dto';
 import { UsersRepository } from './users.repository';
 import * as bcrypt from 'bcrypt';
 
@@ -14,7 +7,7 @@ import * as bcrypt from 'bcrypt';
 export class UsersService {
   constructor(private readonly usersRepository: UsersRepository) {}
 
-  async register(body: UserRequestDto): Promise<any> {
+  async register(body: UserRegisterRequestDto): Promise<any> {
     const { email, password, nickname, sex } = body;
 
     const isExistedUser = await this.usersRepository.existByEmail(email);
