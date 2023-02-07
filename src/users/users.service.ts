@@ -7,7 +7,7 @@ import * as bcrypt from 'bcrypt';
 export class UsersService {
   constructor(private readonly usersRepository: UsersRepository) {}
 
-  async register(body: UserRegisterRequestDto): Promise<any> {
+  async register(body: UserRegisterRequestDto): Promise<string> {
     const { email, password, nickname, sex } = body;
 
     const isExistedUser = await this.usersRepository.existByEmail(email);
@@ -29,6 +29,6 @@ export class UsersService {
 
     await this.usersRepository.create(email, hashedPassword, nickname, sex);
 
-    return 'success';
+    return '회원가입 성공';
   }
 }

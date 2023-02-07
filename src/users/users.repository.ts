@@ -9,7 +9,12 @@ export class UsersRepository {
     @InjectRepository(Users) private usersRepository: Repository<Users>,
   ) {}
 
-  async create(email, password, nickname, sex): Promise<any> {
+  async create(
+    email: string,
+    password: string,
+    nickname: string,
+    sex: string,
+  ): Promise<void> {
     try {
       await this.usersRepository
         .createQueryBuilder()
@@ -30,7 +35,7 @@ export class UsersRepository {
     }
   }
 
-  async existByEmail(email: string): Promise<any> {
+  async existByEmail(email: string): Promise<Users> {
     try {
       const exUser = await this.usersRepository
         .createQueryBuilder('users')
@@ -46,7 +51,7 @@ export class UsersRepository {
     }
   }
 
-  async existByNickname(nickname: string): Promise<any> {
+  async existByNickname(nickname: string): Promise<Users> {
     try {
       const exUser = await this.usersRepository
         .createQueryBuilder('users')
