@@ -42,7 +42,6 @@ export class Users extends Common {
   @Column({
     type: 'char',
     length: 2,
-    unique: true,
   })
   @IsString()
   @IsNotEmpty()
