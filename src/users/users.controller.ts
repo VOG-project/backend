@@ -1,11 +1,21 @@
-import { Controller, Post, Body } from '@nestjs/common';
+import {
+  Controller,
+  Post,
+  Body,
+  UseFilters,
+  UseInterceptors,
+} from '@nestjs/common';
 import {
   UserRegisterRequestDto,
   UserRegisterResponseDto,
 } from './dto/users.register.dto';
 import { UsersService } from './users.service';
 import { ApiOperation, ApiResponse } from '@nestjs/swagger';
+import { HttpExceptionFilter } from '../filters/http-exception.filter';
+import { SuccessInterceptor } from '../interceptors/success.interceptor';
 
+@UseFilters(HttpExceptionFilter)
+@UseInterceptors(SuccessInterceptor)
 @Controller('users')
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
