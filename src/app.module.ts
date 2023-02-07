@@ -7,6 +7,8 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { NestModule } from '@nestjs/common/interfaces/modules';
 import { MiddlewareConsumer } from '@nestjs/common/interfaces/middleware';
 import { LoggerMiddleware } from './middlewares/logger.middleware';
+import { UsersModule } from './users/users.module';
+import { Users } from './users/users.entity';
 
 @Module({
   imports: [
@@ -21,9 +23,11 @@ import { LoggerMiddleware } from './middlewares/logger.middleware';
       port: parseInt(process.env.MYSQL_PORT, 10),
       username: process.env.MYSQL_USER,
       password: process.env.MYSQL_PASSWORD,
-      entities: [],
+      entities: [Users],
       synchronize: true,
+      database: 'vog',
     }),
+    UsersModule,
   ],
   controllers: [AppController],
   providers: [AppService],
