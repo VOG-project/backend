@@ -1,6 +1,6 @@
 # 해당 워크플로우의 타이틀
 # 명시하지 않으면 파일 경로가 타이틀이 됨
-name: VOG-NEST-CICD
+name: VOG-NEST-CICD-MAIN
 
 # 환경변수
 env:
