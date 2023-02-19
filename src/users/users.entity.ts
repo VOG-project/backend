@@ -38,7 +38,7 @@ export class Users extends Common {
   })
   @Column({
     type: 'varchar',
-    length: 20,
+    length: 100,
     unique: true,
   })
   @IsString()
