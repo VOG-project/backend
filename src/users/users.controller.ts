@@ -5,10 +5,7 @@ import {
   UseFilters,
   UseInterceptors,
 } from '@nestjs/common';
-import {
-  UserRegisterRequestDto,
-  UserRegisterResponseDto,
-} from './dto/users.register.dto';
+import { UserRegisterRequestDto } from './dto/users.register.dto';
 import { UsersService } from './users.service';
 import { ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { HttpExceptionFilter } from '../filters/http-exception.filter';
@@ -24,7 +21,6 @@ export class UsersController {
   @ApiResponse({
     status: 201,
     description: '회원가입 성공',
-    type: UserRegisterResponseDto,
   })
   @ApiResponse({
     status: 400,

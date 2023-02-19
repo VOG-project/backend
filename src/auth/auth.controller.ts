@@ -5,13 +5,15 @@ import {
   UseInterceptors,
   Post,
   Res,
+  Req,
+  Delete,
 } from '@nestjs/common';
 import { UserLoginRequestDto } from './dto/users.auth.dto';
 import { AuthService } from './auth.service';
 import { HttpExceptionFilter } from '../filters/http-exception.filter';
 import { SuccessInterceptor } from '../interceptors/success.interceptor';
 import { ApiOperation, ApiResponse } from '@nestjs/swagger';
-import { Response } from 'express';
+import { Response, Request } from 'express';
 
 @Controller('auth')
 @UseInterceptors(SuccessInterceptor)
@@ -49,5 +51,17 @@ export class AuthController {
     });
 
     return userId;
+  }
+
+  @Delete('logout')
+  async logout(
+    @Req() req: Request,
+    @Res({ passthrough: true }) res: Response,
+  ): Promise<number> {
+    const sessionId = req.cookies.sessionId;
+    
+    res.clearCookie('sessionId');
+
+    return await this.authService.deleteSessionInformationInRedis(sessionId);
   }
 }
