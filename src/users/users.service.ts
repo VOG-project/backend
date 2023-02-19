@@ -10,13 +10,13 @@ export class UsersService {
   async register(body: UserRegisterRequestDto): Promise<string> {
     const { email, password, nickname, sex } = body;
 
-    const isExistedUser = await this.usersRepository.existByEmail(email);
+    const isExistedUser = await this.usersRepository.findByEmail(email);
 
     if (isExistedUser) {
       throw new HttpException('이미 존재하는 이메일입니다.', 400);
     }
 
-    const isExistedNickname = await this.usersRepository.existByNickname(
+    const isExistedNickname = await this.usersRepository.findByNickname(
       nickname,
     );
 

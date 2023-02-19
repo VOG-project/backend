@@ -9,6 +9,8 @@ import { MiddlewareConsumer } from '@nestjs/common/interfaces/middleware';
 import { LoggerMiddleware } from './middlewares/logger.middleware';
 import { UsersModule } from './users/users.module';
 import { Users } from './users/users.entity';
+import { AuthModule } from './auth/auth.module';
+import { RedisModule } from '@liaoliaots/nestjs-redis';
 
 @Module({
   imports: [
@@ -27,7 +29,15 @@ import { Users } from './users/users.entity';
       synchronize: true,
       database: 'vog',
     }),
+    RedisModule.forRoot({
+      config: {
+        host: process.env.REDIS_HOST,
+        port: parseInt(process.env.REDIS_PORT, 10),
+        password: process.env.REDIS_PASSWORD,
+      },
+    }),
     UsersModule,
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [AppService],
