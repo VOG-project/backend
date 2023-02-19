@@ -66,4 +66,8 @@ export class AuthService {
 
     return await this.redis.hget(sessionId, 'id');
   }
+
+  async deleteSessionInformationInRedis(sessionId: string): Promise<number> {
+    return await this.redis.del(sessionId);
+  }
 }
