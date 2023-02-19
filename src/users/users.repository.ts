@@ -35,7 +35,7 @@ export class UsersRepository {
     }
   }
 
-  async findByEmail(email: string): Promise<Users> {
+  async findByEmail(email: string): Promise<Users | null> {
     try {
       const exUser = await this.usersRepository
         .createQueryBuilder('users')
@@ -51,7 +51,7 @@ export class UsersRepository {
     }
   }
 
-  async findByNickname(nickname: string): Promise<Users> {
+  async findByNickname(nickname: string): Promise<Users | null> {
     try {
       const exUser = await this.usersRepository
         .createQueryBuilder('users')
