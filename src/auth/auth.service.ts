@@ -48,9 +48,9 @@ export class AuthService {
     body: UserLoginRequestDto,
   ): Promise<string> {
     const { email } = body;
-    const existedSessionId = await this.redis.hget(sessionId, 'id');
+    const isExistedSessionId = await this.redis.hget(sessionId, 'id');
 
-    if (existedSessionId) {
+    if (isExistedSessionId) {
       throw new HttpException('이미 세션이 존재합니다. 로그아웃 하세요.', 401);
     }
 
