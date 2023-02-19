@@ -43,10 +43,10 @@ export class AuthService {
     return sessionId;
   }
 
-  async setSessionInformationInRedis(
+  async setSessionInformation(
     sessionId: string,
     body: UserLoginRequestDto,
-  ): Promise<string> {
+  ): Promise<number> {
     const { email } = body;
     const isExistedSessionId = await this.redis.hget(sessionId, 'id');
 
@@ -64,10 +64,12 @@ export class AuthService {
     // 숫자 순서대로 초, 분, 시, 일 (7일간 DB에 보관 이후 자동 삭제)
     await this.redis.expire(sessionId, 60 * 60 * 24 * 7);
 
-    return await this.redis.hget(sessionId, 'id');
+    const userId = await this.redis.hget(sessionId, 'id');
+
+    return parseInt(userId, 10);
   }
 
-  async deleteSessionInformationInRedis(sessionId: string): Promise<number> {
+  async deleteSessionInformation(sessionId: string): Promise<number> {
     return await this.redis.del(sessionId);
   }
 }

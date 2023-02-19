@@ -29,17 +29,15 @@ export class AuthController {
   @ApiResponse({
     status: 400,
     description: 'Error',
-    type: String,
   })
   @Post('login')
   async login(
     @Body() body: UserLoginRequestDto,
     @Res({ passthrough: true }) res: Response,
-  ): Promise<string> {
+  ): Promise<number> {
     const sessionId = await this.authService.sessionLogin(body);
 
-    // 이거 스트링인데 인터셉터로 넘버로 가공해서 넘겨주기
-    const userId = await this.authService.setSessionInformationInRedis(
+    const userId = await this.authService.setSessionInformation(
       sessionId,
       body,
     );
@@ -53,15 +51,24 @@ export class AuthController {
     return userId;
   }
 
+  @ApiOperation({ summary: '로그아웃' })
+  @ApiResponse({
+    status: 200,
+    description: '로그아웃 성공',
+  })
+  @ApiResponse({
+    status: 400,
+    description: 'Error',
+  })
   @Delete('logout')
   async logout(
     @Req() req: Request,
     @Res({ passthrough: true }) res: Response,
   ): Promise<number> {
     const sessionId = req.cookies.sessionId;
-    
+
     res.clearCookie('sessionId');
 
-    return await this.authService.deleteSessionInformationInRedis(sessionId);
+    return await this.authService.deleteSessionInformation(sessionId);
   }
 }
