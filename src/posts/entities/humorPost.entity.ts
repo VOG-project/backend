@@ -87,5 +87,5 @@ export class HumorPost extends Common {
     onDelete: 'CASCADE',
     onUpdate: 'CASCADE',
   })
-  users: Users;
+  user: Users;
 }
