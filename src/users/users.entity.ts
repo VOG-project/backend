@@ -1,7 +1,16 @@
-import { Entity, Column, PrimaryGeneratedColumn, Check } from 'typeorm';
+import {
+  Entity,
+  Column,
+  PrimaryGeneratedColumn,
+  Check,
+  OneToMany,
+} from 'typeorm';
 import { Common } from 'src/commonEntities/common.entity';
 import { IsEmail, IsString, IsInt, IsNotEmpty } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
+import { HumorPost } from './../posts/entities/humorPost.entity';
+import { ChampionshipPost } from './../posts/entities/championshipPost.entity';
+import { FreePost } from './../posts/entities/freePost.entity';
 
 @Entity({
   engine: 'InnoDB',
@@ -71,4 +80,16 @@ export class Users extends Common {
   @IsString()
   @IsNotEmpty()
   sex: string;
+
+  @OneToMany(() => FreePost, (freePost) => freePost.user)
+  freePosts: FreePost[];
+
+  @OneToMany(() => HumorPost, (humorPost) => humorPost.user)
+  humorPosts: HumorPost[];
+
+  @OneToMany(
+    () => ChampionshipPost,
+    (championshipPost) => championshipPost.user,
+  )
+  championshipPosts: ChampionshipPost[];
 }

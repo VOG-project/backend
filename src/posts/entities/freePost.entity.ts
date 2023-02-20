@@ -1,7 +1,14 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsNotEmpty, IsNumber, IsString } from 'class-validator';
-import { Entity, PrimaryGeneratedColumn, Column, Check } from 'typeorm';
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  Check,
+  ManyToOne,
+} from 'typeorm';
 import { Common } from './../../commonEntities/common.entity';
+import { Users } from 'src/users/users.entity';
 
 @Entity({
   engine: 'InnoDB',
@@ -15,7 +22,7 @@ export class FreePost extends Common {
     description: '대리키',
   })
   @PrimaryGeneratedColumn()
-  private id: number;
+  id: number;
 
   @ApiProperty({
     example: 721,
@@ -27,7 +34,7 @@ export class FreePost extends Common {
   })
   @IsNumber()
   @IsNotEmpty()
-  private writer_id: number;
+  writer_id: number;
 
   @ApiProperty({
     example: '하하호호 너무 웃긴 사진',
@@ -40,7 +47,7 @@ export class FreePost extends Common {
   })
   @IsString()
   @IsNotEmpty()
-  private title: string;
+  title: string;
 
   @ApiProperty({
     example: '깔깔깔깔깔껄껄껄껄껄',
@@ -52,7 +59,7 @@ export class FreePost extends Common {
   })
   @IsString()
   @IsNotEmpty()
-  private content: string;
+  content: string;
 
   @ApiProperty({
     example: 361,
@@ -63,7 +70,7 @@ export class FreePost extends Common {
   @Column({
     type: 'int',
   })
-  private like_count: number;
+  like_count: number;
 
   @ApiProperty({
     example: '리그오브레전드',
@@ -74,5 +81,11 @@ export class FreePost extends Common {
     type: 'varchar',
     length: 20,
   })
-  private game_category: string;
+  game_category: string;
+
+  @ManyToOne(() => Users, (user) => user.freePosts, {
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE',
+  })
+  user: Users;
 }
