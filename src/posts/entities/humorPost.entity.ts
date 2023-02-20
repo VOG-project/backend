@@ -1,12 +1,4 @@
-import { ApiProperty } from '@nestjs/swagger';
-import { IsNotEmpty, IsNumber, IsString } from 'class-validator';
-import {
-  Entity,
-  PrimaryGeneratedColumn,
-  Column,
-  Check,
-  ManyToOne,
-} from 'typeorm';
+import { Entity, Check, ManyToOne } from 'typeorm';
 import { Post } from './../../commonEntities/common.entity';
 import { Users } from 'src/users/users.entity';
 
