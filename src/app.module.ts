@@ -12,6 +12,7 @@ import { Users } from './users/users.entity';
 import { AuthModule } from './auth/auth.module';
 import { RedisModule } from '@liaoliaots/nestjs-redis';
 import { PostsModule } from './posts/posts.module';
+import { FreePost } from './posts/posts.entity';
 
 @Module({
   imports: [
@@ -26,7 +27,7 @@ import { PostsModule } from './posts/posts.module';
       port: parseInt(process.env.MYSQL_PORT, 10),
       username: process.env.MYSQL_USER,
       password: process.env.MYSQL_PASSWORD,
-      entities: [Users],
+      entities: [Users, FreePost],
       synchronize: true,
       database: 'vog',
     }),
