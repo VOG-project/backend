@@ -14,7 +14,7 @@ import { FreePost } from 'src/posts/posts.entity';
   engine: 'InnoDB',
 })
 @Check(`"sex IN ("남", "여")"`)
-export class Users extends CreatedUpdatedDate {
+export class User extends CreatedUpdatedDate {
   @ApiProperty({
     example: '35',
     description: '식별아이디',
