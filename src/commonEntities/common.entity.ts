@@ -35,18 +35,6 @@ export abstract class Post extends CreatedUpdatedDate {
   id: number;
 
   @ApiProperty({
-    example: 721,
-    description: '외래키',
-    required: true,
-  })
-  @Column({
-    type: 'int',
-  })
-  @IsNumber()
-  @IsNotEmpty()
-  writer_id: number;
-
-  @ApiProperty({
     example: '하하호호 너무 웃긴 사진',
     description: '게시물 제목',
     required: true,
