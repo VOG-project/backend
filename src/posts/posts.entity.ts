@@ -1,5 +1,5 @@
 import { Post } from 'src/commonEntities/common.entity';
-import { Entity, ManyToOne, Check } from 'typeorm';
+import { Entity, ManyToOne, Check, JoinColumn } from 'typeorm';
 import { Users } from 'src/users/users.entity';
 
 @Entity({
@@ -14,5 +14,6 @@ export class FreePost extends Post {
     onDelete: 'CASCADE',
     onUpdate: 'CASCADE',
   })
+  @JoinColumn({ name: 'writer_id' })
   user: Users;
 }
