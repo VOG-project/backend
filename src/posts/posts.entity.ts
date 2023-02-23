@@ -1,4 +1,4 @@
-import { Post } from 'src/commonEntities/common.entity';
+import { Post } from 'src/commonEntities/post.common.entity';
 import { Entity, ManyToOne, Check, JoinColumn } from 'typeorm';
 import { User } from 'src/users/users.entity';
 

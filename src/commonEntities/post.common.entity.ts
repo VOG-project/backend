@@ -1,29 +1,7 @@
-import {
-  Entity,
-  CreateDateColumn,
-  UpdateDateColumn,
-  PrimaryGeneratedColumn,
-  Column,
-} from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
 import { ApiProperty } from '@nestjs/swagger';
 import { IsNotEmpty, IsNumber, IsString } from 'class-validator';
-
-@Entity()
-export abstract class CreatedUpdatedDate {
-  @ApiProperty({
-    example: '2023-02-07 16:43:51.182829',
-    description: '데이터 생성 일자',
-  })
-  @CreateDateColumn()
-  created_at: Date;
-
-  @ApiProperty({
-    example: '2023-02-07 16:43:51.182829',
-    description: '데이터 수정 일자',
-  })
-  @UpdateDateColumn()
-  updated_at: Date;
-}
+import { CreatedUpdatedDate } from './date.common.entity';
 
 @Entity()
 export abstract class Post extends CreatedUpdatedDate {

@@ -5,7 +5,7 @@ import {
   Check,
   OneToMany,
 } from 'typeorm';
-import { CreatedUpdatedDate } from 'src/commonEntities/common.entity';
+import { CreatedUpdatedDate } from 'src/commonEntities/date.common.entity';
 import { IsEmail, IsString, IsInt, IsNotEmpty } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 import { FreePost } from 'src/posts/posts.entity';
