@@ -13,7 +13,7 @@ export class PostsRepository {
   ) {}
 
   async create(data: PostRegisterRequestDto): Promise<PostRegisterResponseDto> {
-    const { title, content, game_category, writer_id } = data;
+    const { title, content, gameCategory, writerId } = data;
 
     const insertResult = await this.freePostRepository
       .createQueryBuilder()
@@ -23,8 +23,8 @@ export class PostsRepository {
         {
           title,
           content,
-          game_category,
-          writer_id,
+          gameCategory,
+          writerId,
         },
       ])
       .execute();

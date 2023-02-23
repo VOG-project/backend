@@ -14,6 +14,6 @@ export class FreePost extends Post {
     onDelete: 'CASCADE',
     onUpdate: 'CASCADE',
   })
-  @JoinColumn({ name: 'writer_id' })
+  @JoinColumn({ name: 'writerId' })
   user: User;
 }

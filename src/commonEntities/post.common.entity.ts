@@ -22,7 +22,7 @@ export abstract class Post extends CreatedUpdatedDate {
   })
   @IsNumber()
   @IsNotEmpty()
-  writer_id: number;
+  writerId: number;
 
   @ApiProperty({
     example: '하하호호 너무 웃긴 사진',
@@ -58,7 +58,7 @@ export abstract class Post extends CreatedUpdatedDate {
   @Column({
     type: 'int',
   })
-  like_count: number;
+  likeCount: number;
 
   @ApiProperty({
     example: '리그오브레전드',
@@ -69,5 +69,5 @@ export abstract class Post extends CreatedUpdatedDate {
     type: 'varchar',
     length: 20,
   })
-  game_category: string;
+  gameCategory: string;
 }
