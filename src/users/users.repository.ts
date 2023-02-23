@@ -19,7 +19,7 @@ export class UsersRepository {
       await this.usersRepository
         .createQueryBuilder()
         .insert()
-        .into('users')
+        .into('user')
         .values({
           email,
           password,
@@ -38,7 +38,7 @@ export class UsersRepository {
   async findByEmail(email: string): Promise<User | null> {
     try {
       const exUser = await this.usersRepository
-        .createQueryBuilder('users')
+        .createQueryBuilder('user')
         .where('email = :email', { email })
         .getOne();
 
@@ -54,7 +54,7 @@ export class UsersRepository {
   async findByNickname(nickname: string): Promise<User | null> {
     try {
       const exUser = await this.usersRepository
-        .createQueryBuilder('users')
+        .createQueryBuilder('user')
         .where('nickname = :nickname', { nickname })
         .getOne();
       return exUser;

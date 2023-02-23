@@ -7,3 +7,8 @@ export class PostRegisterRequestDto extends PickType(FreePost, [
   'content',
   'gameCategory',
 ] as const) {}
+
+export class PostUpdateRequestDto extends PickType(FreePost, [
+  'title',
+  'content',
+] as const) {}

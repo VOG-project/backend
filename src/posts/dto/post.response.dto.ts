@@ -7,3 +7,19 @@ export class PostRegisterResponseDto {
   })
   postId: number;
 }
+
+export class PostUpdateResponseDto {
+  @ApiProperty({
+    example: 1,
+    description: '업데이트된 게시물 개수',
+  })
+  updatedCount: number;
+}
+
+export class PostDeleteResponseDto {
+  @ApiProperty({
+    example: 1,
+    description: '삭제된 게시물 개수',
+  })
+  deletedCount: number;
+}
