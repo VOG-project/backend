@@ -2,8 +2,8 @@ import { PickType } from '@nestjs/swagger';
 import { FreePost } from '../posts.entity';
 
 export class PostRegisterRequestDto extends PickType(FreePost, [
-  'writer_id',
+  'writerId',
   'title',
   'content',
-  'game_category',
+  'gameCategory',
 ] as const) {}
