@@ -5,7 +5,7 @@ import {
   Check,
   OneToMany,
 } from 'typeorm';
-import { CreatedUpdatedDate } from 'src/commonEntities/common.entity';
+import { CreatedUpdatedDate } from 'src/commonEntities/date.common.entity';
 import { IsEmail, IsString, IsInt, IsNotEmpty } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 import { FreePost } from 'src/posts/posts.entity';
@@ -14,7 +14,7 @@ import { FreePost } from 'src/posts/posts.entity';
   engine: 'InnoDB',
 })
 @Check(`"sex IN ("남", "여")"`)
-export class Users extends CreatedUpdatedDate {
+export class User extends CreatedUpdatedDate {
   @ApiProperty({
     example: '35',
     description: '식별아이디',

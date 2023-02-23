@@ -1,12 +1,12 @@
 import { Injectable, HttpException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { Users } from './users.entity';
+import { User } from './users.entity';
 
 @Injectable()
 export class UsersRepository {
   constructor(
-    @InjectRepository(Users) private usersRepository: Repository<Users>,
+    @InjectRepository(User) private usersRepository: Repository<User>,
   ) {}
 
   async create(
@@ -35,7 +35,7 @@ export class UsersRepository {
     }
   }
 
-  async findByEmail(email: string): Promise<Users | null> {
+  async findByEmail(email: string): Promise<User | null> {
     try {
       const exUser = await this.usersRepository
         .createQueryBuilder('users')
@@ -51,7 +51,7 @@ export class UsersRepository {
     }
   }
 
-  async findByNickname(nickname: string): Promise<Users | null> {
+  async findByNickname(nickname: string): Promise<User | null> {
     try {
       const exUser = await this.usersRepository
         .createQueryBuilder('users')

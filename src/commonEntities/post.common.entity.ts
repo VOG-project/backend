@@ -1,29 +1,7 @@
-import {
-  Entity,
-  CreateDateColumn,
-  UpdateDateColumn,
-  PrimaryGeneratedColumn,
-  Column,
-} from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
 import { ApiProperty } from '@nestjs/swagger';
 import { IsNotEmpty, IsNumber, IsString } from 'class-validator';
-
-@Entity()
-export abstract class CreatedUpdatedDate {
-  @ApiProperty({
-    example: '2023-02-07 16:43:51.182829',
-    description: '데이터 생성 일자',
-  })
-  @CreateDateColumn()
-  created_at: Date;
-
-  @ApiProperty({
-    example: '2023-02-07 16:43:51.182829',
-    description: '데이터 수정 일자',
-  })
-  @UpdateDateColumn()
-  updated_at: Date;
-}
+import { CreatedUpdatedDate } from './date.common.entity';
 
 @Entity()
 export abstract class Post extends CreatedUpdatedDate {
@@ -44,7 +22,7 @@ export abstract class Post extends CreatedUpdatedDate {
   })
   @IsNumber()
   @IsNotEmpty()
-  writer_id: number;
+  writerId: number;
 
   @ApiProperty({
     example: '하하호호 너무 웃긴 사진',
@@ -80,7 +58,7 @@ export abstract class Post extends CreatedUpdatedDate {
   @Column({
     type: 'int',
   })
-  like_count: number;
+  likeCount: number;
 
   @ApiProperty({
     example: '리그오브레전드',
@@ -91,5 +69,5 @@ export abstract class Post extends CreatedUpdatedDate {
     type: 'varchar',
     length: 20,
   })
-  game_category: string;
+  gameCategory: string;
 }

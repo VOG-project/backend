@@ -8,7 +8,7 @@ import { NestModule } from '@nestjs/common/interfaces/modules';
 import { MiddlewareConsumer } from '@nestjs/common/interfaces/middleware';
 import { LoggerMiddleware } from './middlewares/logger.middleware';
 import { UsersModule } from './users/users.module';
-import { Users } from './users/users.entity';
+import { User } from './users/users.entity';
 import { AuthModule } from './auth/auth.module';
 import { RedisModule } from '@liaoliaots/nestjs-redis';
 import { PostsModule } from './posts/posts.module';
@@ -27,7 +27,7 @@ import { FreePost } from './posts/posts.entity';
       port: parseInt(process.env.MYSQL_PORT, 10),
       username: process.env.MYSQL_USER,
       password: process.env.MYSQL_PASSWORD,
-      entities: [Users, FreePost],
+      entities: [User, FreePost],
       synchronize: true,
       database: 'vog',
     }),
