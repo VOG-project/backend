@@ -1,17 +1,16 @@
-import { Controller, Get } from '@nestjs/common';
+import { Controller, UseFilters, UseInterceptors, Get } from '@nestjs/common';
 import { AppService } from './app.service';
+import { HttpExceptionFilter } from './filters/http-exception.filter';
+import { SuccessInterceptor } from './interceptors/success.interceptor';
 
 @Controller()
+@UseFilters(HttpExceptionFilter)
+@UseInterceptors(SuccessInterceptor)
 export class AppController {
   constructor(private readonly appService: AppService) {}
 
-  @Get()
-  getHello(): string {
-    return this.appService.getHello();
-  }
-
-  @Get('bye')
-  getBye(): string {
-    return this.appService.getBye();
+  @Get('test')
+  abc() {
+    return 'abc';
   }
 }
