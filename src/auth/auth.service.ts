@@ -1,5 +1,5 @@
 import { Injectable, HttpException } from '@nestjs/common';
-import { UsersRepository } from './../users/users.repository';
+import { UserRepository } from './../users/users.repository';
 import { UserLoginRequestDto } from './dto/users.auth.dto';
 import { v4 } from 'uuid';
 import * as bcrypt from 'bcrypt';
@@ -11,7 +11,7 @@ export class AuthService {
   private readonly redis: Redis;
 
   constructor(
-    private readonly usersRepository: UsersRepository,
+    private readonly userRepository: UserRepository,
     private readonly redisService: RedisService,
   ) {
     this.redis = this.redisService.getClient();
@@ -20,7 +20,7 @@ export class AuthService {
   async sessionLogin(data: UserLoginRequestDto): Promise<string> {
     const { email, password } = data;
 
-    const user = await this.usersRepository.findByEmail(email);
+    const user = await this.userRepository.findByEmail(email);
 
     if (!user) {
       throw new HttpException(
@@ -54,7 +54,7 @@ export class AuthService {
       throw new HttpException('이미 세션이 존재합니다. 로그아웃 하세요.', 401);
     }
 
-    const user = await this.usersRepository.findByEmail(email);
+    const user = await this.userRepository.findByEmail(email);
 
     await this.redis.hset(sessionId, {
       id: user.id,

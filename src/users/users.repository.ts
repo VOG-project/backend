@@ -5,46 +5,60 @@ import { UserUpdatedCountResponseDto } from './dto/users.response.dto';
 import { User } from './users.entity';
 
 @Injectable()
-export class UsersRepository {
+export class UserRepository {
   constructor(@InjectRepository(User) private userModel: Repository<User>) {}
 
   async updatePassword(
     userId: number,
     hashedPassword: string,
   ): Promise<UserUpdatedCountResponseDto> {
-    const updatedResult = await this.userModel
-      .createQueryBuilder()
-      .update(User)
-      .set({
-        password: hashedPassword,
-      })
-      .where('id = :id', { id: userId })
-      .execute();
+    try {
+      const updatedResult = await this.userModel
+        .createQueryBuilder()
+        .update(User)
+        .set({
+          password: hashedPassword,
+        })
+        .where('id = :id', { id: userId })
+        .execute();
 
-    return { updatedCount: updatedResult.affected };
+      return { updatedCount: updatedResult.affected };
+    } catch (err) {
+      throw new HttpException(
+        `[MYSQL ERROR] updatePassword ${err.message}`,
+        400,
+      );
+    }
   }
 
   async updateNickname(
     userId: number,
     newNickname: string,
   ): Promise<UserUpdatedCountResponseDto> {
-    const updatedResult = await this.userModel
-      .createQueryBuilder()
-      .update(User)
-      .set({
-        nickname: newNickname,
-      })
-      .where('id = :id', { id: userId })
-      .execute();
+    try {
+      const updatedResult = await this.userModel
+        .createQueryBuilder()
+        .update(User)
+        .set({
+          nickname: newNickname,
+        })
+        .where('id = :id', { id: userId })
+        .execute();
 
-    return {
-      updatedCount: updatedResult.affected,
-    };
+      return {
+        updatedCount: updatedResult.affected,
+      };
+    } catch (err) {
+      throw new HttpException(
+        `[MYSQL Error] updateNickname ${err.message}`,
+        400,
+      );
+    }
   }
 
   async findById(userId: number) {
     try {
-      const user = this.userModel
+      const user = await this.userModel
         .createQueryBuilder()
         .select()
         .where('id = :id', { id: userId })
@@ -52,7 +66,7 @@ export class UsersRepository {
 
       return user;
     } catch (err) {
-      throw new HttpException(`[MYSQL Error] findById: ${err.message}`, 501);
+      throw new HttpException(`[MYSQL Error] findById: ${err.message}`, 400);
     }
   }
 
@@ -82,7 +96,7 @@ export class UsersRepository {
     }
   }
 
-  async findByEmail(email: string): Promise<User | null> {
+  async findByEmail(email: string) {
     try {
       const exUser = await this.userModel
         .createQueryBuilder('user')
@@ -98,7 +112,7 @@ export class UsersRepository {
     }
   }
 
-  async findByNickname(nickname: string): Promise<User | null> {
+  async findByNickname(nickname: string) {
     try {
       const exUser = await this.userModel
         .createQueryBuilder('user')
