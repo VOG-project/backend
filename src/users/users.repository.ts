@@ -1,17 +1,33 @@
 import { Injectable, HttpException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { UserUpdateNicknameResponseDto } from './dto/users.response.dto';
+import { UserUpdatedCountResponseDto } from './dto/users.response.dto';
 import { User } from './users.entity';
 
 @Injectable()
 export class UsersRepository {
   constructor(@InjectRepository(User) private userModel: Repository<User>) {}
 
+  async updatePassword(
+    userId: number,
+    hashedPassword: string,
+  ): Promise<UserUpdatedCountResponseDto> {
+    const updatedResult = await this.userModel
+      .createQueryBuilder()
+      .update(User)
+      .set({
+        password: hashedPassword,
+      })
+      .where('id = :id', { id: userId })
+      .execute();
+
+    return { updatedCount: updatedResult.affected };
+  }
+
   async updateNickname(
     userId: number,
     newNickname: string,
-  ): Promise<UserUpdateNicknameResponseDto> {
+  ): Promise<UserUpdatedCountResponseDto> {
     const updatedResult = await this.userModel
       .createQueryBuilder()
       .update(User)
@@ -30,7 +46,7 @@ export class UsersRepository {
     try {
       const user = this.userModel
         .createQueryBuilder()
-        .select(['email', 'nickname', 'sex', 'updated_at'])
+        .select()
         .where('id = :id', { id: userId })
         .getOne();
 

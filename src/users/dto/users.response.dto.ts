@@ -1,9 +1,9 @@
 import { ApiProperty } from '@nestjs/swagger';
 
-export class UserUpdateNicknameResponseDto {
+export class UserUpdatedCountResponseDto {
   @ApiProperty({
-    example: 362,
-    description: '유저아이디',
+    example: 1,
+    description: '수정된 컬럼 개수',
   })
   updatedCount: number;
 }
