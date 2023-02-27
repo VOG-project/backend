@@ -1,5 +1,6 @@
 import { User } from './../users.entity';
-import { PickType } from '@nestjs/swagger';
+import { ApiProperty, PickType } from '@nestjs/swagger';
+import { IsNotEmpty, IsNumber, IsString } from 'class-validator';
 
 export class UserRegisterRequestDto extends PickType(User, [
   'email',
@@ -8,10 +9,12 @@ export class UserRegisterRequestDto extends PickType(User, [
   'sex',
 ] as const) {}
 
-export class UserRegisterResponseDto extends PickType(User, [
-  'id',
-  'email',
-  'nickname',
-  'sex',
-  'updated_at',
-]) {}
+export class UserUpdateNicknameRequestDto {
+  @ApiProperty({
+    example: '뚜루뚜뚜',
+    description: '변경할 닉네임',
+  })
+  @IsNotEmpty()
+  @IsString()
+  newNickname: string;
+}
