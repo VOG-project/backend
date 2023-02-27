@@ -28,6 +28,7 @@ export class UsersController {
   @ApiResponse({
     status: 201,
     description: '닉네임 변경 성공',
+    type: UserUpdateNicknameResponseDto,
   })
   async updateNickname(
     @Param('userId') userId: number,
