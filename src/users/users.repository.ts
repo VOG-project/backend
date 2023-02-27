@@ -1,13 +1,26 @@
 import { Injectable, HttpException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
+import { UserUpdateNicknameResponseDto } from './dto/users.response.dto';
 import { User } from './users.entity';
 
 @Injectable()
 export class UsersRepository {
-  constructor(
-    @InjectRepository(User) private usersRepository: Repository<User>,
-  ) {}
+  constructor(@InjectRepository(User) private userModel: Repository<User>) {}
+
+  async findById(userId: number) {
+    try {
+      const user = this.userModel
+        .createQueryBuilder()
+        .select(['email', 'nickname', 'sex', 'updated_at'])
+        .where('id = :id', { id: userId })
+        .getOne();
+
+      return user;
+    } catch (err) {
+      throw new HttpException(`[MYSQL Error] findById: ${err.message}`, 501);
+    }
+  }
 
   async create(
     email: string,
@@ -16,7 +29,7 @@ export class UsersRepository {
     sex: string,
   ): Promise<void> {
     try {
-      await this.usersRepository
+      await this.userModel
         .createQueryBuilder()
         .insert()
         .into('user')
@@ -37,7 +50,7 @@ export class UsersRepository {
 
   async findByEmail(email: string): Promise<User | null> {
     try {
-      const exUser = await this.usersRepository
+      const exUser = await this.userModel
         .createQueryBuilder('user')
         .where('email = :email', { email })
         .getOne();
@@ -53,7 +66,7 @@ export class UsersRepository {
 
   async findByNickname(nickname: string): Promise<User | null> {
     try {
-      const exUser = await this.usersRepository
+      const exUser = await this.userModel
         .createQueryBuilder('user')
         .where('nickname = :nickname', { nickname })
         .getOne();
