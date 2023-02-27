@@ -10,19 +10,19 @@ import {
 import {
   UserRegisterRequestDto,
   UserUpdatePasswordRequestDto,
-} from './dto/users.register.dto';
-import { UsersService } from './users.service';
+} from './dto/users.request.dto';
+import { UserService } from './users.service';
 import { ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { HttpExceptionFilter } from '../filters/http-exception.filter';
 import { SuccessInterceptor } from '../interceptors/success.interceptor';
-import { UserUpdateNicknameRequestDto } from './dto/users.register.dto';
+import { UserUpdateNicknameRequestDto } from './dto/users.request.dto';
 import { UserUpdatedCountResponseDto } from './dto/users.response.dto';
 
 @UseFilters(HttpExceptionFilter)
 @UseInterceptors(SuccessInterceptor)
 @Controller('users')
 export class UsersController {
-  constructor(private readonly usersService: UsersService) {}
+  constructor(private readonly userService: UserService) {}
 
   @Patch(':userId/password')
   @ApiOperation({
@@ -37,7 +37,7 @@ export class UsersController {
     @Param('userId') userId: number,
     @Body() body: UserUpdatePasswordRequestDto,
   ): Promise<UserUpdatedCountResponseDto> {
-    return this.usersService.updatePassword(userId, body);
+    return this.userService.updatePassword(userId, body);
   }
 
   @Patch(':userId/nickname')
@@ -53,7 +53,7 @@ export class UsersController {
     @Param('userId') userId: number,
     @Body() body: UserUpdateNicknameRequestDto,
   ): Promise<UserUpdatedCountResponseDto> {
-    return await this.usersService.updateNickname(body, userId);
+    return await this.userService.updateNickname(body, userId);
   }
 
   @Post('register')
@@ -66,6 +66,6 @@ export class UsersController {
     status: 400,
   })
   async register(@Body() body: UserRegisterRequestDto): Promise<string> {
-    return this.usersService.register(body);
+    return this.userService.register(body);
   }
 }
