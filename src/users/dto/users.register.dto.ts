@@ -18,3 +18,21 @@ export class UserUpdateNicknameRequestDto {
   @IsString()
   newNickname: string;
 }
+
+export class UserUpdatePasswordRequestDto {
+  @ApiProperty({
+    example: 'wiq25123',
+    description: '현재 비밀번호',
+  })
+  @IsNotEmpty()
+  @IsString()
+  currentPassword: string;
+
+  @ApiProperty({
+    example: '2tk3j52l',
+    description: '새로운 비밀번호',
+  })
+  @IsNotEmpty()
+  @IsString()
+  newPassword: string;
+}
