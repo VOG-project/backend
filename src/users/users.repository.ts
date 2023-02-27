@@ -8,6 +8,24 @@ import { User } from './users.entity';
 export class UsersRepository {
   constructor(@InjectRepository(User) private userModel: Repository<User>) {}
 
+  async updateNickname(
+    userId: number,
+    newNickname: string,
+  ): Promise<UserUpdateNicknameResponseDto> {
+    const updatedResult = await this.userModel
+      .createQueryBuilder()
+      .update(User)
+      .set({
+        nickname: newNickname,
+      })
+      .where('id = :id', { id: userId })
+      .execute();
+
+    return {
+      updatedCount: updatedResult.affected,
+    };
+  }
+
   async findById(userId: number) {
     try {
       const user = this.userModel
