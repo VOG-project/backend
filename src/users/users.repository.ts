@@ -5,7 +5,7 @@ import { UserUpdatedCountResponseDto } from './dto/users.response.dto';
 import { User } from './users.entity';
 
 @Injectable()
-export class UsersRepository {
+export class UserRepository {
   constructor(@InjectRepository(User) private userModel: Repository<User>) {}
 
   async updatePassword(
