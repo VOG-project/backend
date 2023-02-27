@@ -13,6 +13,7 @@ import { AuthModule } from './auth/auth.module';
 import { RedisModule } from '@liaoliaots/nestjs-redis';
 import { PostsModule } from './posts/posts.module';
 import { FreePost } from './posts/posts.entity';
+import { UploadsModule } from './uploads/uploads.module';
 
 @Module({
   imports: [
@@ -41,6 +42,7 @@ import { FreePost } from './posts/posts.entity';
     UsersModule,
     AuthModule,
     PostsModule,
+    UploadsModule,
   ],
   controllers: [AppController],
   providers: [AppService],
