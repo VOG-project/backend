@@ -25,6 +25,7 @@ export class UploadsController {
     @UploadedFile() image: Express.Multer.File,
     @Param() params: ValidateIdParam,
   ): Promise<UploadUserProfileImageResponseDto> {
+    await this.uploadService.deleteUserProfileImageFile(params.id);
     return this.uploadService.uploadUserProfileImageFile(image, params.id);
   }
 }

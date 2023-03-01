@@ -14,6 +14,27 @@ export class UploadsService {
       },
     });
   }
+
+  async deleteUserProfileImageFile(userId: number) {
+    try {
+      const user = await this.userRepository.findById(userId);
+      const sliceIdx = process.env.AWS_S3_File_URL.length;
+      const filePath = user.profileUrl;
+
+      await new AWS.S3()
+        .deleteObject({
+          Bucket: process.env.AWS_S3_BUCKET_NAME,
+          Key: filePath.substring(sliceIdx),
+        })
+        .promise();
+    } catch (err) {
+      throw new HttpException(
+        `[S3 ERROR] deleteUserProfileImageFile: ${err.message}`,
+        500,
+      );
+    }
+  }
+
   async uploadUserProfileImageFile(
     image: Express.Multer.File,
     userId: number,
@@ -40,7 +61,7 @@ export class UploadsService {
       return updatedResult;
     } catch (err) {
       throw new HttpException(
-        `[S3 UPLOAD ERR] uploadImageFile: ${err.message}`,
+        `[S3 ERROR] uploadUserProfileImageFile: ${err.message}`,
         500,
       );
     }
