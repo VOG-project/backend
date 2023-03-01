@@ -37,6 +37,7 @@ export class PostsController {
   @Post('championship')
   @ApiOperation({
     summary: '대회소식게시판 게시물 등록',
+    tags: ['Posts'],
   })
   @ApiResponse({
     status: 201,
@@ -55,6 +56,7 @@ export class PostsController {
   @Put('championship/:postId')
   @ApiOperation({
     summary: '대회소식게시판 게시물 수정',
+    tags: ['Posts'],
   })
   @ApiResponse({
     status: 201,
@@ -75,6 +77,7 @@ export class PostsController {
   @Delete('championship/:postId')
   @ApiOperation({
     summary: '대회소식게시판 게시물 삭제',
+    tags: ['Posts'],
   })
   @ApiResponse({
     status: 200,
@@ -90,6 +93,7 @@ export class PostsController {
   @Post('humor')
   @ApiOperation({
     summary: '유머게시판 게시물 등록',
+    tags: ['Posts'],
   })
   @ApiResponse({
     status: 201,
@@ -108,6 +112,7 @@ export class PostsController {
   @Put('humor/:postId')
   @ApiOperation({
     summary: '유머게시판 게시물 수정',
+    tags: ['Posts'],
   })
   @ApiResponse({
     status: 201,
@@ -128,6 +133,7 @@ export class PostsController {
   @Delete('humor/:postId')
   @ApiOperation({
     summary: '유머게시판 게시물 삭제',
+    tags: ['Posts'],
   })
   @ApiResponse({
     status: 200,
@@ -143,6 +149,7 @@ export class PostsController {
   @Post('free')
   @ApiOperation({
     summary: '자유게시판 게시물 등록',
+    tags: ['Posts'],
   })
   @ApiResponse({
     status: 201,
@@ -163,6 +170,7 @@ export class PostsController {
   @Put('free/:postId')
   @ApiOperation({
     summary: '자유게시판 게시물 수정',
+    tags: ['Posts'],
   })
   @ApiResponse({
     status: 201,
@@ -182,6 +190,7 @@ export class PostsController {
   @Delete('free/:postId')
   @ApiOperation({
     summary: '자유게시판 게시물 삭제',
+    tags: ['Posts'],
   })
   @ApiResponse({
     status: 200,
