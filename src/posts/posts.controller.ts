@@ -4,10 +4,12 @@ import {
   UseFilters,
   Post,
   Body,
+  Query,
   UseGuards,
   Param,
   Put,
   Delete,
+  Get,
 } from '@nestjs/common';
 import { HttpExceptionFilter } from 'src/filters/http-exception.filter';
 import { SuccessInterceptor } from './../interceptors/success.interceptor';
@@ -146,6 +148,19 @@ export class PostsController {
     return this.postService.deletePost(id, this.HUMOR_POST_TABLE_NAME);
   }
 
+  @Get('free')
+  @ApiOperation({
+    summary: '자유게시판 게시물 10개씩 목록 불러오기',
+    tags: ['Posts'],
+  })
+  @ApiResponse({
+    status: 200,
+    description: '게시물 목록 10개 불러오기 완료',
+  })
+  async getFreePostList(@Query('page') page: number) {
+    return this.postService.getPostList(page, this.FREE_POST_TABLE_NAME);
+  }
+
   @Post('free')
   @ApiOperation({
     summary: '자유게시판 게시물 등록',
@@ -156,11 +171,6 @@ export class PostsController {
     description: '게시물 등록 완료',
     type: PostRegisterResponseDto,
   })
-  @ApiResponse({
-    status: 400,
-    description: 'ERROR_MESSAGE',
-  })
-  //@UseGuards(AuthGuard)
   async registerFreePost(
     @Body() body: PostRegisterRequestDto,
   ): Promise<PostRegisterResponseDto> {
