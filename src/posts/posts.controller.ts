@@ -53,7 +53,7 @@ export class PostsController {
 
   @Put('humor/:id')
   @ApiOperation({
-    summary: '유머게시만 게시물 수정',
+    summary: '유머게시판 게시물 수정',
   })
   @ApiResponse({
     status: 201,
@@ -69,6 +69,21 @@ export class PostsController {
       id,
       this.HUMOR_POST_TABLE_NAME,
     );
+  }
+
+  @Delete('humor/:id')
+  @ApiOperation({
+    summary: '유머게시판 게시물 삭제',
+  })
+  @ApiResponse({
+    status: 200,
+    description: '게시물 삭제 완료',
+    type: PostDeleteResponseDto,
+  })
+  async deleteHumorPost(
+    @Param('id') id: number,
+  ): Promise<PostDeleteResponseDto> {
+    return this.postService.deletePost(id, this.HUMOR_POST_TABLE_NAME);
   }
 
   @Post('free')
