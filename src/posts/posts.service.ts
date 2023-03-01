@@ -24,11 +24,15 @@ export class PostsService {
   async updatePost(
     data: PostUpdateRequestDto,
     postId: number,
+    targetEntity: string,
   ): Promise<PostUpdateResponseDto> {
-    return await this.postRepository.update(data, postId);
+    return await this.postRepository.update(data, postId, targetEntity);
   }
 
-  async deletePost(postId: number): Promise<PostDeleteResponseDto> {
-    return await this.postRepository.delete(postId);
+  async deletePost(
+    postId: number,
+    targetEntity: string,
+  ): Promise<PostDeleteResponseDto> {
+    return await this.postRepository.delete(postId, targetEntity);
   }
 }
