@@ -14,20 +14,21 @@ import {
 export class PostsService {
   constructor(private readonly postRepository: PostsRepository) {}
 
-  async registerFreePost(
+  async registerPost(
     data: PostRegisterRequestDto,
+    targetEntity: string,
   ): Promise<PostRegisterResponseDto> {
-    return await this.postRepository.create(data);
+    return await this.postRepository.create(data, targetEntity);
   }
 
-  async updateFreePost(
+  async updatePost(
     data: PostUpdateRequestDto,
     postId: number,
   ): Promise<PostUpdateResponseDto> {
     return await this.postRepository.update(data, postId);
   }
 
-  async deleteFreePost(postId: number): Promise<PostDeleteResponseDto> {
+  async deletePost(postId: number): Promise<PostDeleteResponseDto> {
     return await this.postRepository.delete(postId);
   }
 }
