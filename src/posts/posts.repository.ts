@@ -14,11 +14,11 @@ import {
 export class PostsRepository {
   constructor(
     @InjectRepository(FreePost)
-    private readonly freePostRepository: Repository<FreePost>,
+    private readonly postRepository: Repository<FreePost>,
   ) {}
 
   async delete(postId: number): Promise<PostDeleteResponseDto> {
-    const deletedResult = await this.freePostRepository
+    const deletedResult = await this.postRepository
       .createQueryBuilder()
       .delete()
       .from(FreePost)
@@ -31,7 +31,7 @@ export class PostsRepository {
   async create(data: PostRegisterRequestDto): Promise<PostRegisterResponseDto> {
     const { title, content, gameCategory, writerId } = data;
 
-    const insertedResult = await this.freePostRepository
+    const insertedResult = await this.postRepository
       .createQueryBuilder()
       .insert()
       .into(FreePost)
@@ -54,7 +54,7 @@ export class PostsRepository {
   ): Promise<PostUpdateResponseDto> {
     const { title, content } = data;
 
-    const updatedResult = await this.freePostRepository
+    const updatedResult = await this.postRepository
       .createQueryBuilder()
       .update(FreePost)
       .set({
