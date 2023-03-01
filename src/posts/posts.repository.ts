@@ -14,11 +14,14 @@ import {
 export class PostsRepository {
   constructor(private readonly dataSource: DataSource) {}
 
-  async delete(postId: number): Promise<PostDeleteResponseDto> {
-    const deletedResult = await this.postRepository
+  async delete(
+    postId: number,
+    targetEntity: string,
+  ): Promise<PostDeleteResponseDto> {
+    const deletedResult = await this.dataSource
       .createQueryBuilder()
       .delete()
-      .from(FreePost)
+      .from(targetEntity)
       .where('id = :id', { id: postId })
       .execute();
 
@@ -51,12 +54,13 @@ export class PostsRepository {
   async update(
     data: PostUpdateRequestDto,
     postId: number,
+    targetEntity: string,
   ): Promise<PostUpdateResponseDto> {
     const { title, content } = data;
 
-    const updatedResult = await this.postRepository
+    const updatedResult = await this.dataSource
       .createQueryBuilder()
-      .update(FreePost)
+      .update(targetEntity)
       .set({
         title,
         content,
