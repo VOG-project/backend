@@ -9,6 +9,7 @@ import { CreatedUpdatedDate } from 'src/commonEntities/date.common.entity';
 import { IsEmail, IsString, IsInt, IsNotEmpty } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 import { FreePost, HumorPost } from 'src/posts/posts.entity';
+import { ChampionshipPost } from './../posts/posts.entity';
 
 @Entity({
   engine: 'InnoDB',
@@ -96,12 +97,9 @@ export class User extends CreatedUpdatedDate {
   @OneToMany(() => HumorPost, (humorPost) => humorPost.user)
   humorPost: HumorPost[];
 
-  // @OneToMany(() => HumorPost, (humorPost) => humorPost.user)
-  // humorPosts: HumorPost[];
-
-  // @OneToMany(
-  //   () => ChampionshipPost,
-  //   (championshipPost) => championshipPost.user,
-  // )
-  // championshipPosts: ChampionshipPost[];
+  @OneToMany(
+    () => ChampionshipPost,
+    (championshipPost) => championshipPost.user,
+  )
+  championshipPost: ChampionshipPost[];
 }
