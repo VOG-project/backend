@@ -17,3 +17,14 @@ export class FreePost extends Post {
   user: User;
 }
 
+@Entity({
+  name: 'humorPost',
+})
+export class HumorPost extends Post {
+  @ManyToOne(() => User, (user) => user.humorPost, {
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE',
+  })
+  @JoinColumn({ name: 'writerId' })
+  user: User;
+}
