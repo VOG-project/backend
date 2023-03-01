@@ -49,20 +49,6 @@ export class PostsRepository {
       ])
       .execute();
 
-    // const insertedResult = await this.postRepository
-    //   .createQueryBuilder()
-    //   .insert()
-    //   .into(FreePost)
-    //   .values([
-    //     {
-    //       title,
-    //       content,
-    //       gameCategory,
-    //       writerId,
-    //     },
-    //   ])
-    //   .execute();
-
     return { postId: insertedResult.identifiers[0].id };
   }
 
