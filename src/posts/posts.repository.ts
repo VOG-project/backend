@@ -12,10 +12,7 @@ import {
 
 @Injectable()
 export class PostsRepository {
-  constructor(
-    private readonly postRepository: Repository<FreePost>,
-    private readonly dataSource: DataSource,
-  ) {}
+  constructor(private readonly dataSource: DataSource) {}
 
   async delete(postId: number): Promise<PostDeleteResponseDto> {
     const deletedResult = await this.postRepository
