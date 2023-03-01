@@ -40,6 +40,7 @@ export class PostsController {
   @ApiResponse({
     status: 201,
     description: '유머게시판 게시물 등록 완료',
+    type: PostRegisterResponseDto,
   })
   async registerHumorPost(
     @Body() body: PostRegisterRequestDto,
