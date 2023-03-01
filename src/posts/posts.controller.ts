@@ -51,7 +51,7 @@ export class PostsController {
     );
   }
 
-  @Put('humor/:id')
+  @Put('humor/:postId')
   @ApiOperation({
     summary: '유머게시판 게시물 수정',
   })
@@ -62,7 +62,7 @@ export class PostsController {
   })
   async updateHumorPost(
     @Body() body: PostUpdateRequestDto,
-    @Param('id') id: number,
+    @Param('postId') id: number,
   ): Promise<PostUpdateResponseDto> {
     return await this.postService.updatePost(
       body,
@@ -71,7 +71,7 @@ export class PostsController {
     );
   }
 
-  @Delete('humor/:id')
+  @Delete('humor/:postId')
   @ApiOperation({
     summary: '유머게시판 게시물 삭제',
   })
@@ -81,7 +81,7 @@ export class PostsController {
     type: PostDeleteResponseDto,
   })
   async deleteHumorPost(
-    @Param('id') id: number,
+    @Param('postId') id: number,
   ): Promise<PostDeleteResponseDto> {
     return this.postService.deletePost(id, this.HUMOR_POST_TABLE_NAME);
   }
@@ -106,7 +106,7 @@ export class PostsController {
     return await this.postService.registerPost(body, this.FREE_POST_TABLE_NAME);
   }
 
-  @Put('free/:id')
+  @Put('free/:postId')
   @ApiOperation({
     summary: '자유게시판 게시물 수정',
   })
@@ -116,7 +116,7 @@ export class PostsController {
   })
   async updateFreePost(
     @Body() body: PostUpdateRequestDto,
-    @Param('id') id: number,
+    @Param('postId') id: number,
   ): Promise<PostUpdateResponseDto> {
     return await this.postService.updatePost(
       body,
@@ -125,7 +125,7 @@ export class PostsController {
     );
   }
 
-  @Delete('free/:id')
+  @Delete('free/:postId')
   @ApiOperation({
     summary: '자유게시판 게시물 삭제',
   })
@@ -135,7 +135,7 @@ export class PostsController {
     type: PostDeleteResponseDto,
   })
   async deleteFreePost(
-    @Param('id') id: number,
+    @Param('postId') id: number,
   ): Promise<PostDeleteResponseDto> {
     return this.postService.deletePost(id, this.FREE_POST_TABLE_NAME);
   }
