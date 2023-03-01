@@ -1,7 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { FreePost } from 'src/posts/posts.entity';
-import { DataSource, Repository } from 'typeorm';
+import { DataSource } from 'typeorm';
 import { PostUpdateRequestDto } from './dto/post.request.dto';
 import { PostRegisterRequestDto } from './dto/post.request.dto';
 import {
@@ -67,8 +65,6 @@ export class PostsRepository {
       })
       .where('id = :id', { id: postId })
       .execute();
-
-    console.log(updatedResult);
 
     return { updatedCount: updatedResult.affected };
   }
