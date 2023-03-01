@@ -28,7 +28,63 @@ import { ApiOperation, ApiResponse } from '@nestjs/swagger';
 @UseInterceptors(SuccessInterceptor)
 @UseFilters(HttpExceptionFilter)
 export class PostsController {
+  private FREE_POST_TABLE_NAME = 'freePost';
+  private HUMOR_POST_TABLE_NAME = 'humorPost';
+
   constructor(private readonly postService: PostsService) {}
+
+  @Post('humor')
+  @ApiOperation({
+    summary: '유머게시판 게시물 등록',
+  })
+  @ApiResponse({
+    status: 201,
+    description: '유머게시판 게시물 등록 완료',
+    type: PostRegisterResponseDto,
+  })
+  async registerHumorPost(
+    @Body() body: PostRegisterRequestDto,
+  ): Promise<PostRegisterResponseDto> {
+    return await this.postService.registerPost(
+      body,
+      this.HUMOR_POST_TABLE_NAME,
+    );
+  }
+
+  @Put('humor/:postId')
+  @ApiOperation({
+    summary: '유머게시판 게시물 수정',
+  })
+  @ApiResponse({
+    status: 201,
+    description: '게시물 수정 완료',
+    type: PostUpdateResponseDto,
+  })
+  async updateHumorPost(
+    @Body() body: PostUpdateRequestDto,
+    @Param('postId') id: number,
+  ): Promise<PostUpdateResponseDto> {
+    return await this.postService.updatePost(
+      body,
+      id,
+      this.HUMOR_POST_TABLE_NAME,
+    );
+  }
+
+  @Delete('humor/:postId')
+  @ApiOperation({
+    summary: '유머게시판 게시물 삭제',
+  })
+  @ApiResponse({
+    status: 200,
+    description: '게시물 삭제 완료',
+    type: PostDeleteResponseDto,
+  })
+  async deleteHumorPost(
+    @Param('postId') id: number,
+  ): Promise<PostDeleteResponseDto> {
+    return this.postService.deletePost(id, this.HUMOR_POST_TABLE_NAME);
+  }
 
   @Post('free')
   @ApiOperation({
@@ -47,10 +103,10 @@ export class PostsController {
   async registerFreePost(
     @Body() body: PostRegisterRequestDto,
   ): Promise<PostRegisterResponseDto> {
-    return await this.postService.registerFreePost(body);
+    return await this.postService.registerPost(body, this.FREE_POST_TABLE_NAME);
   }
 
-  @Put('free/:id')
+  @Put('free/:postId')
   @ApiOperation({
     summary: '자유게시판 게시물 수정',
   })
@@ -60,12 +116,16 @@ export class PostsController {
   })
   async updateFreePost(
     @Body() body: PostUpdateRequestDto,
-    @Param('id') id: number,
+    @Param('postId') id: number,
   ): Promise<PostUpdateResponseDto> {
-    return await this.postService.updateFreePost(body, id);
+    return await this.postService.updatePost(
+      body,
+      id,
+      this.FREE_POST_TABLE_NAME,
+    );
   }
 
-  @Delete('free/:id')
+  @Delete('free/:postId')
   @ApiOperation({
     summary: '자유게시판 게시물 삭제',
   })
@@ -75,8 +135,8 @@ export class PostsController {
     type: PostDeleteResponseDto,
   })
   async deleteFreePost(
-    @Param('id') id: number,
+    @Param('postId') id: number,
   ): Promise<PostDeleteResponseDto> {
-    return this.postService.deleteFreePost(id);
+    return this.postService.deletePost(id, this.FREE_POST_TABLE_NAME);
   }
 }

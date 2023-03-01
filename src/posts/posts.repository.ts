@@ -1,7 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { FreePost } from 'src/posts/posts.entity';
-import { Repository } from 'typeorm';
+import { DataSource } from 'typeorm';
 import { PostUpdateRequestDto } from './dto/post.request.dto';
 import { PostRegisterRequestDto } from './dto/post.request.dto';
 import {
@@ -12,29 +10,32 @@ import {
 
 @Injectable()
 export class PostsRepository {
-  constructor(
-    @InjectRepository(FreePost)
-    private readonly freePostRepository: Repository<FreePost>,
-  ) {}
+  constructor(private readonly dataSource: DataSource) {}
 
-  async delete(postId: number): Promise<PostDeleteResponseDto> {
-    const deletedResult = await this.freePostRepository
+  async delete(
+    postId: number,
+    targetEntity: string,
+  ): Promise<PostDeleteResponseDto> {
+    const deletedResult = await this.dataSource
       .createQueryBuilder()
       .delete()
-      .from(FreePost)
+      .from(targetEntity)
       .where('id = :id', { id: postId })
       .execute();
 
     return { deletedCount: deletedResult.affected };
   }
 
-  async create(data: PostRegisterRequestDto): Promise<PostRegisterResponseDto> {
+  async create(
+    data: PostRegisterRequestDto,
+    targetEntity: string,
+  ): Promise<PostRegisterResponseDto> {
     const { title, content, gameCategory, writerId } = data;
 
-    const insertedResult = await this.freePostRepository
+    const insertedResult = await this.dataSource
       .createQueryBuilder()
       .insert()
-      .into(FreePost)
+      .into(targetEntity)
       .values([
         {
           title,
@@ -51,20 +52,19 @@ export class PostsRepository {
   async update(
     data: PostUpdateRequestDto,
     postId: number,
+    targetEntity: string,
   ): Promise<PostUpdateResponseDto> {
     const { title, content } = data;
 
-    const updatedResult = await this.freePostRepository
+    const updatedResult = await this.dataSource
       .createQueryBuilder()
-      .update(FreePost)
+      .update(targetEntity)
       .set({
         title,
         content,
       })
       .where('id = :id', { id: postId })
       .execute();
-
-    console.log(updatedResult);
 
     return { updatedCount: updatedResult.affected };
   }
