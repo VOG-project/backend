@@ -23,7 +23,7 @@ export class UploadsController {
   @Patch('users/:id')
   @ApiOperation({
     summary: '유저 프로필 사진 수정',
-    tags: ['Uploads']
+    tags: ['Uploads'],
   })
   @ApiResponse({
     status: 201,
