@@ -14,6 +14,10 @@ import {
 export class PostsService {
   constructor(private readonly postRepository: PostsRepository) {}
 
+  async getPostList(page: number, targetEntity: string) {
+    return await this.postRepository.find10Each(page, targetEntity);
+  }
+
   async registerPost(
     data: PostRegisterRequestDto,
     targetEntity: string,
