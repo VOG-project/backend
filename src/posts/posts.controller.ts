@@ -30,8 +30,62 @@ import { ApiOperation, ApiResponse } from '@nestjs/swagger';
 export class PostsController {
   private FREE_POST_TABLE_NAME = 'freePost';
   private HUMOR_POST_TABLE_NAME = 'humorPost';
+  private CHAMPION_POST_TABLE_NAME = 'championshipPost';
 
   constructor(private readonly postService: PostsService) {}
+
+  @Post('championship')
+  @ApiOperation({
+    summary: '대회소식게시판 게시물 등록',
+  })
+  @ApiResponse({
+    status: 201,
+    description: '대회소식게시판 게시물 등록 완료',
+    type: PostRegisterResponseDto,
+  })
+  async registerChampionshipPost(
+    @Body() body: PostRegisterRequestDto,
+  ): Promise<PostRegisterResponseDto> {
+    return await this.postService.registerPost(
+      body,
+      this.CHAMPION_POST_TABLE_NAME,
+    );
+  }
+
+  @Put('championship/:postId')
+  @ApiOperation({
+    summary: '대회소식게시판 게시물 수정',
+  })
+  @ApiResponse({
+    status: 201,
+    description: '게시물 수정 완료',
+    type: PostUpdateResponseDto,
+  })
+  async updateChampionshipPost(
+    @Body() body: PostUpdateRequestDto,
+    @Param('postId') id: number,
+  ): Promise<PostUpdateResponseDto> {
+    return await this.postService.updatePost(
+      body,
+      id,
+      this.CHAMPION_POST_TABLE_NAME,
+    );
+  }
+
+  @Delete('championship/:postId')
+  @ApiOperation({
+    summary: '대회소식게시판 게시물 삭제',
+  })
+  @ApiResponse({
+    status: 200,
+    description: '게시물 삭제 완료',
+    type: PostDeleteResponseDto,
+  })
+  async deleteChampionshipPost(
+    @Param('postId') id: number,
+  ): Promise<PostDeleteResponseDto> {
+    return this.postService.deletePost(id, this.CHAMPION_POST_TABLE_NAME);
+  }
 
   @Post('humor')
   @ApiOperation({
