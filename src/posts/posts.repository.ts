@@ -13,7 +13,6 @@ import {
 @Injectable()
 export class PostsRepository {
   constructor(
-    @InjectRepository(FreePost)
     private readonly postRepository: Repository<FreePost>,
     private readonly dataSource: DataSource,
   ) {}
