@@ -28,7 +28,27 @@ import { ApiOperation, ApiResponse } from '@nestjs/swagger';
 @UseInterceptors(SuccessInterceptor)
 @UseFilters(HttpExceptionFilter)
 export class PostsController {
+  private FREE_POST_TABLE_NAME = 'freePost';
+  private HUMOR_POST_TABLE_NAME = 'humorPost';
+
   constructor(private readonly postService: PostsService) {}
+
+  @Post('humor')
+  @ApiOperation({
+    summary: '유머게시판 게시물 등록',
+  })
+  @ApiResponse({
+    status: 201,
+    description: '유머게시판 게시물 등록 완료',
+  })
+  async registerHumorPost(
+    @Body() body: PostRegisterRequestDto,
+  ): Promise<PostRegisterResponseDto> {
+    return await this.postService.registerPost(
+      body,
+      this.HUMOR_POST_TABLE_NAME,
+    );
+  }
 
   @Post('free')
   @ApiOperation({
@@ -47,7 +67,7 @@ export class PostsController {
   async registerFreePost(
     @Body() body: PostRegisterRequestDto,
   ): Promise<PostRegisterResponseDto> {
-    return await this.postService.registerFreePost(body);
+    return await this.postService.registerPost(body, this.FREE_POST_TABLE_NAME);
   }
 
   @Put('free/:id')
@@ -62,7 +82,7 @@ export class PostsController {
     @Body() body: PostUpdateRequestDto,
     @Param('id') id: number,
   ): Promise<PostUpdateResponseDto> {
-    return await this.postService.updateFreePost(body, id);
+    return await this.postService.updatePost(body, id);
   }
 
   @Delete('free/:id')
@@ -77,6 +97,6 @@ export class PostsController {
   async deleteFreePost(
     @Param('id') id: number,
   ): Promise<PostDeleteResponseDto> {
-    return this.postService.deleteFreePost(id);
+    return this.postService.deletePost(id);
   }
 }
