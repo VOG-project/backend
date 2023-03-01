@@ -79,6 +79,17 @@ export class User extends CreatedUpdatedDate {
   @IsNotEmpty()
   sex: string;
 
+  @ApiProperty({
+    example: 'https://www.vog-storage/user/efsef.jpg',
+    description: '유저 프로필 사진 URL',
+  })
+  @Column({
+    type: 'varchar',
+    length: 120,
+    default: `https://vog-image-storage.s3.ap-northeast-2.amazonaws.com/user/default.jpg`,
+  })
+  profileUrl: string;
+
   @OneToMany(() => FreePost, (freePost) => freePost.user)
   freePost: FreePost[];
 
