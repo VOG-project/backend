@@ -51,6 +51,26 @@ export class PostsController {
     );
   }
 
+  @Put('humor/:id')
+  @ApiOperation({
+    summary: '유머게시만 게시물 수정',
+  })
+  @ApiResponse({
+    status: 201,
+    description: '게시물 수정 완료',
+    type: PostUpdateResponseDto,
+  })
+  async updateHumorPost(
+    @Body() body: PostUpdateRequestDto,
+    @Param('id') id: number,
+  ): Promise<PostUpdateResponseDto> {
+    return await this.postService.updatePost(
+      body,
+      id,
+      this.HUMOR_POST_TABLE_NAME,
+    );
+  }
+
   @Post('free')
   @ApiOperation({
     summary: '자유게시판 게시물 등록',
