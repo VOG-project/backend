@@ -3,7 +3,6 @@ import { Entity, ManyToOne, Check, JoinColumn } from 'typeorm';
 import { User } from 'src/users/users.entity';
 
 @Entity({
-  engine: 'InnoDB',
   name: 'freePost',
 })
 @Check(
@@ -17,3 +16,4 @@ export class FreePost extends Post {
   @JoinColumn({ name: 'writerId' })
   user: User;
 }
+
