@@ -83,7 +83,11 @@ export class PostsController {
     @Body() body: PostUpdateRequestDto,
     @Param('id') id: number,
   ): Promise<PostUpdateResponseDto> {
-    return await this.postService.updatePost(body, id);
+    return await this.postService.updatePost(
+      body,
+      id,
+      this.FREE_POST_TABLE_NAME,
+    );
   }
 
   @Delete('free/:id')
@@ -98,6 +102,6 @@ export class PostsController {
   async deleteFreePost(
     @Param('id') id: number,
   ): Promise<PostDeleteResponseDto> {
-    return this.postService.deletePost(id);
+    return this.postService.deletePost(id, this.FREE_POST_TABLE_NAME);
   }
 }
