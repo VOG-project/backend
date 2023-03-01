@@ -1,7 +1,9 @@
 import { Injectable } from '@nestjs/common';
-import { DataSource } from 'typeorm';
+import { InjectRepository } from '@nestjs/typeorm';
+import { DataSource, Repository } from 'typeorm';
 import { PostUpdateRequestDto } from './dto/post.request.dto';
 import { PostRegisterRequestDto } from './dto/post.request.dto';
+import { FreePost } from 'src/posts/posts.entity';
 import {
   PostRegisterResponseDto,
   PostDeleteResponseDto,
@@ -10,7 +12,24 @@ import {
 
 @Injectable()
 export class PostsRepository {
-  constructor(private readonly dataSource: DataSource) {}
+  constructor(
+    private readonly dataSource: DataSource,
+    @InjectRepository(FreePost) private postModel: Repository<FreePost>,
+  ) {}
+
+  async find10Each(page: number, targetEntity: string) {
+    const count = 10;
+    const posts = await this.postModel
+      .createQueryBuilder(targetEntity)
+      .select()
+      .offset(count * (page - 1))
+      .limit(count)
+      .orderBy(`${targetEntity}.id`, 'DESC')
+      .getMany();
+
+    console.log(posts);
+    return posts;
+  }
 
   async delete(
     postId: number,
