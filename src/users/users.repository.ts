@@ -3,10 +3,37 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { UserUpdatedCountResponseDto } from './dto/users.response.dto';
 import { User } from './users.entity';
+import { UploadUserProfileImageResponseDto } from './../uploads/dto/uploads.response.dto';
 
 @Injectable()
 export class UserRepository {
   constructor(@InjectRepository(User) private userModel: Repository<User>) {}
+
+  async updateProfileUrl(
+    userId: number,
+    fileUrl: string,
+  ): Promise<UploadUserProfileImageResponseDto> {
+    try {
+      const updateResult = await this.userModel
+        .createQueryBuilder()
+        .update(User)
+        .set({
+          profileUrl: fileUrl,
+        })
+        .where('id = :id', { id: userId })
+        .execute();
+
+      return {
+        updatedCount: updateResult.affected,
+        profileUrl: fileUrl,
+      };
+    } catch (err) {
+      throw new HttpException(
+        `[MYSQL ERROR] updateProfileUrl ${err.message}`,
+        500,
+      );
+    }
+  }
 
   async updatePassword(
     userId: number,
