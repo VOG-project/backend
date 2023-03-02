@@ -15,8 +15,16 @@ import {
 export class PostsService {
   constructor(private readonly postRepository: PostsRepository) {}
 
-  async getPostList(page: number): Promise<PostGetListResponseDto[]> {
-    return await this.postRepository.find10EachListFromFreePost(page);
+  async getPostList(
+    page: number,
+    targetEntity: string,
+  ): Promise<PostGetListResponseDto[]> {
+    switch (targetEntity) {
+      case 'freePost':
+        return await this.postRepository.find10EachListFromFreePost(page);
+      case 'humorPost':
+        return await this.postRepository.find10EachListFromHumorPost(page);
+    }
   }
 
   async registerPost(
