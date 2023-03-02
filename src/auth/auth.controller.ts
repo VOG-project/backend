@@ -21,7 +21,7 @@ import { Response, Request } from 'express';
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
-  @ApiOperation({ summary: '로그인' })
+  @ApiOperation({ summary: '로그인', tags: ['Auth'] })
   @ApiResponse({
     status: 201,
     description: '로그인 성공',
@@ -51,7 +51,7 @@ export class AuthController {
     return userId;
   }
 
-  @ApiOperation({ summary: '로그아웃' })
+  @ApiOperation({ summary: '로그아웃', tags: ['Auth'] })
   @ApiResponse({
     status: 200,
     description: '로그아웃 성공',
