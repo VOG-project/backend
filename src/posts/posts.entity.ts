@@ -3,7 +3,6 @@ import { Entity, ManyToOne, Check, JoinColumn } from 'typeorm';
 import { User } from 'src/users/users.entity';
 
 @Entity({
-  engine: 'InnoDB',
   name: 'freePost',
 })
 @Check(
@@ -11,6 +10,30 @@ import { User } from 'src/users/users.entity';
 )
 export class FreePost extends Post {
   @ManyToOne(() => User, (user) => user.freePost, {
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE',
+  })
+  @JoinColumn({ name: 'writerId' })
+  user: User;
+}
+
+@Entity({
+  name: 'humorPost',
+})
+export class HumorPost extends Post {
+  @ManyToOne(() => User, (user) => user.humorPost, {
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE',
+  })
+  @JoinColumn({ name: 'writerId' })
+  user: User;
+}
+
+@Entity({
+  name: 'championshipPost',
+})
+export class ChampionshipPost extends Post {
+  @ManyToOne(() => User, (user) => user.championshipPost, {
     onDelete: 'CASCADE',
     onUpdate: 'CASCADE',
   })

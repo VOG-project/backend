@@ -6,8 +6,8 @@ export class UserEntirePropertyResponseDto extends PickType(User, [
   'email',
   'password',
   'sex',
-  'created_at',
-  'updated_at',
+  'createdAt',
+  'updatedAt',
 ] as const) {}
 
 export class UserUpdatedCountResponseDto {

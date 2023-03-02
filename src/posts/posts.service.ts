@@ -6,6 +6,8 @@ import {
 import { PostsRepository } from './posts.repository';
 import {
   PostDeleteResponseDto,
+  PostGetListResponseDto,
+  PostGetResponseDto,
   PostRegisterResponseDto,
   PostUpdateResponseDto,
 } from './dto/post.response.dto';
@@ -14,20 +16,52 @@ import {
 export class PostsService {
   constructor(private readonly postRepository: PostsRepository) {}
 
-  async registerFreePost(
-    data: PostRegisterRequestDto,
-  ): Promise<PostRegisterResponseDto> {
-    return await this.postRepository.create(data);
+  async getPost(id: number, targetEntity: string): Promise<PostGetResponseDto> {
+    switch (targetEntity) {
+      case 'freePost':
+        return await this.postRepository.findFreePostById(id);
+      case 'humorPost':
+        return await this.postRepository.findHumorPostById(id);
+      case 'championshipPost':
+        return await this.postRepository.findChampionshipPostById(id);
+    }
   }
 
-  async updateFreePost(
+  async getPostList(
+    page: number,
+    targetEntity: string,
+  ): Promise<PostGetListResponseDto[]> {
+    switch (targetEntity) {
+      case 'freePost':
+        return await this.postRepository.find10EachListFromFreePost(page);
+      case 'humorPost':
+        return await this.postRepository.find10EachListFromHumorPost(page);
+      case 'championshipPost':
+        return await this.postRepository.find10EachListFromChampionshipPost(
+          page,
+        );
+    }
+  }
+
+  async registerPost(
+    data: PostRegisterRequestDto,
+    targetEntity: string,
+  ): Promise<PostRegisterResponseDto> {
+    return await this.postRepository.create(data, targetEntity);
+  }
+
+  async updatePost(
     data: PostUpdateRequestDto,
     postId: number,
+    targetEntity: string,
   ): Promise<PostUpdateResponseDto> {
-    return await this.postRepository.update(data, postId);
+    return await this.postRepository.update(data, postId, targetEntity);
   }
 
-  async deleteFreePost(postId: number): Promise<PostDeleteResponseDto> {
-    return await this.postRepository.delete(postId);
+  async deletePost(
+    postId: number,
+    targetEntity: string,
+  ): Promise<PostDeleteResponseDto> {
+    return await this.postRepository.delete(postId, targetEntity);
   }
 }
