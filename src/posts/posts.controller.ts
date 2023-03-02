@@ -37,6 +37,22 @@ export class PostsController {
 
   constructor(private readonly postService: PostsService) {}
 
+  @Get('championship')
+  @ApiOperation({
+    summary: '자유게시판 게시물 10개씩 목록 불러오기',
+    tags: ['Posts'],
+  })
+  @ApiResponse({
+    status: 200,
+    description: '게시물 목록 10개 불러오기 완료',
+    type: PostGetListResponseDto,
+  })
+  async getChampionshipPostList(
+    @Query('page') page: number,
+  ): Promise<PostGetListResponseDto[]> {
+    return this.postService.getPostList(page, this.CHAMPION_POST_TABLE_NAME);
+  }
+
   @Post('championship')
   @ApiOperation({
     summary: '대회소식게시판 게시물 등록',
