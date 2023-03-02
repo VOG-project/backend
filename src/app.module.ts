@@ -31,6 +31,7 @@ import { UploadsModule } from './uploads/uploads.module';
       entities: [User, FreePost, HumorPost, ChampionshipPost],
       synchronize: true,
       database: 'vog',
+      logging: true,
     }),
     RedisModule.forRoot({
       config: {
