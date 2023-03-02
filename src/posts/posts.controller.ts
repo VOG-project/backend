@@ -93,6 +93,22 @@ export class PostsController {
     return this.postService.deletePost(id, this.CHAMPION_POST_TABLE_NAME);
   }
 
+  @Get('humor')
+  @ApiOperation({
+    summary: '유머게시판 게시물 10개씩 목록 불러오기',
+    tags: ['Posts'],
+  })
+  @ApiResponse({
+    status: 200,
+    description: '게시물 목록 10개 불러오기 완료',
+    type: PostGetListResponseDto,
+  })
+  async getHumorPostList(
+    @Query('page') page: number,
+  ): Promise<PostGetListResponseDto[]> {
+    return this.postService.getPostList(page, this.HUMOR_POST_TABLE_NAME);
+  }
+
   @Post('humor')
   @ApiOperation({
     summary: '유머게시판 게시물 등록',
@@ -162,7 +178,7 @@ export class PostsController {
   async getFreePostList(
     @Query('page') page: number,
   ): Promise<PostGetListResponseDto[]> {
-    return this.postService.getPostList(page);
+    return this.postService.getPostList(page, this.FREE_POST_TABLE_NAME);
   }
 
   @Post('free')
