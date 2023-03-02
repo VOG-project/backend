@@ -151,7 +151,7 @@ export class PostsController {
     description: '게시물 불러오기 완료',
   })
   async getHumorPost(@Param('postId') id: number): Promise<PostGetResponseDto> {
-    return this.postService.getPost(id, this.CHAMPION_POST_TABLE_NAME);
+    return this.postService.getPost(id, this.HUMOR_POST_TABLE_NAME);
   }
 
   @Post('humor')
