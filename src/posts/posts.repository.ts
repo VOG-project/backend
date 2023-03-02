@@ -22,6 +22,31 @@ export class PostsRepository {
     private championshipPostModel: Repository<ChampionshipPost>,
   ) {}
 
+  async findChampionshipPostById(id: number) {
+    const post = await this.championshipPostModel
+      .createQueryBuilder('p')
+      .innerJoin('p.user', 'u')
+      .select([
+        'p.id',
+        'p.writerId',
+        'p.title',
+        'p.content',
+        'p.likeCount',
+        'p.gameCategory',
+        'p.updatedAt',
+        'u.id',
+        'u.email',
+        'u.nickname',
+        'u.sex',
+        'u.profileUrl',
+        'u.updatedAt',
+      ])
+      .where('p.id = :id', { id })
+      .getOne();
+
+    return post;
+  }
+
   async find10EachListFromChampionshipPost(
     page: number,
   ): Promise<PostGetListResponseDto[]> {
