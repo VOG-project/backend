@@ -226,6 +226,19 @@ export class PostsController {
     return this.postService.getPostList(page, this.FREE_POST_TABLE_NAME);
   }
 
+  @Get('free/:postId')
+  @ApiOperation({
+    summary: '자유게시판 특정 id 게시물 불러오기',
+    tags: ['Posts'],
+  })
+  @ApiResponse({
+    status: 200,
+    description: '게시물 불러오기 완료',
+  })
+  async getFreePost(@Param('postId') id: number): Promise<PostGetResponseDto> {
+    return this.postService.getPost(id, this.FREE_POST_TABLE_NAME);
+  }
+
   @Post('free')
   @ApiOperation({
     summary: '자유게시판 게시물 등록',
