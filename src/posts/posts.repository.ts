@@ -3,7 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { DataSource, Repository } from 'typeorm';
 import { PostUpdateRequestDto } from './dto/post.request.dto';
 import { PostRegisterRequestDto } from './dto/post.request.dto';
-import { FreePost } from 'src/posts/posts.entity';
+import { FreePost, HumorPost } from 'src/posts/posts.entity';
 import {
   PostRegisterResponseDto,
   PostDeleteResponseDto,
@@ -16,7 +16,34 @@ export class PostsRepository {
   constructor(
     private readonly dataSource: DataSource,
     @InjectRepository(FreePost) private freePostModel: Repository<FreePost>,
+    @InjectRepository(HumorPost) private humorPostModel: Repository<HumorPost>,
   ) {}
+
+  async find10EachListFromHumorPost(
+    page: number,
+  ): Promise<PostGetListResponseDto[]> {
+    const count = 10;
+
+    const posts = await this.humorPostModel
+      .createQueryBuilder('p')
+      .innerJoinAndSelect('p.user', 'u')
+      .select([
+        'p.id',
+        'p.writerId',
+        'p.title',
+        'p.likeCount',
+        'p.gameCategory',
+        'p.createdAt',
+        'u.id',
+        'u.nickname',
+      ])
+      .offset(count * (page - 1))
+      .limit(count)
+      .orderBy('p.id', 'DESC')
+      .getMany();
+
+    return posts;
+  }
 
   async find10EachListFromFreePost(
     page: number,
