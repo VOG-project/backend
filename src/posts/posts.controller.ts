@@ -39,7 +39,7 @@ export class PostsController {
 
   @Get('championship')
   @ApiOperation({
-    summary: '자유게시판 게시물 10개씩 목록 불러오기',
+    summary: '대회소식게시판 게시물 10개씩 목록 불러오기',
     tags: ['Posts'],
   })
   @ApiResponse({
@@ -51,6 +51,19 @@ export class PostsController {
     @Query('page') page: number,
   ): Promise<PostGetListResponseDto[]> {
     return this.postService.getPostList(page, this.CHAMPION_POST_TABLE_NAME);
+  }
+
+  @Get('championship/:postId')
+  @ApiOperation({
+    summary: '대회소식게시판 특정 id 게시물 불러오기',
+    tags: ['Posts'],
+  })
+  @ApiResponse({
+    status: 200,
+    description: '게시물 불러오기 완료',
+  })
+  async getChampionshipPost(@Param('postId') id: number) {
+    return this.postService.getPost(id, this.CHAMPION_POST_TABLE_NAME);
   }
 
   @Post('championship')
