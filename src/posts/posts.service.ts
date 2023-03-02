@@ -6,6 +6,8 @@ import {
 import { PostsRepository } from './posts.repository';
 import {
   PostDeleteResponseDto,
+  PostGetListResponseDto,
+  PostGetResponseDto,
   PostRegisterResponseDto,
   PostUpdateResponseDto,
 } from './dto/post.response.dto';
@@ -13,6 +15,33 @@ import {
 @Injectable()
 export class PostsService {
   constructor(private readonly postRepository: PostsRepository) {}
+
+  async getPost(id: number, targetEntity: string): Promise<PostGetResponseDto> {
+    switch (targetEntity) {
+      case 'freePost':
+        return await this.postRepository.findFreePostById(id);
+      case 'humorPost':
+        return await this.postRepository.findHumorPostById(id);
+      case 'championshipPost':
+        return await this.postRepository.findChampionshipPostById(id);
+    }
+  }
+
+  async getPostList(
+    page: number,
+    targetEntity: string,
+  ): Promise<PostGetListResponseDto[]> {
+    switch (targetEntity) {
+      case 'freePost':
+        return await this.postRepository.find10EachListFromFreePost(page);
+      case 'humorPost':
+        return await this.postRepository.find10EachListFromHumorPost(page);
+      case 'championshipPost':
+        return await this.postRepository.find10EachListFromChampionshipPost(
+          page,
+        );
+    }
+  }
 
   async registerPost(
     data: PostRegisterRequestDto,

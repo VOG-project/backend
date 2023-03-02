@@ -12,7 +12,7 @@ import { User } from './users/users.entity';
 import { AuthModule } from './auth/auth.module';
 import { RedisModule } from '@liaoliaots/nestjs-redis';
 import { PostsModule } from './posts/posts.module';
-import { FreePost, HumorPost } from './posts/posts.entity';
+import { FreePost, HumorPost, ChampionshipPost } from './posts/posts.entity';
 import { UploadsModule } from './uploads/uploads.module';
 
 @Module({
@@ -28,9 +28,10 @@ import { UploadsModule } from './uploads/uploads.module';
       port: parseInt(process.env.MYSQL_PORT, 10),
       username: process.env.MYSQL_USER,
       password: process.env.MYSQL_PASSWORD,
-      entities: [User, FreePost, HumorPost],
+      entities: [User, FreePost, HumorPost, ChampionshipPost],
       synchronize: true,
       database: 'vog',
+      logging: true,
     }),
     RedisModule.forRoot({
       config: {

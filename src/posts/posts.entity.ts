@@ -28,3 +28,15 @@ export class HumorPost extends Post {
   @JoinColumn({ name: 'writerId' })
   user: User;
 }
+
+@Entity({
+  name: 'championshipPost',
+})
+export class ChampionshipPost extends Post {
+  @ManyToOne(() => User, (user) => user.championshipPost, {
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE',
+  })
+  @JoinColumn({ name: 'writerId' })
+  user: User;
+}
