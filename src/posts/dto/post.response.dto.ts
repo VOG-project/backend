@@ -23,3 +23,16 @@ export class PostDeleteResponseDto {
   })
   deletedCount: number;
 }
+
+export class PostGetListResponseDto {
+  id: number;
+  writerId: number;
+  title: string;
+  likeCount: number;
+  gameCategory: string;
+  createdAt: Date;
+  user: {
+    id: number;
+    nickname: string;
+  };
+}
