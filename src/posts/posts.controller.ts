@@ -141,6 +141,19 @@ export class PostsController {
     return this.postService.getPostList(page, this.HUMOR_POST_TABLE_NAME);
   }
 
+  @Get('humor/:postId')
+  @ApiOperation({
+    summary: '유머게시판 특정 id 게시물 불러오기',
+    tags: ['Posts'],
+  })
+  @ApiResponse({
+    status: 200,
+    description: '게시물 불러오기 완료',
+  })
+  async getHumorPost(@Param('postId') id: number): Promise<PostGetResponseDto> {
+    return this.postService.getPost(id, this.CHAMPION_POST_TABLE_NAME);
+  }
+
   @Post('humor')
   @ApiOperation({
     summary: '유머게시판 게시물 등록',
