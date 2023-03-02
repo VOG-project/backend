@@ -25,7 +25,9 @@ export class PostsService {
       case 'humorPost':
         return await this.postRepository.find10EachListFromHumorPost(page);
       case 'championshipPost':
-        return await this.postRepository.find10EachListFromChampionshipPost(page);
+        return await this.postRepository.find10EachListFromChampionshipPost(
+          page,
+        );
     }
   }
 
