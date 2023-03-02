@@ -19,6 +19,7 @@ import {
 } from './dto/post.request.dto';
 import {
   PostDeleteResponseDto,
+  PostGetListResponseDto,
   PostRegisterResponseDto,
   PostUpdateResponseDto,
 } from './dto/post.response.dto';
@@ -156,9 +157,12 @@ export class PostsController {
   @ApiResponse({
     status: 200,
     description: '게시물 목록 10개 불러오기 완료',
+    type: PostGetListResponseDto,
   })
-  async getFreePostList(@Query('page') page: number) {
-    return this.postService.getPostList(page, this.FREE_POST_TABLE_NAME);
+  async getFreePostList(
+    @Query('page') page: number,
+  ): Promise<PostGetListResponseDto[]> {
+    return this.postService.getPostList(page);
   }
 
   @Post('free')

@@ -6,6 +6,7 @@ import {
 import { PostsRepository } from './posts.repository';
 import {
   PostDeleteResponseDto,
+  PostGetListResponseDto,
   PostRegisterResponseDto,
   PostUpdateResponseDto,
 } from './dto/post.response.dto';
@@ -14,8 +15,8 @@ import {
 export class PostsService {
   constructor(private readonly postRepository: PostsRepository) {}
 
-  async getPostList(page: number, targetEntity: string) {
-    return await this.postRepository.find10Each(page, targetEntity);
+  async getPostList(page: number): Promise<PostGetListResponseDto[]> {
+    return await this.postRepository.find10EachListFromFreePost(page);
   }
 
   async registerPost(
