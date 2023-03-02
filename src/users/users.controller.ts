@@ -27,6 +27,7 @@ export class UsersController {
   @Patch(':userId/password')
   @ApiOperation({
     summary: '비밀번호 변경',
+    tags: ['Users'],
   })
   @ApiResponse({
     status: 201,
@@ -43,6 +44,7 @@ export class UsersController {
   @Patch(':userId/nickname')
   @ApiOperation({
     summary: '닉네임 변경',
+    tags: ['Users'],
   })
   @ApiResponse({
     status: 201,
@@ -57,7 +59,7 @@ export class UsersController {
   }
 
   @Post('register')
-  @ApiOperation({ summary: '회원가입' })
+  @ApiOperation({ summary: '회원가입', tags: ['Users'] })
   @ApiResponse({
     status: 201,
     description: '회원가입 성공',
