@@ -8,26 +8,39 @@ import {
   PostRegisterResponseDto,
   PostDeleteResponseDto,
   PostUpdateResponseDto,
+  PostGetListResponseDto,
 } from './dto/post.response.dto';
 
 @Injectable()
 export class PostsRepository {
   constructor(
     private readonly dataSource: DataSource,
-    @InjectRepository(FreePost) private postModel: Repository<FreePost>,
+    @InjectRepository(FreePost) private freePostModel: Repository<FreePost>,
   ) {}
 
-  async find10Each(page: number, targetEntity: string) {
+  async find10EachListFromFreePost(
+    page: number,
+  ): Promise<PostGetListResponseDto[]> {
     const count = 10;
-    const posts = await this.postModel
-      .createQueryBuilder(targetEntity)
-      .select()
+
+    const posts = await this.freePostModel
+      .createQueryBuilder('p')
+      .innerJoinAndSelect('p.user', 'u')
+      .select([
+        'p.id',
+        'p.writerId',
+        'p.title',
+        'p.likeCount',
+        'p.gameCategory',
+        'p.createdAt',
+        'u.id',
+        'u.nickname',
+      ])
       .offset(count * (page - 1))
       .limit(count)
-      .orderBy(`${targetEntity}.id`, 'DESC')
+      .orderBy('p.id', 'DESC')
       .getMany();
 
-    console.log(posts);
     return posts;
   }
 
