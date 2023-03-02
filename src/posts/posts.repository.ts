@@ -23,6 +23,31 @@ export class PostsRepository {
     private championshipPostModel: Repository<ChampionshipPost>,
   ) {}
 
+  async findFreePostById(id: number): Promise<PostGetResponseDto> {
+    const post = await this.freePostModel
+      .createQueryBuilder('p')
+      .innerJoin('p.user', 'u')
+      .select([
+        'p.id',
+        'p.writerId',
+        'p.title',
+        'p.content',
+        'p.likeCount',
+        'p.gameCategory',
+        'p.updatedAt',
+        'u.id',
+        'u.email',
+        'u.nickname',
+        'u.sex',
+        'u.profileUrl',
+        'u.updatedAt',
+      ])
+      .where('p.id = :id', { id })
+      .getOne();
+
+    return post;
+  }
+
   async findHumorPostById(id: number): Promise<PostGetResponseDto> {
     const post = await this.humorPostModel
       .createQueryBuilder('p')
