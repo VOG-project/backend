@@ -19,9 +19,9 @@ export class PostsService {
   async getPost(id: number, targetEntity: string): Promise<PostGetResponseDto> {
     switch (targetEntity) {
       case 'freePost':
-        return await this.postRepository.find10EachListFromFreePost(id);
+        return await this.postRepository.findFreePostById(id);
       case 'humorPost':
-        return await this.postRepository.find10EachListFromHumorPost(id);
+        return await this.postRepository.findHumorPostById(id);
       case 'championshipPost':
         return await this.postRepository.findChampionshipPostById(id);
     }
