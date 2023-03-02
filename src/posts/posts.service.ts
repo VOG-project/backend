@@ -7,6 +7,7 @@ import { PostsRepository } from './posts.repository';
 import {
   PostDeleteResponseDto,
   PostGetListResponseDto,
+  PostGetResponseDto,
   PostRegisterResponseDto,
   PostUpdateResponseDto,
 } from './dto/post.response.dto';
@@ -15,7 +16,7 @@ import {
 export class PostsService {
   constructor(private readonly postRepository: PostsRepository) {}
 
-  async getPost(id: number, targetEntity: string) {
+  async getPost(id: number, targetEntity: string): Promise<PostGetResponseDto> {
     switch (targetEntity) {
       case 'freePost':
         return await this.postRepository.find10EachListFromFreePost(id);

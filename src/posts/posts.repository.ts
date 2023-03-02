@@ -10,6 +10,7 @@ import {
   PostDeleteResponseDto,
   PostUpdateResponseDto,
   PostGetListResponseDto,
+  PostGetResponseDto,
 } from './dto/post.response.dto';
 
 @Injectable()
@@ -22,7 +23,7 @@ export class PostsRepository {
     private championshipPostModel: Repository<ChampionshipPost>,
   ) {}
 
-  async findChampionshipPostById(id: number) {
+  async findChampionshipPostById(id: number): Promise<PostGetResponseDto> {
     const post = await this.championshipPostModel
       .createQueryBuilder('p')
       .innerJoin('p.user', 'u')

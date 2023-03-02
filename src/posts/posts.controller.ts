@@ -20,6 +20,7 @@ import {
 import {
   PostDeleteResponseDto,
   PostGetListResponseDto,
+  PostGetResponseDto,
   PostRegisterResponseDto,
   PostUpdateResponseDto,
 } from './dto/post.response.dto';
@@ -62,7 +63,9 @@ export class PostsController {
     status: 200,
     description: '게시물 불러오기 완료',
   })
-  async getChampionshipPost(@Param('postId') id: number) {
+  async getChampionshipPost(
+    @Param('postId') id: number,
+  ): Promise<PostGetResponseDto> {
     return this.postService.getPost(id, this.CHAMPION_POST_TABLE_NAME);
   }
 
