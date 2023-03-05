@@ -1,5 +1,12 @@
 import { Post } from 'src/commonEntities/post.common.entity';
-import { Entity, ManyToOne, Check, JoinColumn } from 'typeorm';
+import {
+  Entity,
+  ManyToOne,
+  Check,
+  JoinColumn,
+  ManyToMany,
+  JoinTable,
+} from 'typeorm';
 import { User } from 'src/users/users.entity';
 
 @Entity({
@@ -39,4 +46,10 @@ export class ChampionshipPost extends Post {
   })
   @JoinColumn({ name: 'writerId' })
   user: User;
+
+  @ManyToMany(() => User, {
+    onDelete: 'CASCADE',
+  })
+  @JoinTable({ name: 'championshipPostLike' })
+  likeMapping: User[];
 }
