@@ -14,6 +14,7 @@ import { RedisModule } from '@liaoliaots/nestjs-redis';
 import { PostsModule } from './posts/posts.module';
 import { FreePost, HumorPost, ChampionshipPost } from './posts/posts.entity';
 import { UploadsModule } from './uploads/uploads.module';
+import { CommentsModule } from './comments/comments.module';
 
 @Module({
   imports: [
@@ -44,6 +45,7 @@ import { UploadsModule } from './uploads/uploads.module';
     AuthModule,
     PostsModule,
     UploadsModule,
+    CommentsModule,
   ],
   controllers: [AppController],
   providers: [AppService],
