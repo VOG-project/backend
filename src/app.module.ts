@@ -15,7 +15,7 @@ import { PostsModule } from './posts/posts.module';
 import { FreePost, HumorPost, ChampionshipPost } from './posts/posts.entity';
 import { UploadsModule } from './uploads/uploads.module';
 import { CommentsModule } from './comments/comments.module';
-import { FreePostComment } from './comments/comments.entity';
+import { FreePostComment, HumorPostComment } from './comments/comments.entity';
 
 @Module({
   imports: [
@@ -30,7 +30,14 @@ import { FreePostComment } from './comments/comments.entity';
       port: parseInt(process.env.MYSQL_PORT, 10),
       username: process.env.MYSQL_USER,
       password: process.env.MYSQL_PASSWORD,
-      entities: [User, FreePost, HumorPost, ChampionshipPost, FreePostComment],
+      entities: [
+        User,
+        FreePost,
+        HumorPost,
+        ChampionshipPost,
+        FreePostComment,
+        HumorPostComment,
+      ],
       synchronize: true,
       database: 'vog',
       logging: true,
