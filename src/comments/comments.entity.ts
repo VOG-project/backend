@@ -34,3 +34,15 @@ export class HumorPostComment extends CommonCommentEntity {
   @JoinColumn({ name: 'postId' })
   humorPost: HumorPost;
 }
+
+@Entity({
+  name: 'championshipPostComment',
+})
+export class ChampionshipPostComment extends CommonCommentEntity {
+  @ManyToOne(() => User, (user) => user.championshipPostComment, {
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE',
+  })
+  @JoinColumn({ name: 'writerId' })
+  user: User;
+}
