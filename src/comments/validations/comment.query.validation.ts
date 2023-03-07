@@ -1,12 +1,13 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Type } from 'class-transformer';
-import { IsInt } from 'class-validator';
+import { IsInt, IsString } from 'class-validator';
 
 export class CommentRegisterQueryValidation {
   @ApiProperty({
     example: 'free',
     description: '게시판 카테고리',
   })
+  @IsString()
   board: string;
 
   @ApiProperty({
