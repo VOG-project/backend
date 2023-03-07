@@ -6,7 +6,7 @@ import { CommentRegisterQueryValidation } from './validations/comment.query.vali
 
 @Injectable()
 export class CommentsService {
-  private BOARD_TYPE;
+  private BOARD_TYPE: string;
 
   constructor(private readonly commentRepository: CommentsRepository) {}
 
