@@ -6,15 +6,22 @@ import {
   Body,
   Query,
   Delete,
-  Param
+  Param,
 } from '@nestjs/common';
 import { HttpExceptionFilter } from 'src/filters/http-exception.filter';
 import { SuccessInterceptor } from './../interceptors/success.interceptor';
 import { CommentRegisterRequestDto } from './dto/comment.request.dto';
-import { CommentRegisterQueryDto } from './dto/comment.query.dto';
+import {
+  CommentDeleteQueryDto,
+  CommentRegisterQueryDto,
+} from './dto/comment.query.dto';
 import { CommentsService } from './comments.service';
 import { ApiOperation, ApiResponse } from '@nestjs/swagger';
-import { CommentRegisterResponseDto } from './dto/comment.response.dto';
+import {
+  CommentDeleteResponseDto,
+  CommentRegisterResponseDto,
+} from './dto/comment.response.dto';
+import { CommentDeleteParamDto } from './dto/comment.param.dto';
 
 @Controller('comments')
 @UseFilters(HttpExceptionFilter)
@@ -39,7 +46,7 @@ export class CommentsController {
     return await this.commentService.registerComment(body, query);
   }
 
-  @Delete()
+  @Delete(':commentId')
   @ApiOperation({
     summary: '자유게시판 댓글 삭제',
     tags: ['Comments'],
@@ -47,8 +54,14 @@ export class CommentsController {
   @ApiResponse({
     status: 201,
     description: '댓글 삭제 성공',
+    type: CommentDeleteResponseDto,
   })
-  async deleteFreePostComment(@Param() param) {}
+  async deleteFreePostComment(
+    @Param() param: CommentDeleteParamDto,
+    @Query() query: CommentDeleteQueryDto,
+  ): Promise<CommentDeleteResponseDto> {
+    return await this.commentService.deleteComment(param, query);
+  }
 
   @Post()
   @ApiOperation({
