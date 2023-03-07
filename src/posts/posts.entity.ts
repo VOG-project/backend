@@ -9,7 +9,10 @@ import {
   OneToMany,
 } from 'typeorm';
 import { User } from 'src/users/users.entity';
-import { FreePostComment } from 'src/comments/comments.entity';
+import {
+  FreePostComment,
+  HumorPostComment,
+} from 'src/comments/comments.entity';
 
 @Entity({
   name: 'freePost',
@@ -42,6 +45,12 @@ export class HumorPost extends CommonPostEntity {
   })
   @JoinColumn({ name: 'writerId' })
   user: User;
+
+  @OneToMany(
+    () => HumorPostComment,
+    (humorPostComment) => humorPostComment.humorPost,
+  )
+  humorPostComment: HumorPostComment[];
 }
 
 @Entity({
