@@ -3,6 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { FreePostComment } from './comments.entity';
 import { Repository, DataSource } from 'typeorm';
 import { CommentRegisterRequestDto } from './dto/comment.request.dto';
+import { CommentRegisterResponseDto } from './dto/comment.response.dto';
 
 @Injectable()
 export class CommentsRepository {
@@ -16,7 +17,7 @@ export class CommentsRepository {
     data: CommentRegisterRequestDto,
     targetEntity: string,
     postId: number,
-  ) {
+  ): Promise<CommentRegisterResponseDto> {
     const { writerId, content } = data;
 
     const insertedResult = await this.dataSource
@@ -31,6 +32,7 @@ export class CommentsRepository {
         },
       ])
       .execute();
+
     return { commentId: insertedResult.identifiers[0].id };
   }
 }
