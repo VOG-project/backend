@@ -22,7 +22,7 @@ export class CommentsController {
 
   @Post()
   @ApiOperation({
-    summary: '댓글 생성',
+    summary: '자유게시판 댓글 생성',
     tags: ['Comments'],
   })
   @ApiResponse({
@@ -31,6 +31,40 @@ export class CommentsController {
     type: CommentRegisterResponseDto,
   })
   async registerFreePostComment(
+    @Body() body: CommentRegisterRequestDto,
+    @Query() query: CommentRegisterQueryValidation,
+  ): Promise<CommentRegisterResponseDto> {
+    return await this.commentService.registerComment(body, query);
+  }
+
+  @Post()
+  @ApiOperation({
+    summary: '유머게시판 댓글 생성',
+    tags: ['Comments'],
+  })
+  @ApiResponse({
+    status: 201,
+    description: '댓글 생성 성공',
+    type: CommentRegisterResponseDto,
+  })
+  async registerHumorPostComment(
+    @Body() body: CommentRegisterRequestDto,
+    @Query() query: CommentRegisterQueryValidation,
+  ): Promise<CommentRegisterResponseDto> {
+    return await this.commentService.registerComment(body, query);
+  }
+
+  @Post()
+  @ApiOperation({
+    summary: '대회소식게시판 댓글 생성',
+    tags: ['Comments'],
+  })
+  @ApiResponse({
+    status: 201,
+    description: '댓글 생성 성공',
+    type: CommentRegisterResponseDto,
+  })
+  async registerChampionshipPostComment(
     @Body() body: CommentRegisterRequestDto,
     @Query() query: CommentRegisterQueryValidation,
   ): Promise<CommentRegisterResponseDto> {
