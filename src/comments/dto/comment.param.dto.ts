@@ -10,5 +10,5 @@ export class CommentRegisterParamDto {
   @IsInt()
   @IsNotEmpty()
   @Type(() => Number)
-  id: number;
+  postId: number;
 }
