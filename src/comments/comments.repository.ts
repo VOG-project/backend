@@ -3,7 +3,11 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { FreePostComment } from './comments.entity';
 import { Repository, DataSource } from 'typeorm';
 import { CommentRegisterRequestDto } from './dto/comment.request.dto';
-import { CommentRegisterResponseDto } from './dto/comment.response.dto';
+import {
+  CommentDeleteResponseDto,
+  CommentRegisterResponseDto,
+} from './dto/comment.response.dto';
+import { CommentDeleteParamDto } from './dto/comment.param.dto';
 
 @Injectable()
 export class CommentsRepository {
@@ -34,5 +38,21 @@ export class CommentsRepository {
       .execute();
 
     return { commentId: insertedResult.identifiers[0].id };
+  }
+
+  async delete(
+    data: CommentDeleteParamDto,
+    targetEntity: string,
+  ): Promise<CommentDeleteResponseDto> {
+    const { commentId } = data;
+
+    const deletedResult = await this.dataSource
+      .createQueryBuilder()
+      .delete()
+      .from(targetEntity)
+      .where('id = :commentId', { commentId })
+      .execute();
+
+    return { deletedCount: deletedResult.affected };
   }
 }
