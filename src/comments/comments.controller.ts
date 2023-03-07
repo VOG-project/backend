@@ -5,11 +5,13 @@ import {
   Post,
   Body,
   Query,
+  Delete,
+  Param
 } from '@nestjs/common';
 import { HttpExceptionFilter } from 'src/filters/http-exception.filter';
 import { SuccessInterceptor } from './../interceptors/success.interceptor';
 import { CommentRegisterRequestDto } from './dto/comment.request.dto';
-import { CommentRegisterQueryValidation } from './validations/comment.query.validation';
+import { CommentRegisterQueryDto } from './dto/comment.query.dto';
 import { CommentsService } from './comments.service';
 import { ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { CommentRegisterResponseDto } from './dto/comment.response.dto';
@@ -32,10 +34,21 @@ export class CommentsController {
   })
   async registerFreePostComment(
     @Body() body: CommentRegisterRequestDto,
-    @Query() query: CommentRegisterQueryValidation,
+    @Query() query: CommentRegisterQueryDto,
   ): Promise<CommentRegisterResponseDto> {
     return await this.commentService.registerComment(body, query);
   }
+
+  @Delete()
+  @ApiOperation({
+    summary: '자유게시판 댓글 삭제',
+    tags: ['Comments'],
+  })
+  @ApiResponse({
+    status: 201,
+    description: '댓글 삭제 성공',
+  })
+  async deleteFreePostComment(@Param() param) {}
 
   @Post()
   @ApiOperation({
@@ -49,7 +62,7 @@ export class CommentsController {
   })
   async registerHumorPostComment(
     @Body() body: CommentRegisterRequestDto,
-    @Query() query: CommentRegisterQueryValidation,
+    @Query() query: CommentRegisterQueryDto,
   ): Promise<CommentRegisterResponseDto> {
     return await this.commentService.registerComment(body, query);
   }
@@ -66,7 +79,7 @@ export class CommentsController {
   })
   async registerChampionshipPostComment(
     @Body() body: CommentRegisterRequestDto,
-    @Query() query: CommentRegisterQueryValidation,
+    @Query() query: CommentRegisterQueryDto,
   ): Promise<CommentRegisterResponseDto> {
     return await this.commentService.registerComment(body, query);
   }

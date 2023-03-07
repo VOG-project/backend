@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { CommentsRepository } from './comments.repository';
 import { CommentRegisterRequestDto } from './dto/comment.request.dto';
 import { CommentRegisterResponseDto } from './dto/comment.response.dto';
-import { CommentRegisterQueryValidation } from './validations/comment.query.validation';
+import { CommentRegisterQueryDto } from './dto/comment.query.dto';
 
 @Injectable()
 export class CommentsService {
@@ -12,7 +12,7 @@ export class CommentsService {
 
   async registerComment(
     body: CommentRegisterRequestDto,
-    query: CommentRegisterQueryValidation,
+    query: CommentRegisterQueryDto,
   ): Promise<CommentRegisterResponseDto> {
     const { board, postId } = query;
 
