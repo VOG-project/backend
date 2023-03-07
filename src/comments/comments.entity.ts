@@ -15,7 +15,10 @@ export class FreePostComment extends CommonCommentEntity {
   @JoinColumn({ name: 'writerId' })
   user: User;
 
-  @ManyToOne(() => FreePost, (freePost) => freePost.freePostComment)
+  @ManyToOne(() => FreePost, (freePost) => freePost.freePostComment, {
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE',
+  })
   @JoinColumn({ name: 'postId' })
   freePost: FreePost;
 }
@@ -31,7 +34,10 @@ export class HumorPostComment extends CommonCommentEntity {
   @JoinColumn({ name: 'writerId' })
   user: User;
 
-  @ManyToOne(() => HumorPost, (humorPost) => humorPost.humorPostComment)
+  @ManyToOne(() => HumorPost, (humorPost) => humorPost.humorPostComment, {
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE',
+  })
   @JoinColumn({ name: 'postId' })
   humorPost: HumorPost;
 }
@@ -50,6 +56,10 @@ export class ChampionshipPostComment extends CommonCommentEntity {
   @ManyToOne(
     () => ChampionshipPost,
     (championshipPost) => championshipPost.championshipPostComment,
+    {
+      onDelete: 'CASCADE',
+      onUpdate: 'CASCADE',
+    },
   )
   @JoinColumn({ name: 'postId' })
   championshipPost: ChampionshipPost;
