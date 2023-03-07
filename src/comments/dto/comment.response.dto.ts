@@ -7,3 +7,11 @@ export class CommentRegisterResponseDto {
   })
   commentId: number;
 }
+
+export class CommentDeleteResponseDto {
+  @ApiProperty({
+    example: 1,
+    description: '삭제된 댓글 개수',
+  })
+  deletedCount: number;
+}
