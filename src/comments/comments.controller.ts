@@ -80,6 +80,23 @@ export class CommentsController {
     return await this.commentService.registerComment(body, query);
   }
 
+  @Delete(':commentId')
+  @ApiOperation({
+    summary: '유머게시판 댓글 삭제',
+    tags: ['Comments'],
+  })
+  @ApiResponse({
+    status: 201,
+    description: '댓글 삭제 성공',
+    type: CommentDeleteResponseDto,
+  })
+  async deleteHumorPostComment(
+    @Param() param: CommentDeleteParamDto,
+    @Query() query: CommentDeleteQueryDto,
+  ): Promise<CommentDeleteResponseDto> {
+    return await this.commentService.deleteComment(param, query);
+  }
+
   @Post()
   @ApiOperation({
     summary: '대회소식게시판 댓글 생성',
@@ -95,5 +112,22 @@ export class CommentsController {
     @Query() query: CommentRegisterQueryDto,
   ): Promise<CommentRegisterResponseDto> {
     return await this.commentService.registerComment(body, query);
+  }
+
+  @Delete(':commentId')
+  @ApiOperation({
+    summary: '대회소식게시판 댓글 삭제',
+    tags: ['Comments'],
+  })
+  @ApiResponse({
+    status: 201,
+    description: '댓글 삭제 성공',
+    type: CommentDeleteResponseDto,
+  })
+  async deleteChampionshipPostComment(
+    @Param() param: CommentDeleteParamDto,
+    @Query() query: CommentDeleteQueryDto,
+  ): Promise<CommentDeleteResponseDto> {
+    return await this.commentService.deleteComment(param, query);
   }
 }
