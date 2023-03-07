@@ -19,7 +19,7 @@ export class CommentsService {
     if (board === 'free') {
       this.BOARD_TYPE = 'freePostComment';
     } else if (board === 'humor') {
-      this.BOARD_TYPE = 'humorPostCommet';
+      this.BOARD_TYPE = 'humorPostComment';
     } else if (board === 'championship') {
       this.BOARD_TYPE = 'championshipPostComment';
     }
