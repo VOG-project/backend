@@ -18,3 +18,12 @@ export class CommentRegisterQueryDto {
   @Type(() => Number)
   postId: number;
 }
+
+export class CommentDeleteQueryDto {
+  @ApiProperty({
+    example: 'free',
+    description: '게시판 카테고리',
+  })
+  @IsString()
+  board: string;
+}
