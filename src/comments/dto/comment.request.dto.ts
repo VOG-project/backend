@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsEAN, IsNotEmpty, IsNumber, IsString } from 'class-validator';
+import { IsInt, IsNotEmpty, IsString } from 'class-validator';
 
 export class CommentRegisterRequestDto {
   @ApiProperty({
@@ -7,7 +7,7 @@ export class CommentRegisterRequestDto {
     description: '작성자 아이디',
   })
   @IsNotEmpty()
-  @IsNumber()
+  @IsInt()
   writerId: number;
 
   @ApiProperty({
