@@ -12,6 +12,7 @@ import { User } from 'src/users/users.entity';
 import {
   FreePostComment,
   HumorPostComment,
+  ChampionshipPostComment,
 } from 'src/comments/comments.entity';
 
 @Entity({
@@ -63,6 +64,12 @@ export class ChampionshipPost extends CommonPostEntity {
   })
   @JoinColumn({ name: 'writerId' })
   user: User;
+
+  @OneToMany(
+    () => ChampionshipPostComment,
+    (championshipPostComment) => championshipPostComment.championshipPost,
+  )
+  championshipPostComment: ChampionshipPostComment[];
 
   @ManyToMany(() => User, {
     onDelete: 'CASCADE',
