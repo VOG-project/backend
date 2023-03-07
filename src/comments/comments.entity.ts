@@ -2,6 +2,7 @@ import { Entity, JoinColumn, ManyToOne } from 'typeorm';
 import { CommonCommentEntity } from './../commonEntities/comment.common.entity';
 import { User } from 'src/users/users.entity';
 import { FreePost, HumorPost } from 'src/posts/posts.entity';
+import { ChampionshipPost } from './../posts/posts.entity';
 
 @Entity({
   name: 'freePostComment',
@@ -45,4 +46,11 @@ export class ChampionshipPostComment extends CommonCommentEntity {
   })
   @JoinColumn({ name: 'writerId' })
   user: User;
+
+  @ManyToOne(
+    () => ChampionshipPost,
+    (championshipPost) => championshipPost.championshipPostComment,
+  )
+  @JoinColumn({ name: 'postId' })
+  championshipPost: ChampionshipPost;
 }
