@@ -14,6 +14,12 @@ import { RedisModule } from '@liaoliaots/nestjs-redis';
 import { PostsModule } from './posts/posts.module';
 import { FreePost, HumorPost, ChampionshipPost } from './posts/posts.entity';
 import { UploadsModule } from './uploads/uploads.module';
+import { CommentsModule } from './comments/comments.module';
+import {
+  ChampionshipPostComment,
+  FreePostComment,
+  HumorPostComment,
+} from './comments/comments.entity';
 
 @Module({
   imports: [
@@ -28,7 +34,15 @@ import { UploadsModule } from './uploads/uploads.module';
       port: parseInt(process.env.MYSQL_PORT, 10),
       username: process.env.MYSQL_USER,
       password: process.env.MYSQL_PASSWORD,
-      entities: [User, FreePost, HumorPost, ChampionshipPost],
+      entities: [
+        User,
+        FreePost,
+        HumorPost,
+        ChampionshipPost,
+        FreePostComment,
+        HumorPostComment,
+        ChampionshipPostComment,
+      ],
       synchronize: true,
       database: 'vog',
       logging: true,
@@ -44,6 +58,7 @@ import { UploadsModule } from './uploads/uploads.module';
     AuthModule,
     PostsModule,
     UploadsModule,
+    CommentsModule,
   ],
   controllers: [AppController],
   providers: [AppService],

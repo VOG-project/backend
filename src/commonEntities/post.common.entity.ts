@@ -4,7 +4,7 @@ import { IsNotEmpty, IsNumber, IsString } from 'class-validator';
 import { CreatedUpdatedDate } from './date.common.entity';
 
 @Entity()
-export class Post extends CreatedUpdatedDate {
+export class CommonPostEntity extends CreatedUpdatedDate {
   @ApiProperty({
     example: 31,
     description: '대리키',
