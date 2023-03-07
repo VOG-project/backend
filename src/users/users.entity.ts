@@ -10,6 +10,7 @@ import { IsEmail, IsString, IsInt, IsNotEmpty } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 import { FreePost, HumorPost } from 'src/posts/posts.entity';
 import { ChampionshipPost } from './../posts/posts.entity';
+import { FreePostComment } from 'src/comments/comments.entity';
 
 @Entity({
   engine: 'InnoDB',
@@ -102,4 +103,7 @@ export class User extends CreatedUpdatedDate {
     (championshipPost) => championshipPost.user,
   )
   championshipPost: ChampionshipPost[];
+
+  @OneToMany(() => FreePostComment, (freePostComment) => freePostComment.user)
+  freePostComment: FreePostComment[];
 }

@@ -6,8 +6,10 @@ import {
   JoinColumn,
   ManyToMany,
   JoinTable,
+  OneToMany,
 } from 'typeorm';
 import { User } from 'src/users/users.entity';
+import { FreePostComment } from 'src/comments/comments.entity';
 
 @Entity({
   name: 'freePost',
@@ -22,6 +24,12 @@ export class FreePost extends Post {
   })
   @JoinColumn({ name: 'writerId' })
   user: User;
+
+  @OneToMany(
+    () => FreePostComment,
+    (freePostComment) => freePostComment.freePost,
+  )
+  freePostComment: FreePostComment[];
 }
 
 @Entity({
