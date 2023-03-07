@@ -15,7 +15,11 @@ import { PostsModule } from './posts/posts.module';
 import { FreePost, HumorPost, ChampionshipPost } from './posts/posts.entity';
 import { UploadsModule } from './uploads/uploads.module';
 import { CommentsModule } from './comments/comments.module';
-import { FreePostComment, HumorPostComment } from './comments/comments.entity';
+import {
+  ChampionshipPostComment,
+  FreePostComment,
+  HumorPostComment,
+} from './comments/comments.entity';
 
 @Module({
   imports: [
@@ -37,6 +41,7 @@ import { FreePostComment, HumorPostComment } from './comments/comments.entity';
         ChampionshipPost,
         FreePostComment,
         HumorPostComment,
+        ChampionshipPostComment,
       ],
       synchronize: true,
       database: 'vog',
