@@ -11,9 +11,10 @@ import { ApiProperty } from '@nestjs/swagger';
 import { FreePost, HumorPost } from 'src/posts/posts.entity';
 import { ChampionshipPost } from './../posts/posts.entity';
 import {
+  ChampionshipPostComment,
   FreePostComment,
   HumorPostComment,
-} from 'src/comments/comments.entity';
+} from './../comments/comments.entity';
 
 @Entity({
   engine: 'InnoDB',
@@ -115,4 +116,10 @@ export class User extends CreatedUpdatedDate {
     (humorPostComment) => humorPostComment.user,
   )
   humorPostComment: HumorPostComment[];
+
+  @OneToMany(
+    () => ChampionshipPostComment,
+    (championshipPostComment) => championshipPostComment.user,
+  )
+  championshipPostComment: ChampionshipPostComment[];
 }
