@@ -18,10 +18,10 @@ export class CommentsService {
   constructor(private readonly commentRepository: CommentsRepository) {}
 
   async registerComment(
-    body: CommentRegisterRequestDto,
-    query: CommentRegisterQueryDto,
+    data: CommentRegisterRequestDto,
+    filter: CommentRegisterQueryDto,
   ): Promise<CommentRegisterResponseDto> {
-    const { board, postId } = query;
+    const { board, postId } = filter;
 
     if (board === 'free') {
       this.BOARD_TYPE = 'freePostComment';
@@ -31,7 +31,7 @@ export class CommentsService {
       this.BOARD_TYPE = 'championshipPostComment';
     }
 
-    return await this.commentRepository.create(body, this.BOARD_TYPE, postId);
+    return await this.commentRepository.create(data, this.BOARD_TYPE, postId);
   }
 
   async deleteComment(
