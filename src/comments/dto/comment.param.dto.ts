@@ -2,7 +2,7 @@ import { ApiProperty } from '@nestjs/swagger';
 import { Type } from 'class-transformer';
 import { IsInt, IsNotEmpty } from 'class-validator';
 
-export class CommentRegisterParamDto {
+export class CommentDeleteParamDto {
   @ApiProperty({
     example: 32,
     description: '댓글 아이디',
@@ -10,5 +10,5 @@ export class CommentRegisterParamDto {
   @IsInt()
   @IsNotEmpty()
   @Type(() => Number)
-  postId: number;
+  commentId: number;
 }
