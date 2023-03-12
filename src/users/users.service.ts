@@ -1,5 +1,6 @@
 import { Injectable, HttpException } from '@nestjs/common';
 import {
+  UserDeleteInfoRequestDto,
   UserRegisterRequestDto,
   UserUpdateNicknameRequestDto,
   UserUpdatePasswordRequestDto,
@@ -7,6 +8,7 @@ import {
 import { UserRepository } from './users.repository';
 import * as bcrypt from 'bcrypt';
 import { UserUpdatedCountResponseDto } from './dto/users.response.dto';
+import { UserDeleteInfoParamDto } from './dto/users.param.dto';
 
 @Injectable()
 export class UserService {
@@ -77,5 +79,20 @@ export class UserService {
     await this.userRepository.create(email, hashedPassword, nickname, sex);
 
     return '회원가입 성공';
+  }
+
+  async delete(data: UserDeleteInfoRequestDto, filter: UserDeleteInfoParamDto) {
+    const { password } = data;
+    const { userId } = filter;
+
+    const user = await this.userRepository.findById(userId);
+
+    const isRightPassword = await bcrypt.compare(password, user.password);
+
+    if (!isRightPassword) {
+      throw new HttpException('비밀번호가 일치하지 않습니다.', 403);
+    }
+
+    return this.userRepository.deleteById(userId);
   }
 }

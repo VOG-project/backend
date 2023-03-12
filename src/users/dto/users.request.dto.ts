@@ -36,3 +36,13 @@ export class UserUpdatePasswordRequestDto {
   @IsString()
   newPassword: string;
 }
+
+export class UserDeleteInfoRequestDto {
+  @ApiProperty({
+    example: 'ekw2a1la',
+    description: '현재 비밀번호',
+  })
+  @IsNotEmpty()
+  @IsString()
+  password: string;
+}

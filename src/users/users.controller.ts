@@ -6,8 +6,10 @@ import {
   UseInterceptors,
   Patch,
   Param,
+  Delete,
 } from '@nestjs/common';
 import {
+  UserDeleteInfoRequestDto,
   UserRegisterRequestDto,
   UserUpdatePasswordRequestDto,
 } from './dto/users.request.dto';
@@ -17,6 +19,7 @@ import { HttpExceptionFilter } from '../filters/http-exception.filter';
 import { SuccessInterceptor } from '../interceptors/success.interceptor';
 import { UserUpdateNicknameRequestDto } from './dto/users.request.dto';
 import { UserUpdatedCountResponseDto } from './dto/users.response.dto';
+import { UserDeleteInfoParamDto } from './dto/users.param.dto';
 
 @UseFilters(HttpExceptionFilter)
 @UseInterceptors(SuccessInterceptor)
@@ -69,5 +72,21 @@ export class UsersController {
   })
   async register(@Body() body: UserRegisterRequestDto): Promise<string> {
     return this.userService.register(body);
+  }
+
+  @Delete(':userId/withdrawal')
+  @ApiOperation({
+    summary: '회원탈퇴',
+    tags: ['Users'],
+  })
+  @ApiResponse({
+    status: 200,
+    description: '회원탈퇴 성공',
+  })
+  async withdrawal(
+    @Body() body: UserDeleteInfoRequestDto,
+    @Param() param: UserDeleteInfoParamDto,
+  ) {
+    return this.userService.delete(body, param);
   }
 }
