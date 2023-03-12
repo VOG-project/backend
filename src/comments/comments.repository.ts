@@ -22,7 +22,7 @@ export class CommentsRepository {
     targetEntity: string,
     postId: number,
   ): Promise<CommentRegisterResponseDto> {
-    const { writerId, content } = data;
+    const { writerId, content, group, sequence } = data;
 
     const insertedResult = await this.dataSource
       .createQueryBuilder()
@@ -33,6 +33,8 @@ export class CommentsRepository {
           writerId,
           postId,
           content,
+          group,
+          sequence,
         },
       ])
       .execute();
