@@ -153,4 +153,22 @@ export class UserRepository {
       );
     }
   }
+
+  async deleteById(userId: number) {
+    try {
+      const deletedResult = await this.userModel
+        .createQueryBuilder()
+        .delete()
+        .from('user')
+        .where('id = :userId', { userId })
+        .execute();
+
+      return { deletedCount: deletedResult.affected };
+    } catch (err) {
+      throw new HttpException(
+        `[MySQL ERROR] deleteById method: ${err.message}`,
+        500,
+      );
+    }
+  }
 }
