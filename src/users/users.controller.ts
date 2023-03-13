@@ -70,9 +70,6 @@ export class UsersController {
     status: 201,
     description: '회원가입 성공',
   })
-  @ApiResponse({
-    status: 400,
-  })
   async register(@Body() body: UserRegisteredRequestDto): Promise<string> {
     return this.userService.register(body);
   }
