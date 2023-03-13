@@ -7,6 +7,7 @@ import {
   Patch,
   Param,
   Delete,
+  ParseIntPipe,
 } from '@nestjs/common';
 import {
   UserDeletedInfoRequestDto,
@@ -22,7 +23,6 @@ import {
   UserDeletedInfoResponseDto,
   UserUpdatedInfoResponseDto,
 } from './dto/user.response.dto';
-import { UserDeletedInfoParamDto } from './dto/user.param.dto';
 
 @UseFilters(HttpExceptionFilter)
 @UseInterceptors(SuccessInterceptor)
@@ -41,7 +41,7 @@ export class UsersController {
     type: UserUpdatedInfoResponseDto,
   })
   async updatePassword(
-    @Param('userId') userId: number,
+    @Param('userId', ParseIntPipe) userId: number,
     @Body() body: UserUpdatedPasswordRequestDto,
   ): Promise<UserUpdatedInfoResponseDto> {
     return this.userService.updatePassword(userId, body);
@@ -58,7 +58,7 @@ export class UsersController {
     type: UserUpdatedInfoResponseDto,
   })
   async updateNickname(
-    @Param('userId') userId: number,
+    @Param('userId', ParseIntPipe) userId: number,
     @Body() body: UserUpdatedNicknameRequestDto,
   ): Promise<UserUpdatedInfoResponseDto> {
     return await this.userService.updateNickname(body, userId);
@@ -86,8 +86,8 @@ export class UsersController {
   })
   async withdrawal(
     @Body() body: UserDeletedInfoRequestDto,
-    @Param() param: UserDeletedInfoParamDto,
+    @Param('userId', ParseIntPipe) userId: number,
   ): Promise<UserDeletedInfoResponseDto> {
-    return this.userService.delete(body, param);
+    return this.userService.delete(body, userId);
   }
 }
