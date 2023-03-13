@@ -11,7 +11,7 @@ import {
   UserDeletedInfoResponseDto,
   UserUpdatedInfoResponseDto,
 } from './dto/user.response.dto';
-import { UserDeleteInfoParamDto } from './dto/user.param.dto';
+import { UserDeletedInfoParamDto } from './dto/user.param.dto';
 
 @Injectable()
 export class UserService {
@@ -86,7 +86,7 @@ export class UserService {
 
   async delete(
     data: UserDeleteInfoRequestDto,
-    filter: UserDeleteInfoParamDto,
+    filter: UserDeletedInfoParamDto,
   ): Promise<UserDeletedInfoResponseDto> {
     const { password } = data;
     const { userId } = filter;

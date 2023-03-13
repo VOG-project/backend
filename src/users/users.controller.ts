@@ -22,7 +22,7 @@ import {
   UserDeletedInfoResponseDto,
   UserUpdatedInfoResponseDto,
 } from './dto/user.response.dto';
-import { UserDeleteInfoParamDto } from './dto/user.param.dto';
+import { UserDeletedInfoParamDto } from './dto/user.param.dto';
 
 @UseFilters(HttpExceptionFilter)
 @UseInterceptors(SuccessInterceptor)
@@ -89,7 +89,7 @@ export class UsersController {
   })
   async withdrawal(
     @Body() body: UserDeleteInfoRequestDto,
-    @Param() param: UserDeleteInfoParamDto,
+    @Param() param: UserDeletedInfoParamDto,
   ): Promise<UserDeletedInfoResponseDto> {
     return this.userService.delete(body, param);
   }
