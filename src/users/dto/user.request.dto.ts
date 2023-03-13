@@ -2,14 +2,14 @@ import { User } from '../users.entity';
 import { ApiProperty, PickType } from '@nestjs/swagger';
 import { IsNotEmpty, IsString } from 'class-validator';
 
-export class UserRegisterRequestDto extends PickType(User, [
+export class UserRegisteredRequestDto extends PickType(User, [
   'email',
   'password',
   'nickname',
   'sex',
 ] as const) {}
 
-export class UserUpdateNicknameRequestDto {
+export class UserUpdatedNicknameRequestDto {
   @ApiProperty({
     example: '뚜루뚜뚜',
     description: '변경할 닉네임',
@@ -19,7 +19,7 @@ export class UserUpdateNicknameRequestDto {
   newNickname: string;
 }
 
-export class UserUpdatePasswordRequestDto {
+export class UserUpdatedPasswordRequestDto {
   @ApiProperty({
     example: 'wiq25123',
     description: '현재 비밀번호',
@@ -37,7 +37,7 @@ export class UserUpdatePasswordRequestDto {
   newPassword: string;
 }
 
-export class UserDeleteInfoRequestDto {
+export class UserDeletedInfoRequestDto {
   @ApiProperty({
     example: 'ekw2a1la',
     description: '현재 비밀번호',

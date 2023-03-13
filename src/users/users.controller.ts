@@ -9,15 +9,15 @@ import {
   Delete,
 } from '@nestjs/common';
 import {
-  UserDeleteInfoRequestDto,
-  UserRegisterRequestDto,
-  UserUpdatePasswordRequestDto,
+  UserDeletedInfoRequestDto,
+  UserRegisteredRequestDto,
+  UserUpdatedPasswordRequestDto,
 } from './dto/user.request.dto';
 import { UserService } from './users.service';
 import { ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { HttpExceptionFilter } from '../filters/http-exception.filter';
 import { SuccessInterceptor } from '../interceptors/success.interceptor';
-import { UserUpdateNicknameRequestDto } from './dto/user.request.dto';
+import { UserUpdatedNicknameRequestDto } from './dto/user.request.dto';
 import {
   UserDeletedInfoResponseDto,
   UserUpdatedInfoResponseDto,
@@ -42,7 +42,7 @@ export class UsersController {
   })
   async updatePassword(
     @Param('userId') userId: number,
-    @Body() body: UserUpdatePasswordRequestDto,
+    @Body() body: UserUpdatedPasswordRequestDto,
   ): Promise<UserUpdatedInfoResponseDto> {
     return this.userService.updatePassword(userId, body);
   }
@@ -59,7 +59,7 @@ export class UsersController {
   })
   async updateNickname(
     @Param('userId') userId: number,
-    @Body() body: UserUpdateNicknameRequestDto,
+    @Body() body: UserUpdatedNicknameRequestDto,
   ): Promise<UserUpdatedInfoResponseDto> {
     return await this.userService.updateNickname(body, userId);
   }
@@ -73,7 +73,7 @@ export class UsersController {
   @ApiResponse({
     status: 400,
   })
-  async register(@Body() body: UserRegisterRequestDto): Promise<string> {
+  async register(@Body() body: UserRegisteredRequestDto): Promise<string> {
     return this.userService.register(body);
   }
 
@@ -88,7 +88,7 @@ export class UsersController {
     type: UserDeletedInfoResponseDto,
   })
   async withdrawal(
-    @Body() body: UserDeleteInfoRequestDto,
+    @Body() body: UserDeletedInfoRequestDto,
     @Param() param: UserDeletedInfoParamDto,
   ): Promise<UserDeletedInfoResponseDto> {
     return this.userService.delete(body, param);

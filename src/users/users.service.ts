@@ -1,9 +1,9 @@
 import { Injectable, HttpException } from '@nestjs/common';
 import {
-  UserDeleteInfoRequestDto,
-  UserRegisterRequestDto,
-  UserUpdateNicknameRequestDto,
-  UserUpdatePasswordRequestDto,
+  UserDeletedInfoRequestDto,
+  UserRegisteredRequestDto,
+  UserUpdatedNicknameRequestDto,
+  UserUpdatedPasswordRequestDto,
 } from './dto/user.request.dto';
 import { UserRepository } from './users.repository';
 import * as bcrypt from 'bcrypt';
@@ -19,7 +19,7 @@ export class UserService {
 
   async updatePassword(
     userId: number,
-    body: UserUpdatePasswordRequestDto,
+    body: UserUpdatedPasswordRequestDto,
   ): Promise<UserUpdatedInfoResponseDto> {
     const { currentPassword, newPassword } = body;
 
@@ -41,7 +41,7 @@ export class UserService {
   }
 
   async updateNickname(
-    body: UserUpdateNicknameRequestDto,
+    body: UserUpdatedNicknameRequestDto,
     userId: number,
   ): Promise<UserUpdatedInfoResponseDto> {
     const { newNickname } = body;
@@ -59,7 +59,7 @@ export class UserService {
     return updatedCount;
   }
 
-  async register(body: UserRegisterRequestDto): Promise<string> {
+  async register(body: UserRegisteredRequestDto): Promise<string> {
     const { email, password, nickname, sex } = body;
 
     const isExistedUser = await this.userRepository.findByEmail(email);
@@ -85,7 +85,7 @@ export class UserService {
   }
 
   async delete(
-    data: UserDeleteInfoRequestDto,
+    data: UserDeletedInfoRequestDto,
     filter: UserDeletedInfoParamDto,
   ): Promise<UserDeletedInfoResponseDto> {
     const { password } = data;
