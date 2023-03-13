@@ -9,7 +9,7 @@ import { UserRepository } from './users.repository';
 import * as bcrypt from 'bcrypt';
 import {
   UserDeletedInfoResponseDto,
-  UserUpdatedCountResponseDto,
+  UserUpdatedInfoResponseDto,
 } from './dto/user.response.dto';
 import { UserDeleteInfoParamDto } from './dto/user.param.dto';
 
@@ -20,7 +20,7 @@ export class UserService {
   async updatePassword(
     userId: number,
     body: UserUpdatePasswordRequestDto,
-  ): Promise<UserUpdatedCountResponseDto> {
+  ): Promise<UserUpdatedInfoResponseDto> {
     const { currentPassword, newPassword } = body;
 
     const user = await this.userRepository.findById(userId);
@@ -43,7 +43,7 @@ export class UserService {
   async updateNickname(
     body: UserUpdateNicknameRequestDto,
     userId: number,
-  ): Promise<UserUpdatedCountResponseDto> {
+  ): Promise<UserUpdatedInfoResponseDto> {
     const { newNickname } = body;
 
     const isExistedUser = await this.userRepository.findByNickname(newNickname);

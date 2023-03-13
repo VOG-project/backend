@@ -20,7 +20,7 @@ import { SuccessInterceptor } from '../interceptors/success.interceptor';
 import { UserUpdateNicknameRequestDto } from './dto/user.request.dto';
 import {
   UserDeletedInfoResponseDto,
-  UserUpdatedCountResponseDto,
+  UserUpdatedInfoResponseDto,
 } from './dto/user.response.dto';
 import { UserDeleteInfoParamDto } from './dto/user.param.dto';
 
@@ -38,12 +38,12 @@ export class UsersController {
   @ApiResponse({
     status: 201,
     description: '비밀번호 변경 성공',
-    type: UserUpdatedCountResponseDto,
+    type: UserUpdatedInfoResponseDto,
   })
   async updatePassword(
     @Param('userId') userId: number,
     @Body() body: UserUpdatePasswordRequestDto,
-  ): Promise<UserUpdatedCountResponseDto> {
+  ): Promise<UserUpdatedInfoResponseDto> {
     return this.userService.updatePassword(userId, body);
   }
 
@@ -55,12 +55,12 @@ export class UsersController {
   @ApiResponse({
     status: 201,
     description: '닉네임 변경 성공',
-    type: UserUpdatedCountResponseDto,
+    type: UserUpdatedInfoResponseDto,
   })
   async updateNickname(
     @Param('userId') userId: number,
     @Body() body: UserUpdateNicknameRequestDto,
-  ): Promise<UserUpdatedCountResponseDto> {
+  ): Promise<UserUpdatedInfoResponseDto> {
     return await this.userService.updateNickname(body, userId);
   }
 

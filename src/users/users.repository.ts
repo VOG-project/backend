@@ -3,7 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import {
   UserDeletedInfoResponseDto,
-  UserUpdatedCountResponseDto,
+  UserUpdatedInfoResponseDto,
 } from './dto/user.response.dto';
 import { User } from './users.entity';
 import { UploadUserProfileImageResponseDto } from './../uploads/dto/uploads.response.dto';
@@ -41,7 +41,7 @@ export class UserRepository {
   async updatePassword(
     userId: number,
     hashedPassword: string,
-  ): Promise<UserUpdatedCountResponseDto> {
+  ): Promise<UserUpdatedInfoResponseDto> {
     try {
       const updatedResult = await this.userModel
         .createQueryBuilder()
@@ -64,7 +64,7 @@ export class UserRepository {
   async updateNickname(
     userId: number,
     newNickname: string,
-  ): Promise<UserUpdatedCountResponseDto> {
+  ): Promise<UserUpdatedInfoResponseDto> {
     try {
       const updatedResult = await this.userModel
         .createQueryBuilder()

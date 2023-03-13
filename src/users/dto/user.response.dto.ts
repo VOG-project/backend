@@ -10,7 +10,7 @@ export class UserEntirePropertyResponseDto extends PickType(User, [
   'updatedAt',
 ] as const) {}
 
-export class UserUpdatedCountResponseDto {
+export class UserUpdatedInfoResponseDto {
   @ApiProperty({
     example: 1,
     description: '수정된 컬럼 개수',
