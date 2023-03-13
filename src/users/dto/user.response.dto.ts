@@ -17,3 +17,11 @@ export class UserUpdatedCountResponseDto {
   })
   updatedCount: number;
 }
+
+export class UserDeletedInfoResponseDto {
+  @ApiProperty({
+    example: 1,
+    description: '삭제된 컬럼 개수',
+  })
+  deletedCount: number;
+}

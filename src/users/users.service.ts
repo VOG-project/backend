@@ -7,7 +7,10 @@ import {
 } from './dto/user.request.dto';
 import { UserRepository } from './users.repository';
 import * as bcrypt from 'bcrypt';
-import { UserUpdatedCountResponseDto } from './dto/user.response.dto';
+import {
+  UserDeletedInfoResponseDto,
+  UserUpdatedCountResponseDto,
+} from './dto/user.response.dto';
 import { UserDeleteInfoParamDto } from './dto/user.param.dto';
 
 @Injectable()
@@ -81,7 +84,10 @@ export class UserService {
     return '회원가입 성공';
   }
 
-  async delete(data: UserDeleteInfoRequestDto, filter: UserDeleteInfoParamDto) {
+  async delete(
+    data: UserDeleteInfoRequestDto,
+    filter: UserDeleteInfoParamDto,
+  ): Promise<UserDeletedInfoResponseDto> {
     const { password } = data;
     const { userId } = filter;
 

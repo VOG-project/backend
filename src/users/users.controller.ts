@@ -18,7 +18,10 @@ import { ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { HttpExceptionFilter } from '../filters/http-exception.filter';
 import { SuccessInterceptor } from '../interceptors/success.interceptor';
 import { UserUpdateNicknameRequestDto } from './dto/user.request.dto';
-import { UserUpdatedCountResponseDto } from './dto/user.response.dto';
+import {
+  UserDeletedInfoResponseDto,
+  UserUpdatedCountResponseDto,
+} from './dto/user.response.dto';
 import { UserDeleteInfoParamDto } from './dto/user.param.dto';
 
 @UseFilters(HttpExceptionFilter)
@@ -82,11 +85,12 @@ export class UsersController {
   @ApiResponse({
     status: 200,
     description: '회원탈퇴 성공',
+    type: UserDeletedInfoResponseDto,
   })
   async withdrawal(
     @Body() body: UserDeleteInfoRequestDto,
     @Param() param: UserDeleteInfoParamDto,
-  ) {
+  ): Promise<UserDeletedInfoResponseDto> {
     return this.userService.delete(body, param);
   }
 }

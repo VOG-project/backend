@@ -1,7 +1,10 @@
 import { Injectable, HttpException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { UserUpdatedCountResponseDto } from './dto/user.response.dto';
+import {
+  UserDeletedInfoResponseDto,
+  UserUpdatedCountResponseDto,
+} from './dto/user.response.dto';
 import { User } from './users.entity';
 import { UploadUserProfileImageResponseDto } from './../uploads/dto/uploads.response.dto';
 
@@ -154,7 +157,7 @@ export class UserRepository {
     }
   }
 
-  async deleteById(userId: number) {
+  async deleteById(userId: number): Promise<UserDeletedInfoResponseDto> {
     try {
       const deletedResult = await this.userModel
         .createQueryBuilder()
