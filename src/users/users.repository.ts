@@ -1,7 +1,10 @@
 import { Injectable, HttpException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { UserUpdatedCountResponseDto } from './dto/users.response.dto';
+import {
+  UserDeletedInfoResponseDto,
+  UserUpdatedInfoResponseDto,
+} from './dto/user.response.dto';
 import { User } from './users.entity';
 import { UploadUserProfileImageResponseDto } from './../uploads/dto/uploads.response.dto';
 
@@ -20,7 +23,7 @@ export class UserRepository {
         .set({
           profileUrl: fileUrl,
         })
-        .where('id = :id', { id: userId })
+        .where('id = :userId', { userId })
         .execute();
 
       return {
@@ -38,7 +41,7 @@ export class UserRepository {
   async updatePassword(
     userId: number,
     hashedPassword: string,
-  ): Promise<UserUpdatedCountResponseDto> {
+  ): Promise<UserUpdatedInfoResponseDto> {
     try {
       const updatedResult = await this.userModel
         .createQueryBuilder()
@@ -46,7 +49,7 @@ export class UserRepository {
         .set({
           password: hashedPassword,
         })
-        .where('id = :id', { id: userId })
+        .where('id = :userId', { userId })
         .execute();
 
       return { updatedCount: updatedResult.affected };
@@ -61,7 +64,7 @@ export class UserRepository {
   async updateNickname(
     userId: number,
     newNickname: string,
-  ): Promise<UserUpdatedCountResponseDto> {
+  ): Promise<UserUpdatedInfoResponseDto> {
     try {
       const updatedResult = await this.userModel
         .createQueryBuilder()
@@ -69,7 +72,7 @@ export class UserRepository {
         .set({
           nickname: newNickname,
         })
-        .where('id = :id', { id: userId })
+        .where('id = userId', { userId })
         .execute();
 
       return {
@@ -88,7 +91,7 @@ export class UserRepository {
       const user = await this.userModel
         .createQueryBuilder()
         .select()
-        .where('id = :id', { id: userId })
+        .where('id = :userId', { userId })
         .getOne();
 
       return user;
@@ -154,7 +157,7 @@ export class UserRepository {
     }
   }
 
-  async deleteById(userId: number) {
+  async deleteById(userId: number): Promise<UserDeletedInfoResponseDto> {
     try {
       const deletedResult = await this.userModel
         .createQueryBuilder()

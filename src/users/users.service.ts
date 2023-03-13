@@ -1,14 +1,16 @@
 import { Injectable, HttpException } from '@nestjs/common';
 import {
-  UserDeleteInfoRequestDto,
-  UserRegisterRequestDto,
-  UserUpdateNicknameRequestDto,
-  UserUpdatePasswordRequestDto,
-} from './dto/users.request.dto';
+  UserDeletedInfoRequestDto,
+  UserRegisteredRequestDto,
+  UserUpdatedNicknameRequestDto,
+  UserUpdatedPasswordRequestDto,
+} from './dto/user.request.dto';
 import { UserRepository } from './users.repository';
 import * as bcrypt from 'bcrypt';
-import { UserUpdatedCountResponseDto } from './dto/users.response.dto';
-import { UserDeleteInfoParamDto } from './dto/users.param.dto';
+import {
+  UserDeletedInfoResponseDto,
+  UserUpdatedInfoResponseDto,
+} from './dto/user.response.dto';
 
 @Injectable()
 export class UserService {
@@ -16,8 +18,8 @@ export class UserService {
 
   async updatePassword(
     userId: number,
-    body: UserUpdatePasswordRequestDto,
-  ): Promise<UserUpdatedCountResponseDto> {
+    body: UserUpdatedPasswordRequestDto,
+  ): Promise<UserUpdatedInfoResponseDto> {
     const { currentPassword, newPassword } = body;
 
     const user = await this.userRepository.findById(userId);
@@ -38,9 +40,9 @@ export class UserService {
   }
 
   async updateNickname(
-    body: UserUpdateNicknameRequestDto,
+    body: UserUpdatedNicknameRequestDto,
     userId: number,
-  ): Promise<UserUpdatedCountResponseDto> {
+  ): Promise<UserUpdatedInfoResponseDto> {
     const { newNickname } = body;
 
     const isExistedUser = await this.userRepository.findByNickname(newNickname);
@@ -56,7 +58,7 @@ export class UserService {
     return updatedCount;
   }
 
-  async register(body: UserRegisterRequestDto): Promise<string> {
+  async register(body: UserRegisteredRequestDto): Promise<string> {
     const { email, password, nickname, sex } = body;
 
     const isExistedUser = await this.userRepository.findByEmail(email);
@@ -81,9 +83,11 @@ export class UserService {
     return '회원가입 성공';
   }
 
-  async delete(data: UserDeleteInfoRequestDto, filter: UserDeleteInfoParamDto) {
+  async delete(
+    data: UserDeletedInfoRequestDto,
+    userId: number,
+  ): Promise<UserDeletedInfoResponseDto> {
     const { password } = data;
-    const { userId } = filter;
 
     const user = await this.userRepository.findById(userId);
 

@@ -7,19 +7,22 @@ import {
   Patch,
   Param,
   Delete,
+  ParseIntPipe,
 } from '@nestjs/common';
 import {
-  UserDeleteInfoRequestDto,
-  UserRegisterRequestDto,
-  UserUpdatePasswordRequestDto,
-} from './dto/users.request.dto';
+  UserDeletedInfoRequestDto,
+  UserRegisteredRequestDto,
+  UserUpdatedPasswordRequestDto,
+} from './dto/user.request.dto';
 import { UserService } from './users.service';
 import { ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { HttpExceptionFilter } from '../filters/http-exception.filter';
 import { SuccessInterceptor } from '../interceptors/success.interceptor';
-import { UserUpdateNicknameRequestDto } from './dto/users.request.dto';
-import { UserUpdatedCountResponseDto } from './dto/users.response.dto';
-import { UserDeleteInfoParamDto } from './dto/users.param.dto';
+import { UserUpdatedNicknameRequestDto } from './dto/user.request.dto';
+import {
+  UserDeletedInfoResponseDto,
+  UserUpdatedInfoResponseDto,
+} from './dto/user.response.dto';
 
 @UseFilters(HttpExceptionFilter)
 @UseInterceptors(SuccessInterceptor)
@@ -35,12 +38,12 @@ export class UsersController {
   @ApiResponse({
     status: 201,
     description: '비밀번호 변경 성공',
-    type: UserUpdatedCountResponseDto,
+    type: UserUpdatedInfoResponseDto,
   })
   async updatePassword(
-    @Param('userId') userId: number,
-    @Body() body: UserUpdatePasswordRequestDto,
-  ): Promise<UserUpdatedCountResponseDto> {
+    @Param('userId', ParseIntPipe) userId: number,
+    @Body() body: UserUpdatedPasswordRequestDto,
+  ): Promise<UserUpdatedInfoResponseDto> {
     return this.userService.updatePassword(userId, body);
   }
 
@@ -52,12 +55,12 @@ export class UsersController {
   @ApiResponse({
     status: 201,
     description: '닉네임 변경 성공',
-    type: UserUpdatedCountResponseDto,
+    type: UserUpdatedInfoResponseDto,
   })
   async updateNickname(
-    @Param('userId') userId: number,
-    @Body() body: UserUpdateNicknameRequestDto,
-  ): Promise<UserUpdatedCountResponseDto> {
+    @Param('userId', ParseIntPipe) userId: number,
+    @Body() body: UserUpdatedNicknameRequestDto,
+  ): Promise<UserUpdatedInfoResponseDto> {
     return await this.userService.updateNickname(body, userId);
   }
 
@@ -67,10 +70,7 @@ export class UsersController {
     status: 201,
     description: '회원가입 성공',
   })
-  @ApiResponse({
-    status: 400,
-  })
-  async register(@Body() body: UserRegisterRequestDto): Promise<string> {
+  async register(@Body() body: UserRegisteredRequestDto): Promise<string> {
     return this.userService.register(body);
   }
 
@@ -82,11 +82,12 @@ export class UsersController {
   @ApiResponse({
     status: 200,
     description: '회원탈퇴 성공',
+    type: UserDeletedInfoResponseDto,
   })
   async withdrawal(
-    @Body() body: UserDeleteInfoRequestDto,
-    @Param() param: UserDeleteInfoParamDto,
-  ) {
-    return this.userService.delete(body, param);
+    @Body() body: UserDeletedInfoRequestDto,
+    @Param('userId', ParseIntPipe) userId: number,
+  ): Promise<UserDeletedInfoResponseDto> {
+    return this.userService.delete(body, userId);
   }
 }
