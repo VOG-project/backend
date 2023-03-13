@@ -23,7 +23,7 @@ export class UserRepository {
         .set({
           profileUrl: fileUrl,
         })
-        .where('id = :id', { id: userId })
+        .where('id = :userId', { userId })
         .execute();
 
       return {
@@ -49,7 +49,7 @@ export class UserRepository {
         .set({
           password: hashedPassword,
         })
-        .where('id = :id', { id: userId })
+        .where('id = :userId', { userId })
         .execute();
 
       return { updatedCount: updatedResult.affected };
@@ -72,7 +72,7 @@ export class UserRepository {
         .set({
           nickname: newNickname,
         })
-        .where('id = :id', { id: userId })
+        .where('id = userId', { userId })
         .execute();
 
       return {
@@ -91,7 +91,7 @@ export class UserRepository {
       const user = await this.userModel
         .createQueryBuilder()
         .select()
-        .where('id = :id', { id: userId })
+        .where('id = :userId', { userId })
         .getOne();
 
       return user;
