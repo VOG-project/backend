@@ -4,11 +4,11 @@ import {
   UserRegisterRequestDto,
   UserUpdateNicknameRequestDto,
   UserUpdatePasswordRequestDto,
-} from './dto/users.request.dto';
+} from './dto/user.request.dto';
 import { UserRepository } from './users.repository';
 import * as bcrypt from 'bcrypt';
-import { UserUpdatedCountResponseDto } from './dto/users.response.dto';
-import { UserDeleteInfoParamDto } from './dto/users.param.dto';
+import { UserUpdatedCountResponseDto } from './dto/user.response.dto';
+import { UserDeleteInfoParamDto } from './dto/user.param.dto';
 
 @Injectable()
 export class UserService {

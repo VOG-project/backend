@@ -12,14 +12,14 @@ import {
   UserDeleteInfoRequestDto,
   UserRegisterRequestDto,
   UserUpdatePasswordRequestDto,
-} from './dto/users.request.dto';
+} from './dto/user.request.dto';
 import { UserService } from './users.service';
 import { ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { HttpExceptionFilter } from '../filters/http-exception.filter';
 import { SuccessInterceptor } from '../interceptors/success.interceptor';
-import { UserUpdateNicknameRequestDto } from './dto/users.request.dto';
-import { UserUpdatedCountResponseDto } from './dto/users.response.dto';
-import { UserDeleteInfoParamDto } from './dto/users.param.dto';
+import { UserUpdateNicknameRequestDto } from './dto/user.request.dto';
+import { UserUpdatedCountResponseDto } from './dto/user.response.dto';
+import { UserDeleteInfoParamDto } from './dto/user.param.dto';
 
 @UseFilters(HttpExceptionFilter)
 @UseInterceptors(SuccessInterceptor)

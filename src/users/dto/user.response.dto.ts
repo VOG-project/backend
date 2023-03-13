@@ -1,5 +1,5 @@
 import { ApiProperty, PickType } from '@nestjs/swagger';
-import { User } from './../users.entity';
+import { User } from '../users.entity';
 
 export class UserEntirePropertyResponseDto extends PickType(User, [
   'id',
