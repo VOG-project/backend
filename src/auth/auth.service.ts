@@ -1,6 +1,6 @@
 import { Injectable, HttpException } from '@nestjs/common';
 import { UserRepository } from './../users/users.repository';
-import { UserLoginRequestDto } from './dto/users.auth.dto';
+import { AuthSessionLoginRequestDto } from './dto/auth.request.dto';
 import { v4 } from 'uuid';
 import * as bcrypt from 'bcrypt';
 import { RedisService } from '@liaoliaots/nestjs-redis';
@@ -17,7 +17,7 @@ export class AuthService {
     this.redis = this.redisService.getClient();
   }
 
-  async issueSessionId(data: UserLoginRequestDto): Promise<string> {
+  async issueSessionId(data: AuthSessionLoginRequestDto): Promise<string> {
     const { email, password } = data;
 
     const user = await this.userRepository.findByEmail(email);
@@ -45,7 +45,7 @@ export class AuthService {
 
   async setSessionInformation(
     sessionId: string,
-    body: UserLoginRequestDto,
+    body: AuthSessionLoginRequestDto,
   ): Promise<number> {
     const { email } = body;
     const isExistedSessionId = await this.redis.hget(sessionId, 'id');

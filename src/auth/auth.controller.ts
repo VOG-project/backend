@@ -8,7 +8,7 @@ import {
   Req,
   Delete,
 } from '@nestjs/common';
-import { UserLoginRequestDto } from './dto/users.auth.dto';
+import { AuthSessionLoginRequestDto } from './dto/auth.request.dto';
 import { AuthService } from './auth.service';
 import { HttpExceptionFilter } from '../filters/http-exception.filter';
 import { SuccessInterceptor } from '../interceptors/success.interceptor';
@@ -28,7 +28,7 @@ export class AuthController {
   })
   @Post('login')
   async login(
-    @Body() body: UserLoginRequestDto,
+    @Body() body: AuthSessionLoginRequestDto,
     @Res({ passthrough: true }) res: Response,
   ): Promise<number> {
     const sessionId = await this.authService.issueSessionId(body);
