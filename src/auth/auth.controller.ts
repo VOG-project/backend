@@ -14,6 +14,7 @@ import { HttpExceptionFilter } from '../filters/http-exception.filter';
 import { SuccessInterceptor } from '../interceptors/success.interceptor';
 import { ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { Response, Request } from 'express';
+import { AuthSessionLoginResponseDto } from './dto/auth.response.dto';
 
 @Controller('auth')
 @UseInterceptors(SuccessInterceptor)
@@ -30,10 +31,10 @@ export class AuthController {
   async login(
     @Body() body: AuthSessionLoginRequestDto,
     @Res({ passthrough: true }) res: Response,
-  ): Promise<number> {
+  ): Promise<AuthSessionLoginResponseDto> {
     const sessionId = await this.authService.issueSessionId(body);
 
-    const userId = await this.authService.setSessionInformation(
+    const loginResult = await this.authService.setSessionInformation(
       sessionId,
       body,
     );
@@ -44,7 +45,7 @@ export class AuthController {
       maxAge: 60 * 60 * 24 * 7,
     });
 
-    return userId;
+    return loginResult;
   }
 
   @ApiOperation({ summary: '로그아웃', tags: ['Auth'] })

@@ -5,6 +5,7 @@ import { v4 } from 'uuid';
 import * as bcrypt from 'bcrypt';
 import { RedisService } from '@liaoliaots/nestjs-redis';
 import Redis from 'ioredis';
+import { AuthSessionLoginResponseDto } from './dto/auth.response.dto';
 
 @Injectable()
 export class AuthService {
@@ -46,7 +47,7 @@ export class AuthService {
   async setSessionInformation(
     sessionId: string,
     body: AuthSessionLoginRequestDto,
-  ): Promise<number> {
+  ): Promise<AuthSessionLoginResponseDto> {
     const { email } = body;
     const isExistedSessionId = await this.redis.hget(sessionId, 'id');
 
@@ -66,7 +67,7 @@ export class AuthService {
 
     const userId = await this.redis.hget(sessionId, 'id');
 
-    return parseInt(userId, 10);
+    return { userId: parseInt(userId, 10) };
   }
 
   async deleteSessionInformation(sessionId: string): Promise<number> {
