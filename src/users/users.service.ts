@@ -18,9 +18,9 @@ export class UserService {
 
   async updatePassword(
     userId: number,
-    body: UserUpdatedPasswordRequestDto,
+    data: UserUpdatedPasswordRequestDto,
   ): Promise<UserUpdatedInfoResponseDto> {
-    const { currentPassword, newPassword } = body;
+    const { currentPassword, newPassword } = data;
 
     const user = await this.userRepository.findById(userId);
 
@@ -40,10 +40,10 @@ export class UserService {
   }
 
   async updateNickname(
-    body: UserUpdatedNicknameRequestDto,
+    data: UserUpdatedNicknameRequestDto,
     userId: number,
   ): Promise<UserUpdatedInfoResponseDto> {
-    const { newNickname } = body;
+    const { newNickname } = data;
 
     const isExistedUser = await this.userRepository.findByNickname(newNickname);
 
@@ -58,8 +58,8 @@ export class UserService {
     return updatedCount;
   }
 
-  async register(body: UserRegisteredRequestDto): Promise<string> {
-    const { email, password, nickname, sex } = body;
+  async register(data: UserRegisteredRequestDto): Promise<string> {
+    const { email, password, nickname, sex } = data;
 
     const isExistedUser = await this.userRepository.findByEmail(email);
 
