@@ -5,12 +5,12 @@ import {
   Patch,
   UploadedFile,
   Param,
+  ParseIntPipe,
 } from '@nestjs/common';
 import { HttpExceptionFilter } from 'src/filters/http-exception.filter';
 import { SuccessInterceptor } from './../interceptors/success.interceptor';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { UploadsService } from './uploads.service';
-import { ValidateIdParam } from './validation/uploads.params.validation';
 import { UploadUserProfileImageResponseDto } from './dto/uploads.response.dto';
 import { ApiOperation, ApiResponse } from '@nestjs/swagger';
 
@@ -20,7 +20,7 @@ import { ApiOperation, ApiResponse } from '@nestjs/swagger';
 export class UploadsController {
   constructor(private readonly uploadService: UploadsService) {}
 
-  @Patch('users/:id')
+  @Patch('users/:userId')
   @ApiOperation({
     summary: '유저 프로필 사진 수정',
     tags: ['Uploads'],
@@ -33,9 +33,9 @@ export class UploadsController {
   @UseInterceptors(FileInterceptor('image'))
   async uploadUserProfile(
     @UploadedFile() image: Express.Multer.File,
-    @Param() params: ValidateIdParam,
+    @Param('userId', ParseIntPipe) userId: number,
   ): Promise<UploadUserProfileImageResponseDto> {
-    await this.uploadService.deleteUserProfileImageFile(params.id);
-    return this.uploadService.uploadUserProfileImageFile(image, params.id);
+    await this.uploadService.deleteUserProfileImageFile(userId);
+    return this.uploadService.uploadUserProfileImageFile(image, userId);
   }
 }
