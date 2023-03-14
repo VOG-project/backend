@@ -69,5 +69,7 @@ export class CommonPostEntity extends CreatedUpdatedDate {
     type: 'varchar',
     length: 20,
   })
+  @IsString()
+  @IsNotEmpty()
   gameCategory: string;
 }
