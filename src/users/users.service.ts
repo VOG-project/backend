@@ -45,9 +45,15 @@ export class UserService {
   ): Promise<UserUpdatedInfoResponseDto> {
     const { newNickname } = data;
 
-    const isExistedUser = await this.userRepository.findByNickname(newNickname);
+    const user = await this.userRepository.findById(userId);
 
-    if (isExistedUser)
+    if (!user) throw new HttpException('존재하지 않는 유저입니다.', 400);
+
+    const isExistedNickname = await this.userRepository.findByNickname(
+      newNickname,
+    );
+
+    if (isExistedNickname)
       throw new HttpException('이미 존재하는 닉네임입니다.', 400);
 
     const updatedCount = await this.userRepository.updateNickname(
