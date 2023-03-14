@@ -135,3 +135,11 @@ export class PostGetResponseDto {
     updatedAt: Date;
   };
 }
+
+export class PostGetTotalCountResponseDto {
+  @ApiProperty({
+    example: 36,
+    description: '게시물 총 개수',
+  })
+  postCount: number;
+}

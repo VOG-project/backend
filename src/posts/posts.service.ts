@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, HttpException } from '@nestjs/common';
 import {
   PostRegisterRequestDto,
   PostUpdateRequestDto,
@@ -8,9 +8,11 @@ import {
   PostDeleteResponseDto,
   PostGetListResponseDto,
   PostGetResponseDto,
+  PostGetTotalCountResponseDto,
   PostRegisterResponseDto,
   PostUpdateResponseDto,
 } from './dto/post.response.dto';
+import { PostGetTotalCountQueryDto } from './dto/post.query.dto';
 
 @Injectable()
 export class PostsService {
@@ -40,6 +42,23 @@ export class PostsService {
         return await this.postRepository.find10EachListFromChampionshipPost(
           page,
         );
+    }
+  }
+
+  async getTotalPostCount(
+    filter: PostGetTotalCountQueryDto,
+  ): Promise<PostGetTotalCountResponseDto> {
+    const { board } = filter;
+
+    switch (board) {
+      case 'free':
+        return await this.postRepository.getFreePostTotalCount();
+      case 'humor':
+        return await this.postRepository.getHumorPostTotalCount();
+      case 'championship':
+        return await this.postRepository.getChampionshipPostTotalCount();
+      default:
+        throw new HttpException('올바른 게시판 카테고리가 아닙니다.', 400);
     }
   }
 

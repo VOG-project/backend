@@ -21,12 +21,14 @@ import {
   PostDeleteResponseDto,
   PostGetListResponseDto,
   PostGetResponseDto,
+  PostGetTotalCountResponseDto,
   PostRegisterResponseDto,
   PostUpdateResponseDto,
 } from './dto/post.response.dto';
 import { AuthGuard } from './../auth/guards/auth.guard';
 import { PostsService } from './posts.service';
 import { ApiOperation, ApiResponse } from '@nestjs/swagger';
+import { PostGetTotalCountQueryDto } from './dto/post.query.dto';
 
 @Controller('posts')
 @UseInterceptors(SuccessInterceptor)
@@ -37,6 +39,21 @@ export class PostsController {
   private CHAMPION_POST_TABLE_NAME = 'championshipPost';
 
   constructor(private readonly postService: PostsService) {}
+
+  @Get('count')
+  @ApiOperation({
+    summary: '게시판 게시물 총 개수 조회',
+    tags: ['Posts'],
+  })
+  @ApiResponse({
+    status: 200,
+    description: '게시물 총 개수 조회 완료',
+  })
+  async getPostTotalCount(
+    @Query() query: PostGetTotalCountQueryDto,
+  ): Promise<PostGetTotalCountResponseDto> {
+    return await this.postService.getTotalPostCount(query);
+  }
 
   @Get('championship')
   @ApiOperation({

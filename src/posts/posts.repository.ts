@@ -11,6 +11,7 @@ import {
   PostUpdateResponseDto,
   PostGetListResponseDto,
   PostGetResponseDto,
+  PostGetTotalCountResponseDto,
 } from './dto/post.response.dto';
 
 @Injectable()
@@ -22,6 +23,33 @@ export class PostsRepository {
     @InjectRepository(ChampionshipPost)
     private championshipPostModel: Repository<ChampionshipPost>,
   ) {}
+
+  async getFreePostTotalCount(): Promise<PostGetTotalCountResponseDto> {
+    const postCount = await this.freePostModel
+      .createQueryBuilder()
+      .select()
+      .getCount();
+
+    return { postCount };
+  }
+
+  async getHumorPostTotalCount(): Promise<PostGetTotalCountResponseDto> {
+    const postCount = await this.humorPostModel
+      .createQueryBuilder()
+      .select()
+      .getCount();
+
+    return { postCount };
+  }
+
+  async getChampionshipPostTotalCount(): Promise<PostGetTotalCountResponseDto> {
+    const postCount = await this.championshipPostModel
+      .createQueryBuilder()
+      .select()
+      .getCount();
+
+    return { postCount };
+  }
 
   async findFreePostById(id: number): Promise<PostGetResponseDto> {
     const post = await this.freePostModel
