@@ -26,10 +26,6 @@ export class AuthController {
     status: 201,
     description: '로그인 성공',
   })
-  @ApiResponse({
-    status: 400,
-    description: 'Error',
-  })
   @Post('login')
   async login(
     @Body() body: UserLoginRequestDto,
@@ -55,10 +51,6 @@ export class AuthController {
   @ApiResponse({
     status: 200,
     description: '로그아웃 성공',
-  })
-  @ApiResponse({
-    status: 400,
-    description: 'Error',
   })
   @Delete('logout')
   async logout(
