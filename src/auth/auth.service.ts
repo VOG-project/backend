@@ -5,7 +5,10 @@ import { v4 } from 'uuid';
 import * as bcrypt from 'bcrypt';
 import { RedisService } from '@liaoliaots/nestjs-redis';
 import Redis from 'ioredis';
-import { AuthSessionLoginResponseDto } from './dto/auth.response.dto';
+import {
+  AuthSessionLoginResponseDto,
+  AuthSessionLogoutResponseDto,
+} from './dto/auth.response.dto';
 
 @Injectable()
 export class AuthService {
@@ -70,7 +73,11 @@ export class AuthService {
     return { userId: parseInt(userId, 10) };
   }
 
-  async deleteSessionInformation(sessionId: string): Promise<number> {
-    return await this.redis.del(sessionId);
+  async deleteSessionInformation(
+    sessionId: string,
+  ): Promise<AuthSessionLogoutResponseDto> {
+    const deletedCount = await this.redis.del(sessionId);
+
+    return { deletedCount };
   }
 }

@@ -14,7 +14,10 @@ import { HttpExceptionFilter } from '../filters/http-exception.filter';
 import { SuccessInterceptor } from '../interceptors/success.interceptor';
 import { ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { Response, Request } from 'express';
-import { AuthSessionLoginResponseDto } from './dto/auth.response.dto';
+import {
+  AuthSessionLoginResponseDto,
+  AuthSessionLogoutResponseDto,
+} from './dto/auth.response.dto';
 
 @Controller('auth')
 @UseInterceptors(SuccessInterceptor)
@@ -57,7 +60,7 @@ export class AuthController {
   async logout(
     @Req() req: Request,
     @Res({ passthrough: true }) res: Response,
-  ): Promise<number> {
+  ): Promise<AuthSessionLogoutResponseDto> {
     const sessionId = req.cookies.sessionId;
 
     res.clearCookie('sessionId');
