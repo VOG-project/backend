@@ -72,7 +72,7 @@ export class UserRepository {
         .set({
           nickname: newNickname,
         })
-        .where('id = userId', { userId })
+        .where('id = :userId', { userId })
         .execute();
 
       return {
@@ -128,12 +128,12 @@ export class UserRepository {
 
   async findByEmail(email: string) {
     try {
-      const exUser = await this.userModel
+      const user = await this.userModel
         .createQueryBuilder('user')
         .where('email = :email', { email })
         .getOne();
 
-      return exUser;
+      return user;
     } catch (err) {
       throw new HttpException(
         `[MYSQL Error] existByEmail method: ${err.message}`,
@@ -144,11 +144,12 @@ export class UserRepository {
 
   async findByNickname(nickname: string) {
     try {
-      const exUser = await this.userModel
+      const user = await this.userModel
         .createQueryBuilder('user')
         .where('nickname = :nickname', { nickname })
         .getOne();
-      return exUser;
+
+      return user;
     } catch (err) {
       throw new HttpException(
         `[MYSQL Error] existByNickname method: ${err.message}`,

@@ -18,9 +18,9 @@ export class UserService {
 
   async updatePassword(
     userId: number,
-    body: UserUpdatedPasswordRequestDto,
+    data: UserUpdatedPasswordRequestDto,
   ): Promise<UserUpdatedInfoResponseDto> {
-    const { currentPassword, newPassword } = body;
+    const { currentPassword, newPassword } = data;
 
     const user = await this.userRepository.findById(userId);
 
@@ -40,14 +40,20 @@ export class UserService {
   }
 
   async updateNickname(
-    body: UserUpdatedNicknameRequestDto,
+    data: UserUpdatedNicknameRequestDto,
     userId: number,
   ): Promise<UserUpdatedInfoResponseDto> {
-    const { newNickname } = body;
+    const { newNickname } = data;
 
-    const isExistedUser = await this.userRepository.findByNickname(newNickname);
+    const user = await this.userRepository.findById(userId);
 
-    if (isExistedUser)
+    if (!user) throw new HttpException('존재하지 않는 유저입니다.', 400);
+
+    const isExistedNickname = await this.userRepository.findByNickname(
+      newNickname,
+    );
+
+    if (isExistedNickname)
       throw new HttpException('이미 존재하는 닉네임입니다.', 400);
 
     const updatedCount = await this.userRepository.updateNickname(
@@ -58,8 +64,8 @@ export class UserService {
     return updatedCount;
   }
 
-  async register(body: UserRegisteredRequestDto): Promise<string> {
-    const { email, password, nickname, sex } = body;
+  async register(data: UserRegisteredRequestDto): Promise<string> {
+    const { email, password, nickname, sex } = data;
 
     const isExistedUser = await this.userRepository.findByEmail(email);
 
