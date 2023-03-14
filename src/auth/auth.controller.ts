@@ -31,7 +31,7 @@ export class AuthController {
     @Body() body: UserLoginRequestDto,
     @Res({ passthrough: true }) res: Response,
   ): Promise<number> {
-    const sessionId = await this.authService.sessionLogin(body);
+    const sessionId = await this.authService.issueSessionId(body);
 
     const userId = await this.authService.setSessionInformation(
       sessionId,

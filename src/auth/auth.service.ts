@@ -17,7 +17,7 @@ export class AuthService {
     this.redis = this.redisService.getClient();
   }
 
-  async sessionLogin(data: UserLoginRequestDto): Promise<string> {
+  async issueSessionId(data: UserLoginRequestDto): Promise<string> {
     const { email, password } = data;
 
     const user = await this.userRepository.findByEmail(email);
