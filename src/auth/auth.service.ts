@@ -1,10 +1,14 @@
 import { Injectable, HttpException } from '@nestjs/common';
 import { UserRepository } from './../users/users.repository';
-import { UserLoginRequestDto } from './dto/users.auth.dto';
+import { AuthSessionLoginRequestDto } from './dto/auth.request.dto';
 import { v4 } from 'uuid';
 import * as bcrypt from 'bcrypt';
 import { RedisService } from '@liaoliaots/nestjs-redis';
 import Redis from 'ioredis';
+import {
+  AuthSessionLoginResponseDto,
+  AuthSessionLogoutResponseDto,
+} from './dto/auth.response.dto';
 
 @Injectable()
 export class AuthService {
@@ -17,7 +21,7 @@ export class AuthService {
     this.redis = this.redisService.getClient();
   }
 
-  async sessionLogin(data: UserLoginRequestDto): Promise<string> {
+  async issueSessionId(data: AuthSessionLoginRequestDto): Promise<string> {
     const { email, password } = data;
 
     const user = await this.userRepository.findByEmail(email);
@@ -45,8 +49,8 @@ export class AuthService {
 
   async setSessionInformation(
     sessionId: string,
-    body: UserLoginRequestDto,
-  ): Promise<number> {
+    body: AuthSessionLoginRequestDto,
+  ): Promise<AuthSessionLoginResponseDto> {
     const { email } = body;
     const isExistedSessionId = await this.redis.hget(sessionId, 'id');
 
@@ -66,10 +70,14 @@ export class AuthService {
 
     const userId = await this.redis.hget(sessionId, 'id');
 
-    return parseInt(userId, 10);
+    return { userId: parseInt(userId, 10) };
   }
 
-  async deleteSessionInformation(sessionId: string): Promise<number> {
-    return await this.redis.del(sessionId);
+  async deleteSessionInformation(
+    sessionId: string,
+  ): Promise<AuthSessionLogoutResponseDto> {
+    const deletedCount = await this.redis.del(sessionId);
+
+    return { deletedCount };
   }
 }

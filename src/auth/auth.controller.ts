@@ -8,12 +8,16 @@ import {
   Req,
   Delete,
 } from '@nestjs/common';
-import { UserLoginRequestDto } from './dto/users.auth.dto';
+import { AuthSessionLoginRequestDto } from './dto/auth.request.dto';
 import { AuthService } from './auth.service';
 import { HttpExceptionFilter } from '../filters/http-exception.filter';
 import { SuccessInterceptor } from '../interceptors/success.interceptor';
 import { ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { Response, Request } from 'express';
+import {
+  AuthSessionLoginResponseDto,
+  AuthSessionLogoutResponseDto,
+} from './dto/auth.response.dto';
 
 @Controller('auth')
 @UseInterceptors(SuccessInterceptor)
@@ -26,18 +30,14 @@ export class AuthController {
     status: 201,
     description: '로그인 성공',
   })
-  @ApiResponse({
-    status: 400,
-    description: 'Error',
-  })
   @Post('login')
   async login(
-    @Body() body: UserLoginRequestDto,
+    @Body() body: AuthSessionLoginRequestDto,
     @Res({ passthrough: true }) res: Response,
-  ): Promise<number> {
-    const sessionId = await this.authService.sessionLogin(body);
+  ): Promise<AuthSessionLoginResponseDto> {
+    const sessionId = await this.authService.issueSessionId(body);
 
-    const userId = await this.authService.setSessionInformation(
+    const loginResult = await this.authService.setSessionInformation(
       sessionId,
       body,
     );
@@ -48,7 +48,7 @@ export class AuthController {
       maxAge: 60 * 60 * 24 * 7,
     });
 
-    return userId;
+    return loginResult;
   }
 
   @ApiOperation({ summary: '로그아웃', tags: ['Auth'] })
@@ -56,15 +56,11 @@ export class AuthController {
     status: 200,
     description: '로그아웃 성공',
   })
-  @ApiResponse({
-    status: 400,
-    description: 'Error',
-  })
   @Delete('logout')
   async logout(
     @Req() req: Request,
     @Res({ passthrough: true }) res: Response,
-  ): Promise<number> {
+  ): Promise<AuthSessionLogoutResponseDto> {
     const sessionId = req.cookies.sessionId;
 
     res.clearCookie('sessionId');
