@@ -1,0 +1,31 @@
+# # 해당 워크플로우의 타이틀
+# # 명시하지 않으면 파일 경로가 타이틀이 됨
+# name: VOG-NEST-CICD-DEV
+
+# # 이벤트
+# # main 브랜치에 한하여 push가 일어날 경우
+# on:
+#   push:
+#     branches: ["dev"]
+
+# # jobs
+# # 이벤트가 발생하면 해야할 작업을 명시
+# # 테스트, 빌드, 배포 단위로 명시
+# # 각각의 job은 Runner라는 컨테이너에서 개별적으로 실행
+# jobs:
+#   # 프로젝트 코드 테스트 With Jest
+#   test:
+#     # ubuntu-20.04 환경의 Runner에서 실행
+#     runs-on: ubuntu-20.04
+#     # 컨테이너에 repository의 코드를 checkout
+#     # node 환경 셋업
+#     # 의존성 설치 및 테스트 진행
+#     steps:
+#     - name: Checkout Source Code
+#       uses: actions/checkout@v3
+#     - name: Setup node.js 16.19.0
+#       uses: actions/setup-node@v3
+#       with:
+#         node-version: 16.19.0
+#         cache: 'npm'
+#     - run: npm install
