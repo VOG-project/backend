@@ -1,5 +1,9 @@
 name: VOG-API-SERVER-CICD
 
+env:
+  DOCKER_CONTAINER_NAME: vog-api-server
+  DOCKER_IMAGE_NAME: vog-api-server-image
+
 on:
   push:
     branches: ["dev"]
@@ -42,5 +46,5 @@ jobs:
         password: ${{ secrets.VOG_GHCR_TOKEN }}
     - name: Run docker
       run: |
-          docker stop VOG_API_SERVER && docker rm VOG_API_SERVER && docker rmi VOG_API_SERVER_IMAGE:latest
-          docker run -d -p 3000:3000 --name VOG_API_SERVER --restart always VOG_API_SERVER_IMAGE:latest
+          docker stop ${{DOCKER_CONTAINER_NAME}} && docker rm ${{DOCKER_CONTAINER_NAME}} && docker rmi ${{DOCKER_IMAGE_NAME}}:latest
+          docker run -d -p 3000:3000 --name ${{DOCKER_CONTAINER_NAME}} --restart always ${{DOCKER_IMAGE_NAME}}:latest
