@@ -1,9 +1,5 @@
 name: VOG-API-SERVER-CICD
 
-env:
-  IMAGE_NAME: vog-api-server-image
-  CONTAINER_NAME: vog-api-server
-
 on:
   push:
     branches: ["dev"]
@@ -28,7 +24,7 @@ jobs:
       uses: docker/build-push-action@v4
       with:
         push: true
-        tags: vog-api-server-image:latest
+        tags: ghcr.io/${{ secrets.VOG_NEST_GITHUB_ACTOR }}/vog-api-server-image:latest
 
   deploy:
     needs: build
