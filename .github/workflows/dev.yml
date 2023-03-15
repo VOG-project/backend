@@ -1,8 +1,8 @@
 name: VOG-API-SERVER-CICD
 
 env:
-  IMAGE_NAME: VOG_API_SERVER_IMAGE
-  CONTAINER_NAME: VOG_API_SERVER
+  IMAGE_NAME: vog-api-server-image
+  CONTAINER_NAME: vog-api-server
 
 on:
   push:
