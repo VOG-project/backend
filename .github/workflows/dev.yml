@@ -2,7 +2,8 @@ name: VOG-API-SERVER-CICD
 
 env:
   DOCKER_CONTAINER_NAME: vog-api-server
-  DOCKER_IMAGE_NAME: ghcr.io/${{ secrets.VOG_NEST_GITHUB_ACTOR }}/vog-api-server-image
+  DOCKER_IMAGE_NAME: vog-api-server-image
+  DOCKER_HUB_NAME: hhs7425
 
 on:
   push:
@@ -36,10 +37,9 @@ jobs:
     - name: Set up docker build
       id: buildx
       uses: docker/setup-buildx-action@v2
-    - name: Login To GHCR
+    - name: Login To Docker Hub
       run: |
-        sudo docker login ghcr.io --username ${{ github.actor }}
-        ${{ secrets.VOG_GHCR_TOKEN}}
+        sudo docker login -u ${{ secrets.DOCKER_HUB_USER }} -p ${{ secrets.DOCKER_HUB_PASSWORD }}
     # - name: Login to ghcr
     #   uses: docker/login-action@v2
     #   with:
@@ -54,11 +54,11 @@ jobs:
     #     tags: ${{ env.DOCKER_IMAGE_NAME }}:latest
     - name: Build
       run: |
-        sudo docker build -t ${{ env.DOCKER_IMAGE_NAME }}:lastest .
+        sudo docker build -t ${{ env.DOCKER_HUB_NAME }}/${{ env.DOCKER_IMAGE_NAME }}:lastest .
         ls -al
     - name: Push
       run: |
-        sudo docker push ${{ env.DOCKER_IMAGE_NAME }}:lastest
+        sudo docker push ${{ env.DOCKER_HUB_NAME }}/${{ env.DOCKER_IMAGE_NAME }}:lastest
 
   deploy:
     needs: build
