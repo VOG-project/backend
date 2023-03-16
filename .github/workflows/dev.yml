@@ -32,7 +32,6 @@ jobs:
         echo AWS_S3_BUCKET_NAME=${{ secrets.VOG_NEST_ENV_AWS_S3_BUCKET_NAME }} >> .env
         echo AWS_S3_File_URL=${{ secrets.VOG_NEST_ENV_AWS_S3_File_URL }} >> .env
         cat .env
-        cat .env
         ls -al
     - name: Set up docker build
       id: buildx
@@ -43,12 +42,16 @@ jobs:
         registry: ghcr.io
         username: ${{ github.actor }}
         password: ${{ secrets.VOG_GHCR_TOKEN }}
-    - name: Build and Push
-      id: docker_build
-      uses: docker/build-push-action@v4
-      with:
-        push: true
-        tags: ${{ env.DOCKER_IMAGE_NAME }}:latest
+    # - name: Build and Push
+    #   id: docker_build
+    #   uses: docker/build-push-action@v4
+    #   with:
+    #     push: true
+    #     tags: ${{ env.DOCKER_IMAGE_NAME }}:latest
+    - name: Build And Push
+      run: |
+        sudo docker build -t ${{ env.DOCKER_IMAGE_NAME }}:lastest .
+        sudo docker push ${{ env.DOCKER_IMAGE_NAME }}:lastest
 
   deploy:
     needs: build
