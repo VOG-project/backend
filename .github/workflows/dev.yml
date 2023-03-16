@@ -40,18 +40,6 @@ jobs:
     - name: Login To Docker Hub
       run: |
         sudo docker login -u ${{ secrets.DOCKER_HUB_USER }} -p ${{ secrets.DOCKER_HUB_PASSWORD }}
-    # - name: Login to ghcr
-    #   uses: docker/login-action@v2
-    #   with:
-    #     registry: ghcr.io
-    #     username: ${{ github.actor }}
-    #     password: ${{ secrets.VOG_GHCR_TOKEN }}
-    # - name: Build and Push
-    #   id: docker_build
-    #   uses: docker/build-push-action@v4
-    #   with:
-    #     push: true
-    #     tags: ${{ env.DOCKER_IMAGE_NAME }}:latest
     - name: Build
       run: |
         sudo docker build -t ${{ env.DOCKER_HUB_NAME }}/${{ env.DOCKER_IMAGE_NAME }}:latest .
@@ -62,18 +50,8 @@ jobs:
 
   deploy:
     needs: build
-    # ec2에 설치한 Runner로 job 실행
     runs-on: [self-hosted, label-vog ]
-    # Github Container Registry 로그인
-    # Docker Container 중지 및 삭제, Docker image 삭제
-    # 새로 배포한 Docker Image로 Container 실행
     steps:
-    # - name: Login to ghcr
-    #   uses: docker/login-action@v2
-    #   with:
-    #     registry: ghcr.io
-    #     username: ${{ github.actor }}
-    #     password: ${{ secrets.VOG_GHCR_TOKEN }}
     - name: Login To Docker Hub
       run: |
         sudo docker login -u ${{ secrets.DOCKER_HUB_USER }} -p ${{ secrets.DOCKER_HUB_PASSWORD }}
