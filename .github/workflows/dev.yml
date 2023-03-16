@@ -3,7 +3,7 @@ name: VOG-API-SERVER-CICD
 env:
   DOCKER_CONTAINER_NAME: vog-api-server
   DOCKER_IMAGE_NAME: ghcr.io/${{ secrets.VOG_NEST_GITHUB_ACTOR }}/vog-api-server-image
-  
+
 on:
   push:
     branches: ["dev"]
@@ -17,10 +17,10 @@ jobs:
     - name: Create .env File
       run: |
         touch .env
-        echo MYSQL_USER=$TEST >> .env
-        echo "MYSQL_HOST=$TEST" >> .env
-        echo MYSQL_PASSWORD=$VOG_NEST_ENV_MYSQL_PASSWORD >> .env
-        echo "MYSQL_PORT=$VOG_NEST_ENV_MYSQL_PORT" >> .env
+        echo MYSQL_USER=${{ secrets.VOG_NEST_ENV_MYSQL_USER }} >> .env
+        echo MYSQL_HOST=${{ secrets.VOG_NEST_ENV_MYSQL_HOST }} >> .env
+        echo MYSQL_PASSWORD=${{ secrets.VOG_NEST_ENV_MYSQL_PASSWORD }} >> .env
+        echo MYSQL_PORT=${{ secrets.VOG_NEST_ENV_MYSQL_PORT }} >> .env
         echo REDIS_USER=${{ secrets.VOG_NEST_ENV_REDIS_USER }} >> .env
         echo REDIS_HOST=${{ secrets.VOG_NEST_ENV_REDIS_HOST }} >> .env
         echo REDIS_PASSWORD=${{ secrets.VOG_NEST_ENV_REDIS_PASSWORD }} >> .env
@@ -34,8 +34,6 @@ jobs:
         cat .env
         cat .env
         ls -al
-      env: 
-        TEST: ${{ secrets.VOG_NEST_ENV_REDIS_USER }}
     - name: Set up docker build
       id: buildx
       uses: docker/setup-buildx-action@v2
