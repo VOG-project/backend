@@ -48,9 +48,12 @@ jobs:
     #   with:
     #     push: true
     #     tags: ${{ env.DOCKER_IMAGE_NAME }}:latest
-    - name: Build And Push
+    - name: Build
       run: |
         sudo docker build -t ${{ env.DOCKER_IMAGE_NAME }}:lastest .
+        ls -al
+    - name: Push
+      run: |
         sudo docker push ${{ env.DOCKER_IMAGE_NAME }}:lastest
 
   deploy:
