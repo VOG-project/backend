@@ -17,10 +17,10 @@ jobs:
     - name: Create .env File
       run: |
         touch .env
-        echo MYSQL_USER=${{ secrets.VOG_NEST_ENV_MYSQL_USER }} >> .env
-        echo MYSQL_HOST=${{ secrets.VOG_NEST_ENV_MYSQL_HOST }} >> .env
-        echo MYSQL_PASSWORD=${{ secrets.VOG_NEST_ENV_MYSQL_PASSWORD }} >> .env
-        echo MYSQL_PORT=${{ secrets.VOG_NEST_ENV_MYSQL_PORT }} >> .env
+        echo MYSQL_USER=$secrets.VOG_NEST_ENV_MYSQL_USER >> .env
+        echo "MYSQL_HOST=$secrets.VOG_NEST_ENV_MYSQL_HOST" >> .env
+        echo MYSQL_PASSWORD=$VOG_NEST_ENV_MYSQL_PASSWORD >> .env
+        echo "MYSQL_PORT=$VOG_NEST_ENV_MYSQL_PORT" >> .env
         echo REDIS_USER=${{ secrets.VOG_NEST_ENV_REDIS_USER }} >> .env
         echo REDIS_HOST=${{ secrets.VOG_NEST_ENV_REDIS_HOST }} >> .env
         echo REDIS_PASSWORD=${{ secrets.VOG_NEST_ENV_REDIS_PASSWORD }} >> .env
