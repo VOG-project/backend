@@ -31,11 +31,8 @@ jobs:
         echo AWS_S3_REGION=${{ secrets.VOG_NEST_ENV_AWS_S3_REGION }} >> .env
         echo AWS_S3_BUCKET_NAME=${{ secrets.VOG_NEST_ENV_AWS_S3_BUCKET_NAME }} >> .env
         echo AWS_S3_File_URL=${{ secrets.VOG_NEST_ENV_AWS_S3_File_URL }} >> .env
-        touch test.txt
-        echo tetsetsetsset=test >> test.txt
-        echo mysql=${{ secrets.VOG_NEST_ENV_MYSQL_USER }} test.txt
         cat .env
-        cat test.txt
+        cat .env
         ls -al
     - name: Set up docker build
       id: buildx
