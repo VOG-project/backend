@@ -3,7 +3,7 @@ name: VOG-API-SERVER-CICD
 env:
   DOCKER_CONTAINER_NAME: vog-api-server
   DOCKER_IMAGE_NAME: ghcr.io/${{ secrets.VOG_NEST_GITHUB_ACTOR }}/vog-api-server-image
-  TEST: ${{ secrets.VOG_NEST_ENV_REDIS_USER }}
+  
 on:
   push:
     branches: ["dev"]
@@ -34,6 +34,8 @@ jobs:
         cat .env
         cat .env
         ls -al
+      env: 
+        TEST: ${{ secrets.VOG_NEST_ENV_REDIS_USER }}
     - name: Set up docker build
       id: buildx
       uses: docker/setup-buildx-action@v2
