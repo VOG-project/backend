@@ -31,7 +31,7 @@ export class CommentsController {
 
   @Post()
   @ApiOperation({
-    summary: '자유게시판 댓글 생성',
+    summary: '게시판 댓글 생성',
     tags: ['Comments'],
   })
   @ApiResponse({
@@ -48,7 +48,7 @@ export class CommentsController {
 
   @Delete(':commentId')
   @ApiOperation({
-    summary: '자유게시판 댓글 삭제',
+    summary: '게시판 댓글 삭제',
     tags: ['Comments'],
   })
   @ApiResponse({
@@ -57,74 +57,6 @@ export class CommentsController {
     type: CommentDeleteResponseDto,
   })
   async deleteFreePostComment(
-    @Param() param: CommentDeleteParamDto,
-    @Query() query: CommentDeleteQueryDto,
-  ): Promise<CommentDeleteResponseDto> {
-    return await this.commentService.deleteComment(param, query);
-  }
-
-  @Post()
-  @ApiOperation({
-    summary: '유머게시판 댓글 생성',
-    tags: ['Comments'],
-  })
-  @ApiResponse({
-    status: 201,
-    description: '댓글 생성 성공',
-    type: CommentRegisterResponseDto,
-  })
-  async registerHumorPostComment(
-    @Body() body: CommentRegisterRequestDto,
-    @Query() query: CommentRegisterQueryDto,
-  ): Promise<CommentRegisterResponseDto> {
-    return await this.commentService.registerComment(body, query);
-  }
-
-  @Delete(':commentId')
-  @ApiOperation({
-    summary: '유머게시판 댓글 삭제',
-    tags: ['Comments'],
-  })
-  @ApiResponse({
-    status: 201,
-    description: '댓글 삭제 성공',
-    type: CommentDeleteResponseDto,
-  })
-  async deleteHumorPostComment(
-    @Param() param: CommentDeleteParamDto,
-    @Query() query: CommentDeleteQueryDto,
-  ): Promise<CommentDeleteResponseDto> {
-    return await this.commentService.deleteComment(param, query);
-  }
-
-  @Post()
-  @ApiOperation({
-    summary: '대회소식게시판 댓글 생성',
-    tags: ['Comments'],
-  })
-  @ApiResponse({
-    status: 201,
-    description: '댓글 생성 성공',
-    type: CommentRegisterResponseDto,
-  })
-  async registerChampionshipPostComment(
-    @Body() body: CommentRegisterRequestDto,
-    @Query() query: CommentRegisterQueryDto,
-  ): Promise<CommentRegisterResponseDto> {
-    return await this.commentService.registerComment(body, query);
-  }
-
-  @Delete(':commentId')
-  @ApiOperation({
-    summary: '대회소식게시판 댓글 삭제',
-    tags: ['Comments'],
-  })
-  @ApiResponse({
-    status: 201,
-    description: '댓글 삭제 성공',
-    type: CommentDeleteResponseDto,
-  })
-  async deleteChampionshipPostComment(
     @Param() param: CommentDeleteParamDto,
     @Query() query: CommentDeleteQueryDto,
   ): Promise<CommentDeleteResponseDto> {
