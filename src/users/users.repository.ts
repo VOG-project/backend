@@ -16,7 +16,7 @@ export class UserRepository {
    * User 테이블의 profileUrl 필드를 새로운 이미지 URL로 업데이트하고 업데이트된 row 개수와 이미지 URl을 반환합니다.
    * @param userId 유저 아이디(PK)
    * @param fileUrl 유저 프로필 이미지가 저장된 S3 URL
-   * @returns Object {업데이트된 row 개수, 프로필 이미지 URL}
+   * @returns Object { 업데이트된 row 개수, 프로필 이미지 URL }
    */
   async updateProfileUrl(
     userId: number,
@@ -48,7 +48,7 @@ export class UserRepository {
    * User 테이블의 password 필드를 새로운 비밀번호로 업데이트하고 업데이트된 row 개수를 반환합니다.
    * @param userId 유저 아이디(PK)
    * @param hashedPassword 해시화된 비밀번호
-   * @returns Object {업데이트된 row 개수}
+   * @returns Object { 업데이트된 row 개수 }
    */
   async updatePassword(
     userId: number,
@@ -77,7 +77,7 @@ export class UserRepository {
    * User 테이블의 nickname 필드를 새로운 닉네임으로 업데이트하고 업데이트된 row 개수를 반환합니다.
    * @param userId 유저 아이디(PK)
    * @param newNickname 닉네임
-   * @returns Object {업데이트된 row 개수}
+   * @returns Object { 업데이트된 row 개수 }
    */
   async updateNickname(
     userId: number,
