@@ -5,6 +5,8 @@ import { UploadUserProfileImageResponseDto } from './dto/uploads.response.dto';
 
 @Injectable()
 export class UploadsService {
+  private DEFAULT_PROFILE_IMAGE = 'default.jpg';
+
   constructor(private readonly userRepository: UserRepository) {
     // S3 인스턴스 사용을 위해 region과 accessKey, secretAccessKey를 명시하여 AWS object Configuration를 업데이트 합니다.
     AWS.config.update({
@@ -26,13 +28,18 @@ export class UploadsService {
       // S3에 저장된 이미지의 파일명을 추출하기 위해 S3 인스턴스 URL 주소의 길이를 저장합니다.
       const sliceIdx = process.env.AWS_S3_File_URL.length;
       const filePath = user.profileUrl;
+      const key = filePath.substring(sliceIdx);
 
-      await new AWS.S3()
-        .deleteObject({
-          Bucket: process.env.AWS_S3_BUCKET_NAME,
-          Key: filePath.substring(sliceIdx),
-        })
-        .promise();
+      // default.jpg는 삭제되면 안되는 이미지 파일이기 때문에
+      // key값이 default.jpg가 아닐 경우에만 삭제 작업을 진행합니다.
+      if (key !== this.DEFAULT_PROFILE_IMAGE) {
+        await new AWS.S3()
+          .deleteObject({
+            Bucket: process.env.AWS_S3_BUCKET_NAME,
+            Key: key,
+          })
+          .promise();
+      }
     } catch (err) {
       throw new HttpException(
         `[S3 ERROR] deleteUserProfileImageFile: ${err.message}`,
@@ -52,6 +59,8 @@ export class UploadsService {
     userId: number,
   ): Promise<UploadUserProfileImageResponseDto> {
     try {
+      await this.deleteUserProfileImageFile(userId);
+
       // S3에 존재하는 이미지 파일을 식별하기 위해 userId와 밀리초를 이용하여 파일 패스를 만듭니다.
       const filePath = `user/${userId}-profile-${Date.now()}${
         image.originalname
