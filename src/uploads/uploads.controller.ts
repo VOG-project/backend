@@ -35,7 +35,6 @@ export class UploadsController {
     @UploadedFile() image: Express.Multer.File,
     @Param('userId', ParseIntPipe) userId: number,
   ): Promise<UploadUserProfileImageResponseDto> {
-    await this.uploadService.deleteUserProfileImageFile(userId);
     return this.uploadService.uploadUserProfileImageFile(image, userId);
   }
 }
