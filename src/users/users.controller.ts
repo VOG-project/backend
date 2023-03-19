@@ -30,6 +30,7 @@ import {
 export class UsersController {
   constructor(private readonly userService: UserService) {}
 
+  // 비밀번호 변경 API
   @Patch(':userId/password')
   @ApiOperation({
     summary: '비밀번호 변경',
@@ -47,6 +48,7 @@ export class UsersController {
     return this.userService.updatePassword(userId, body);
   }
 
+  // 닉네임 변경 API
   @Patch(':userId/nickname')
   @ApiOperation({
     summary: '닉네임 변경',
@@ -64,6 +66,7 @@ export class UsersController {
     return await this.userService.updateNickname(body, userId);
   }
 
+  // 회원가입 API
   @Post('register')
   @ApiOperation({ summary: '회원가입', tags: ['Users'] })
   @ApiResponse({
@@ -74,6 +77,7 @@ export class UsersController {
     return this.userService.register(body);
   }
 
+  // 회원 탈퇴 API
   @Delete(':userId/withdrawal')
   @ApiOperation({
     summary: '회원탈퇴',
