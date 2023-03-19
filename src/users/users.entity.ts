@@ -16,6 +16,17 @@ import {
   HumorPostComment,
 } from './../comments/comments.entity';
 
+// 유저 테이블에 대한 엔티티입니다.
+// --
+// CreatedUpdatedDate 엔티티를 상속받아 createdAt, updatedAt 컬럼을 추가합니다.
+// --
+// FreePost 엔티티와 1 : N 관계입니다.
+// HumorPost 엔티티와 1 : N 관계입니다.
+// ChampionPost 엔티티와 1 : N 관계입니다.
+// --
+// FreePostComment 엔티티와 1 : N 관계입니다.
+// HumorPostCommet 엔티티와 1 : N 관계입니다.
+// ChampionPostComment 엔티티와 1 : N 관계입니다.
 @Entity({
   engine: 'InnoDB',
 })
