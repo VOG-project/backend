@@ -67,12 +67,8 @@ export class UploadsService {
 
       // DB에 유저 프로필 이미지의 경로를 삽입하기 위해 S3에 저장된 이미지 URl 값을 만듭니다.
       const fileUrl = process.env.AWS_S3_File_URL + filePath;
-      const updatedResult = await this.userRepository.updateProfileUrl(
-        userId,
-        fileUrl,
-      );
 
-      return updatedResult;
+      return await this.userRepository.updateProfileUrl(userId, fileUrl);
     } catch (err) {
       throw new HttpException(
         `[S3 ERROR] uploadUserProfileImageFile: ${err.message}`,
