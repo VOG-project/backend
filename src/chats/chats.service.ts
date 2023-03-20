@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, HttpException } from '@nestjs/common';
 import { ChatRegisterRoomRequestDto } from './dto/chat.request.dto';
 import { ChatsRepository } from './chats.repository';
 import { v4 } from 'uuid';
@@ -11,7 +11,16 @@ export class ChatsService {
   async registerChatRoom(
     data: ChatRegisterRoomRequestDto,
   ): Promise<ChatRegisterRoomResponseDto> {
+    const { userId } = data;
+    const existedUser = await this.chatRepository.existsByUserId(userId);
+
+    console.log(existedUser);
+    if (existedUser) {
+      throw new HttpException('이미 참여 중인 채팅방이 존재합니다.', 401);
+    }
+
     const roomId = v4();
+
     await this.chatRepository.create(data, roomId);
     return await this.chatRepository.findByRoomId(roomId);
   }
