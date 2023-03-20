@@ -1,10 +1,17 @@
-import { Column, Entity, PrimaryColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  ManyToOne,
+  OneToMany,
+  PrimaryColumn,
+} from 'typeorm';
 import { CreatedUpdatedDate } from 'src/commonEntities/date.common.entity';
 
 @Entity({
   name: 'chatRoom',
 })
-export class ChatEntity extends CreatedUpdatedDate {
+export class ChatRoom extends CreatedUpdatedDate {
   @PrimaryColumn({
     type: 'varchar',
     length: 100,
@@ -27,4 +34,40 @@ export class ChatEntity extends CreatedUpdatedDate {
     type: 'int',
   })
   maximumMember: number;
+
+  @OneToMany(
+    () => ChatParticipant,
+    (chatParticipant) => chatParticipant.chatRoom,
+  )
+  chatParticipant: ChatParticipant[];
+}
+
+@Entity({
+  name: 'chatParticipant',
+})
+export class ChatParticipant {
+  @PrimaryColumn({
+    type: 'int',
+  })
+  userId: number;
+
+  @Column({
+    type: 'varchar',
+    length: 50,
+    unique: true,
+  })
+  socketId: string;
+
+  @Column({
+    type: 'varchar',
+    length: 20,
+  })
+  nickname: string;
+
+  @ManyToOne(() => ChatRoom, (chatRoom) => chatRoom.chatParticipant, {
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE',
+  })
+  @JoinColumn({ name: 'roomId' })
+  chatRoom: ChatRoom;
 }
