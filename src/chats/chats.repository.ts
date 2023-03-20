@@ -5,7 +5,7 @@ import { ChatRegisterRoomRequestDto } from './dto/chat.request.dto';
 import { HttpException } from '@nestjs/common';
 import { ChatRegisterRoomResponseDto } from './dto/chat.response.dto';
 
-export class ChatRepository {
+export class ChatsRepository {
   constructor(
     @InjectRepository(ChatEntity)
     private readonly chatModel: Repository<ChatEntity>,
