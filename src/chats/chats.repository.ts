@@ -23,6 +23,8 @@ export class ChatRepository {
           maximumMember,
         })
         .execute();
+
+      return await this.findByRoomId(roomId);
     } catch (err) {
       throw new HttpException(`[MYSQL ERROR] create: ${err.message}`, 500);
     }
