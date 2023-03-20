@@ -14,7 +14,6 @@ export class ChatsService {
     const { userId } = data;
     const existedUser = await this.chatRepository.existsByUserId(userId);
 
-    console.log(existedUser);
     if (existedUser) {
       throw new HttpException('이미 참여 중인 채팅방이 존재합니다.', 401);
     }
