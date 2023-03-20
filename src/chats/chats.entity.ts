@@ -1,7 +1,9 @@
 import { Column, Entity, PrimaryColumn } from 'typeorm';
 import { CreatedUpdatedDate } from 'src/commonEntities/date.common.entity';
 
-@Entity()
+@Entity({
+  name: 'chatRoom',
+})
 export class ChatEntity extends CreatedUpdatedDate {
   @PrimaryColumn({
     type: 'varchar',
