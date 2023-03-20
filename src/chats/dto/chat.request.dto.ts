@@ -1,6 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsNotEmpty, IsString, IsInt } from 'class-validator';
-import { CreatedUpdatedDate } from 'src/commonEntities/date.common.entity';
 
 export class ChatRegisterRoomRequestDto {
   @ApiProperty({
@@ -17,5 +16,5 @@ export class ChatRegisterRoomRequestDto {
   })
   @IsNotEmpty()
   @IsInt()
-  maximum: number;
+  maximumMember: number;
 }
