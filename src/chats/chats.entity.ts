@@ -66,7 +66,6 @@ export class ChatParticipant {
 
   @ManyToOne(() => ChatRoom, (chatRoom) => chatRoom.chatParticipant, {
     onDelete: 'CASCADE',
-    onUpdate: 'CASCADE',
   })
   @JoinColumn({ name: 'roomId' })
   chatRoom: ChatRoom;
