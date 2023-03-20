@@ -13,7 +13,7 @@ import { ChatRegisterRoomResponseDto } from './dto/chat.response.dto';
 export class ChatsController {
   constructor(private readonly chatService: ChatsService) {}
 
-  @Post()
+  @Post('room')
   @ApiOperation({
     summary: '채팅방 생성 API',
     tags: ['chats'],
