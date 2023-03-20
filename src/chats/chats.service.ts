@@ -12,7 +12,7 @@ export class ChatsService {
     data: ChatRegisterRoomRequestDto,
   ): Promise<ChatRegisterRoomResponseDto> {
     const roomId = v4();
-
-    return await this.chatRepository.create(data, roomId);
+    await this.chatRepository.create(data, roomId);
+    return await this.chatRepository.findByRoomId(roomId);
   }
 }

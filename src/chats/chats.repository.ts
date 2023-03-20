@@ -14,7 +14,7 @@ export class ChatsRepository {
   async create(
     data: ChatRegisterRoomRequestDto,
     roomId: string,
-  ): Promise<ChatRegisterRoomResponseDto> {
+  ): Promise<void> {
     try {
       const { title, maximumMember } = data;
 
@@ -27,8 +27,6 @@ export class ChatsRepository {
           maximumMember,
         })
         .execute();
-
-      return await this.findByRoomId(roomId);
     } catch (err) {
       throw new HttpException(`[MYSQL ERROR] create: ${err.message}`, 500);
     }
@@ -37,8 +35,8 @@ export class ChatsRepository {
   async findByRoomId(roomId: string): Promise<ChatRegisterRoomResponseDto> {
     try {
       return await this.chatModel
-        .createQueryBuilder()
-        .select()
+        .createQueryBuilder('c')
+        .select(['c.roomId', 'c.title', 'c.currentMember', 'c.maximumMember'])
         .where('roomId = :roomId', { roomId })
         .getOne();
     } catch (err) {
