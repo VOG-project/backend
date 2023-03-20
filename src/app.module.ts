@@ -20,6 +20,7 @@ import {
   HumorPostComment,
 } from './comments/comments.entity';
 import { ChatsModule } from './chats/chats.module';
+import { ChatEntity } from './chats/chats.entity';
 
 @Module({
   imports: [
@@ -41,6 +42,7 @@ import { ChatsModule } from './chats/chats.module';
         FreePostComment,
         HumorPostComment,
         ChampionshipPostComment,
+        ChatEntity,
       ],
       synchronize: true,
       database: 'vog',
