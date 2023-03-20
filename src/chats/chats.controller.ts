@@ -1,6 +1,6 @@
 import { Controller, UseFilters, UseInterceptors } from '@nestjs/common';
 import { Body, Post } from '@nestjs/common/decorators';
-import { ApiOperation } from '@nestjs/swagger';
+import { ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { HttpExceptionFilter } from './../filters/http-exception.filter';
 import { SuccessInterceptor } from './../interceptors/success.interceptor';
 import { ChatRegisterRoomRequestDto } from './dto/chat.request.dto';
@@ -17,6 +17,10 @@ export class ChatsController {
   @ApiOperation({
     summary: '채팅방 생성 API',
     tags: ['chats'],
+  })
+  @ApiResponse({
+    description: '생성한 채팅방의 정보 반환',
+    type: ChatRegisterRoomResponseDto,
   })
   async registerChatRoom(
     @Body() body: ChatRegisterRoomRequestDto,
