@@ -5,6 +5,7 @@ import { HttpExceptionFilter } from './../filters/http-exception.filter';
 import { SuccessInterceptor } from './../interceptors/success.interceptor';
 import { ChatRegisterRoomRequestDto } from './dto/chat.request.dto';
 import { ChatsService } from './chats.service';
+import { ChatRegisterRoomResponseDto } from './dto/chat.response.dto';
 
 @Controller('chats')
 @UseFilters(HttpExceptionFilter)
@@ -17,7 +18,9 @@ export class ChatsController {
     summary: '채팅방 생성 API',
     tags: ['chats'],
   })
-  async registerChatRoom(body: ChatRegisterRoomRequestDto): Promise<any> {
+  async registerChatRoom(
+    body: ChatRegisterRoomRequestDto,
+  ): Promise<ChatRegisterRoomResponseDto> {
     return await this.chatService.registerChatRoom(body);
   }
 }
