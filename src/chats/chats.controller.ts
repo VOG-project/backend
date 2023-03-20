@@ -1,5 +1,5 @@
 import { Controller, UseFilters, UseInterceptors } from '@nestjs/common';
-import { Post } from '@nestjs/common/decorators';
+import { Body, Post } from '@nestjs/common/decorators';
 import { ApiOperation } from '@nestjs/swagger';
 import { HttpExceptionFilter } from './../filters/http-exception.filter';
 import { SuccessInterceptor } from './../interceptors/success.interceptor';
@@ -19,8 +19,9 @@ export class ChatsController {
     tags: ['chats'],
   })
   async registerChatRoom(
-    body: ChatRegisterRoomRequestDto,
+    @Body() body: ChatRegisterRoomRequestDto,
   ): Promise<ChatRegisterRoomResponseDto> {
+    console.log(body);
     return await this.chatService.registerChatRoom(body);
   }
 }
