@@ -1,5 +1,5 @@
 import { InjectRepository } from '@nestjs/typeorm';
-import { ChatRoom } from './chats.entity';
+import { ChatParticipant, ChatRoom } from './chats.entity';
 import { Repository } from 'typeorm';
 import { ChatRegisterRoomRequestDto } from './dto/chat.request.dto';
 import { HttpException } from '@nestjs/common';
@@ -9,6 +9,8 @@ export class ChatsRepository {
   constructor(
     @InjectRepository(ChatRoom)
     private readonly chatRoomModel: Repository<ChatRoom>,
+    @InjectRepository(ChatParticipant)
+    private readonly chatParticipant: Repository<ChatParticipant>,
   ) {}
 
   async create(
@@ -42,6 +44,21 @@ export class ChatsRepository {
     } catch (err) {
       throw new HttpException(
         `[MYSQL ERROR] findByRoomId: ${err.message}`,
+        500,
+      );
+    }
+  }
+
+  async existsByUserId(userId: number): Promise<any> {
+    try {
+      return await this.chatParticipant
+        .createQueryBuilder()
+        .select()
+        .where('userId = :userId', { userId })
+        .getExists();
+    } catch (err) {
+      throw new HttpException(
+        `[MYSQL ERROR] existsByUserId: ${err.messsage}`,
         500,
       );
     }
