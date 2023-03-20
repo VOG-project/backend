@@ -19,6 +19,7 @@ import {
   FreePostComment,
   HumorPostComment,
 } from './comments/comments.entity';
+import { ChatsModule } from './chats/chats.module';
 
 @Module({
   imports: [
@@ -57,6 +58,7 @@ import {
     PostsModule,
     UploadsModule,
     CommentsModule,
+    ChatsModule,
   ],
   controllers: [AppController],
   providers: [AppService],
