@@ -3,6 +3,14 @@ import { IsNotEmpty, IsString, IsInt } from 'class-validator';
 
 export class ChatRegisterRoomRequestDto {
   @ApiProperty({
+    example: 265,
+    description: '채팅방 생성 유저 아이디(PK)',
+  })
+  @IsNotEmpty()
+  @IsInt()
+  userId: number;
+
+  @ApiProperty({
     example: '미드 정글 두 자리 남습니다.',
     description: '방 제목',
   })
