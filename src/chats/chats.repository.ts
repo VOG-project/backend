@@ -27,4 +27,19 @@ export class ChatRepository {
       throw new HttpException(`[MYSQL ERROR] create: ${err.message}`, 500);
     }
   }
+
+  async findByRoomId(roomId: string): Promise<any> {
+    try {
+      return await this.chatModel
+        .createQueryBuilder()
+        .select()
+        .where('roomId = :roomId', { roomId })
+        .getOne();
+    } catch (err) {
+      throw new HttpException(
+        `[MYSQL ERROR] findByRoomId: ${err.message}`,
+        500,
+      );
+    }
+  }
 }
