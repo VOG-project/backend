@@ -1,5 +1,5 @@
 import { InjectRepository } from '@nestjs/typeorm';
-import { ChatEntity } from './chats.entity';
+import { ChatRoom } from './chats.entity';
 import { Repository } from 'typeorm';
 import { ChatRegisterRoomRequestDto } from './dto/chat.request.dto';
 import { HttpException } from '@nestjs/common';
@@ -7,8 +7,8 @@ import { ChatRegisterRoomResponseDto } from './dto/chat.response.dto';
 
 export class ChatsRepository {
   constructor(
-    @InjectRepository(ChatEntity)
-    private readonly chatModel: Repository<ChatEntity>,
+    @InjectRepository(ChatRoom)
+    private readonly chatRoomModel: Repository<ChatRoom>,
   ) {}
 
   async create(
@@ -18,7 +18,7 @@ export class ChatsRepository {
     try {
       const { title, maximumMember } = data;
 
-      await this.chatModel
+      await this.chatRoomModel
         .createQueryBuilder()
         .insert()
         .values({
@@ -34,7 +34,7 @@ export class ChatsRepository {
 
   async findByRoomId(roomId: string): Promise<ChatRegisterRoomResponseDto> {
     try {
-      return await this.chatModel
+      return await this.chatRoomModel
         .createQueryBuilder('c')
         .select(['c.roomId', 'c.title', 'c.currentMember', 'c.maximumMember'])
         .where('roomId = :roomId', { roomId })
