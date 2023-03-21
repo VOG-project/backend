@@ -15,10 +15,7 @@ import {
 } from './dto/socket.request.dto';
 import { ChatsRepository } from './chats.repository';
 import { ChatsService } from './chats.service';
-import { UseFilters } from '@nestjs/common';
-import { HttpExceptionFilter } from './../filters/http-exception.filter';
 
-@UseFilters(HttpExceptionFilter)
 @WebSocketGateway(80, { namespace: 'chat' })
 export class ChatsGateway implements OnGatewayConnection {
   constructor(
@@ -45,8 +42,9 @@ export class ChatsGateway implements OnGatewayConnection {
       socket.disconnect();
     }
 
-    this.chatRepository.addMemberCountOne(roomId);
-    this.chatRepository.createSocketInfo(body);
+    await this.chatRepository.addMemberCountOne(roomId);
+    await this.chatRepository.createSocketInfo(body);
+
     socket.join(roomId);
 
     const chatInfo = await this.chatRepository.findChatRoomAndParticipantInfo(
