@@ -4,6 +4,7 @@ import { Repository } from 'typeorm';
 import { ChatRegisterRoomRequestDto } from './dto/chat.request.dto';
 import { HttpException } from '@nestjs/common';
 import { ChatRegisterRoomResponseDto } from './dto/chat.response.dto';
+import { SocketRegisterInfoRequestDto } from './dto/socket.request.dto';
 
 export class ChatsRepository {
   constructor(
@@ -101,6 +102,28 @@ export class ChatsRepository {
     } catch (err) {
       throw new HttpException(
         `[MYSQL ERROR] findChatRoomAndParticipantInfo: ${err.message}`,
+        500,
+      );
+    }
+  }
+
+  async createSocketInfo(data: SocketRegisterInfoRequestDto) {
+    const { userId, roomId, socketId, nickname } = data;
+
+    try {
+      await this.chatParticipant
+        .createQueryBuilder()
+        .insert()
+        .values({
+          userId,
+          socketId,
+          nickname,
+          roomId,
+        })
+        .execute();
+    } catch (err) {
+      throw new HttpException(
+        `[MYSQL ERROR] createSocketInfo: ${err.message}`,
         500,
       );
     }
