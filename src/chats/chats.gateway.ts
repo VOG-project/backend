@@ -75,11 +75,10 @@ export class ChatsGateway implements OnGatewayConnection, OnGatewayDisconnect {
     }
   }
 
-  @SubscribeMessage('newUser')
-  handleNewUser(
-    @MessageBody() body: any,
-    @ConnectedSocket() socket: Socket,
-  ): string {
-    return 'Hello world!';
+  @SubscribeMessage('inputChat')
+  handleNewUser(@ConnectedSocket() socket: Socket, @MessageBody() body: any) {
+    const { content, nickname, roomId } = body;
+
+    socket.to(roomId).emit('inputChat', { content, nickname, roomId });
   }
 }
