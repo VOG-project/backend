@@ -16,3 +16,13 @@ export class SocketRegisterInfoRequestDto {
   @IsString()
   socketId: string;
 }
+
+export class SocketLeaveChatRequestDto {
+  @IsNotEmpty()
+  @IsInt()
+  userId: number;
+
+  @IsNotEmpty()
+  @IsString()
+  roomId: string;
+}
