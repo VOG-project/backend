@@ -28,32 +28,34 @@ export class ChatsGateway implements OnGatewayConnection {
     @ConnectedSocket() socket: Socket,
     @MessageBody() body: SocketRegisterInfoRequestDto,
   ) {
-    const { userId, roomId } = body;
+    try {
+      const { userId, roomId } = body;
 
-    body.socketId = socket.id;
+      body.socketId = socket.id;
 
-    const { canParticipant } = await this.chatService.acceptParticipation(
-      { userId },
-      { roomId },
-    );
+      const { canParticipant } = await this.chatService.acceptParticipation(
+        { userId },
+        { roomId },
+      );
 
-    if (!canParticipant) {
-      socket.emit('acceptParticipant', '이미 가득 찬 방입니다.');
-      socket.disconnect();
+      if (!canParticipant) {
+        socket.emit('acceptParticipant', '이미 가득 찬 방입니다.');
+        socket.disconnect();
+      }
+
+      await this.chatRepository.addMemberCountOne(roomId);
+      await this.chatRepository.createSocketInfo(body);
+
+      socket.join(roomId);
+
+      const chatInfo = await this.chatRepository.findChatRoomAndParticipantInfo(
+        roomId,
+      );
+
+      socket.emit('setChat', chatInfo);
+    } catch (err) {
+      console.log(err.message);
     }
-
-    await this.chatRepository.addMemberCountOne(roomId);
-    await this.chatRepository.createSocketInfo(body);
-
-    socket.join(roomId);
-
-    const chatInfo = await this.chatRepository.findChatRoomAndParticipantInfo(
-      roomId,
-    );
-
-    console.log(chatInfo);
-
-    socket.emit('setChat', chatInfo);
   }
 
   @SubscribeMessage('leaveChatRoom')
@@ -61,33 +63,41 @@ export class ChatsGateway implements OnGatewayConnection {
     @ConnectedSocket() socket: Socket,
     @MessageBody() body: SocketLeaveChatRequestDto,
   ) {
-    const { userId, roomId } = body;
+    try {
+      const { userId, roomId } = body;
 
-    await this.chatRepository.deleteSocketInfo(userId);
-    await this.chatRepository.subtractMemberCountOne(roomId);
+      await this.chatRepository.deleteSocketInfo(userId);
+      await this.chatRepository.subtractMemberCountOne(roomId);
 
-    const { currentMember } = await this.chatRepository.findByRoomId(roomId);
+      const { currentMember } = await this.chatRepository.findByRoomId(roomId);
 
-    if (!currentMember) {
-      await this.chatRepository.deleteChatRoom(roomId);
+      if (!currentMember) {
+        await this.chatRepository.deleteChatRoom(roomId);
+      }
+    } catch (err) {
+      console.log(err);
     }
   }
 
   @SubscribeMessage('inputChat')
   handleNewUser(@ConnectedSocket() socket: Socket, @MessageBody() body: any) {
-    const { content, nickname, roomId } = body;
+    try {
+      const { content, nickname, roomId } = body;
 
-    socket.to(roomId).emit('inputChat', { content, nickname, roomId });
+      socket.to(roomId).emit('inputChat', { content, nickname, roomId });
+    } catch (err) {
+      console.log(err);
+    }
   }
 
   async handleConnection(@ConnectedSocket() socket: Socket) {
     console.log(socket.id + '가 접속됨');
   }
 
-  // async handleDisconnect(@ConnectedSocket() socket: Socket) {
-  //   const { nickname, roomId } =
-  //     await this.chatRepository.findParticipantBySocketId(socket.id);
+  async handleDisconnect(@ConnectedSocket() socket: Socket) {
+    const { nickname, roomId } =
+      await this.chatRepository.findParticipantBySocketId(socket.id);
 
-  //   socket.to(roomId).emit('leaveUser', nickname + '님이 퇴장하셨습니다.');
-  // }
+    socket.to(roomId).emit('leaveUser', nickname + '님이 퇴장하셨습니다.');
+  }
 }
