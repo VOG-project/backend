@@ -186,7 +186,7 @@ export class ChatsRepository {
     try {
       return await this.chatParticipantModel
         .createQueryBuilder('p')
-        .select(['p.nickname'])
+        .select()
         .where('socketId = :socketId', { socketId })
         .getOne();
     } catch (err) {
