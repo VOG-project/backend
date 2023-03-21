@@ -84,7 +84,7 @@ export class ChatsGateway implements OnGatewayConnection {
     try {
       const { content, nickname, roomId } = body;
 
-      socket.to(roomId).emit('inputChat', { content, nickname, roomId });
+      socket.emit('inputChat', { content, nickname, roomId });
     } catch (err) {
       console.log(err);
     }
@@ -95,9 +95,14 @@ export class ChatsGateway implements OnGatewayConnection {
   }
 
   async handleDisconnect(@ConnectedSocket() socket: Socket) {
-    const { nickname, roomId } =
-      await this.chatRepository.findParticipantBySocketId(socket.id);
+    try {
+      const { roomId } = await this.chatRepository.findParticipantBySocketId(
+        socket.id,
+      );
 
-    socket.to(roomId).emit('leaveUser', nickname + '님이 퇴장하셨습니다.');
+      socket.to(roomId).emit('leaveUser', '님이 퇴장하셨습니다.');
+    } catch (err) {
+      console.log(err.message);
+    }
   }
 }
