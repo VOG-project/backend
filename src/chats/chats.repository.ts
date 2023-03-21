@@ -121,7 +121,6 @@ export class ChatsRepository {
           'p.userId',
           'p.nickname',
           'p.socketId',
-          'p.createdAt',
         ])
         .where('c.roomId = :roomId', { roomId })
         .getOne();
