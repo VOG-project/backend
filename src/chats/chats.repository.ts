@@ -11,7 +11,7 @@ export class ChatsRepository {
     @InjectRepository(ChatRoom)
     private readonly chatRoomModel: Repository<ChatRoom>,
     @InjectRepository(ChatParticipant)
-    private readonly chatParticipant: Repository<ChatParticipant>,
+    private readonly chatParticipantModel: Repository<ChatParticipant>,
   ) {}
 
   async create(
@@ -52,7 +52,7 @@ export class ChatsRepository {
 
   async existsByUserId(userId: number): Promise<any> {
     try {
-      return await this.chatParticipant
+      return await this.chatParticipantModel
         .createQueryBuilder()
         .select()
         .where('userId = :userId', { userId })
@@ -72,6 +72,24 @@ export class ChatsRepository {
         .update()
         .set({
           currentMember: () => 'currentMember + 1',
+        })
+        .where('roomId = :roomId', { roomId })
+        .execute();
+    } catch (err) {
+      throw new HttpException(
+        `[MYSQL ERROR] addMemberCountOne: ${err.message}`,
+        500,
+      );
+    }
+  }
+
+  async subtractMemberCountOne(roomId: string): Promise<void> {
+    try {
+      await this.chatRoomModel
+        .createQueryBuilder()
+        .update()
+        .set({
+          currentMember: () => 'currentMember - 1',
         })
         .where('roomId = :roomId', { roomId })
         .execute();
@@ -111,7 +129,7 @@ export class ChatsRepository {
     const { userId, roomId, socketId, nickname } = data;
 
     try {
-      await this.chatParticipant
+      await this.chatParticipantModel
         .createQueryBuilder()
         .insert()
         .values({
@@ -124,6 +142,51 @@ export class ChatsRepository {
     } catch (err) {
       throw new HttpException(
         `[MYSQL ERROR] createSocketInfo: ${err.message}`,
+        500,
+      );
+    }
+  }
+
+  async deleteSocketInfo(userId: number) {
+    try {
+      await this.chatParticipantModel
+        .createQueryBuilder()
+        .delete()
+        .where('userId = :userId', { userId })
+        .execute();
+    } catch (err) {
+      throw new HttpException(
+        `[MYSQL ERROR] deleteSocketInfo: ${err.message}`,
+        500,
+      );
+    }
+  }
+
+  async deleteChatRoom(roomId: string) {
+    try {
+      await this.chatRoomModel
+        .createQueryBuilder()
+        .delete()
+        .where('roomId = :roomId', { roomId })
+        .execute();
+    } catch (err) {
+      throw new HttpException(
+        `[MYSQL ERROR] deleteChatRoom: ${err.message}`,
+        500,
+      );
+    }
+  }
+
+  async findParticipantBySocketId(socketId: string) {
+    try {
+      return await this.chatParticipantModel
+        .createQueryBuilder('p')
+        .select(['p.nickname'])
+        .where('socketId = :socketId', { socketId })
+        .getOne();
+    } catch (err) {
+      throw new HttpException(
+        `[MYSQL ERROR] findParticipantBySocketId: ${err.message}`,
         500,
       );
     }
