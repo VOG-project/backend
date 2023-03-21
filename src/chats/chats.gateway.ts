@@ -17,7 +17,7 @@ import { ChatsRepository } from './chats.repository';
 import { ChatsService } from './chats.service';
 
 @WebSocketGateway(80, { namespace: 'chat' })
-export class ChatsGateway implements OnGatewayDisconnect {
+export class ChatsGateway implements OnGatewayConnection, OnGatewayDisconnect {
   constructor(
     private readonly chatService: ChatsService,
     private readonly chatRepository: ChatsRepository,
@@ -73,6 +73,10 @@ export class ChatsGateway implements OnGatewayDisconnect {
     const { content, nickname, roomId } = body;
 
     socket.to(roomId).emit('inputChat', { content, nickname, roomId });
+  }
+
+  async handleConnection(@ConnectedSocket() socket: Socket) {
+    console.log(socket.id + '가 접속됨');
   }
 
   async handleDisconnect(@ConnectedSocket() socket: Socket) {
