@@ -7,9 +7,12 @@ import { ChatsRepository } from './chats.repository';
 import { v4 } from 'uuid';
 import {
   ChatAcceptParticipationResponseDto,
+  ChatGetRoomTotalCountResponseDto,
+  ChatGetRoomListResponseDto,
   ChatRegisterRoomResponseDto,
 } from './dto/chat.response.dto';
 import { ChatAcceptParticipationParamDto } from './dto/chat.param.dto';
+import { ChatGetChatRoomListQueryDto } from './dto/chat.query.dto';
 
 @Injectable()
 export class ChatsService {
@@ -59,5 +62,15 @@ export class ChatsService {
     return {
       canParticipant: true,
     };
+  }
+
+  async getChatRoomList(
+    filter: ChatGetChatRoomListQueryDto,
+  ): Promise<ChatGetRoomListResponseDto[]> {
+    return await this.chatRepository.findChatRoomList(filter);
+  }
+
+  async getChatRoomTotalCount(): Promise<ChatGetRoomTotalCountResponseDto> {
+    return await this.chatRepository.findChatRoomTotalCount();
   }
 }
