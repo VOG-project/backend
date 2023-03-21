@@ -96,11 +96,7 @@ export class ChatsGateway implements OnGatewayConnection {
 
   async handleDisconnect(@ConnectedSocket() socket: Socket) {
     try {
-      const { roomId } = await this.chatRepository.findParticipantBySocketId(
-        socket.id,
-      );
-
-      socket.to(roomId).emit('leaveUser', '님이 퇴장하셨습니다.');
+      socket.emit('leaveUser', '님이 퇴장하셨습니다.');
     } catch (err) {
       console.log(err.message);
     }
