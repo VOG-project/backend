@@ -1,11 +1,18 @@
-import { Controller, UseFilters, UseInterceptors } from '@nestjs/common';
-import { Body, Post } from '@nestjs/common/decorators';
+import { Controller, UseFilters, UseInterceptors, Get } from '@nestjs/common';
+import { Body, Param, Post } from '@nestjs/common/decorators';
 import { ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { HttpExceptionFilter } from './../filters/http-exception.filter';
 import { SuccessInterceptor } from './../interceptors/success.interceptor';
-import { ChatRegisterRoomRequestDto } from './dto/chat.request.dto';
+import {
+  ChatAcceptParticipationRequestDto,
+  ChatRegisterRoomRequestDto,
+} from './dto/chat.request.dto';
 import { ChatsService } from './chats.service';
-import { ChatRegisterRoomResponseDto } from './dto/chat.response.dto';
+import {
+  ChatAcceptParticipationResponseDto,
+  ChatRegisterRoomResponseDto,
+} from './dto/chat.response.dto';
+import { ChatAcceptParticipationParamDto } from './dto/chat.param.dto';
 
 @Controller('chats')
 @UseFilters(HttpExceptionFilter)
@@ -27,5 +34,17 @@ export class ChatsController {
   ): Promise<ChatRegisterRoomResponseDto> {
     console.log(body);
     return await this.chatService.registerChatRoom(body);
+  }
+
+  @Get('room/:roomId')
+  @ApiOperation({
+    summary: '채팅방 입장 API',
+    tags: ['chats'],
+  })
+  async acceptParticipation(
+    @Param() param: ChatAcceptParticipationParamDto,
+    @Body() body: ChatAcceptParticipationRequestDto,
+  ): Promise<ChatAcceptParticipationResponseDto> {
+    return this.chatService.acceptParticipation(body, param);
   }
 }
