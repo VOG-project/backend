@@ -17,13 +17,14 @@ import { ChatsRepository } from './chats.repository';
 import { ChatsService } from './chats.service';
 
 @WebSocketGateway(80, { namespace: 'chat' })
-export class ChatsGateway implements OnGatewayConnection, OnGatewayDisconnect {
+export class ChatsGateway implements OnGatewayDisconnect {
   constructor(
     private readonly chatService: ChatsService,
     private readonly chatRepository: ChatsRepository,
   ) {}
 
-  async handleConnection(
+  @SubscribeMessage('enterChatRoom')
+  async handleEnterChatRoom(
     @ConnectedSocket() socket: Socket,
     @MessageBody() body: SocketRegisterInfoRequestDto,
   ) {
@@ -50,14 +51,6 @@ export class ChatsGateway implements OnGatewayConnection, OnGatewayDisconnect {
     socket.emit('setChat', chatInfo);
   }
 
-  async handleDisconnect(@ConnectedSocket() socket: Socket) {
-    const { nickname } = await this.chatRepository.findParticipantBySocketId(
-      socket.id,
-    );
-
-    socket.broadcast.emit('leaveUser', nickname + '님이 퇴장하셨습니다.');
-  }
-
   @SubscribeMessage('leaveChatRoom')
   async handleLeaveChatRoom(
     @ConnectedSocket() socket: Socket,
@@ -80,5 +73,12 @@ export class ChatsGateway implements OnGatewayConnection, OnGatewayDisconnect {
     const { content, nickname, roomId } = body;
 
     socket.to(roomId).emit('inputChat', { content, nickname, roomId });
+  }
+
+  async handleDisconnect(@ConnectedSocket() socket: Socket) {
+    const { nickname, roomId } =
+      await this.chatRepository.findParticipantBySocketId(socket.id);
+
+    socket.to(roomId).emit('leaveUser', nickname + '님이 퇴장하셨습니다.');
   }
 }
