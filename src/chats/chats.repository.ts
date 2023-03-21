@@ -3,8 +3,13 @@ import { ChatParticipant, ChatRoom } from './chats.entity';
 import { Repository } from 'typeorm';
 import { ChatRegisterRoomRequestDto } from './dto/chat.request.dto';
 import { HttpException } from '@nestjs/common';
-import { ChatRegisterRoomResponseDto } from './dto/chat.response.dto';
+import {
+  ChatGetRoomTotalCountResponseDto,
+  ChatGetRoomListResponseDto,
+  ChatRegisterRoomResponseDto,
+} from './dto/chat.response.dto';
 import { SocketRegisterInfoRequestDto } from './dto/socket.request.dto';
+import { ChatGetChatRoomListQueryDto } from './dto/chat.query.dto';
 
 export class ChatsRepository {
   constructor(
@@ -187,6 +192,43 @@ export class ChatsRepository {
     } catch (err) {
       throw new HttpException(
         `[MYSQL ERROR] findParticipantBySocketId: ${err.message}`,
+        500,
+      );
+    }
+  }
+
+  async findChatRoomList(
+    filter: ChatGetChatRoomListQueryDto,
+  ): Promise<ChatGetRoomListResponseDto[]> {
+    const { page } = filter;
+    const count = 10;
+    try {
+      return await this.chatRoomModel
+        .createQueryBuilder('p')
+        .select()
+        .offset(count * (page - 1))
+        .limit(count)
+        .orderBy('p.no', 'DESC')
+        .getMany();
+    } catch (err) {
+      throw new HttpException(
+        `[MYSQL ERROR] findChatRoomList: ${err.message}`,
+        500,
+      );
+    }
+  }
+
+  async findChatRoomTotalCount(): Promise<ChatGetRoomTotalCountResponseDto> {
+    try {
+      const chatRoomCount = await this.chatRoomModel
+        .createQueryBuilder()
+        .select()
+        .getCount();
+
+      return { chatRoomCount };
+    } catch (err) {
+      throw new HttpException(
+        `[MYSQL ERROR] findChatRoomTotalCount: ${err.message}`,
         500,
       );
     }
