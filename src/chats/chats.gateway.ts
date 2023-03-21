@@ -49,7 +49,9 @@ export class ChatsGateway implements OnGatewayConnection {
     this.chatRepository.createSocketInfo(body);
     socket.join(roomId);
 
-    const chatInfo = this.chatRepository.findChatRoomAndParticipantInfo(roomId);
+    const chatInfo = await this.chatRepository.findChatRoomAndParticipantInfo(
+      roomId,
+    );
 
     console.log(chatInfo);
 
