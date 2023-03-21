@@ -26,3 +26,13 @@ export class ChatRegisterRoomRequestDto {
   @IsInt()
   maximumMember: number;
 }
+
+export class ChatAcceptParticipationRequestDto {
+  @ApiProperty({
+    example: 31,
+    description: '참여자 유저 아이디(PK)',
+  })
+  @IsNotEmpty()
+  @IsInt()
+  userId: number;
+}
