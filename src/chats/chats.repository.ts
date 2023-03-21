@@ -77,6 +77,31 @@ export class ChatsRepository {
     } catch (err) {
       throw new HttpException(
         `[MYSQL ERROR] addMemberCountOne: ${err.message}`,
+        500,
+      );
+    }
+  }
+
+  async findChatRoomAndParticipantInfo(roomId: string) {
+    try {
+      return await this.chatRoomModel
+        .createQueryBuilder('c')
+        .innerJoin('c.chatParticipant', 'p')
+        .select([
+          'c.roomId',
+          'c.title',
+          'c.currentMember',
+          'c.maximumMember',
+          'p.userId',
+          'p.socketId',
+          'p.nickname',
+        ])
+        .where('c.roomId = :roomId', { roomId })
+        .getOne();
+    } catch (err) {
+      throw new HttpException(
+        `[MYSQL ERROR] findChatRoomAndParticipantInfo: ${err.message}`,
+        500,
       );
     }
   }
