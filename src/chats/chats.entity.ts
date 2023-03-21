@@ -46,6 +46,8 @@ export class ChatRoom extends CreatedUpdatedDate {
   name: 'chatParticipant',
 })
 export class ChatParticipant {
+  // socketId를 PK로 사용하지 않는 이유는 socketId가 발급되기 전에
+  // DB에 참여자 데이터가 존재하는지 확인해야하기 때문
   @PrimaryColumn({
     type: 'int',
   })
@@ -63,6 +65,11 @@ export class ChatParticipant {
     length: 20,
   })
   nickname: string;
+
+  @Column({
+    type: 'varchar',
+  })
+  roomId: string;
 
   @ManyToOne(() => ChatRoom, (chatRoom) => chatRoom.chatParticipant, {
     onDelete: 'CASCADE',
