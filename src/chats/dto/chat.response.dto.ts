@@ -25,3 +25,11 @@ export class ChatRegisterRoomResponseDto {
   })
   maximumMember: number;
 }
+
+export class ChatAcceptParticipationResponseDto {
+  @ApiProperty({
+    example: true,
+    description: '채팅방 참여 가능 여부',
+  })
+  canParticipant: boolean;
+}
