@@ -17,7 +17,7 @@ import { ChatsRepository } from './chats.repository';
 import { ChatsService } from './chats.service';
 
 @WebSocketGateway(80, { namespace: 'chat' })
-export class ChatsGateway implements OnGatewayConnection, OnGatewayDisconnect {
+export class ChatsGateway implements OnGatewayConnection {
   constructor(
     private readonly chatService: ChatsService,
     private readonly chatRepository: ChatsRepository,
@@ -43,8 +43,8 @@ export class ChatsGateway implements OnGatewayConnection, OnGatewayDisconnect {
     }
 
     this.chatRepository.addMemberCountOne(roomId);
-
     this.chatRepository.createSocketInfo(body);
+    socket.join(roomId);
 
     const chatInfo = this.chatRepository.findChatRoomAndParticipantInfo(roomId);
 
@@ -79,10 +79,10 @@ export class ChatsGateway implements OnGatewayConnection, OnGatewayDisconnect {
     console.log(socket.id + '가 접속됨');
   }
 
-  async handleDisconnect(@ConnectedSocket() socket: Socket) {
-    const { nickname, roomId } =
-      await this.chatRepository.findParticipantBySocketId(socket.id);
+  // async handleDisconnect(@ConnectedSocket() socket: Socket) {
+  //   const { nickname, roomId } =
+  //     await this.chatRepository.findParticipantBySocketId(socket.id);
 
-    socket.to(roomId).emit('leaveUser', nickname + '님이 퇴장하셨습니다.');
-  }
+  //   socket.to(roomId).emit('leaveUser', nickname + '님이 퇴장하셨습니다.');
+  // }
 }
