@@ -63,4 +63,21 @@ export class ChatsRepository {
       );
     }
   }
+
+  async addMemberCountOne(roomId: string): Promise<void> {
+    try {
+      await this.chatRoomModel
+        .createQueryBuilder()
+        .update()
+        .set({
+          currentMember: () => 'currentMember + 1',
+        })
+        .where('roomId = :roomId', { roomId })
+        .execute();
+    } catch (err) {
+      throw new HttpException(
+        `[MYSQL ERROR] addMemberCountOne: ${err.message}`,
+      );
+    }
+  }
 }
