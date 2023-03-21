@@ -9,7 +9,10 @@ import {
   OnGatewayDisconnect,
 } from '@nestjs/websockets/interfaces';
 import { Socket } from 'socket.io';
-import { SocketRegisterInfoRequestDto } from './dto/socket.request.dto';
+import {
+  SocketLeaveChatRequestDto,
+  SocketRegisterInfoRequestDto,
+} from './dto/socket.request.dto';
 import { ChatsRepository } from './chats.repository';
 import { ChatsService } from './chats.service';
 
@@ -47,9 +50,29 @@ export class ChatsGateway implements OnGatewayConnection, OnGatewayDisconnect {
     socket.emit('setChat', chatInfo);
   }
 
-  handleDisconnect(@ConnectedSocket() socket: Socket) {
-    
-    socket.broadcast.emit('leaveUser', socket.id + '님이 퇴장하셨습니다.');
+  async handleDisconnect(@ConnectedSocket() socket: Socket) {
+    const { nickname } = await this.chatRepository.findParticipantBySocketId(
+      socket.id,
+    );
+
+    socket.broadcast.emit('leaveUser', nickname + '님이 퇴장하셨습니다.');
+  }
+
+  @SubscribeMessage('leaveChatRoom')
+  async handleLeaveChatRoom(
+    @ConnectedSocket() socket: Socket,
+    @MessageBody() body: SocketLeaveChatRequestDto,
+  ) {
+    const { userId, roomId } = body;
+
+    await this.chatRepository.deleteSocketInfo(userId);
+    await this.chatRepository.subtractMemberCountOne(roomId);
+
+    const { currentMember } = await this.chatRepository.findByRoomId(roomId);
+
+    if (!currentMember) {
+      await this.chatRepository.deleteChatRoom(roomId);
+    }
   }
 
   @SubscribeMessage('newUser')
