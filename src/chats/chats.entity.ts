@@ -1,6 +1,7 @@
 import {
   Column,
   Entity,
+  Generated,
   JoinColumn,
   ManyToOne,
   OneToMany,
@@ -34,6 +35,13 @@ export class ChatRoom extends CreatedUpdatedDate {
     type: 'int',
   })
   maximumMember: number;
+
+  @Column({
+    type: 'int',
+    unique: true,
+  })
+  @Generated('increment')
+  no: number;
 
   @OneToMany(
     () => ChatParticipant,
