@@ -112,13 +112,15 @@ export class ChatsRepository {
         .createQueryBuilder('c')
         .innerJoin('c.chatParticipant', 'p')
         .select([
+          'c.no',
           'c.roomId',
           'c.title',
           'c.currentMember',
           'c.maximumMember',
+          'c.createdAt',
           'p.userId',
-          'p.socketId',
           'p.nickname',
+          'p.socketId',
         ])
         .where('c.roomId = :roomId', { roomId })
         .getOne();
