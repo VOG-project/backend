@@ -74,6 +74,8 @@ export class ChatsGateway implements OnGatewayConnection {
       if (!currentMember) {
         await this.chatRepository.deleteChatRoom(roomId);
       }
+
+      socket.emit('leaveChat', { exit: true });
     } catch (err) {
       console.log(err);
     }
