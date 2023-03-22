@@ -11,12 +11,6 @@ import { User } from './users/users.entity';
 import { AuthModule } from './auth/auth.module';
 import { RedisModule } from '@liaoliaots/nestjs-redis';
 import { UploadsModule } from './uploads/uploads.module';
-import { CommentsModule } from './comments/comments.module';
-import {
-  ChampionshipPostComment,
-  FreePostComment,
-  HumorPostComment,
-} from './comments/comments.entity';
 import { ChatsModule } from './chats/chats.module';
 import { ChatParticipant, ChatRoom } from './chats/chats.entity';
 
@@ -32,14 +26,7 @@ import { ChatParticipant, ChatRoom } from './chats/chats.entity';
       port: parseInt(process.env.MYSQL_PORT, 10),
       username: process.env.MYSQL_USER,
       password: process.env.MYSQL_PASSWORD,
-      entities: [
-        User,
-        FreePostComment,
-        HumorPostComment,
-        ChampionshipPostComment,
-        ChatRoom,
-        ChatParticipant,
-      ],
+      entities: [User, ChatRoom, ChatParticipant],
       synchronize: true,
       database: 'vog',
       logging: true,
@@ -54,7 +41,6 @@ import { ChatParticipant, ChatRoom } from './chats/chats.entity';
     UsersModule,
     AuthModule,
     UploadsModule,
-    CommentsModule,
     ChatsModule,
   ],
   controllers: [AppController],
