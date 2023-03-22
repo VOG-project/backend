@@ -45,5 +45,5 @@ export class PostEntireResponseDto {
 }
 
 export class PostPkIdResponseDto {
-  id: number;
+  postId: number;
 }
