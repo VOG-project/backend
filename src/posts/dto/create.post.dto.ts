@@ -20,7 +20,7 @@ export class PostRequestDto {
 
   @ApiProperty({
     example: 'free',
-    description: '게시판 카테고리(free | humor | championship',
+    description: '게시판 카테고리(free | humor | championship)',
   })
   @IsNotEmpty()
   @IsString()
