@@ -43,3 +43,7 @@ export class PostEntireResponseDto {
   })
   updatedAt: Date;
 }
+
+export class PostPkIdResponseDto {
+  id: number;
+}
