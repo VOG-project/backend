@@ -24,5 +24,5 @@ export class PostRequestDto {
   })
   @IsNotEmpty()
   @IsString()
-  boardCategory: string;
+  postCategory: string;
 }
