@@ -8,8 +8,6 @@ import {
 import { CreatedUpdatedDate } from 'src/commonEntities/date.common.entity';
 import { IsEmail, IsString, IsInt, IsNotEmpty } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
-import { FreePost, HumorPost } from 'src/posts/posts.entity';
-import { ChampionshipPost } from './../posts/posts.entity';
 import {
   ChampionshipPostComment,
   FreePostComment,
@@ -106,18 +104,6 @@ export class User extends CreatedUpdatedDate {
     default: `https://vog-image-storage.s3.ap-northeast-2.amazonaws.com/user/default.jpg`,
   })
   profileUrl: string;
-
-  @OneToMany(() => FreePost, (freePost) => freePost.user)
-  freePost: FreePost[];
-
-  @OneToMany(() => HumorPost, (humorPost) => humorPost.user)
-  humorPost: HumorPost[];
-
-  @OneToMany(
-    () => ChampionshipPost,
-    (championshipPost) => championshipPost.user,
-  )
-  championshipPost: ChampionshipPost[];
 
   @OneToMany(() => FreePostComment, (freePostComment) => freePostComment.user)
   freePostComment: FreePostComment[];
