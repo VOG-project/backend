@@ -13,6 +13,7 @@ import { RedisModule } from '@liaoliaots/nestjs-redis';
 import { UploadsModule } from './uploads/uploads.module';
 import { ChatsModule } from './chats/chats.module';
 import { ChatParticipant, ChatRoom } from './chats/chats.entity';
+import { PostsModule } from './posts/posts.module';
 
 @Module({
   imports: [
@@ -42,6 +43,7 @@ import { ChatParticipant, ChatRoom } from './chats/chats.entity';
     AuthModule,
     UploadsModule,
     ChatsModule,
+    PostsModule,
   ],
   controllers: [AppController],
   providers: [AppService],
