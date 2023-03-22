@@ -10,8 +10,6 @@ import { UsersModule } from './users/users.module';
 import { User } from './users/users.entity';
 import { AuthModule } from './auth/auth.module';
 import { RedisModule } from '@liaoliaots/nestjs-redis';
-import { PostsModule } from './posts/posts.module';
-import { FreePost, HumorPost, ChampionshipPost } from './posts/posts.entity';
 import { UploadsModule } from './uploads/uploads.module';
 import { CommentsModule } from './comments/comments.module';
 import {
@@ -36,9 +34,6 @@ import { ChatParticipant, ChatRoom } from './chats/chats.entity';
       password: process.env.MYSQL_PASSWORD,
       entities: [
         User,
-        FreePost,
-        HumorPost,
-        ChampionshipPost,
         FreePostComment,
         HumorPostComment,
         ChampionshipPostComment,
@@ -58,7 +53,6 @@ import { ChatParticipant, ChatRoom } from './chats/chats.entity';
     }),
     UsersModule,
     AuthModule,
-    PostsModule,
     UploadsModule,
     CommentsModule,
     ChatsModule,
