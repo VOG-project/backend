@@ -96,11 +96,12 @@ export class ChatsGateway implements OnGatewayConnection {
     console.log(socket.id + '가 접속됨');
   }
 
-  async handleDisconnect(@ConnectedSocket() socket: Socket) {
-    try {
-      socket.emit('leaveUser', '님이 퇴장하셨습니다.');
-    } catch (err) {
-      console.log(err.message);
-    }
-  }
+  // async handleDisconnect(@ConnectedSocket() socket: Socket) {
+  //   try {
+  //     socket.emit('leaveUser', '님이 퇴장하셨습니다.');
+  //     socket.disconnect();
+  //   } catch (err) {
+  //     console.log(err.message);
+  //   }
+  // }
 }
