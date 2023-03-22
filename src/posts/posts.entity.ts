@@ -1,10 +1,11 @@
+import { CreatedUpdatedDate } from 'src/commonEntities/date.common.entity';
 import { Column, Entity, Index, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity({
   name: 'post',
 })
 @Index('idx_1_postCategory', ['postCategory'])
-export class PostEntity {
+export class PostEntity extends CreatedUpdatedDate {
   @PrimaryGeneratedColumn()
   id: number;
 
