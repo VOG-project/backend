@@ -3,20 +3,25 @@ import { PostEntity } from './posts.entity';
 import { Repository } from 'typeorm';
 import { PostRequestDto } from './dto/create.post.dto';
 import { HttpException } from '@nestjs/common';
-import { PostEntireResponseDto } from './dto/response.post.dto';
+import {
+  PostEntireResponseDto,
+  PostPkIdResponseDto,
+} from './dto/response.post.dto';
 
 export class PostsRepository {
   constructor(
     @InjectRepository(PostEntity) private readonly post: Repository<PostEntity>,
   ) {}
 
-  async create(postRequestDto: PostRequestDto): Promise<void> {
+  async create(postRequestDto: PostRequestDto): Promise<PostPkIdResponseDto> {
     try {
-      await this.post
+      const insertedPost = await this.post
         .createQueryBuilder()
         .insert()
         .values(postRequestDto)
         .execute();
+
+      return { postId: insertedPost.identifiers[0].id };
     } catch (err) {
       throw new HttpException(`[MYSQL ERROR] create: ${err.message}`, 500);
     }
