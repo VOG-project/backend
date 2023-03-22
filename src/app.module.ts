@@ -14,6 +14,7 @@ import { UploadsModule } from './uploads/uploads.module';
 import { ChatsModule } from './chats/chats.module';
 import { ChatParticipant, ChatRoom } from './chats/chats.entity';
 import { PostsModule } from './posts/posts.module';
+import { PostEntity } from 'src/posts/posts.entity';
 
 @Module({
   imports: [
@@ -27,7 +28,7 @@ import { PostsModule } from './posts/posts.module';
       port: parseInt(process.env.MYSQL_PORT, 10),
       username: process.env.MYSQL_USER,
       password: process.env.MYSQL_PASSWORD,
-      entities: [User, ChatRoom, ChatParticipant],
+      entities: [User, ChatRoom, ChatParticipant, PostEntity],
       synchronize: true,
       database: 'vog',
       logging: true,
