@@ -20,4 +20,12 @@ export class PostsRepository {
       throw new HttpException(`[MYSQL ERROR] create: ${err.message}`, 500);
     }
   }
+
+  async findOneById(id: number): Promise<any> {
+    return await this.post
+      .createQueryBuilder('p')
+      .select()
+      .where('id = :id', { id })
+      .getOne();
+  }
 }
