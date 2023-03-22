@@ -5,7 +5,7 @@ import {
   Post,
   Body,
 } from '@nestjs/common';
-import { ApiOperation } from '@nestjs/swagger';
+import { ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { HttpExceptionFilter } from 'src/filters/http-exception.filter';
 import { SuccessInterceptor } from './../interceptors/success.interceptor';
 import { PostRequestDto } from './dto/create.post.dto';
@@ -22,6 +22,10 @@ export class PostsController {
   @ApiOperation({
     summary: '게시물 등록 API',
     tags: ['posts'],
+  })
+  @ApiResponse({
+    description: '게시물을 등록하면 등록된 게시물 데이터를 반환합니다.',
+    type: PostEntireResponseDto,
   })
   registerPost(
     @Body() postRequestDto: PostRequestDto,
