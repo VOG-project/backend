@@ -1,4 +1,28 @@
-import { Controller } from '@nestjs/common';
+import {
+  Controller,
+  UseFilters,
+  UseInterceptors,
+  Post,
+  Body,
+} from '@nestjs/common';
+import { ApiOperation } from '@nestjs/swagger';
+import { HttpExceptionFilter } from 'src/filters/http-exception.filter';
+import { SuccessInterceptor } from './../interceptors/success.interceptor';
+import { PostRequestDto } from './dto/create.post.dto';
+import { PostsService } from './posts.service';
 
 @Controller('posts')
-export class PostsController {}
+@UseFilters(HttpExceptionFilter)
+@UseInterceptors(SuccessInterceptor)
+export class PostsController {
+  constructor(private readonly postService: PostsService) {}
+
+  @Post()
+  @ApiOperation({
+    summary: '게시물 등록 API',
+    tags: ['posts'],
+  })
+  registerPost(@Body() postRequestDto: PostRequestDto): Promise<void> {
+    return this.postService.registerPost(postRequestDto);
+  }
+}
