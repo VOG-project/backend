@@ -3,6 +3,7 @@ import { PostEntity } from './posts.entity';
 import { Repository } from 'typeorm';
 import { PostRequestDto } from './dto/create.post.dto';
 import { HttpException } from '@nestjs/common';
+import { PostEntireResponseDto } from './dto/response.post.dto';
 
 export class PostsRepository {
   constructor(
@@ -21,7 +22,7 @@ export class PostsRepository {
     }
   }
 
-  async findOneById(id: number): Promise<any> {
+  async findOneById(id: number): Promise<PostEntireResponseDto> {
     return await this.post
       .createQueryBuilder('p')
       .select()
