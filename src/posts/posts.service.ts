@@ -7,7 +7,10 @@ import { PostsRepository } from './posts.repository';
 export class PostsService {
   constructor(private readonly postRepository: PostsRepository) {}
 
-  registerPost(postRequestDto: PostRequestDto): Promise<PostEntireResponseDto> {
-    return this.postRepository.create(postRequestDto);
+  async registerPost(
+    postRequestDto: PostRequestDto,
+  ): Promise<PostEntireResponseDto> {
+    const { postId } = await this.postRepository.create(postRequestDto);
+    return this.postRepository.findOneById(postId);
   }
 }
