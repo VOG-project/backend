@@ -56,3 +56,11 @@ export class UserEntireDataReturn {
 export class UserPkIdResponseDto {
   userId: number;
 }
+
+export class UserDeletedCountReturn {
+  @ApiProperty({
+    example: 2,
+    description: '삭제된 게시물 row 개수',
+  })
+  deletedCount: number;
+}
