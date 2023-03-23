@@ -117,7 +117,7 @@ export class UserService {
       sex,
     );
 
-    return await this.userRepository.findOneByIdWithoutPassword(userId);
+    return this.userRepository.findOneByIdWithoutPassword(userId);
   }
 
   /**
