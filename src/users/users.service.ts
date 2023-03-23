@@ -1,5 +1,4 @@
 import { Injectable, HttpException } from '@nestjs/common';
-import { UserDeletedInfoRequestDto } from './dto/user.request.dto';
 import { UserRepository } from './users.repository';
 import * as bcrypt from 'bcrypt';
 import {
@@ -9,6 +8,7 @@ import {
 import { UserEntireDataReturn } from './dto/return.user.dto';
 import { UserCreateRequest } from './dto/create.user.dto';
 import { PostDeletedCountReturn } from 'src/posts/dto/return.post.dto';
+import { UserDeleteRequest } from './dto/delete.user.dto';
 
 @Injectable()
 export class UserService {
@@ -126,10 +126,10 @@ export class UserService {
    * @returns
    */
   async delete(
-    data: UserDeletedInfoRequestDto,
+    userDeleteRequest: UserDeleteRequest,
     userId: number,
   ): Promise<PostDeletedCountReturn> {
-    const { password } = data;
+    const { password } = userDeleteRequest;
 
     const user = await this.userRepository.findOneById(userId);
 
