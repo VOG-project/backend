@@ -125,7 +125,7 @@ export class UserService {
    * @param userId
    * @returns
    */
-  async delete(
+  async withdrawal(
     userDeleteRequest: UserDeleteRequest,
     userId: number,
   ): Promise<PostDeletedCountReturn> {

@@ -102,6 +102,6 @@ export class UsersController {
     @Body() userDeleteRequest: UserDeleteRequest,
     @Param('userId', ParseIntPipe) userId: number,
   ): Promise<PostDeletedCountReturn> {
-    return this.userService.delete(userDeleteRequest, userId);
+    return this.userService.withdrawal(userDeleteRequest, userId);
   }
 }
