@@ -51,6 +51,7 @@ export class PostsController {
   @ApiResponse({
     description:
       '쿼리 스트링으로 게시판 이름을 전달하면 최신 순으로 10개씩 게시물 목록을 반환합니다.',
+    type: PostListReturn,
   })
   getPostList(@Query() condition: PostGetCondition): Promise<PostListReturn[]> {
     return this.postService.getPostList(condition);
