@@ -10,12 +10,13 @@ import {
 
 export class PostsRepository {
   constructor(
-    @InjectRepository(PostEntity) private readonly post: Repository<PostEntity>,
+    @InjectRepository(PostEntity)
+    private readonly postModel: Repository<PostEntity>,
   ) {}
 
   async create(postRequestDto: PostRequestDto): Promise<PostPkIdResponseDto> {
     try {
-      const insertedPost = await this.post
+      const insertedPost = await this.postModel
         .createQueryBuilder()
         .insert()
         .values(postRequestDto)
@@ -29,13 +30,35 @@ export class PostsRepository {
 
   async findOneById(id: number): Promise<PostEntireResponseDto> {
     try {
-      return await this.post
+      return await this.postModel
         .createQueryBuilder('p')
         .select()
         .where('id = :id', { id })
         .getOne();
     } catch (err) {
       throw new HttpException(`[MYSQL ERROR] findOneById: ${err.message}`, 500);
+    }
+  }
+
+  async findPostListByBoardType(
+    board: string,
+    page: number,
+    resultRowCount: number,
+  ) {
+    try {
+      return await this.postModel
+        .createQueryBuilder()
+        .select()
+        .where('postCategory = :postCategory', { postCategory: board })
+        .offset(resultRowCount * (page - 1))
+        .limit(resultRowCount)
+        .orderBy('id', 'DESC')
+        .getMany();
+    } catch (err) {
+      throw new HttpException(
+        `[MYSQL ERROR] findPostListByBoardType: ${err.message}`,
+        500,
+      );
     }
   }
 }
