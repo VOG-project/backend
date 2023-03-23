@@ -1,5 +1,13 @@
+import { CommentEntity } from 'src/comments/comments.entity';
 import { CreatedUpdatedDate } from 'src/commonEntities/date.common.entity';
-import { Column, Entity, Index, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  Index,
+  JoinColumn,
+  OneToMany,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 
 @Entity({
   name: 'post',
@@ -30,4 +38,7 @@ export class PostEntity extends CreatedUpdatedDate {
     length: 10,
   })
   postCategory: string;
+
+  @OneToMany(() => CommentEntity, (comment) => comment.post)
+  comments: CommentEntity[];
 }

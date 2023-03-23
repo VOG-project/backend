@@ -1,5 +1,12 @@
 import { CreatedUpdatedDate } from 'src/commonEntities/date.common.entity';
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { PostEntity } from 'src/posts/posts.entity';
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 
 @Entity({
   name: 'comment',
@@ -33,4 +40,10 @@ export class CommentEntity extends CreatedUpdatedDate {
     type: 'int',
   })
   sequence: number;
+
+  @ManyToOne(() => PostEntity, (post) => post.comments)
+  @JoinColumn({
+    name: 'postId',
+  })
+  post: PostEntity;
 }
