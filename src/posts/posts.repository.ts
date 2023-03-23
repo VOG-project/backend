@@ -5,8 +5,9 @@ import { PostRequestDto } from './dto/create.post.dto';
 import { HttpException } from '@nestjs/common';
 import {
   PostEntireResponseDto,
+  PostListReturn,
   PostPkIdResponseDto,
-} from './dto/response.post.dto';
+} from './dto/return.post.dto';
 
 export class PostsRepository {
   constructor(
@@ -44,11 +45,17 @@ export class PostsRepository {
     board: string,
     page: number,
     resultRowCount: number,
-  ) {
+  ): Promise<PostListReturn[]> {
     try {
       return await this.postModel
-        .createQueryBuilder()
-        .select()
+        .createQueryBuilder('p')
+        .select([
+          'p.id',
+          'p.title',
+          'p.likeCount',
+          'p.postCategory',
+          'p.createdAt',
+        ])
         .where('postCategory = :postCategory', { postCategory: board })
         .offset(resultRowCount * (page - 1))
         .limit(resultRowCount)
