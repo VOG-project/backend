@@ -1,3 +1,3 @@
 export class CommentPkIdReturn {
-  commetId: number;
+  commentId: number;
 }
