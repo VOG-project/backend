@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, HttpException } from '@nestjs/common';
 import { PostCreateRequest } from './dto/create.post.dto';
 import { PostGetCondition } from './dto/get.post.dto';
 import { PostEntireResponseDto, PostListReturn } from './dto/return.post.dto';
@@ -18,8 +18,8 @@ export class PostsService {
   async getPostList(condition: PostGetCondition): Promise<PostListReturn[]> {
     let { board } = condition;
     const { page } = condition;
-
     const RETURN_ROW_COUNT = 10;
+
     board = board.toLowerCase();
 
     return this.postRepository.findPostListByBoardType(
@@ -27,5 +27,15 @@ export class PostsService {
       page,
       RETURN_ROW_COUNT,
     );
+  }
+
+  async removePost(postId: number) {
+    const post = await this.postRepository.findOneById(postId);
+
+    if (!post) {
+      throw new HttpException('존재하지 않는 게시물입니다.', 404);
+    }
+
+    return this.postRepository.deletePost(postId);
   }
 }
