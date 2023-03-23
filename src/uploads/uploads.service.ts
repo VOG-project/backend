@@ -1,7 +1,7 @@
 import { Injectable, HttpException } from '@nestjs/common';
 import * as AWS from 'aws-sdk';
+import { UserEntireDataReturn } from 'src/users/dto/return.user.dto';
 import { UserRepository } from './../users/users.repository';
-import { UploadUserProfileImageResponseDto } from './dto/uploads.response.dto';
 
 @Injectable()
 export class UploadsService {
@@ -57,7 +57,7 @@ export class UploadsService {
   async uploadUserProfileImageFile(
     image: Express.Multer.File,
     userId: number,
-  ): Promise<UploadUserProfileImageResponseDto> {
+  ): Promise<UserEntireDataReturn> {
     try {
       await this.deleteUserProfileImageFile(userId);
 
@@ -77,7 +77,9 @@ export class UploadsService {
       // DB에 유저 프로필 이미지의 경로를 삽입하기 위해 S3에 저장된 이미지 URl 값을 만듭니다.
       const fileUrl = process.env.AWS_S3_File_URL + filePath;
 
-      return await this.userRepository.updateProfileUrl(userId, fileUrl);
+      await this.userRepository.updateProfileUrl(userId, fileUrl);
+
+      return this.userRepository.findOneByIdWithoutPassword(userId);
     } catch (err) {
       throw new HttpException(
         `[S3 ERROR] uploadUserProfileImageFile: ${err.message}`,
