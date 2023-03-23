@@ -7,6 +7,7 @@ import {
 } from './dto/return.comment.dto';
 import { CommentDeleteCondition } from './dto/delete.comment.dto';
 import { PostsRepository } from 'src/posts/posts.repository';
+import { CommentUpdateRequest } from './dto/update.comment.dto';
 
 @Injectable()
 export class CommentsService {
@@ -21,6 +22,21 @@ export class CommentsService {
     const { commentId } = await this.commentRepository.createComment(
       commentCreateRequest,
     );
+    return await this.commentRepository.findOneById(commentId);
+  }
+
+  async modifyComment(
+    commentUpdateRequest: CommentUpdateRequest,
+    commentId: number,
+  ): Promise<CommetEntireDataReturn> {
+    const isExistedComment = await this.commentRepository.findOneById(
+      commentId,
+    );
+    if (!isExistedComment)
+      throw new HttpException('존재하지 않는 댓글입니다.', 400);
+
+    await this.commentRepository.updateComment(commentUpdateRequest, commentId);
+
     return await this.commentRepository.findOneById(commentId);
   }
 
