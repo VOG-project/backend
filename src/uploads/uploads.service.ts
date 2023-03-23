@@ -33,7 +33,6 @@ export class UploadsService {
       // default.jpg는 삭제되면 안되는 이미지 파일이기 때문에
       // key값이 default.jpg가 아닐 경우에만 삭제 작업을 진행합니다.
 
-      console.log(key);
       if (key !== this.DEFAULT_PROFILE_IMAGE) {
         await new AWS.S3()
           .deleteObject({
@@ -87,7 +86,7 @@ export class UploadsService {
 
       await this.userRepository.updateProfileUrl(userId, fileUrl);
 
-      return this.userRepository.findOneByIdWithoutPassword(userId);
+      return await this.userRepository.findOneByIdWithoutPassword(userId);
     } catch (err) {
       throw new HttpException(
         `[S3 ERROR] uploadUserProfileImageFile: ${err.message}`,

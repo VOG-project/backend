@@ -15,9 +15,9 @@ export class UserRepository {
    * @param fileUrl 유저 프로필 이미지가 저장된 S3 URL
    * @returns Object { 업데이트된 row 개수, 프로필 이미지 URL }
    */
-  updateProfileUrl(userId: number, fileUrl: string): void {
+  async updateProfileUrl(userId: number, fileUrl: string): Promise<void> {
     try {
-      this.userModel
+      await this.userModel
         .createQueryBuilder()
         .update()
         .set({
