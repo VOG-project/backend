@@ -3,7 +3,7 @@ import { PostCreateRequest } from './dto/create.post.dto';
 import { PostGetCondition } from './dto/get.post.dto';
 import {
   PostDeletedCountReturn,
-  PostEntireResponseDto,
+  PostEntireDataReturn,
   PostListReturn,
 } from './dto/return.post.dto';
 import { PostsRepository } from './posts.repository';
@@ -15,7 +15,7 @@ export class PostsService {
 
   async registerPost(
     postRequestDto: PostCreateRequest,
-  ): Promise<PostEntireResponseDto> {
+  ): Promise<PostEntireDataReturn> {
     const { postId } = await this.postRepository.create(postRequestDto);
     return this.postRepository.findOneById(postId);
   }
@@ -37,7 +37,7 @@ export class PostsService {
   async modifyPost(
     postModificationRequest: PostModificationRequest,
     postId: number,
-  ) {
+  ): Promise<PostEntireDataReturn> {
     const post = await this.postRepository.findOneById(postId);
 
     if (!post) {

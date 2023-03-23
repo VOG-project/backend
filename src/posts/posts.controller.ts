@@ -19,7 +19,7 @@ import { PostGetCondition } from './dto/get.post.dto';
 import { PostModificationRequest } from './dto/modify.post.dto';
 import {
   PostDeletedCountReturn,
-  PostEntireResponseDto,
+  PostEntireDataReturn,
   PostListReturn,
 } from './dto/return.post.dto';
 import { PostsService } from './posts.service';
@@ -37,11 +37,11 @@ export class PostsController {
   })
   @ApiResponse({
     description: '게시물을 등록하면 등록된 게시물 데이터를 반환합니다.',
-    type: PostEntireResponseDto,
+    type: PostEntireDataReturn,
   })
   registerPost(
     @Body() postRequestDto: PostCreateRequest,
-  ): Promise<PostEntireResponseDto> {
+  ): Promise<PostEntireDataReturn> {
     return this.postService.registerPost(postRequestDto);
   }
 
@@ -64,10 +64,15 @@ export class PostsController {
     summary: '게시물 수정 API',
     tags: ['posts'],
   })
+  @ApiResponse({
+    description:
+      '타이틀과 내용과 게시물 pk를 입력받아 데이터 수정 후 변경 내용을 반환합니다. 타이틀과 내용 중 수정이 없는 경우 원본 데이터를 담아 보내주시면 됩니다.',
+    type: PostEntireDataReturn,
+  })
   modifyPost(
     @Body() postModificationRequest: PostModificationRequest,
     @Param('postId', ParseIntPipe) postId: number,
-  ) {
+  ): Promise<PostEntireDataReturn> {
     return this.postService.modifyPost(postModificationRequest, postId);
   }
 

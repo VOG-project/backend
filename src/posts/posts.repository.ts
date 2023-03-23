@@ -5,7 +5,7 @@ import { PostCreateRequest } from './dto/create.post.dto';
 import { HttpException } from '@nestjs/common';
 import {
   PostDeletedCountReturn,
-  PostEntireResponseDto,
+  PostEntireDataReturn,
   PostListReturn,
   PostPkIdResponseDto,
 } from './dto/return.post.dto';
@@ -33,7 +33,7 @@ export class PostsRepository {
     }
   }
 
-  async findOneById(id: number): Promise<PostEntireResponseDto> {
+  async findOneById(id: number): Promise<PostEntireDataReturn> {
     try {
       return await this.postModel
         .createQueryBuilder('p')
@@ -73,9 +73,9 @@ export class PostsRepository {
     }
   }
 
-  updatePost(data: PostModificationRequest, postId: number) {
+  updatePost(data: PostModificationRequest, postId: number): void {
     try {
-      return this.postModel
+      this.postModel
         .createQueryBuilder()
         .update()
         .set(data)
