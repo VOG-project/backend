@@ -2,7 +2,6 @@ import { Injectable, HttpException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { User } from './users.entity';
-import { UploadUserProfileImageResponseDto } from './../uploads/dto/uploads.response.dto';
 import { UserEntireDataReturn, UserPkIdReturn } from './dto/return.user.dto';
 import { PostDeletedCountReturn } from 'src/posts/dto/return.post.dto';
 
@@ -16,24 +15,16 @@ export class UserRepository {
    * @param fileUrl 유저 프로필 이미지가 저장된 S3 URL
    * @returns Object { 업데이트된 row 개수, 프로필 이미지 URL }
    */
-  async updateProfileUrl(
-    userId: number,
-    fileUrl: string,
-  ): Promise<UploadUserProfileImageResponseDto> {
+  updateProfileUrl(userId: number, fileUrl: string): void {
     try {
-      const updateResult = await this.userModel
+      this.userModel
         .createQueryBuilder()
-        .update(User)
+        .update()
         .set({
           profileUrl: fileUrl,
         })
         .where('id = :userId', { userId })
         .execute();
-
-      return {
-        updatedCount: updateResult.affected,
-        profileUrl: fileUrl,
-      };
     } catch (err) {
       throw new HttpException(
         `[MYSQL ERROR] updateProfileUrl ${err.message}`,
