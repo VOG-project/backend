@@ -68,7 +68,7 @@ export class UserService {
 
     if (!user) throw new HttpException('존재하지 않는 유저입니다.', 400);
 
-    const isExistedUser = this.userRepository.findByNickname(newNickname);
+    const isExistedUser = await this.userRepository.findByNickname(newNickname);
 
     if (isExistedUser)
       throw new HttpException('이미 존재하는 닉네임입니다.', 400);
@@ -90,7 +90,7 @@ export class UserService {
   ): Promise<UserEntireDataReturn> {
     const { email, password, nickname, sex } = userCreateRequest;
 
-    const isExistedEmail = this.userRepository.findByEmail(email);
+    const isExistedEmail = await this.userRepository.findByEmail(email);
 
     if (isExistedEmail) {
       throw new HttpException('이미 존재하는 이메일입니다.', 400);
