@@ -8,6 +8,7 @@ import {
   CommentPkIdReturn,
   CommetEntireDataReturn,
 } from './dto/return.comment.dto';
+import { CommentUpdateRequest } from './dto/update.comment.dto';
 
 export class CommentsRepository {
   constructor(
@@ -46,6 +47,24 @@ export class CommentsRepository {
     }
   }
 
+  async updateComment(
+    commentUpdateRequest: CommentUpdateRequest,
+    commentId: number,
+  ): Promise<void> {
+    try {
+      await this.commentModel
+        .createQueryBuilder()
+        .update()
+        .set(commentUpdateRequest)
+        .where('id = :commentId', { commentId })
+        .execute();
+    } catch (err) {
+      throw new HttpException(
+        `[MYSQL ERROR] updateComment: ${err.message}`,
+        500,
+      );
+    }
+  }
   async deleteCommentById(
     commentId: number,
   ): Promise<CommentDeletedCountReturn> {
