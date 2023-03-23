@@ -1,9 +1,10 @@
+import { CreatedUpdatedDate } from 'src/commonEntities/date.common.entity';
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity({
   name: 'comment',
 })
-export class CommentEntity {
+export class CommentEntity extends CreatedUpdatedDate {
   @PrimaryGeneratedColumn()
   id: number;
 
