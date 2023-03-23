@@ -55,7 +55,7 @@ export class CommentsRepository {
         .delete()
         .where('id = :commentId', { commentId })
         .execute();
-        
+
       return { deletedCount: deletedResult.affected };
     } catch (err) {
       throw new HttpException(
