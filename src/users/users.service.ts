@@ -68,7 +68,7 @@ export class UserService {
 
     if (!user) throw new HttpException('존재하지 않는 유저입니다.', 400);
 
-    const isExistedUser = await this.userRepository.findByNickname(newNickname);
+    const isExistedUser = this.userRepository.findByNickname(newNickname);
 
     if (isExistedUser)
       throw new HttpException('이미 존재하는 닉네임입니다.', 400);
