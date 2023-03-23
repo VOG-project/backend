@@ -73,9 +73,12 @@ export class PostsRepository {
     }
   }
 
-  updatePost(data: PostModificationRequest, postId: number): void {
+  async updatePost(
+    data: PostModificationRequest,
+    postId: number,
+  ): Promise<void> {
     try {
-      this.postModel
+      await this.postModel
         .createQueryBuilder()
         .update()
         .set(data)
