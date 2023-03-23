@@ -1,4 +1,10 @@
-import { Controller, UseFilters, UseInterceptors, Body } from '@nestjs/common';
+import {
+  Controller,
+  UseFilters,
+  UseInterceptors,
+  Body,
+  Post,
+} from '@nestjs/common';
 import { ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { SuccessInterceptor } from 'src/interceptors/success.interceptor';
 import { HttpExceptionFilter } from './../filters/http-exception.filter';
@@ -12,7 +18,7 @@ import { CommetEntireDataReturn } from './dto/return.comment.dto';
 export class CommentsController {
   constructor(private readonly commentService: CommentsService) {}
 
-  @Body()
+  @Post()
   @ApiOperation({
     summary: '댓글 생성 API',
     tags: ['comments'],
