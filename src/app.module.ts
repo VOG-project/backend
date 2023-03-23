@@ -15,6 +15,7 @@ import { ChatsModule } from './chats/chats.module';
 import { ChatParticipant, ChatRoom } from './chats/chats.entity';
 import { PostsModule } from './posts/posts.module';
 import { PostEntity } from 'src/posts/posts.entity';
+import { CommentsModule } from './comments/comments.module';
 
 @Module({
   imports: [
@@ -45,6 +46,7 @@ import { PostEntity } from 'src/posts/posts.entity';
     UploadsModule,
     ChatsModule,
     PostsModule,
+    CommentsModule,
   ],
   controllers: [AppController],
   providers: [AppService],
