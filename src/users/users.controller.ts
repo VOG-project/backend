@@ -12,18 +12,19 @@ import {
 import {
   UserDeletedInfoRequestDto,
   UserRegisteredRequestDto,
-  UserUpdatedPasswordRequestDto,
 } from './dto/user.request.dto';
 import { UserService } from './users.service';
 import { ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { HttpExceptionFilter } from '../filters/http-exception.filter';
 import { SuccessInterceptor } from '../interceptors/success.interceptor';
-import { UserUpdatedNicknameRequestDto } from './dto/user.request.dto';
 import {
   UserDeletedInfoResponseDto,
   UserUpdatedInfoResponseDto,
 } from './dto/user.response.dto';
-import { UserModificationPasswordRequest } from './dto/modify.user.dto';
+import {
+  UserModificationNicknameRequest,
+  UserModificationPasswordRequest,
+} from './dto/modify.user.dto';
 import { UserEntireDataReturn } from './dto/return.user.dto';
 
 @UseFilters(HttpExceptionFilter)
@@ -42,7 +43,7 @@ export class UsersController {
     status: 201,
     description:
       '유저 pk와 새로운 비밀번호를 입력받아 기존의 비밀번호를 수정합니다.',
-    type: UserUpdatedInfoResponseDto,
+    type: UserEntireDataReturn,
   })
   modifyPassword(
     @Body() userModificationPasswordRequest: UserModificationPasswordRequest,
@@ -63,13 +64,16 @@ export class UsersController {
   @ApiResponse({
     status: 201,
     description: '닉네임 변경 성공',
-    type: UserUpdatedInfoResponseDto,
+    type: UserEntireDataReturn,
   })
-  async updateNickname(
+  async modifyNickname(
+    @Body() userModificationNicknameRequest: UserModificationNicknameRequest,
     @Param('userId', ParseIntPipe) userId: number,
-    @Body() body: UserUpdatedNicknameRequestDto,
-  ): Promise<UserUpdatedInfoResponseDto> {
-    return await this.userService.updateNickname(body, userId);
+  ): Promise<UserEntireDataReturn> {
+    return await this.userService.modifyNickname(
+      userModificationNicknameRequest,
+      userId,
+    );
   }
 
   // 회원가입 API
