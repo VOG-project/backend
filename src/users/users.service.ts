@@ -2,15 +2,14 @@ import { Injectable, HttpException } from '@nestjs/common';
 import {
   UserDeletedInfoRequestDto,
   UserRegisteredRequestDto,
-  UserUpdatedNicknameRequestDto,
 } from './dto/user.request.dto';
 import { UserRepository } from './users.repository';
 import * as bcrypt from 'bcrypt';
+import { UserDeletedInfoResponseDto } from './dto/user.response.dto';
 import {
-  UserDeletedInfoResponseDto,
-  UserUpdatedInfoResponseDto,
-} from './dto/user.response.dto';
-import { UserModificationPasswordRequest } from './dto/modify.user.dto';
+  UserModificationNicknameRequest,
+  UserModificationPasswordRequest,
+} from './dto/modify.user.dto';
 import { UserEntireDataReturn } from './dto/return.user.dto';
 
 @Injectable()
@@ -61,24 +60,24 @@ export class UserService {
    * @param userId 유저 아이디(PK)
    * @returns Object { 업데이트된 row 개수 }
    */
-  async updateNickname(
-    data: UserUpdatedNicknameRequestDto,
+  async modifyNickname(
+    userModificationNicknameRequest: UserModificationNicknameRequest,
     userId: number,
-  ): Promise<UserUpdatedInfoResponseDto> {
-    const { newNickname } = data;
+  ): Promise<UserEntireDataReturn> {
+    const { newNickname } = userModificationNicknameRequest;
 
     const user = await this.userRepository.findOneById(userId);
 
     if (!user) throw new HttpException('존재하지 않는 유저입니다.', 400);
 
-    const isExistedNickname = await this.userRepository.findByNickname(
-      newNickname,
-    );
+    const isExistedUser = await this.userRepository.findByNickname(newNickname);
 
-    if (isExistedNickname)
+    if (isExistedUser)
       throw new HttpException('이미 존재하는 닉네임입니다.', 400);
 
-    return await this.userRepository.updateNickname(userId, newNickname);
+    await this.userRepository.updateNickname(newNickname, userId);
+
+    return await this.userRepository.findOneByIdWithoutPassword(userId);
   }
 
   /**
