@@ -192,14 +192,13 @@ export class UserRepository {
    * @param nickname 유저 닉네임
    * @returns 검색된 유저 데이터의 모든 컬럼
    */
-  async findByNickname(nickname: string) {
+  findByNickname(nickname: string): Promise<UserEntireDataReturn> {
     try {
-      const user = await this.userModel
-        .createQueryBuilder('user')
+      return this.userModel
+        .createQueryBuilder()
+        .select()
         .where('nickname = :nickname', { nickname })
         .getOne();
-
-      return user;
     } catch (err) {
       throw new HttpException(
         `[MYSQL Error] existByNickname method: ${err.message}`,
