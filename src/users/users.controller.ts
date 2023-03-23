@@ -9,10 +9,7 @@ import {
   Delete,
   ParseIntPipe,
 } from '@nestjs/common';
-import {
-  UserDeletedInfoRequestDto,
-  UserRegisteredRequestDto,
-} from './dto/user.request.dto';
+import { UserDeletedInfoRequestDto } from './dto/user.request.dto';
 import { UserService } from './users.service';
 import { ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { HttpExceptionFilter } from '../filters/http-exception.filter';
@@ -23,6 +20,7 @@ import {
   UserModificationPasswordRequest,
 } from './dto/modify.user.dto';
 import { UserEntireDataReturn } from './dto/return.user.dto';
+import { UserCreateRequest } from './dto/create.user.dto';
 
 @UseFilters(HttpExceptionFilter)
 @UseInterceptors(SuccessInterceptor)
@@ -73,13 +71,16 @@ export class UsersController {
   }
 
   @Post('register')
-  @ApiOperation({ summary: '회원가입', tags: ['Users'] })
+  @ApiOperation({ summary: '회원가입 API', tags: ['Users'] })
   @ApiResponse({
     status: 201,
     description: '회원가입 성공',
+    type: UserEntireDataReturn,
   })
-  async register(@Body() body: UserRegisteredRequestDto): Promise<string> {
-    return this.userService.register(body);
+  registerUser(
+    @Body() userCreateRequest: UserCreateRequest,
+  ): Promise<UserEntireDataReturn> {
+    return this.userService.registerUser(userCreateRequest);
   }
 
   @Delete(':userId/withdrawal')
