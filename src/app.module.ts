@@ -16,6 +16,7 @@ import { ChatParticipant, ChatRoom } from './chats/chats.entity';
 import { PostsModule } from './posts/posts.module';
 import { PostEntity } from 'src/posts/posts.entity';
 import { CommentsModule } from './comments/comments.module';
+import { CommentEntity } from './comments/comments.entity';
 
 @Module({
   imports: [
@@ -29,7 +30,7 @@ import { CommentsModule } from './comments/comments.module';
       port: parseInt(process.env.MYSQL_PORT, 10),
       username: process.env.MYSQL_USER,
       password: process.env.MYSQL_PASSWORD,
-      entities: [User, ChatRoom, ChatParticipant, PostEntity],
+      entities: [User, ChatRoom, ChatParticipant, PostEntity, CommentEntity],
       synchronize: true,
       database: 'vog',
       logging: true,
