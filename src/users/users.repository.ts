@@ -4,10 +4,7 @@ import { Repository } from 'typeorm';
 import { UserDeletedInfoResponseDto } from './dto/user.response.dto';
 import { User } from './users.entity';
 import { UploadUserProfileImageResponseDto } from './../uploads/dto/uploads.response.dto';
-import {
-  UserEntireDataReturn,
-  UserPkIdResponseDto,
-} from './dto/return.user.dto';
+import { UserEntireDataReturn, UserPkIdReturn } from './dto/return.user.dto';
 
 @Injectable()
 export class UserRepository {
@@ -147,7 +144,7 @@ export class UserRepository {
     password: string,
     nickname: string,
     sex: string,
-  ): Promise<UserPkIdResponseDto> {
+  ): Promise<UserPkIdReturn> {
     try {
       const insertedUser = await this.userModel
         .createQueryBuilder()
