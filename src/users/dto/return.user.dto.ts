@@ -52,3 +52,7 @@ export class UserEntireDataReturn {
   })
   updatedAt: Date;
 }
+
+export class UserPkIdResponseDto {
+  userId: number;
+}
