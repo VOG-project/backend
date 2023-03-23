@@ -133,6 +133,8 @@ export class UserService {
 
     const user = await this.userRepository.findOneById(userId);
 
+    if (!user) throw new HttpException('존재하지 않는 유저입니다.', 400);
+
     // 사용자가 입력한 현재 비밀번호를 검사하기 위해 DB에 저장된 비밀번호와 일치하는 지 비교합니다.
     const isRightPassword = await bcrypt.compare(password, user.password);
 
