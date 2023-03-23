@@ -30,7 +30,6 @@ import { UserEntireDataReturn } from './dto/return.user.dto';
 export class UsersController {
   constructor(private readonly userService: UserService) {}
 
-  // 비밀번호 변경 API
   @Patch(':userId/password')
   @ApiOperation({
     summary: '비밀번호 수정 API',
@@ -39,7 +38,7 @@ export class UsersController {
   @ApiResponse({
     status: 201,
     description:
-      '유저 pk와 새로운 비밀번호를 입력받아 기존의 비밀번호를 수정합니다.',
+      '유저 pk와 새로운 비밀번호를 입력받아 기존의 비밀번호를 수정하고 해당 유저의 데이터를 반환합니다.',
     type: UserEntireDataReturn,
   })
   modifyPassword(
@@ -52,15 +51,15 @@ export class UsersController {
     );
   }
 
-  // 닉네임 변경 API
   @Patch(':userId/nickname')
   @ApiOperation({
-    summary: '닉네임 변경',
+    summary: '닉네임 수정 API',
     tags: ['Users'],
   })
   @ApiResponse({
     status: 201,
-    description: '닉네임 변경 성공',
+    description:
+      '유저 pk와 새로운 닉네임을 입력받아 기존의 닉네임을 수정하고 해당 유저의 데이터를 반환합니다.',
     type: UserEntireDataReturn,
   })
   async modifyNickname(
@@ -73,7 +72,6 @@ export class UsersController {
     );
   }
 
-  // 회원가입 API
   @Post('register')
   @ApiOperation({ summary: '회원가입', tags: ['Users'] })
   @ApiResponse({
@@ -84,7 +82,6 @@ export class UsersController {
     return this.userService.register(body);
   }
 
-  // 회원 탈퇴 API
   @Delete(':userId/withdrawal')
   @ApiOperation({
     summary: '회원탈퇴',
