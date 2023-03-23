@@ -4,7 +4,10 @@ import { Repository } from 'typeorm';
 import { UserDeletedInfoResponseDto } from './dto/user.response.dto';
 import { User } from './users.entity';
 import { UploadUserProfileImageResponseDto } from './../uploads/dto/uploads.response.dto';
-import { UserEntireDataReturn } from './dto/return.user.dto';
+import {
+  UserEntireDataReturn,
+  UserPkIdResponseDto,
+} from './dto/return.user.dto';
 
 @Injectable()
 export class UserRepository {
@@ -144,9 +147,9 @@ export class UserRepository {
     password: string,
     nickname: string,
     sex: string,
-  ): Promise<void> {
+  ): Promise<UserPkIdResponseDto> {
     try {
-      await this.userModel
+      const insertedUser = await this.userModel
         .createQueryBuilder()
         .insert()
         .values({
@@ -156,6 +159,8 @@ export class UserRepository {
           sex,
         })
         .execute();
+
+      return { userId: insertedUser.identifiers[0].id };
     } catch (err) {
       throw new HttpException(
         `[MYSQL Error] create method: ${err.message}`,
