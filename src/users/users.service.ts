@@ -11,6 +11,7 @@ import {
   UserModificationPasswordRequest,
 } from './dto/modify.user.dto';
 import { UserEntireDataReturn } from './dto/return.user.dto';
+import { UserCreateRequest } from './dto/create.user.dto';
 
 @Injectable()
 export class UserService {
@@ -87,12 +88,14 @@ export class UserService {
    * @param data Object { 이메일, 패스워드, 닉네임, 성별 }
    * @returns 회원가입 성공 문자열
    */
-  async register(data: UserRegisteredRequestDto): Promise<string> {
-    const { email, password, nickname, sex } = data;
+  async registerUser(
+    userCreateRequest: UserCreateRequest,
+  ): Promise<UserEntireDataReturn> {
+    const { email, password, nickname, sex } = userCreateRequest;
 
-    const isExistedUser = await this.userRepository.findByEmail(email);
+    const isExistedEmail = await this.userRepository.findByEmail(email);
 
-    if (isExistedUser) {
+    if (isExistedEmail) {
       throw new HttpException('이미 존재하는 이메일입니다.', 400);
     }
 
@@ -107,9 +110,14 @@ export class UserService {
     // 보안을 위해 비밀번호를 해시화 작업을 거쳐 랜덤한 문자열로 변환합니다.
     const hashedPassword = await bcrypt.hash(password, 12);
 
-    await this.userRepository.create(email, hashedPassword, nickname, sex);
+    const { userId } = await this.userRepository.create(
+      email,
+      hashedPassword,
+      nickname,
+      sex,
+    );
 
-    return '회원가입 성공';
+    return await this.userRepository.findOneByIdWithoutPassword(userId);
   }
 
   /**
