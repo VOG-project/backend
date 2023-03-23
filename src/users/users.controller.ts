@@ -23,6 +23,8 @@ import {
   UserDeletedInfoResponseDto,
   UserUpdatedInfoResponseDto,
 } from './dto/user.response.dto';
+import { UserModificationPasswordRequest } from './dto/modify.user.dto';
+import { UserEntireDataReturn } from './dto/return.user.dto';
 
 @UseFilters(HttpExceptionFilter)
 @UseInterceptors(SuccessInterceptor)
@@ -33,19 +35,23 @@ export class UsersController {
   // 비밀번호 변경 API
   @Patch(':userId/password')
   @ApiOperation({
-    summary: '비밀번호 변경',
+    summary: '비밀번호 수정 API',
     tags: ['Users'],
   })
   @ApiResponse({
     status: 201,
-    description: '비밀번호 변경 성공',
+    description:
+      '유저 pk와 새로운 비밀번호를 입력받아 기존의 비밀번호를 수정합니다.',
     type: UserUpdatedInfoResponseDto,
   })
-  async updatePassword(
+  modifyPassword(
+    @Body() userModificationPasswordRequest: UserModificationPasswordRequest,
     @Param('userId', ParseIntPipe) userId: number,
-    @Body() body: UserUpdatedPasswordRequestDto,
-  ): Promise<UserUpdatedInfoResponseDto> {
-    return this.userService.updatePassword(userId, body);
+  ): Promise<UserEntireDataReturn> {
+    return this.userService.modifyPassword(
+      userModificationPasswordRequest,
+      userId,
+    );
   }
 
   // 닉네임 변경 API

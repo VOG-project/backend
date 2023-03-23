@@ -3,7 +3,6 @@ import {
   UserDeletedInfoRequestDto,
   UserRegisteredRequestDto,
   UserUpdatedNicknameRequestDto,
-  UserUpdatedPasswordRequestDto,
 } from './dto/user.request.dto';
 import { UserRepository } from './users.repository';
 import * as bcrypt from 'bcrypt';
@@ -11,6 +10,8 @@ import {
   UserDeletedInfoResponseDto,
   UserUpdatedInfoResponseDto,
 } from './dto/user.response.dto';
+import { UserModificationPasswordRequest } from './dto/modify.user.dto';
+import { UserEntireDataReturn } from './dto/return.user.dto';
 
 @Injectable()
 export class UserService {
@@ -25,13 +26,13 @@ export class UserService {
    * @param data Object { 현재 비밀번호, 새로운 비밀번호 }
    * @returns Object { 업데이트된 row 개수, 프로필 이미지 URL }
    */
-  async updatePassword(
+  async modifyPassword(
+    userModificationPasswordRequest: UserModificationPasswordRequest,
     userId: number,
-    data: UserUpdatedPasswordRequestDto,
-  ): Promise<UserUpdatedInfoResponseDto> {
-    const { currentPassword, newPassword } = data;
+  ): Promise<UserEntireDataReturn> {
+    const { currentPassword, newPassword } = userModificationPasswordRequest;
 
-    const user = await this.userRepository.findById(userId);
+    const user = await this.userRepository.findOneById(userId);
 
     if (!user) throw new HttpException('존재하지 않는 유저입니다.', 400);
 
@@ -47,7 +48,9 @@ export class UserService {
     // 새로운 비밀번호를 DB에 삽입하기 위해 해시 작업을 진행합니다.
     const hashedPassword = await bcrypt.hash(newPassword, 12);
 
-    return await this.userRepository.updatePassword(userId, hashedPassword);
+    this.userRepository.updatePassword(userId, hashedPassword);
+
+    return this.userRepository.findOneByIdWithoutPassword(userId);
   }
 
   /**
@@ -64,7 +67,7 @@ export class UserService {
   ): Promise<UserUpdatedInfoResponseDto> {
     const { newNickname } = data;
 
-    const user = await this.userRepository.findById(userId);
+    const user = await this.userRepository.findOneById(userId);
 
     if (!user) throw new HttpException('존재하지 않는 유저입니다.', 400);
 
@@ -124,7 +127,7 @@ export class UserService {
   ): Promise<UserDeletedInfoResponseDto> {
     const { password } = data;
 
-    const user = await this.userRepository.findById(userId);
+    const user = await this.userRepository.findOneById(userId);
 
     // 사용자가 입력한 현재 비밀번호를 검사하기 위해 DB에 저장된 비밀번호와 일치하는 지 비교합니다.
     const isRightPassword = await bcrypt.compare(password, user.password);
