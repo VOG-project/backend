@@ -1,4 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
+import { IsNotEmpty, IsString, IsEmail } from 'class-validator';
 
 export class UserCreateRequest {
   @ApiProperty({
@@ -6,6 +7,8 @@ export class UserCreateRequest {
     description: '이메일',
     required: true,
   })
+  @IsNotEmpty()
+  @IsEmail()
   email: string;
 
   @ApiProperty({
@@ -13,13 +16,17 @@ export class UserCreateRequest {
     description: '비밀번호',
     required: true,
   })
-  password?: string;
+  @IsNotEmpty()
+  @IsString()
+  password: string;
 
   @ApiProperty({
     example: '네스트좋아',
     description: '닉네임',
     required: true,
   })
+  @IsNotEmpty()
+  @IsString()
   nickname: string;
 
   @ApiProperty({
@@ -27,5 +34,7 @@ export class UserCreateRequest {
     description: '성별',
     required: true,
   })
+  @IsNotEmpty()
+  @IsString()
   sex: string;
 }
