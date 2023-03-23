@@ -79,3 +79,11 @@ export class PostListReturn {
   })
   createdAt: Date;
 }
+
+export class PostDeletedCountReturn {
+  @ApiProperty({
+    example: 2,
+    description: '삭제된 게시물 row 개수',
+  })
+  deletedCount: number;
+}
