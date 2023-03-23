@@ -171,14 +171,13 @@ export class UserRepository {
    * @param email 유저 이메일
    * @returns 검색된 유저 데이터의 모든 컬럼
    */
-  async findByEmail(email: string) {
+  findByEmail(email: string): Promise<UserEntireDataReturn> {
     try {
-      const user = await this.userModel
-        .createQueryBuilder('user')
+      return this.userModel
+        .createQueryBuilder()
+        .select()
         .where('email = :email', { email })
         .getOne();
-
-      return user;
     } catch (err) {
       throw new HttpException(
         `[MYSQL Error] existByEmail method: ${err.message}`,
