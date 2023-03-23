@@ -18,7 +18,7 @@ export class CommentDeleteCondition {
 
   @ApiProperty({
     example: 31,
-    description: '댓글이 작성된 게시물 PK'
+    description: '댓글이 작성된 게시물 PK',
   })
   postId: number;
 }

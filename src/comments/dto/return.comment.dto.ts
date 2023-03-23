@@ -47,3 +47,11 @@ export class CommetEntireDataReturn {
 export class CommentPkIdReturn {
   commentId: number;
 }
+
+export class CommentDeletedCountReturn {
+  @ApiProperty({
+    example: 2,
+    description: '삭제된 게시물 row 개수',
+  })
+  deletedCount: number;
+}
