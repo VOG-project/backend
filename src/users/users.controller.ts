@@ -62,11 +62,11 @@ export class UsersController {
       '유저 pk와 새로운 닉네임을 입력받아 기존의 닉네임을 수정하고 해당 유저의 데이터를 반환합니다.',
     type: UserEntireDataReturn,
   })
-  async modifyNickname(
+  modifyNickname(
     @Body() userModificationNicknameRequest: UserModificationNicknameRequest,
     @Param('userId', ParseIntPipe) userId: number,
   ): Promise<UserEntireDataReturn> {
-    return await this.userService.modifyNickname(
+    return this.userService.modifyNickname(
       userModificationNicknameRequest,
       userId,
     );
