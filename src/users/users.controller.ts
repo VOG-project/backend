@@ -17,10 +17,7 @@ import { UserService } from './users.service';
 import { ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { HttpExceptionFilter } from '../filters/http-exception.filter';
 import { SuccessInterceptor } from '../interceptors/success.interceptor';
-import {
-  UserDeletedInfoResponseDto,
-  UserUpdatedInfoResponseDto,
-} from './dto/user.response.dto';
+import { UserDeletedInfoResponseDto } from './dto/user.response.dto';
 import {
   UserModificationNicknameRequest,
   UserModificationPasswordRequest,
