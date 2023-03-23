@@ -3,7 +3,7 @@ import { CommentsRepository } from './comments.repository';
 import { CommentCreateRequest } from './dto/create.comment.dto';
 import {
   CommentDeletedCountReturn,
-  CommetEntireDataReturn,
+  CommentEntireDataReturn,
 } from './dto/return.comment.dto';
 import { CommentDeleteCondition } from './dto/delete.comment.dto';
 import { PostsRepository } from 'src/posts/posts.repository';
@@ -18,7 +18,7 @@ export class CommentsService {
 
   async registerComment(
     commentCreateRequest: CommentCreateRequest,
-  ): Promise<CommetEntireDataReturn> {
+  ): Promise<CommentEntireDataReturn> {
     const { commentId } = await this.commentRepository.createComment(
       commentCreateRequest,
     );
@@ -28,7 +28,7 @@ export class CommentsService {
   async modifyComment(
     commentUpdateRequest: CommentUpdateRequest,
     commentId: number,
-  ): Promise<CommetEntireDataReturn> {
+  ): Promise<CommentEntireDataReturn> {
     const isExistedComment = await this.commentRepository.findOneById(
       commentId,
     );

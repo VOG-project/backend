@@ -18,7 +18,7 @@ import { CommentCreateRequest } from './dto/create.comment.dto';
 import { CommentDeleteCondition } from './dto/delete.comment.dto';
 import {
   CommentDeletedCountReturn,
-  CommetEntireDataReturn,
+  CommentEntireDataReturn,
 } from './dto/return.comment.dto';
 import { CommentUpdateRequest } from './dto/update.comment.dto';
 
@@ -35,11 +35,11 @@ export class CommentsController {
   })
   @ApiResponse({
     description: '댓글 정보를 등록하면 등록된 댓글 데이터를 반환합니다.',
-    type: CommetEntireDataReturn,
+    type: CommentEntireDataReturn,
   })
   registerComment(
     @Body() commentCreateRequest: CommentCreateRequest,
-  ): Promise<CommetEntireDataReturn> {
+  ): Promise<CommentEntireDataReturn> {
     return this.commentService.registerComment(commentCreateRequest);
   }
 
@@ -50,12 +50,12 @@ export class CommentsController {
   })
   @ApiResponse({
     description: '댓글 내용과 댓글 pk를 입력받아 해당 댓글을 수정합니다.',
-    type: CommetEntireDataReturn,
+    type: CommentEntireDataReturn,
   })
   modifyComment(
     @Body() commentUpdateRequest: CommentUpdateRequest,
     @Param('commentId', ParseIntPipe) commentId,
-  ): Promise<CommetEntireDataReturn> {
+  ): Promise<CommentEntireDataReturn> {
     return this.commentService.modifyComment(commentUpdateRequest, commentId);
   }
 

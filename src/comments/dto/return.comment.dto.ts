@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 
-export class CommetEntireDataReturn {
+export class CommentEntireDataReturn {
   @ApiProperty({
     example: 36,
     description: '댓글을 작성한 유저 pk',

@@ -6,7 +6,7 @@ import { HttpException } from '@nestjs/common';
 import {
   CommentDeletedCountReturn,
   CommentPkIdReturn,
-  CommetEntireDataReturn,
+  CommentEntireDataReturn,
 } from './dto/return.comment.dto';
 import { CommentUpdateRequest } from './dto/update.comment.dto';
 
@@ -35,7 +35,7 @@ export class CommentsRepository {
     }
   }
 
-  async findOneById(commentId: number): Promise<CommetEntireDataReturn> {
+  async findOneById(commentId: number): Promise<CommentEntireDataReturn> {
     try {
       return await this.commentModel
         .createQueryBuilder()
