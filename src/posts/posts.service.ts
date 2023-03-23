@@ -7,6 +7,7 @@ import {
   PostListReturn,
 } from './dto/return.post.dto';
 import { PostsRepository } from './posts.repository';
+import { PostModificationRequest } from './dto/modify.post.dto';
 
 @Injectable()
 export class PostsService {
@@ -31,6 +32,21 @@ export class PostsService {
       page,
       RETURN_ROW_COUNT,
     );
+  }
+
+  async modifyPost(
+    postModificationRequest: PostModificationRequest,
+    postId: number,
+  ) {
+    const post = await this.postRepository.findOneById(postId);
+
+    if (!post) {
+      throw new HttpException('존재하지 않는 게시물입니다.', 404);
+    }
+
+    await this.postRepository.updatePost(postModificationRequest, postId);
+
+    return this.postRepository.findOneById(postId);
   }
 
   async removePost(postId: number): Promise<PostDeletedCountReturn> {
