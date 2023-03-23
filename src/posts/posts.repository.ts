@@ -9,6 +9,7 @@ import {
   PostListReturn,
   PostPkIdResponseDto,
 } from './dto/return.post.dto';
+import { PostModificationRequest } from './dto/modify.post.dto';
 
 export class PostsRepository {
   constructor(
@@ -69,6 +70,19 @@ export class PostsRepository {
         `[MYSQL ERROR] findPostListByBoardType: ${err.message}`,
         500,
       );
+    }
+  }
+
+  updatePost(data: PostModificationRequest, postId: number) {
+    try {
+      return this.postModel
+        .createQueryBuilder()
+        .update()
+        .set(data)
+        .where('id = :postId', { postId })
+        .execute();
+    } catch (err) {
+      throw new HttpException(`[MYSQL ERROR] updatePost: ${err.message}`, 500);
     }
   }
 
