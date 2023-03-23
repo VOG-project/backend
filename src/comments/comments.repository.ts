@@ -4,6 +4,7 @@ import { Repository } from 'typeorm';
 import { CommentCreateRequest } from './dto/create.comment.dto';
 import { HttpException } from '@nestjs/common';
 import {
+  CommentDeletedCountReturn,
   CommentPkIdReturn,
   CommetEntireDataReturn,
 } from './dto/return.comment.dto';
@@ -42,6 +43,46 @@ export class CommentsRepository {
         .getOne();
     } catch (err) {
       throw new HttpException(`[MYSQL ERROR] findOneById: ${err.message}`, 500);
+    }
+  }
+
+  async deleteCommentById(
+    commentId: number,
+  ): Promise<CommentDeletedCountReturn> {
+    try {
+      const deletedResult = await this.commentModel
+        .createQueryBuilder()
+        .delete()
+        .where('id = :commentId', { commentId })
+        .execute();
+        
+      return { deletedCount: deletedResult.affected };
+    } catch (err) {
+      throw new HttpException(
+        `[MYSQL ERROR] deleteComment: ${err.message}`,
+        500,
+      );
+    }
+  }
+
+  async deleteCommentGroup(
+    postId: number,
+    group: number,
+  ): Promise<CommentDeletedCountReturn> {
+    try {
+      const deletedResult = await this.commentModel
+        .createQueryBuilder()
+        .delete()
+        .where('postId = :postId', { postId })
+        .andWhere('group = :group', { group })
+        .execute();
+
+      return { deletedCount: deletedResult.affected };
+    } catch (err) {
+      throw new HttpException(
+        `[MYSQL ERROR] deleteCommentGroup: ${err.message}`,
+        500,
+      );
     }
   }
 }
