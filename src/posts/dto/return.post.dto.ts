@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 
-export class PostEntireResponseDto {
+export class PostEntireDataReturn {
   @ApiProperty({
     example: 6,
     description: '게시물 PK',
