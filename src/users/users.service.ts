@@ -90,7 +90,7 @@ export class UserService {
   ): Promise<UserEntireDataReturn> {
     const { email, password, nickname, sex } = userCreateRequest;
 
-    const isExistedEmail = await this.userRepository.findByEmail(email);
+    const isExistedEmail = this.userRepository.findByEmail(email);
 
     if (isExistedEmail) {
       throw new HttpException('이미 존재하는 이메일입니다.', 400);
