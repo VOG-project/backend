@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { PostRequestDto } from './dto/create.post.dto';
 import { PostGetCondition } from './dto/get.post.dto';
-import { PostEntireResponseDto } from './dto/response.post.dto';
+import { PostEntireResponseDto, PostListReturn } from './dto/return.post.dto';
 import { PostsRepository } from './posts.repository';
 
 @Injectable()
@@ -15,7 +15,7 @@ export class PostsService {
     return this.postRepository.findOneById(postId);
   }
 
-  async getPostList(condition: PostGetCondition) {
+  async getPostList(condition: PostGetCondition): Promise<PostListReturn[]> {
     let { board } = condition;
     const { page } = condition;
 
