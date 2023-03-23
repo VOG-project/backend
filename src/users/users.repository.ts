@@ -1,10 +1,7 @@
 import { Injectable, HttpException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import {
-  UserDeletedInfoResponseDto,
-  UserUpdatedInfoResponseDto,
-} from './dto/user.response.dto';
+import { UserDeletedInfoResponseDto } from './dto/user.response.dto';
 import { User } from './users.entity';
 import { UploadUserProfileImageResponseDto } from './../uploads/dto/uploads.response.dto';
 import { UserEntireDataReturn } from './dto/return.user.dto';
@@ -74,12 +71,9 @@ export class UserRepository {
    * @param newNickname 닉네임
    * @returns Object { 업데이트된 row 개수 }
    */
-  async updateNickname(
-    userId: number,
-    newNickname: string,
-  ): Promise<UserUpdatedInfoResponseDto> {
+  async updateNickname(newNickname: string, userId: number): Promise<void> {
     try {
-      const updatedResult = await this.userModel
+      this.userModel
         .createQueryBuilder()
         .update(User)
         .set({
@@ -87,10 +81,6 @@ export class UserRepository {
         })
         .where('id = :userId', { userId })
         .execute();
-
-      return {
-        updatedCount: updatedResult.affected,
-      };
     } catch (err) {
       throw new HttpException(
         `[MYSQL Error] updateNickname ${err.message}`,
