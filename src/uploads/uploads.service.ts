@@ -24,7 +24,7 @@ export class UploadsService {
    */
   async deleteUserProfileImageFile(userId: number) {
     try {
-      const user = await this.userRepository.findById(userId);
+      const user = await this.userRepository.findOneById(userId);
       // S3에 저장된 이미지의 파일명을 추출하기 위해 S3 인스턴스 URL 주소의 길이를 저장합니다.
       const sliceIdx = process.env.AWS_S3_File_URL.length;
       const filePath = user.profileUrl;
