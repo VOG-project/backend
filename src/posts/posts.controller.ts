@@ -4,8 +4,11 @@ import {
   UseInterceptors,
   Post,
   Get,
+  Delete,
   Body,
   Query,
+  Param,
+  ParseIntPipe,
 } from '@nestjs/common';
 import { ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { HttpExceptionFilter } from 'src/filters/http-exception.filter';
@@ -47,5 +50,14 @@ export class PostsController {
   })
   getPostList(@Query() condition: PostGetCondition): Promise<PostListReturn[]> {
     return this.postService.getPostList(condition);
+  }
+
+  @Delete(':postId')
+  @ApiOperation({
+    summary: '게시물 삭제 API',
+    tags: ['posts'],
+  })
+  removePost(@Param('postId', ParseIntPipe) postId: number) {
+    return this.postService.removePost(postId);
   }
 }
