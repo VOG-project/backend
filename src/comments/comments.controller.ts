@@ -7,6 +7,7 @@ import {
   Delete,
   Param,
   ParseIntPipe,
+  Patch,
   Query,
 } from '@nestjs/common';
 import { ApiOperation, ApiResponse } from '@nestjs/swagger';
@@ -19,6 +20,7 @@ import {
   CommentDeletedCountReturn,
   CommetEntireDataReturn,
 } from './dto/return.comment.dto';
+import { CommentUpdateRequest } from './dto/update.comment.dto';
 
 @Controller('comments')
 @UseFilters(HttpExceptionFilter)
@@ -39,6 +41,22 @@ export class CommentsController {
     @Body() commentCreateRequest: CommentCreateRequest,
   ): Promise<CommetEntireDataReturn> {
     return this.commentService.registerComment(commentCreateRequest);
+  }
+
+  @Patch(':commentId')
+  @ApiOperation({
+    summary: '댓글 수정 API',
+    tags: ['comments'],
+  })
+  @ApiResponse({
+    description: '댓글 내용과 댓글 pk를 입력받아 해당 댓글을 수정합니다.',
+    type: CommetEntireDataReturn,
+  })
+  modifyComment(
+    @Body() commentUpdateRequest: CommentUpdateRequest,
+    @Param('commentId', ParseIntPipe) commentId,
+  ): Promise<CommetEntireDataReturn> {
+    return this.commentService.modifyComment(commentUpdateRequest, commentId);
   }
 
   @Delete()
