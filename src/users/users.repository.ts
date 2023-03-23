@@ -149,7 +149,6 @@ export class UserRepository {
       await this.userModel
         .createQueryBuilder()
         .insert()
-        .into('user')
         .values({
           email,
           password,
