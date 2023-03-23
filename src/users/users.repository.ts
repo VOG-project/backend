@@ -1,7 +1,6 @@
 import { Injectable, HttpException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { UserDeletedInfoResponseDto } from './dto/user.response.dto';
 import { User } from './users.entity';
 import { UploadUserProfileImageResponseDto } from './../uploads/dto/uploads.response.dto';
 import { UserEntireDataReturn, UserPkIdReturn } from './dto/return.user.dto';
