@@ -70,4 +70,18 @@ export class PostsRepository {
       );
     }
   }
+
+  async deletePost(postId: number) {
+    try {
+      const deletedPost = await this.postModel
+        .createQueryBuilder()
+        .delete()
+        .where('id = :postId', { postId })
+        .execute();
+
+      return { deletedCount: deletedPost.affected };
+    } catch (err) {
+      throw new HttpException(`[MYSQL ERROR] deletePost: ${err.message}`, 500);
+    }
+  }
 }
