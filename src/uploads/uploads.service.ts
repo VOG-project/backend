@@ -5,7 +5,7 @@ import { UserRepository } from './../users/users.repository';
 
 @Injectable()
 export class UploadsService {
-  private DEFAULT_PROFILE_IMAGE = 'default.jpg';
+  private DEFAULT_PROFILE_IMAGE = 'user/default.jpg';
 
   constructor(private readonly userRepository: UserRepository) {
     // S3 인스턴스 사용을 위해 region과 accessKey, secretAccessKey를 명시하여 AWS object Configuration를 업데이트 합니다.
@@ -32,6 +32,8 @@ export class UploadsService {
 
       // default.jpg는 삭제되면 안되는 이미지 파일이기 때문에
       // key값이 default.jpg가 아닐 경우에만 삭제 작업을 진행합니다.
+
+      console.log(key);
       if (key !== this.DEFAULT_PROFILE_IMAGE) {
         await new AWS.S3()
           .deleteObject({
