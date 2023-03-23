@@ -1,8 +1,5 @@
 import { Injectable, HttpException } from '@nestjs/common';
-import {
-  UserDeletedInfoRequestDto,
-  UserRegisteredRequestDto,
-} from './dto/user.request.dto';
+import { UserDeletedInfoRequestDto } from './dto/user.request.dto';
 import { UserRepository } from './users.repository';
 import * as bcrypt from 'bcrypt';
 import { UserDeletedInfoResponseDto } from './dto/user.response.dto';
