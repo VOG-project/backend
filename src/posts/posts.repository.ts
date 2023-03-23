@@ -28,10 +28,14 @@ export class PostsRepository {
   }
 
   async findOneById(id: number): Promise<PostEntireResponseDto> {
-    return await this.post
-      .createQueryBuilder('p')
-      .select()
-      .where('id = :id', { id })
-      .getOne();
+    try {
+      return await this.post
+        .createQueryBuilder('p')
+        .select()
+        .where('id = :id', { id })
+        .getOne();
+    } catch (err) {
+      throw new HttpException(`[MYSQL ERROR] findOneById: ${err.message}`, 500);
+    }
   }
 }
