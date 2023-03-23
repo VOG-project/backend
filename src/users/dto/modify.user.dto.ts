@@ -18,3 +18,13 @@ export class UserModificationPasswordRequest {
   @IsString()
   newPassword: string;
 }
+
+export class UserModificationNicknameRequest {
+  @ApiProperty({
+    example: '뚜루뚜뚜',
+    description: '변경할 닉네임',
+  })
+  @IsNotEmpty()
+  @IsString()
+  newNickname: string;
+}
