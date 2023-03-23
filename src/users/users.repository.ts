@@ -7,6 +7,7 @@ import {
 } from './dto/user.response.dto';
 import { User } from './users.entity';
 import { UploadUserProfileImageResponseDto } from './../uploads/dto/uploads.response.dto';
+import { UserEntireDataReturn } from './dto/return.user.dto';
 
 @Injectable()
 export class UserRepository {
@@ -48,23 +49,17 @@ export class UserRepository {
    * User 테이블의 password 필드를 새로운 비밀번호로 업데이트하고 업데이트된 row 개수를 반환합니다.
    * @param userId 유저 아이디(PK)
    * @param hashedPassword 해시화된 비밀번호
-   * @returns Object { 업데이트된 row 개수 }
    */
-  async updatePassword(
-    userId: number,
-    hashedPassword: string,
-  ): Promise<UserUpdatedInfoResponseDto> {
+  updatePassword(userId: number, hashedPassword: string): void {
     try {
-      const updatedResult = await this.userModel
+      this.userModel
         .createQueryBuilder()
-        .update(User)
+        .update()
         .set({
           password: hashedPassword,
         })
         .where('id = :userId', { userId })
         .execute();
-
-      return { updatedCount: updatedResult.affected };
     } catch (err) {
       throw new HttpException(
         `[MYSQL ERROR] updatePassword ${err.message}`,
@@ -108,17 +103,42 @@ export class UserRepository {
    * User 테이블에서 userId에 해당하는 데이터를 반환합니다.
    * @param userId 유저 아이디(PK)
    */
-  async findById(userId: number) {
+  findOneById(userId: number): Promise<UserEntireDataReturn> {
     try {
-      const user = await this.userModel
+      return this.userModel
         .createQueryBuilder()
         .select()
         .where('id = :userId', { userId })
         .getOne();
-
-      return user;
     } catch (err) {
       throw new HttpException(`[MYSQL Error] findById: ${err.message}`, 400);
+    }
+  }
+
+  /**
+   * User 테이블에서 userId에 해당하는 데이터를 비밀번호를 제외하고 반환합니다.
+   * @param userId 유저 아이디(PK)
+   */
+  findOneByIdWithoutPassword(userId: number): Promise<UserEntireDataReturn> {
+    try {
+      return this.userModel
+        .createQueryBuilder('u')
+        .select([
+          'u.id',
+          'u.email',
+          'u.nickname',
+          'u.sex',
+          'u.profileUrl',
+          'u.createdAt',
+          'u.updatedAt',
+        ])
+        .where('id = :userId', { userId })
+        .getOne();
+    } catch (err) {
+      throw new HttpException(
+        `[MYSQL ERROR] findOneByIdWithoutPassword: ${err.message}`,
+        500,
+      );
     }
   }
 
