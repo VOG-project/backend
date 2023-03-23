@@ -1,5 +1,6 @@
 import { CreatedUpdatedDate } from 'src/commonEntities/date.common.entity';
 import { PostEntity } from 'src/posts/posts.entity';
+import { User } from 'src/users/users.entity';
 import {
   Column,
   Entity,
@@ -46,4 +47,10 @@ export class CommentEntity extends CreatedUpdatedDate {
     name: 'postId',
   })
   post: PostEntity;
+
+  @ManyToOne(() => User, (user) => user.comments)
+  @JoinColumn({
+    name: 'userId',
+  })
+  user: User;
 }
