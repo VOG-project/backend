@@ -15,7 +15,11 @@ import { HttpExceptionFilter } from 'src/filters/http-exception.filter';
 import { SuccessInterceptor } from './../interceptors/success.interceptor';
 import { PostCreateRequest } from './dto/create.post.dto';
 import { PostGetCondition } from './dto/get.post.dto';
-import { PostEntireResponseDto, PostListReturn } from './dto/return.post.dto';
+import {
+  PostDeletedCountReturn,
+  PostEntireResponseDto,
+  PostListReturn,
+} from './dto/return.post.dto';
 import { PostsService } from './posts.service';
 
 @Controller('posts')
@@ -57,7 +61,14 @@ export class PostsController {
     summary: '게시물 삭제 API',
     tags: ['posts'],
   })
-  removePost(@Param('postId', ParseIntPipe) postId: number) {
+  @ApiResponse({
+    description:
+      '게시물 PK에 해당하는 데이터를 삭제하고 삭제된 row 개수를 반환합니다.',
+    type: PostDeletedCountReturn,
+  })
+  removePost(
+    @Param('postId', ParseIntPipe) postId: number,
+  ): Promise<PostDeletedCountReturn> {
     return this.postService.removePost(postId);
   }
 }

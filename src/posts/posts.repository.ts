@@ -4,6 +4,7 @@ import { Repository } from 'typeorm';
 import { PostCreateRequest } from './dto/create.post.dto';
 import { HttpException } from '@nestjs/common';
 import {
+  PostDeletedCountReturn,
   PostEntireResponseDto,
   PostListReturn,
   PostPkIdResponseDto,
@@ -71,7 +72,7 @@ export class PostsRepository {
     }
   }
 
-  async deletePost(postId: number) {
+  async deletePost(postId: number): Promise<PostDeletedCountReturn> {
     try {
       const deletedPost = await this.postModel
         .createQueryBuilder()

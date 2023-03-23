@@ -1,7 +1,11 @@
 import { Injectable, HttpException } from '@nestjs/common';
 import { PostCreateRequest } from './dto/create.post.dto';
 import { PostGetCondition } from './dto/get.post.dto';
-import { PostEntireResponseDto, PostListReturn } from './dto/return.post.dto';
+import {
+  PostDeletedCountReturn,
+  PostEntireResponseDto,
+  PostListReturn,
+} from './dto/return.post.dto';
 import { PostsRepository } from './posts.repository';
 
 @Injectable()
@@ -29,7 +33,7 @@ export class PostsService {
     );
   }
 
-  async removePost(postId: number) {
+  async removePost(postId: number): Promise<PostDeletedCountReturn> {
     const post = await this.postRepository.findOneById(postId);
 
     if (!post) {
