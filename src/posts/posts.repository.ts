@@ -73,6 +73,37 @@ export class PostsRepository {
     }
   }
 
+  async findPostAndComments(postId: number) {
+    try {
+      await this.postModel
+        .createQueryBuilder('p')
+        .innerJoin('p.comments', 'c')
+        .select([
+          'p.id',
+          'p.title',
+          'p.content',
+          'p.likeCount',
+          'p.postCategory',
+          'p.createdAt',
+          'p.updatedAt',
+          'c.id',
+          'c.userId',
+          'c.content',
+          'c.group',
+          'c.sequence',
+          'c.createdAt',
+          'c.updatedAt',
+        ])
+        .where('p.id = :postId', { postId })
+        .getOne();
+    } catch (err) {
+      throw new HttpException(
+        `[MYSQL ERROR] findPostAndComments: ${err.message}`,
+        500,
+      );
+    }
+  }
+
   async updatePost(
     data: PostModificationRequest,
     postId: number,
