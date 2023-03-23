@@ -38,9 +38,9 @@ export class UserRepository {
    * @param userId 유저 아이디(PK)
    * @param hashedPassword 해시화된 비밀번호
    */
-  updatePassword(userId: number, hashedPassword: string): void {
+  async updatePassword(userId: number, hashedPassword: string): Promise<void> {
     try {
-      this.userModel
+      await this.userModel
         .createQueryBuilder()
         .update()
         .set({
@@ -64,7 +64,7 @@ export class UserRepository {
    */
   async updateNickname(newNickname: string, userId: number): Promise<void> {
     try {
-      this.userModel
+      await this.userModel
         .createQueryBuilder()
         .update(User)
         .set({
