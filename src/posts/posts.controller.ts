@@ -6,6 +6,7 @@ import {
   Get,
   Delete,
   Body,
+  Patch,
   Query,
   Param,
   ParseIntPipe,
@@ -15,6 +16,7 @@ import { HttpExceptionFilter } from 'src/filters/http-exception.filter';
 import { SuccessInterceptor } from './../interceptors/success.interceptor';
 import { PostCreateRequest } from './dto/create.post.dto';
 import { PostGetCondition } from './dto/get.post.dto';
+import { PostModificationRequest } from './dto/modify.post.dto';
 import {
   PostDeletedCountReturn,
   PostEntireResponseDto,
@@ -55,6 +57,18 @@ export class PostsController {
   })
   getPostList(@Query() condition: PostGetCondition): Promise<PostListReturn[]> {
     return this.postService.getPostList(condition);
+  }
+
+  @Patch(':postId')
+  @ApiOperation({
+    summary: '게시물 수정 API',
+    tags: ['posts'],
+  })
+  modifyPost(
+    @Body() postModificationRequest: PostModificationRequest,
+    @Param('postId', ParseIntPipe) postId: number,
+  ) {
+    return this.postService.modifyPost(postModificationRequest, postId);
   }
 
   @Delete(':postId')
