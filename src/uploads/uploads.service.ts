@@ -59,6 +59,12 @@ export class UploadsService {
     userId: number,
   ): Promise<UserEntireDataReturn> {
     try {
+      const user = await this.userRepository.findOneByIdWithoutPassword(userId);
+
+      if (!user) {
+        throw new HttpException('존재하지 않는 유저입니다.', 400);
+      }
+
       await this.deleteUserProfileImageFile(userId);
 
       // S3에 존재하는 이미지 파일을 식별하기 위해 userId와 밀리초를 이용하여 파일 패스를 만듭니다.
