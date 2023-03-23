@@ -21,6 +21,7 @@ import {
 } from './dto/modify.user.dto';
 import { UserEntireDataReturn } from './dto/return.user.dto';
 import { UserCreateRequest } from './dto/create.user.dto';
+import { PostDeletedCountReturn } from 'src/posts/dto/return.post.dto';
 
 @UseFilters(HttpExceptionFilter)
 @UseInterceptors(SuccessInterceptor)
@@ -91,12 +92,12 @@ export class UsersController {
   @ApiResponse({
     status: 200,
     description: '회원탈퇴 성공',
-    type: UserDeletedInfoResponseDto,
+    type: PostDeletedCountReturn,
   })
   async withdrawal(
     @Body() body: UserDeletedInfoRequestDto,
     @Param('userId', ParseIntPipe) userId: number,
-  ): Promise<UserDeletedInfoResponseDto> {
+  ): Promise<PostDeletedCountReturn> {
     return this.userService.delete(body, userId);
   }
 }

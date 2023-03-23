@@ -5,6 +5,7 @@ import { UserDeletedInfoResponseDto } from './dto/user.response.dto';
 import { User } from './users.entity';
 import { UploadUserProfileImageResponseDto } from './../uploads/dto/uploads.response.dto';
 import { UserEntireDataReturn, UserPkIdReturn } from './dto/return.user.dto';
+import { PostDeletedCountReturn } from 'src/posts/dto/return.post.dto';
 
 @Injectable()
 export class UserRepository {
@@ -213,7 +214,7 @@ export class UserRepository {
    * @param userId 유저 아이디(PK)
    * @returns 삭제된 row 개수
    */
-  async deleteById(userId: number): Promise<UserDeletedInfoResponseDto> {
+  async deleteById(userId: number): Promise<PostDeletedCountReturn> {
     try {
       const deletedResult = await this.userModel
         .createQueryBuilder()
