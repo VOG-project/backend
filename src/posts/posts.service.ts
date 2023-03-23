@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { PostRequestDto } from './dto/create.post.dto';
+import { PostCreateRequest } from './dto/create.post.dto';
 import { PostGetCondition } from './dto/get.post.dto';
 import { PostEntireResponseDto, PostListReturn } from './dto/return.post.dto';
 import { PostsRepository } from './posts.repository';
@@ -9,7 +9,7 @@ export class PostsService {
   constructor(private readonly postRepository: PostsRepository) {}
 
   async registerPost(
-    postRequestDto: PostRequestDto,
+    postRequestDto: PostCreateRequest,
   ): Promise<PostEntireResponseDto> {
     const { postId } = await this.postRepository.create(postRequestDto);
     return this.postRepository.findOneById(postId);

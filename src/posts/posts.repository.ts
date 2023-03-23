@@ -1,7 +1,7 @@
 import { InjectRepository } from '@nestjs/typeorm';
 import { PostEntity } from './posts.entity';
 import { Repository } from 'typeorm';
-import { PostRequestDto } from './dto/create.post.dto';
+import { PostCreateRequest } from './dto/create.post.dto';
 import { HttpException } from '@nestjs/common';
 import {
   PostEntireResponseDto,
@@ -15,7 +15,9 @@ export class PostsRepository {
     private readonly postModel: Repository<PostEntity>,
   ) {}
 
-  async create(postRequestDto: PostRequestDto): Promise<PostPkIdResponseDto> {
+  async create(
+    postRequestDto: PostCreateRequest,
+  ): Promise<PostPkIdResponseDto> {
     try {
       const insertedPost = await this.postModel
         .createQueryBuilder()

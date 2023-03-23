@@ -10,7 +10,7 @@ import {
 import { ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { HttpExceptionFilter } from 'src/filters/http-exception.filter';
 import { SuccessInterceptor } from './../interceptors/success.interceptor';
-import { PostRequestDto } from './dto/create.post.dto';
+import { PostCreateRequest } from './dto/create.post.dto';
 import { PostGetCondition } from './dto/get.post.dto';
 import { PostEntireResponseDto, PostListReturn } from './dto/return.post.dto';
 import { PostsService } from './posts.service';
@@ -31,7 +31,7 @@ export class PostsController {
     type: PostEntireResponseDto,
   })
   registerPost(
-    @Body() postRequestDto: PostRequestDto,
+    @Body() postRequestDto: PostCreateRequest,
   ): Promise<PostEntireResponseDto> {
     return this.postService.registerPost(postRequestDto);
   }

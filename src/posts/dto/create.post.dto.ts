@@ -1,7 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsNotEmpty, IsString } from 'class-validator';
 
-export class PostRequestDto {
+export class PostCreateRequest {
   @ApiProperty({
     example: '챌리저 찍음 ㅎㅎ',
     description: '게시물 제목',
