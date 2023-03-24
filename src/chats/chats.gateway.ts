@@ -52,7 +52,7 @@ export class ChatsGateway implements OnGatewayConnection {
         roomId,
       );
 
-      socket.in(roomId).emit('setChat', chatInfo);
+      socket.broadcast.to(roomId).emit('setChat', chatInfo);
     } catch (err) {
       console.log(err.message);
     }
