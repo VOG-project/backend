@@ -12,11 +12,11 @@ import { ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { HttpExceptionFilter } from './../filters/http-exception.filter';
 import { SuccessInterceptor } from './../interceptors/success.interceptor';
 import { ChatsService } from './chats.service';
-import { ChatGetRoomTotalCountResponseDto } from './dto/chat.response.dto';
 import { ChatCreateRequest } from './dto/create.chat.dto';
 import {
   ChatEntireDataReturn,
   ChatIsAcceptableReturn,
+  ChatRoomTotalCountReturn,
 } from './dto/return.chat.dto';
 import {
   ChatChatRoomListCondition,
@@ -82,9 +82,9 @@ export class ChatsController {
   })
   @ApiResponse({
     description: '현재 생성된 채팅방의 총 개수를 반환합니다.',
-    type: ChatGetRoomTotalCountResponseDto,
+    type: ChatRoomTotalCountReturn,
   })
-  async getChatRoomTotalCount(): Promise<ChatGetRoomTotalCountResponseDto> {
+  async getChatRoomTotalCount(): Promise<ChatRoomTotalCountReturn> {
     return await this.chatService.getChatRoomTotalCount();
   }
 }

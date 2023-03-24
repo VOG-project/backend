@@ -3,9 +3,11 @@ import { ChatParticipant, ChatRoom } from './chats.entity';
 import { Repository } from 'typeorm';
 import { ChatRegisterRoomRequestDto } from './dto/chat.request.dto';
 import { HttpException } from '@nestjs/common';
-import { ChatGetRoomTotalCountResponseDto } from './dto/chat.response.dto';
 import { SocketRegisterInfoRequestDto } from './dto/socket.request.dto';
-import { ChatEntireDataReturn } from './dto/return.chat.dto';
+import {
+  ChatEntireDataReturn,
+  ChatRoomTotalCountReturn,
+} from './dto/return.chat.dto';
 
 export class ChatsRepository {
   constructor(
@@ -215,7 +217,7 @@ export class ChatsRepository {
     }
   }
 
-  async findChatRoomTotalCount(): Promise<ChatGetRoomTotalCountResponseDto> {
+  async findChatRoomTotalCount(): Promise<ChatRoomTotalCountReturn> {
     try {
       const chatRoomCount = await this.chatRoomModel
         .createQueryBuilder()

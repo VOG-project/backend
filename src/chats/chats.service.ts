@@ -1,11 +1,11 @@
 import { Injectable, HttpException } from '@nestjs/common';
 import { ChatsRepository } from './chats.repository';
 import { v4 } from 'uuid';
-import { ChatGetRoomTotalCountResponseDto } from './dto/chat.response.dto';
 import { ChatCreateRequest } from './dto/create.chat.dto';
 import {
   ChatEntireDataReturn,
   ChatIsAcceptableReturn,
+  ChatRoomTotalCountReturn,
 } from './dto/return.chat.dto';
 import {
   ChatChatRoomListCondition,
@@ -69,7 +69,7 @@ export class ChatsService {
     return await this.chatRepository.findChatRoomList(page, RESULT_ROW_COUNT);
   }
 
-  async getChatRoomTotalCount(): Promise<ChatGetRoomTotalCountResponseDto> {
+  async getChatRoomTotalCount(): Promise<ChatRoomTotalCountReturn> {
     return await this.chatRepository.findChatRoomTotalCount();
   }
 }
