@@ -80,7 +80,11 @@ export class ChatsGateway implements OnGatewayConnection {
         await this.chatRepository.deleteChatRoom(roomId);
       }
 
-      socket.emit('leaveChat', { exit: true });
+      const chatInfo = await this.chatRepository.findChatRoomAndParticipantInfo(
+        roomId,
+      );
+
+      socket.broadcast.emit('setChat', chatInfo);
     } catch (err) {
       console.log(err);
     }
