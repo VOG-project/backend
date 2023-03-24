@@ -7,7 +7,7 @@ import {
   PostDeletedCountReturn,
   PostEntireDataReturn,
   PostListReturn,
-  PostPkIdResponseDto,
+  PostPkIdReturn,
 } from './dto/return.post.dto';
 import { PostModificationRequest } from './dto/modify.post.dto';
 
@@ -17,9 +17,7 @@ export class PostsRepository {
     private readonly postModel: Repository<PostEntity>,
   ) {}
 
-  async create(
-    postRequestDto: PostCreateRequest,
-  ): Promise<PostPkIdResponseDto> {
+  async create(postRequestDto: PostCreateRequest): Promise<PostPkIdReturn> {
     try {
       const insertedPost = await this.postModel
         .createQueryBuilder()

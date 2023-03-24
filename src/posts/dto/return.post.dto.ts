@@ -44,7 +44,7 @@ export class PostEntireDataReturn {
   updatedAt: Date;
 }
 
-export class PostPkIdResponseDto {
+export class PostPkIdReturn {
   postId: number;
 }
 
