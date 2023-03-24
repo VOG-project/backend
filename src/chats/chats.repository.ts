@@ -55,7 +55,7 @@ export class ChatsRepository {
     }
   }
 
-  async existsByUserId(userId: number): Promise<any> {
+  async existsByUserId(userId: number): Promise<boolean> {
     try {
       return await this.chatParticipantModel
         .createQueryBuilder()
