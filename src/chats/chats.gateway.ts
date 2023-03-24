@@ -52,7 +52,7 @@ export class ChatsGateway implements OnGatewayConnection {
         roomId,
       );
 
-      socket.emit('setChat', chatInfo);
+      socket.to(roomId).emit('setChat', chatInfo);
     } catch (err) {
       console.log(err.message);
     }
@@ -82,7 +82,7 @@ export class ChatsGateway implements OnGatewayConnection {
   }
 
   @SubscribeMessage('inputChat')
-  handleNewUser(@ConnectedSocket() socket: Socket, @MessageBody() body: any) {
+  handleInputChat(@ConnectedSocket() socket: Socket, @MessageBody() body: any) {
     try {
       const { content, nickname, roomId } = body;
 
