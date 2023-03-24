@@ -1,16 +1,17 @@
 import { Injectable, HttpException } from '@nestjs/common';
-import { ChatAcceptParticipationRequestDto } from './dto/chat.request.dto';
 import { ChatsRepository } from './chats.repository';
 import { v4 } from 'uuid';
 import {
-  ChatAcceptParticipationResponseDto,
   ChatGetRoomTotalCountResponseDto,
   ChatGetRoomListResponseDto,
 } from './dto/chat.response.dto';
-import { ChatAcceptParticipationParamDto } from './dto/chat.param.dto';
 import { ChatGetChatRoomListQueryDto } from './dto/chat.query.dto';
 import { ChatCreateRequest } from './dto/create.chat.dto';
-import { ChatEntireDataReturn } from './dto/return.chat.dto';
+import {
+  ChatEntireDataReturn,
+  ChatIsAcceptableReturn,
+} from './dto/return.chat.dto';
+import { ChatIsAcceptableCondition } from './dto/get.chat.dto';
 
 @Injectable()
 export class ChatsService {
@@ -33,11 +34,10 @@ export class ChatsService {
   }
 
   async acceptParticipation(
-    data: ChatAcceptParticipationRequestDto,
-    identifier: ChatAcceptParticipationParamDto,
-  ): Promise<ChatAcceptParticipationResponseDto> {
-    const { userId } = data;
-    const { roomId } = identifier;
+    roomId: string,
+    condition: ChatIsAcceptableCondition,
+  ): Promise<ChatIsAcceptableReturn> {
+    const { userId } = condition;
 
     const isParticipating = await this.chatRepository.existsByUserId(userId);
 

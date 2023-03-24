@@ -34,8 +34,8 @@ export class ChatsGateway implements OnGatewayConnection {
       body.socketId = socket.id;
 
       const { canParticipant } = await this.chatService.acceptParticipation(
+        roomId,
         { userId },
-        { roomId },
       );
 
       if (!canParticipant) {
