@@ -16,13 +16,15 @@ import {
   ChatGetRoomListResponseDto,
   ChatGetRoomTotalCountResponseDto,
 } from './dto/chat.response.dto';
-import { ChatGetChatRoomListQueryDto } from './dto/chat.query.dto';
 import { ChatCreateRequest } from './dto/create.chat.dto';
 import {
   ChatEntireDataReturn,
   ChatIsAcceptableReturn,
 } from './dto/return.chat.dto';
-import { ChatIsAcceptableCondition } from './dto/get.chat.dto';
+import {
+  ChatChatRoomListCondition,
+  ChatIsAcceptableCondition,
+} from './dto/get.chat.dto';
 
 @Controller('chats')
 @UseFilters(HttpExceptionFilter)
@@ -71,9 +73,9 @@ export class ChatsController {
     type: ChatGetRoomListResponseDto,
   })
   async getChatRoomList(
-    @Query() query: ChatGetChatRoomListQueryDto,
-  ): Promise<ChatGetRoomListResponseDto[]> {
-    return await this.chatService.getChatRoomList(query);
+    @Query() condition: ChatChatRoomListCondition,
+  ): Promise<ChatEntireDataReturn[]> {
+    return await this.chatService.getChatRoomList(condition);
   }
 
   @Get('rooms/count')
