@@ -27,7 +27,7 @@ export class ChatRoom extends CreatedUpdatedDate {
 
   @Column({
     type: 'int',
-    default: 1,
+    default: 0,
   })
   currentMember: number;
 
