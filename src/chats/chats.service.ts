@@ -1,36 +1,34 @@
 import { Injectable, HttpException } from '@nestjs/common';
-import {
-  ChatAcceptParticipationRequestDto,
-  ChatRegisterRoomRequestDto,
-} from './dto/chat.request.dto';
+import { ChatAcceptParticipationRequestDto } from './dto/chat.request.dto';
 import { ChatsRepository } from './chats.repository';
 import { v4 } from 'uuid';
 import {
   ChatAcceptParticipationResponseDto,
   ChatGetRoomTotalCountResponseDto,
   ChatGetRoomListResponseDto,
-  ChatRegisterRoomResponseDto,
 } from './dto/chat.response.dto';
 import { ChatAcceptParticipationParamDto } from './dto/chat.param.dto';
 import { ChatGetChatRoomListQueryDto } from './dto/chat.query.dto';
+import { ChatCreateRequest } from './dto/create.chat.dto';
+import { ChatEntireDataReturn } from './dto/return.chat.dto';
 
 @Injectable()
 export class ChatsService {
   constructor(private readonly chatRepository: ChatsRepository) {}
 
   async registerChatRoom(
-    data: ChatRegisterRoomRequestDto,
-  ): Promise<ChatRegisterRoomResponseDto> {
-    const { userId } = data;
-    const existedUser = await this.chatRepository.existsByUserId(userId);
+    chatCreateRequest: ChatCreateRequest,
+  ): Promise<ChatEntireDataReturn> {
+    const { userId } = chatCreateRequest;
 
+    const existedUser = await this.chatRepository.existsByUserId(userId);
     if (existedUser) {
       throw new HttpException('이미 참여 중인 채팅방이 존재합니다.', 401);
     }
 
     const roomId = v4();
+    await this.chatRepository.createChatRoom(chatCreateRequest, roomId);
 
-    await this.chatRepository.create(data, roomId);
     return await this.chatRepository.findByRoomId(roomId);
   }
 
