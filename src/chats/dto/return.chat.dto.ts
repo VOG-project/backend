@@ -43,3 +43,11 @@ export class ChatEntireDataReturn {
   })
   updatedAt: Date;
 }
+
+export class ChatIsAcceptableReturn {
+  @ApiProperty({
+    example: true,
+    description: '채팅방 참여 가능 여부',
+  })
+  canParticipant: boolean;
+}
