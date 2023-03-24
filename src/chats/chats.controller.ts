@@ -1,19 +1,28 @@
-import { Controller, UseFilters, UseInterceptors, Get } from '@nestjs/common';
-import { Body, Param, Post, Query } from '@nestjs/common/decorators';
+import {
+  Controller,
+  UseFilters,
+  UseInterceptors,
+  Get,
+  Body,
+  Param,
+  Post,
+  Query,
+} from '@nestjs/common';
 import { ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { HttpExceptionFilter } from './../filters/http-exception.filter';
 import { SuccessInterceptor } from './../interceptors/success.interceptor';
-import { ChatAcceptParticipationRequestDto } from './dto/chat.request.dto';
 import { ChatsService } from './chats.service';
 import {
-  ChatAcceptParticipationResponseDto,
   ChatGetRoomListResponseDto,
   ChatGetRoomTotalCountResponseDto,
 } from './dto/chat.response.dto';
-import { ChatAcceptParticipationParamDto } from './dto/chat.param.dto';
 import { ChatGetChatRoomListQueryDto } from './dto/chat.query.dto';
 import { ChatCreateRequest } from './dto/create.chat.dto';
-import { ChatEntireDataReturn } from './dto/return.chat.dto';
+import {
+  ChatEntireDataReturn,
+  ChatIsAcceptableReturn,
+} from './dto/return.chat.dto';
+import { ChatIsAcceptableCondition } from './dto/get.chat.dto';
 
 @Controller('chats')
 @UseFilters(HttpExceptionFilter)
@@ -36,20 +45,20 @@ export class ChatsController {
     return await this.chatService.registerChatRoom(chatCreateRequest);
   }
 
-  @Post('rooms/:roomId')
+  @Get('rooms/:roomId')
   @ApiOperation({
-    summary: '채팅방 입장 API',
+    summary: '채팅방 입장 가능 확인 API',
     tags: ['chats'],
   })
   @ApiResponse({
-    description: '채팅방 입장 가능 여부 반환',
-    type: ChatAcceptParticipationResponseDto,
+    description: '채팅방 입장이 가능한 지 확인하고 boolean 값을 리턴합니다.',
+    type: ChatIsAcceptableReturn,
   })
   async acceptParticipation(
-    @Param() param: ChatAcceptParticipationParamDto,
-    @Body() body: ChatAcceptParticipationRequestDto,
-  ): Promise<ChatAcceptParticipationResponseDto> {
-    return this.chatService.acceptParticipation(body, param);
+    @Param('roomId') roomId: string,
+    @Query() condition: ChatIsAcceptableCondition,
+  ): Promise<ChatIsAcceptableReturn> {
+    return this.chatService.acceptParticipation(roomId, condition);
   }
 
   @Get('rooms')
