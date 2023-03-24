@@ -130,8 +130,10 @@ export class ChatsRepository {
     }
   }
 
-  async createSocketInfo(data: SocketCreateRequest): Promise<void> {
-    const { userId, roomId, socketId, nickname } = data;
+  async createSocketInfo(
+    socketCreateRequest: SocketCreateRequest,
+  ): Promise<void> {
+    const { userId, roomId, socketId, nickname } = socketCreateRequest;
 
     try {
       await this.chatParticipantModel
