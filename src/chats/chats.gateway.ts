@@ -86,7 +86,7 @@ export class ChatsGateway implements OnGatewayConnection {
     try {
       const { content, nickname, roomId } = body;
 
-      socket.emit('inputChat', { content, nickname, roomId });
+      socket.to(roomId).emit('inputChat', { content, nickname, roomId });
     } catch (err) {
       console.log(err);
     }
