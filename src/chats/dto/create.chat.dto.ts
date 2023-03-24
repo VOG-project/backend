@@ -26,3 +26,20 @@ export class ChatCreateRequest {
   @IsInt()
   maximumMember: number;
 }
+
+export class SocketCreateRequest {
+  @IsNotEmpty()
+  @IsInt()
+  userId: number;
+
+  @IsNotEmpty()
+  @IsString()
+  nickname: string;
+
+  @IsNotEmpty()
+  @IsString()
+  roomId: string;
+
+  @IsString()
+  socketId: string;
+}
