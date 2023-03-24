@@ -69,7 +69,7 @@ export class ChatsController {
     tags: ['chats'],
   })
   @ApiResponse({
-    description: '채팅방 목록 반환',
+    description: '입력 페이지에 해당하는 채팅방 목록을 반환합니다. (기본 10개)',
     type: ChatGetRoomListResponseDto,
   })
   async getChatRoomList(
@@ -84,7 +84,7 @@ export class ChatsController {
     tags: ['chats'],
   })
   @ApiResponse({
-    description: '채팅방 총 개수 반환',
+    description: '현재 생성된 채팅방의 총 개수를 반환합니다.',
     type: ChatGetRoomTotalCountResponseDto,
   })
   async getChatRoomTotalCount(): Promise<ChatGetRoomTotalCountResponseDto> {
