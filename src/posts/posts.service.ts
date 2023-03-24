@@ -23,14 +23,14 @@ export class PostsService {
   async getPostList(condition: PostGetCondition): Promise<PostListReturn[]> {
     let { board } = condition;
     const { page } = condition;
-    const RETURN_ROW_COUNT = 10;
+    const RESULT_ROW_COUNT = 10;
 
     board = board.toLowerCase();
 
     return this.postRepository.findPostListByBoardType(
       board,
       page,
-      RETURN_ROW_COUNT,
+      RESULT_ROW_COUNT,
     );
   }
 
