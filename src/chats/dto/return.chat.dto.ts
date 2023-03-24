@@ -51,3 +51,11 @@ export class ChatIsAcceptableReturn {
   })
   canParticipant: boolean;
 }
+
+export class ChatRoomTotalCountReturn {
+  @ApiProperty({
+    example: 33,
+    description: '총 채팅방 개수',
+  })
+  chatRoomCount: number;
+}
