@@ -3,19 +3,17 @@ import { Body, Param, Post, Query } from '@nestjs/common/decorators';
 import { ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { HttpExceptionFilter } from './../filters/http-exception.filter';
 import { SuccessInterceptor } from './../interceptors/success.interceptor';
-import {
-  ChatAcceptParticipationRequestDto,
-  ChatRegisterRoomRequestDto,
-} from './dto/chat.request.dto';
+import { ChatAcceptParticipationRequestDto } from './dto/chat.request.dto';
 import { ChatsService } from './chats.service';
 import {
   ChatAcceptParticipationResponseDto,
   ChatGetRoomListResponseDto,
   ChatGetRoomTotalCountResponseDto,
-  ChatRegisterRoomResponseDto,
 } from './dto/chat.response.dto';
 import { ChatAcceptParticipationParamDto } from './dto/chat.param.dto';
 import { ChatGetChatRoomListQueryDto } from './dto/chat.query.dto';
+import { ChatCreateRequest } from './dto/create.chat.dto';
+import { ChatEntireDataReturn } from './dto/return.chat.dto';
 
 @Controller('chats')
 @UseFilters(HttpExceptionFilter)
@@ -29,14 +27,13 @@ export class ChatsController {
     tags: ['chats'],
   })
   @ApiResponse({
-    description: '생성한 채팅방의 정보 반환',
-    type: ChatRegisterRoomResponseDto,
+    description: '채팅방을 생성하고 해당 채팅방의 정보를 반환합니다.',
+    type: ChatEntireDataReturn,
   })
   async registerChatRoom(
-    @Body() body: ChatRegisterRoomRequestDto,
-  ): Promise<ChatRegisterRoomResponseDto> {
-    console.log(body);
-    return await this.chatService.registerChatRoom(body);
+    @Body() chatCreateRequest: ChatCreateRequest,
+  ): Promise<ChatEntireDataReturn> {
+    return await this.chatService.registerChatRoom(chatCreateRequest);
   }
 
   @Post('rooms/:roomId')
