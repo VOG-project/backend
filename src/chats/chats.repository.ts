@@ -3,12 +3,8 @@ import { ChatParticipant, ChatRoom } from './chats.entity';
 import { Repository } from 'typeorm';
 import { ChatRegisterRoomRequestDto } from './dto/chat.request.dto';
 import { HttpException } from '@nestjs/common';
-import {
-  ChatGetRoomTotalCountResponseDto,
-  ChatGetRoomListResponseDto,
-} from './dto/chat.response.dto';
+import { ChatGetRoomTotalCountResponseDto } from './dto/chat.response.dto';
 import { SocketRegisterInfoRequestDto } from './dto/socket.request.dto';
-import { ChatGetChatRoomListQueryDto } from './dto/chat.query.dto';
 import { ChatEntireDataReturn } from './dto/return.chat.dto';
 
 export class ChatsRepository {
@@ -200,16 +196,15 @@ export class ChatsRepository {
   }
 
   async findChatRoomList(
-    filter: ChatGetChatRoomListQueryDto,
-  ): Promise<ChatGetRoomListResponseDto[]> {
-    const { page } = filter;
-    const count = 10;
+    page: number,
+    resultRowCount: number,
+  ): Promise<ChatEntireDataReturn[]> {
     try {
       return await this.chatRoomModel
         .createQueryBuilder('p')
         .select()
-        .offset(count * (page - 1))
-        .limit(count)
+        .offset(resultRowCount * (page - 1))
+        .limit(resultRowCount)
         .orderBy('p.no', 'DESC')
         .getMany();
     } catch (err) {

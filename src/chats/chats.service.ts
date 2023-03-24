@@ -1,10 +1,7 @@
 import { Injectable, HttpException } from '@nestjs/common';
 import { ChatsRepository } from './chats.repository';
 import { v4 } from 'uuid';
-import {
-  ChatGetRoomTotalCountResponseDto,
-  ChatGetRoomListResponseDto,
-} from './dto/chat.response.dto';
+import { ChatGetRoomTotalCountResponseDto } from './dto/chat.response.dto';
 import { ChatCreateRequest } from './dto/create.chat.dto';
 import {
   ChatEntireDataReturn,
