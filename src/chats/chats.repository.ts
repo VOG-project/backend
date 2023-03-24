@@ -154,7 +154,7 @@ export class ChatsRepository {
     }
   }
 
-  async deleteSocketInfo(userId: number) {
+  async deleteSocketInfo(userId: number): Promise<void> {
     try {
       await this.chatParticipantModel
         .createQueryBuilder()
@@ -169,7 +169,7 @@ export class ChatsRepository {
     }
   }
 
-  async deleteChatRoom(roomId: string) {
+  async deleteChatRoom(roomId: string): Promise<void> {
     try {
       await this.chatRoomModel
         .createQueryBuilder()
