@@ -12,10 +12,7 @@ import { ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { HttpExceptionFilter } from './../filters/http-exception.filter';
 import { SuccessInterceptor } from './../interceptors/success.interceptor';
 import { ChatsService } from './chats.service';
-import {
-  ChatGetRoomListResponseDto,
-  ChatGetRoomTotalCountResponseDto,
-} from './dto/chat.response.dto';
+import { ChatGetRoomTotalCountResponseDto } from './dto/chat.response.dto';
 import { ChatCreateRequest } from './dto/create.chat.dto';
 import {
   ChatEntireDataReturn,
@@ -70,7 +67,7 @@ export class ChatsController {
   })
   @ApiResponse({
     description: '입력 페이지에 해당하는 채팅방 목록을 반환합니다. (기본 10개)',
-    type: ChatGetRoomListResponseDto,
+    type: ChatEntireDataReturn,
   })
   async getChatRoomList(
     @Query() condition: ChatChatRoomListCondition,
