@@ -3,12 +3,13 @@ import {
   MessageBody,
   SubscribeMessage,
   WebSocketGateway,
+  WebSocketServer,
 } from '@nestjs/websockets';
 import {
   OnGatewayConnection,
   OnGatewayDisconnect,
 } from '@nestjs/websockets/interfaces';
-import { Socket } from 'socket.io';
+import { Socket, Namespace } from 'socket.io';
 import {
   SocketLeaveChatRequestDto,
   SocketRegisterInfoRequestDto,
@@ -22,6 +23,8 @@ export class ChatsGateway implements OnGatewayConnection {
     private readonly chatService: ChatsService,
     private readonly chatRepository: ChatsRepository,
   ) {}
+
+  @WebSocketServer() webSocket: Namespace;
 
   @SubscribeMessage('enterChatRoom')
   async handleEnterChatRoom(
@@ -52,7 +55,9 @@ export class ChatsGateway implements OnGatewayConnection {
         roomId,
       );
 
-      socket.broadcast.to(roomId).emit('setChat', chatInfo);
+      // socket.broadcast.to(roomId).emit('setChat', chatInfo);
+
+      this.webSocket.to(roomId).emit('setChat', chatInfo);
     } catch (err) {
       console.log(err.message);
     }
