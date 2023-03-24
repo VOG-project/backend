@@ -5,13 +5,15 @@ import {
   ChatGetRoomTotalCountResponseDto,
   ChatGetRoomListResponseDto,
 } from './dto/chat.response.dto';
-import { ChatGetChatRoomListQueryDto } from './dto/chat.query.dto';
 import { ChatCreateRequest } from './dto/create.chat.dto';
 import {
   ChatEntireDataReturn,
   ChatIsAcceptableReturn,
 } from './dto/return.chat.dto';
-import { ChatIsAcceptableCondition } from './dto/get.chat.dto';
+import {
+  ChatChatRoomListCondition,
+  ChatIsAcceptableCondition,
+} from './dto/get.chat.dto';
 
 @Injectable()
 export class ChatsService {
@@ -63,9 +65,11 @@ export class ChatsService {
   }
 
   async getChatRoomList(
-    filter: ChatGetChatRoomListQueryDto,
-  ): Promise<ChatGetRoomListResponseDto[]> {
-    return await this.chatRepository.findChatRoomList(filter);
+    condition: ChatChatRoomListCondition,
+  ): Promise<ChatEntireDataReturn[]> {
+    const { page } = condition;
+    const RESULT_ROW_COUNT = 10;
+    return await this.chatRepository.findChatRoomList(page, RESULT_ROW_COUNT);
   }
 
   async getChatRoomTotalCount(): Promise<ChatGetRoomTotalCountResponseDto> {
