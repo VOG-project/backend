@@ -3,11 +3,11 @@ import { ChatParticipant, ChatRoom } from './chats.entity';
 import { Repository } from 'typeorm';
 import { ChatRegisterRoomRequestDto } from './dto/chat.request.dto';
 import { HttpException } from '@nestjs/common';
-import { SocketRegisterInfoRequestDto } from './dto/socket.request.dto';
 import {
   ChatEntireDataReturn,
   ChatRoomTotalCountReturn,
 } from './dto/return.chat.dto';
+import { SocketCreateRequest } from './dto/create.chat.dto';
 
 export class ChatsRepository {
   constructor(
@@ -130,7 +130,7 @@ export class ChatsRepository {
     }
   }
 
-  async createSocketInfo(data: SocketRegisterInfoRequestDto) {
+  async createSocketInfo(data: SocketCreateRequest): Promise<void> {
     const { userId, roomId, socketId, nickname } = data;
 
     try {
