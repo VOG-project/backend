@@ -6,10 +6,10 @@ import { HttpException } from '@nestjs/common';
 import {
   ChatGetRoomTotalCountResponseDto,
   ChatGetRoomListResponseDto,
-  ChatRegisterRoomResponseDto,
 } from './dto/chat.response.dto';
 import { SocketRegisterInfoRequestDto } from './dto/socket.request.dto';
 import { ChatGetChatRoomListQueryDto } from './dto/chat.query.dto';
+import { ChatEntireDataReturn } from './dto/return.chat.dto';
 
 export class ChatsRepository {
   constructor(
@@ -19,7 +19,7 @@ export class ChatsRepository {
     private readonly chatParticipantModel: Repository<ChatParticipant>,
   ) {}
 
-  async create(
+  async createChatRoom(
     data: ChatRegisterRoomRequestDto,
     roomId: string,
   ): Promise<void> {
@@ -40,11 +40,11 @@ export class ChatsRepository {
     }
   }
 
-  async findByRoomId(roomId: string): Promise<ChatRegisterRoomResponseDto> {
+  async findByRoomId(roomId: string): Promise<ChatEntireDataReturn> {
     try {
       return await this.chatRoomModel
         .createQueryBuilder('c')
-        .select(['c.roomId', 'c.title', 'c.currentMember', 'c.maximumMember'])
+        .select()
         .where('roomId = :roomId', { roomId })
         .getOne();
     } catch (err) {
