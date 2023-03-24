@@ -52,7 +52,7 @@ export class ChatsGateway implements OnGatewayConnection {
         roomId,
       );
 
-      socket.to(roomId).emit('setChat', chatInfo);
+      socket.in(roomId).emit('setChat', chatInfo);
     } catch (err) {
       console.log(err.message);
     }
@@ -86,7 +86,7 @@ export class ChatsGateway implements OnGatewayConnection {
     try {
       const { content, nickname, roomId } = body;
 
-      socket.to(roomId).emit('inputChat', { content, nickname, roomId });
+      socket.in(roomId).emit('inputChat', { content, nickname, roomId });
     } catch (err) {
       console.log(err);
     }
