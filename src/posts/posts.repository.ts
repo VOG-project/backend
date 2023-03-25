@@ -73,9 +73,10 @@ export class PostsRepository {
 
   async findPostAndComments(postId: number) {
     try {
-      await this.postModel
+      return await this.postModel
         .createQueryBuilder('p')
         .innerJoin('p.comments', 'c')
+        .innerJoin('p.comments', 'r')
         .select([
           'p.id',
           'p.title',
@@ -93,6 +94,9 @@ export class PostsRepository {
           'c.updatedAt',
         ])
         .where('p.id = :postId', { postId })
+        .andWhere('c.id = r.group')
+        .orderBy('c.id', 'ASC')
+        .addOrderBy('c.sequence', 'ASC')
         .getOne();
     } catch (err) {
       throw new HttpException(
