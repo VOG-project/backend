@@ -1,7 +1,8 @@
 name: VOG-API-SERVER-CICD
 
 env:
-  DOCKER_CONTAINER_NAME: vog-api-server
+  DOCKER_CONTAINER_NAME_NO_1: vog-api-server_1
+  DOCKER_CONTAINER_NAME_NO_2: vog-api-server_2
   DOCKER_IMAGE_NAME: vog-api-server-image
   DOCKER_HUB_NAME: hhs7425
 
@@ -57,6 +58,8 @@ jobs:
         sudo docker login -u ${{ secrets.DOCKER_HUB_USER }} -p ${{ secrets.DOCKER_HUB_PASSWORD }}
     - name: Run docker
       run: |
-        docker stop ${{ env.DOCKER_CONTAINER_NAME }} && docker rm ${{ env.DOCKER_CONTAINER_NAME }} && docker rmi ${{ env.DOCKER_HUB_NAME }}/${{ env.DOCKER_IMAGE_NAME }}:latest
+        docker stop ${{ env.DOCKER_CONTAINER_NAME_NO_1 }} && docker rm ${{ env.DOCKER_CONTAINER_NAME_NO_1 }} && docker rmi ${{ env.DOCKER_HUB_NAME }}/${{ env.DOCKER_IMAGE_NAME }}:latest
+        docker stop ${{ env.DOCKER_CONTAINER_NAME_NO_2 }} && docker rm ${{ env.DOCKER_CONTAINER_NAME_NO_2 }} && docker rmi ${{ env.DOCKER_HUB_NAME }}/${{ env.DOCKER_IMAGE_NAME }}:latest
         docker pull ${{ env.DOCKER_HUB_NAME }}/${{ env.DOCKER_IMAGE_NAME }}:latest
-        docker run -d -p 3000:3000 --name ${{ env.DOCKER_CONTAINER_NAME }} --restart always ${{ env.DOCKER_HUB_NAME }}/${{ env.DOCKER_IMAGE_NAME }}:latest
+        docker run -d -p 3000:3000 --name ${{ env.DOCKER_CONTAINER_NAME_NO_1 }} --restart always ${{ env.DOCKER_HUB_NAME }}/${{ env.DOCKER_IMAGE_NAME }}:latest
+        docker run -d -p 3001:3001 --name ${{ env.DOCKER_CONTAINER_NAME_NO_2 }} --restart always ${{ env.DOCKER_HUB_NAME }}/${{ env.DOCKER_IMAGE_NAME }}:latest
