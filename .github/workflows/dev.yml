@@ -62,4 +62,4 @@ jobs:
         docker stop ${{ env.DOCKER_CONTAINER_NAME_NO_2 }} && docker rm ${{ env.DOCKER_CONTAINER_NAME_NO_2 }} && docker rmi ${{ env.DOCKER_HUB_NAME }}/${{ env.DOCKER_IMAGE_NAME }}:latest
         docker pull ${{ env.DOCKER_HUB_NAME }}/${{ env.DOCKER_IMAGE_NAME }}:latest
         docker run -d -p 3000:3000 --name ${{ env.DOCKER_CONTAINER_NAME_NO_1 }} --restart always ${{ env.DOCKER_HUB_NAME }}/${{ env.DOCKER_IMAGE_NAME }}:latest
-        docker run -d -p 3001:3001 --name ${{ env.DOCKER_CONTAINER_NAME_NO_2 }} --restart always ${{ env.DOCKER_HUB_NAME }}/${{ env.DOCKER_IMAGE_NAME }}:latest
+        docker run -d -p 3001:3000 --name ${{ env.DOCKER_CONTAINER_NAME_NO_2 }} --restart always ${{ env.DOCKER_HUB_NAME }}/${{ env.DOCKER_IMAGE_NAME }}:latest
