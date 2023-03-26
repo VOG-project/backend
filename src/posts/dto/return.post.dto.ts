@@ -141,7 +141,7 @@ export class PostAndCommentsReturn {
       sequence: 0,
       createdAt: '2023-03-25T22:24:18.479Z',
       updatedAt: '2023-03-25T22:24:18.479Z',
-      childeComments: { id: 7, comment: 2 },
+      childeComments: CommentEntireDataReturn,
     },
   })
   comments: CommentEntireDataReturn[];

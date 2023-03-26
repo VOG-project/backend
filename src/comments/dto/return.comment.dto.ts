@@ -52,7 +52,7 @@ export class CommentEntireDataReturn {
       sequence: 0,
     },
   })
-  childComments?: CommentEntireDataReturn[];
+  reply?: CommentEntireDataReturn[];
 }
 
 export class CommentPkIdReturn {
