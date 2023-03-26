@@ -42,6 +42,17 @@ export class CommentEntireDataReturn {
     description: '게시물 수정 일자',
   })
   updatedAt: Date;
+
+  @ApiProperty({
+    example: {
+      id: 6,
+      userId: 7,
+      content: '댓글썼어용',
+      group: 6,
+      sequence: 0,
+    },
+  })
+  childComments?: CommentEntireDataReturn[];
 }
 
 export class CommentPkIdReturn {
