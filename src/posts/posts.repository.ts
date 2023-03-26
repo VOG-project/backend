@@ -77,7 +77,7 @@ export class PostsRepository {
       return await this.postModel
         .createQueryBuilder('p')
         .innerJoin('p.comments', 'c')
-        .innerJoin('c.childComments', 'r')
+        .innerJoin('c.reply', 'r')
         .select([
           'p.id',
           'p.title',

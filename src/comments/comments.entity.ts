@@ -56,9 +56,9 @@ export class CommentEntity extends CreatedUpdatedDate {
   user: User;
 
   @OneToMany(() => CommentEntity, (comment) => comment.parentComment)
-  childComments: CommentEntity[];
+  reply: CommentEntity[];
 
-  @ManyToOne(() => CommentEntity, (comment) => comment.childComments)
+  @ManyToOne(() => CommentEntity, (comment) => comment.reply)
   @JoinColumn({
     name: 'group',
   })
