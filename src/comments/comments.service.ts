@@ -19,6 +19,14 @@ export class CommentsService {
   async registerComment(
     commentCreateRequest: CommentCreateRequest,
   ): Promise<CommentEntireDataReturn> {
+    const { group, sequence } = commentCreateRequest;
+
+    if (sequence >= 1) {
+      const isExistedComment = await this.commentRepository.findOneById(group);
+      if (!isExistedComment)
+        throw new HttpException('존재하지 않는 댓글에 대한 요청입니다.', 400);
+    }
+
     const { commentId } = await this.commentRepository.createComment(
       commentCreateRequest,
     );
