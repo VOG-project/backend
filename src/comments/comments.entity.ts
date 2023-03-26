@@ -7,6 +7,7 @@ import {
   JoinColumn,
   ManyToOne,
   PrimaryGeneratedColumn,
+  OneToMany,
 } from 'typeorm';
 
 @Entity({
@@ -53,4 +54,13 @@ export class CommentEntity extends CreatedUpdatedDate {
     name: 'userId',
   })
   user: User;
+
+  @OneToMany(() => CommentEntity, (comment) => comment.parentComment)
+  childComments: CommentEntity[];
+
+  @ManyToOne(() => CommentEntity, (comment) => comment.childComments)
+  @JoinColumn({
+    name: 'group',
+  })
+  parentComment: CommentEntity;
 }
