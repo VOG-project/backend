@@ -47,6 +47,19 @@ export class CommentsRepository {
     }
   }
 
+  // async findManyByPostId(postId: number): Promise<any> {
+  //   try {
+  //     return await this.commentModel.createQueryBuilder()
+  //     .select()
+  //     .where('')
+  //   } catch (err) {
+  //     throw new HttpException(
+  //       `[MYSQL ERROR] findManyByPostId: ${err.message}`,
+  //       500,
+  //     );
+  //   }
+  // }
+
   async updateComment(
     commentUpdateRequest: CommentUpdateRequest,
     commentId: number,
