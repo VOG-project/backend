@@ -34,6 +34,13 @@ export class PostsService {
     );
   }
 
+  async getPost(postId: number): Promise<any> {
+    const post = await this.postRepository.findOneById(postId);
+    if (!post) throw new HttpException('존재하지 않는 게시물입니다.', 400);
+
+    return this.postRepository.findPostAndComments(postId);
+  }
+
   async modifyPost(
     postModificationRequest: PostModificationRequest,
     postId: number,
