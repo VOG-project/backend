@@ -18,6 +18,7 @@ import { PostCreateRequest } from './dto/create.post.dto';
 import { PostGetCondition } from './dto/get.post.dto';
 import { PostModificationRequest } from './dto/modify.post.dto';
 import {
+  PostAndCommentsReturn,
   PostDeletedCountReturn,
   PostEntireDataReturn,
   PostListReturn,
@@ -68,8 +69,11 @@ export class PostsController {
     description: `게시물 pk를 입력받아 게시물 데이터와 게시물에 쓰인 댓글 데이터를 반환합니다. 
       댓글 데이터에서 group은 댓글(대댓글)이 속한 댓글의 PK이고 sequence는 대댓글이 달린 순서를 말합니다. 
       sequence가 0일 경우 댓글, 1 이상일 경우 대댓글입니다.`,
+    type: PostAndCommentsReturn,
   })
-  getPost(@Param('postId', ParseIntPipe) postId: number): Promise<any> {
+  getPost(
+    @Param('postId', ParseIntPipe) postId: number,
+  ): Promise<PostAndCommentsReturn> {
     return this.postService.getPost(postId);
   }
 

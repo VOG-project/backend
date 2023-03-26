@@ -2,6 +2,7 @@ import { Injectable, HttpException } from '@nestjs/common';
 import { PostCreateRequest } from './dto/create.post.dto';
 import { PostGetCondition } from './dto/get.post.dto';
 import {
+  PostAndCommentsReturn,
   PostDeletedCountReturn,
   PostEntireDataReturn,
   PostListReturn,
@@ -34,7 +35,7 @@ export class PostsService {
     );
   }
 
-  async getPost(postId: number): Promise<any> {
+  async getPost(postId: number): Promise<PostAndCommentsReturn> {
     const post = await this.postRepository.findOneById(postId);
     if (!post) throw new HttpException('존재하지 않는 게시물입니다.', 400);
 
