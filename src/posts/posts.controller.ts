@@ -59,6 +59,19 @@ export class PostsController {
     return this.postService.getPostList(condition);
   }
 
+  @Get(':postId')
+  @ApiOperation({
+    summary: '게시물 조회 API',
+    tags: ['posts'],
+  })
+  @ApiResponse({
+    description:
+      '게시물 pk를 입력받아 게시물 데이터와 게시물에 쓰인 댓글 데이터를 반환합니다.',
+  })
+  getPost(@Param('postId', ParseIntPipe) postId: number): Promise<any> {
+    return this.postService.getPost(postId);
+  }
+
   @Patch(':postId')
   @ApiOperation({
     summary: '게시물 수정 API',
