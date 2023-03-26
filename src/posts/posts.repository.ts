@@ -4,6 +4,7 @@ import { Repository } from 'typeorm';
 import { PostCreateRequest } from './dto/create.post.dto';
 import { HttpException } from '@nestjs/common';
 import {
+  PostAndCommentsReturn,
   PostDeletedCountReturn,
   PostEntireDataReturn,
   PostListReturn,
@@ -71,12 +72,12 @@ export class PostsRepository {
     }
   }
 
-  async findPostAndComments(postId: number) {
+  async findPostAndComments(postId: number): Promise<PostAndCommentsReturn> {
     try {
       return await this.postModel
         .createQueryBuilder('p')
         .innerJoin('p.comments', 'c')
-        .innerJoin('p.comments', 'r')
+        .innerJoin('c.childComments', 'r')
         .select([
           'p.id',
           'p.title',
@@ -92,9 +93,17 @@ export class PostsRepository {
           'c.sequence',
           'c.createdAt',
           'c.updatedAt',
+          'r.id',
+          'r.userId',
+          'r.content',
+          'r.group',
+          'r.sequence',
+          'r.createdAt',
+          'r.updatedAt',
         ])
         .where('p.id = :postId', { postId })
         .andWhere('c.id = r.group')
+        .andWhere('r.sequence != 0')
         .orderBy('c.id', 'ASC')
         .addOrderBy('c.sequence', 'ASC')
         .getOne();
