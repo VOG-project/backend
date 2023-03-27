@@ -1,7 +1,15 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsNotEmpty, IsString } from 'class-validator';
+import { IsNotEmpty, IsString, IsInt } from 'class-validator';
 
 export class PostCreateRequest {
+  @ApiProperty({
+    example: '372',
+    description: '작성자 pk',
+  })
+  @IsNotEmpty()
+  @IsInt()
+  writerId: number;
+
   @ApiProperty({
     example: '챌리저 찍음 ㅎㅎ',
     description: '게시물 제목',
