@@ -18,7 +18,7 @@ export class LikeRepository {
     }
   }
 
-  async findLikeUserByPostId(postId: number): Promise<any> {
+  async findLikeUsersByPostId(postId: number): Promise<any> {
     try {
       return {
         userIds: await this.redis.smembers(postId.toString()),
