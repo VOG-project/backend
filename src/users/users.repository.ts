@@ -165,13 +165,28 @@ export class UserRepository {
   findByEmail(email: string): Promise<UserEntireDataReturn> {
     try {
       return this.userModel
+        .createQueryBuilder()
+        .select()
+        .where('email = :email', { email })
+        .getOne();
+    } catch (err) {
+      throw new HttpException(
+        `[MYSQL Error] existByEmail method: ${err.message}`,
+        400,
+      );
+    }
+  }
+
+  findByEmailWithoutPassword(email: string): Promise<UserEntireDataReturn> {
+    try {
+      return this.userModel
         .createQueryBuilder('u')
         .select([
           'u.id',
           'u.email',
           'u.nickname',
-          'u.sex',
           'u.profileUrl',
+          'u.sex',
           'u.createdAt',
           'u.updatedAt',
         ])
