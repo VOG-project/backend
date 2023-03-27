@@ -25,6 +25,14 @@ import { LikeModule } from './like/like.module';
       isGlobal: true,
       cache: true,
     }),
+    RedisModule.forRoot({
+      config: {
+        host: process.env.REDIS_HOST,
+        port: parseInt(process.env.REDIS_PORT, 10),
+        password: process.env.REDIS_PASSWORD,
+        connectTimeout: 10000,
+      },
+    }),
     TypeOrmModule.forRoot({
       type: 'mysql',
       host: process.env.MYSQL_HOST,
@@ -35,14 +43,6 @@ import { LikeModule } from './like/like.module';
       synchronize: true,
       database: 'vog',
       logging: true,
-    }),
-    RedisModule.forRoot({
-      config: {
-        host: process.env.REDIS_HOST,
-        port: parseInt(process.env.REDIS_PORT, 10),
-        password: process.env.REDIS_PASSWORD,
-        connectTimeout: 10000,
-      },
     }),
     UsersModule,
     AuthModule,
