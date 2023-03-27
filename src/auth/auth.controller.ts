@@ -14,10 +14,8 @@ import { HttpExceptionFilter } from '../filters/http-exception.filter';
 import { SuccessInterceptor } from '../interceptors/success.interceptor';
 import { ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { Response, Request } from 'express';
-import {
-  AuthSessionLoginResponseDto,
-  AuthSessionLogoutResponseDto,
-} from './dto/auth.response.dto';
+import { AuthSessionLogoutResponseDto } from './dto/auth.response.dto';
+import { UserEntireDataReturn } from 'src/users/dto/return.user.dto';
 
 @Controller('auth')
 @UseInterceptors(SuccessInterceptor)
@@ -34,13 +32,8 @@ export class AuthController {
   async login(
     @Body() body: AuthSessionLoginRequestDto,
     @Res({ passthrough: true }) res: Response,
-  ): Promise<AuthSessionLoginResponseDto> {
+  ): Promise<UserEntireDataReturn> {
     const sessionId = await this.authService.issueSessionId(body);
-
-    const loginResult = await this.authService.setSessionInformation(
-      sessionId,
-      body,
-    );
 
     res.cookie('sessionId', sessionId, {
       httpOnly: true,
@@ -48,7 +41,7 @@ export class AuthController {
       maxAge: 60 * 60 * 24 * 7,
     });
 
-    return loginResult;
+    return await this.authService.setSessionInformation(sessionId, body);
   }
 
   @ApiOperation({ summary: '로그아웃', tags: ['Auth'] })

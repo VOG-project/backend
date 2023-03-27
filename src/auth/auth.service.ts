@@ -5,10 +5,8 @@ import { v4 } from 'uuid';
 import * as bcrypt from 'bcrypt';
 import { RedisService } from '@liaoliaots/nestjs-redis';
 import Redis from 'ioredis';
-import {
-  AuthSessionLoginResponseDto,
-  AuthSessionLogoutResponseDto,
-} from './dto/auth.response.dto';
+import { AuthSessionLogoutResponseDto } from './dto/auth.response.dto';
+import { UserEntireDataReturn } from 'src/users/dto/return.user.dto';
 
 @Injectable()
 export class AuthService {
@@ -50,7 +48,7 @@ export class AuthService {
   async setSessionInformation(
     sessionId: string,
     body: AuthSessionLoginRequestDto,
-  ): Promise<AuthSessionLoginResponseDto> {
+  ): Promise<UserEntireDataReturn> {
     const { email } = body;
     const isExistedSessionId = await this.redis.hget(sessionId, 'id');
 
@@ -68,9 +66,9 @@ export class AuthService {
     // 숫자 순서대로 초, 분, 시, 일 (7일간 DB에 보관 이후 자동 삭제)
     await this.redis.expire(sessionId, 60 * 60 * 24 * 7);
 
-    const userId = await this.redis.hget(sessionId, 'id');
+    await this.redis.hget(sessionId, 'id');
 
-    return { userId: parseInt(userId, 10) };
+    return user;
   }
 
   async deleteSessionInformation(
