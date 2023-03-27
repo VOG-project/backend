@@ -165,8 +165,16 @@ export class UserRepository {
   findByEmail(email: string): Promise<UserEntireDataReturn> {
     try {
       return this.userModel
-        .createQueryBuilder()
-        .select()
+        .createQueryBuilder('u')
+        .select([
+          'u.id',
+          'u.email',
+          'u.nickname',
+          'u.sex',
+          'u.profileUrl',
+          'u.createdAt',
+          'u.updatedAt',
+        ])
         .where('email = :email', { email })
         .getOne();
     } catch (err) {
