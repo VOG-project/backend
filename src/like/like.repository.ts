@@ -1,6 +1,7 @@
 import { RedisService } from '@liaoliaots/nestjs-redis';
-import { Injectable } from '@nestjs/common';
+import { Injectable, HttpException } from '@nestjs/common';
 import { Redis } from 'ioredis';
+import { LikeUserReturn } from './dto/result.like.dto';
 
 @Injectable()
 export class LikeRepository {
@@ -8,5 +9,26 @@ export class LikeRepository {
 
   constructor(private readonly redisService: RedisService) {
     this.redis = this.redisService.getClient();
+  }
+
+  async createLike(postId: number, userId: number): Promise<void> {
+    try {
+      await this.redis.sadd(postId.toString(), userId);
+    } catch (err) {
+      throw new HttpException(`[REDIS ERROR] createLike: ${err.message}`, 500);
+    }
+  }
+
+  async findLikeUserByPostId(postId: number): Promise<LikeUserReturn> {
+    try {
+      return {
+        userIds: await this.redis.smembers(postId.toString()),
+      };
+    } catch (err) {
+      throw new HttpException(
+        `[REDIS ERROR] findLikeCountByPostId: ${err.message}`,
+        500,
+      );
+    }
   }
 }
