@@ -177,29 +177,6 @@ export class UserRepository {
     }
   }
 
-  findByEmailWithoutPassword(email: string): Promise<UserEntireDataReturn> {
-    try {
-      return this.userModel
-        .createQueryBuilder('u')
-        .select([
-          'u.id',
-          'u.email',
-          'u.nickname',
-          'u.profileUrl',
-          'u.sex',
-          'u.createdAt',
-          'u.updatedAt',
-        ])
-        .where('email = :email', { email })
-        .getOne();
-    } catch (err) {
-      throw new HttpException(
-        `[MYSQL Error] existByEmail method: ${err.message}`,
-        400,
-      );
-    }
-  }
-
   /**
    * User 테이블에서 nickname으로 유저의 데이터를 검색하고 해당 유저 데이터의 모든 컬럼을 반환합니다.
    * @param nickname 유저 닉네임
