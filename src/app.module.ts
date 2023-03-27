@@ -17,6 +17,7 @@ import { PostsModule } from './posts/posts.module';
 import { PostEntity } from 'src/posts/posts.entity';
 import { CommentsModule } from './comments/comments.module';
 import { CommentEntity } from './comments/comments.entity';
+import { LikeModule } from './like/like.module';
 
 @Module({
   imports: [
@@ -49,6 +50,7 @@ import { CommentEntity } from './comments/comments.entity';
     ChatsModule,
     PostsModule,
     CommentsModule,
+    LikeModule,
   ],
   controllers: [AppController],
   providers: [AppService],
