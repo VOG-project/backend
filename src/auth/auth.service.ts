@@ -68,7 +68,7 @@ export class AuthService {
 
     await this.redis.hget(sessionId, 'id');
 
-    return user;
+    return await this.userRepository.findOneByIdWithoutPassword(user.id);
   }
 
   async deleteSessionInformation(
