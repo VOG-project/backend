@@ -46,7 +46,7 @@ export class PostEntity extends CreatedUpdatedDate {
   })
   postCategory: string;
 
-  @ManyToOne(() => User, (user) => user.posts)
+  @ManyToOne(() => User, (user) => user.posts, { onDelete: 'CASCADE' })
   @JoinColumn({
     name: 'writerId',
   })
