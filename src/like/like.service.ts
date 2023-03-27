@@ -22,8 +22,7 @@ export class LikeService {
 
     await this.likeRepository.createLike(postId, userId);
 
-    const { userIds } = await this.likeRepository.findLikeUserByPostId(postId);
-
+    const { userIds } = await this.likeRepository.findLikeUsersByPostId(postId);
     const result = userIds.map((id: string) => parseInt(id, 10));
 
     return { userIds: result };
@@ -40,8 +39,18 @@ export class LikeService {
 
     await this.likeRepository.deleteLike(postId, userId);
 
-    const { userIds } = await this.likeRepository.findLikeUserByPostId(postId);
+    const { userIds } = await this.likeRepository.findLikeUsersByPostId(postId);
+    const result = userIds.map((id: string) => parseInt(id, 10));
 
+    return { userIds: result };
+  }
+
+  async getLikeUser(postId: number) {
+    const isExistedPost = await this.postRepository.findOneById(postId);
+    if (!isExistedPost)
+      throw new HttpException('존재하지 않는 게시물입니다.', 400);
+
+    const { userIds } = await this.likeRepository.findLikeUsersByPostId(postId);
     const result = userIds.map((id: string) => parseInt(id, 10));
 
     return { userIds: result };
