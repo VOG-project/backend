@@ -76,6 +76,7 @@ export class PostsRepository {
     try {
       return await this.postModel
         .createQueryBuilder('p')
+        .innerJoin('p.user', 'u')
         .innerJoin('p.comments', 'c')
         .innerJoin('c.reply', 'r')
         .select([
@@ -86,6 +87,8 @@ export class PostsRepository {
           'p.postCategory',
           'p.createdAt',
           'p.updatedAt',
+          'u.id',
+          'u.nickname',
           'c.id',
           'c.userId',
           'c.content',
