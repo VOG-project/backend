@@ -5,7 +5,7 @@ import { UsersModule } from './../users/users.module';
 import { PostsModule } from 'src/posts/posts.module';
 
 @Module({
-  imports: [UsersModule, PostsModule],
+  imports: [UsersModule],
   providers: [AuthService],
   controllers: [AuthController],
 })
