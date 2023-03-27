@@ -30,4 +30,15 @@ export class LikeRepository {
       );
     }
   }
+
+  async deleteLike(postId: number, userId: number) {
+    try {
+      return await this.redis.srem(postId.toString(), userId);
+    } catch (err) {
+      throw new HttpException(
+        `[REDIS ERROR] findLikeCountByPostId: ${err.message}`,
+        500,
+      );
+    }
+  }
 }

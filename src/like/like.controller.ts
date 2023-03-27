@@ -3,6 +3,7 @@ import {
   Controller,
   Param,
   ParseIntPipe,
+  Patch,
   Post,
   UseFilters,
   UseInterceptors,
@@ -34,5 +35,21 @@ export class LikeController {
     @Param('postId', ParseIntPipe) postId: number,
   ) {
     return this.likeService.registerLike(postId, userId);
+  }
+
+  @Patch(':postId')
+  @ApiOperation({
+    summary: '좋아요 취소 API',
+    tags: ['like'],
+  })
+  @ApiResponse({
+    description:
+      '유저 pk와 게시물 pk를 입력 받아 좋아요 데이터를 수정하고 현재 좋아요를 누른 유저 pk 배열을 반환합니다.',
+  })
+  cancelLike(
+    @Body('userId', ParseIntPipe) userId: number,
+    @Param('postId', ParseIntPipe) postId: number,
+  ) {
+    return this.likeService.cancelLike(postId, userId);
   }
 }
