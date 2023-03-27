@@ -57,6 +57,11 @@ export class UserPkIdReturn {
   userId: number;
 }
 
+export class UserPkNicknameReturn {
+  id: number;
+  nickname: string;
+}
+
 export class UserDeletedCountReturn {
   @ApiProperty({
     example: 2,
