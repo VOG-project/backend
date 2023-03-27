@@ -76,9 +76,10 @@ export class PostsRepository {
     try {
       return await this.postModel
         .createQueryBuilder('p')
-        .innerJoin('p.user', 'u')
+        .innerJoin('p.user', 'pu')
         .innerJoin('p.comments', 'c')
         .innerJoin('c.reply', 'r')
+        .innerJoin('r.user', 'ru')
         .select([
           'p.id',
           'p.title',
@@ -87,8 +88,8 @@ export class PostsRepository {
           'p.postCategory',
           'p.createdAt',
           'p.updatedAt',
-          'u.id',
-          'u.nickname',
+          'pu.id',
+          'pu.nickname',
           'c.id',
           'c.userId',
           'c.content',
@@ -97,12 +98,13 @@ export class PostsRepository {
           'c.createdAt',
           'c.updatedAt',
           'r.id',
-          'r.userId',
           'r.content',
           'r.group',
           'r.sequence',
           'r.createdAt',
           'r.updatedAt',
+          'ru.id',
+          'ru.nickname',
         ])
         .where('p.id = :postId', { postId })
         .andWhere('c.id = r.group')
