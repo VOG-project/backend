@@ -1,9 +1,12 @@
 import { CommentEntity } from 'src/comments/comments.entity';
 import { CreatedUpdatedDate } from 'src/commonEntities/date.common.entity';
+import { User } from 'src/users/users.entity';
 import {
   Column,
   Entity,
   Index,
+  JoinColumn,
+  ManyToOne,
   OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
@@ -15,6 +18,11 @@ import {
 export class PostEntity extends CreatedUpdatedDate {
   @PrimaryGeneratedColumn()
   id: number;
+
+  @Column({
+    type: 'int',
+  })
+  writerId: number;
 
   @Column({
     type: 'varchar',
@@ -37,6 +45,12 @@ export class PostEntity extends CreatedUpdatedDate {
     length: 10,
   })
   postCategory: string;
+
+  @ManyToOne(() => User, (user) => user.posts)
+  @JoinColumn({
+    name: 'writerId',
+  })
+  user: User;
 
   @OneToMany(() => CommentEntity, (comment) => comment.post)
   comments: CommentEntity[];

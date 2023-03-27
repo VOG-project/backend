@@ -9,6 +9,7 @@ import { CreatedUpdatedDate } from 'src/commonEntities/date.common.entity';
 import { IsEmail, IsString, IsInt, IsNotEmpty } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 import { CommentEntity } from 'src/comments/comments.entity';
+import { PostEntity } from 'src/posts/posts.entity';
 
 @Entity({
   engine: 'InnoDB',
@@ -89,6 +90,9 @@ export class User extends CreatedUpdatedDate {
     default: `https://vog-image-storage.s3.ap-northeast-2.amazonaws.com/user/default.jpg`,
   })
   profileUrl: string;
+
+  @OneToMany(() => PostEntity, (post) => post.user)
+  posts: PostEntity[];
 
   @OneToMany(() => CommentEntity, (comment) => comment.user)
   comments: CommentEntity[];
