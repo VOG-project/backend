@@ -32,7 +32,7 @@ export class LikeController {
   registerLike(
     @Body('userId', ParseIntPipe) userId: number,
     @Param('postId', ParseIntPipe) postId: number,
-  ): Promise<LikeUserReturn> {
+  ) {
     return this.likeService.registerLike(postId, userId);
   }
 }

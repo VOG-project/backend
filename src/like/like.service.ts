@@ -1,7 +1,6 @@
 import { Injectable, HttpException } from '@nestjs/common';
 import { PostsRepository } from 'src/posts/posts.repository';
 import { UserRepository } from 'src/users/users.repository';
-import { LikeUserReturn } from './dto/result.like.dto';
 import { LikeRepository } from './like.repository';
 
 @Injectable()
@@ -12,7 +11,7 @@ export class LikeService {
     private readonly postRepository: PostsRepository,
   ) {}
 
-  async registerLike(postId: number, userId: number): Promise<any> {
+  async registerLike(postId: number, userId: number) {
     const isExistedUser = await this.userRepository.findOneById(userId);
     if (!isExistedUser)
       throw new HttpException('존재하지 않는 유저입니다.', 400);
@@ -24,8 +23,8 @@ export class LikeService {
     await this.likeRepository.createLike(postId, userId);
 
     const users = await this.likeRepository.findLikeUserByPostId(postId);
-    const result = users.map((id: string) => parseInt(id, 10));
+    //const result = users.map((id: string) => parseInt(id, 10));
 
-    return result;
+    //return result;
   }
 }
