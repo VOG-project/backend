@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Get,
   Param,
   ParseIntPipe,
   Patch,
@@ -51,5 +52,17 @@ export class LikeController {
     @Param('postId', ParseIntPipe) postId: number,
   ) {
     return this.likeService.cancelLike(postId, userId);
+  }
+
+  @Get(':postId')
+  @ApiOperation({
+    summary: '좋아요 총 개수 반환 API',
+    tags: ['like'],
+  })
+  @ApiResponse({
+    description: '해당 게시물에 좋아요를 누른 유저pk 배열을 반환합니다.',
+  })
+  getLikeUser(@Param('postId', ParseIntPipe) postId: number) {
+    return this.likeService.getLikeUser(postId);
   }
 }
