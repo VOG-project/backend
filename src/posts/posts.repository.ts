@@ -79,6 +79,7 @@ export class PostsRepository {
         .innerJoin('p.user', 'pu')
         .innerJoin('p.comments', 'c')
         .innerJoin('c.reply', 'r')
+        .innerJoin('c.user', 'cu')
         .innerJoin('r.user', 'ru')
         .select([
           'p.id',
@@ -91,12 +92,13 @@ export class PostsRepository {
           'pu.id',
           'pu.nickname',
           'c.id',
-          'c.userId',
           'c.content',
           'c.group',
           'c.sequence',
           'c.createdAt',
           'c.updatedAt',
+          'cu.id',
+          'cu.nickname',
           'r.id',
           'r.content',
           'r.group',
