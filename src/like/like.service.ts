@@ -26,6 +26,6 @@ export class LikeService {
 
     const result = userIds.map((id: string) => parseInt(id, 10));
 
-    return result;
+    return { userIds: result };
   }
 }
