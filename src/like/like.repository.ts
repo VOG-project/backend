@@ -1,7 +1,6 @@
 import { RedisService } from '@liaoliaots/nestjs-redis';
 import { Injectable, HttpException } from '@nestjs/common';
 import { Redis } from 'ioredis';
-import { LikeUserReturn } from './dto/result.like.dto';
 
 @Injectable()
 export class LikeRepository {
@@ -19,7 +18,7 @@ export class LikeRepository {
     }
   }
 
-  async findLikeUserByPostId(postId: number) {
+  async findLikeUserByPostId(postId: number): Promise<any> {
     try {
       return {
         userIds: await this.redis.smembers(postId.toString()),
