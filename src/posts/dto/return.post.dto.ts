@@ -1,5 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { CommentEntireDataReturn } from 'src/comments/dto/return.comment.dto';
+import { UserPkNicknameReturn } from 'src/users/dto/return.user.dto';
 
 export class PostEntireDataReturn {
   @ApiProperty({
@@ -131,6 +132,14 @@ export class PostAndCommentsReturn {
     description: '게시물 수정 일자',
   })
   updatedAt: Date;
+
+  @ApiProperty({
+    example: {
+      id: 367,
+      nickname: '페이커임',
+    },
+  })
+  user: UserPkNicknameReturn;
 
   @ApiProperty({
     example: {
