@@ -18,7 +18,6 @@ import { PostCreateRequest } from './dto/create.post.dto';
 import { PostGetCondition } from './dto/get.post.dto';
 import { PostModificationRequest } from './dto/modify.post.dto';
 import {
-  PostAndCommentsReturn,
   PostDeletedCountReturn,
   PostEntireDataReturn,
   PostListReturn,

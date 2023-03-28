@@ -4,7 +4,6 @@ import { Repository } from 'typeorm';
 import { PostCreateRequest } from './dto/create.post.dto';
 import { HttpException } from '@nestjs/common';
 import {
-  PostAndCommentsReturn,
   PostDeletedCountReturn,
   PostEntireDataReturn,
   PostListReturn,
