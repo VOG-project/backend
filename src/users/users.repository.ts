@@ -1,13 +1,15 @@
 import { Injectable, HttpException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { User } from './users.entity';
+import { UserEntity } from './users.entity';
 import { UserEntireDataReturn, UserPkIdReturn } from './dto/return.user.dto';
 import { PostDeletedCountReturn } from 'src/posts/dto/return.post.dto';
 
 @Injectable()
 export class UserRepository {
-  constructor(@InjectRepository(User) private userModel: Repository<User>) {}
+  constructor(
+    @InjectRepository(UserEntity) private userModel: Repository<UserEntity>,
+  ) {}
 
   /**
    * User 테이블의 profileUrl 필드를 새로운 이미지 URL로 업데이트하고 업데이트된 row 개수와 이미지 URl을 반환합니다.
@@ -66,7 +68,7 @@ export class UserRepository {
     try {
       await this.userModel
         .createQueryBuilder()
-        .update(User)
+        .update()
         .set({
           nickname: newNickname,
         })

@@ -12,10 +12,10 @@ import { CommentEntity } from 'src/comments/comments.entity';
 import { PostEntity } from 'src/posts/posts.entity';
 
 @Entity({
-  engine: 'InnoDB',
+  name: 'user',
 })
 @Check(`"sex IN ("남", "여")"`)
-export class User extends CreatedUpdatedDate {
+export class UserEntity extends CreatedUpdatedDate {
   @ApiProperty({
     example: '35',
     description: '식별아이디',

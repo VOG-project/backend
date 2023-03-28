@@ -1,6 +1,6 @@
 import { CreatedUpdatedDate } from 'src/commonEntities/date.common.entity';
 import { PostEntity } from 'src/posts/posts.entity';
-import { User } from 'src/users/users.entity';
+import { UserEntity } from 'src/users/users.entity';
 import {
   Column,
   Entity,
@@ -49,11 +49,11 @@ export class CommentEntity extends CreatedUpdatedDate {
   })
   post: PostEntity;
 
-  @ManyToOne(() => User, (user) => user.comments)
+  @ManyToOne(() => UserEntity, (user) => user.comments)
   @JoinColumn({
     name: 'userId',
   })
-  user: User;
+  user: UserEntity;
 
   @OneToMany(() => CommentEntity, (comment) => comment.parentComment)
   reply: CommentEntity[];

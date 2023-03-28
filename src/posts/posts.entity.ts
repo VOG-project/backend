@@ -1,6 +1,6 @@
 import { CommentEntity } from 'src/comments/comments.entity';
 import { CreatedUpdatedDate } from 'src/commonEntities/date.common.entity';
-import { User } from 'src/users/users.entity';
+import { UserEntity } from 'src/users/users.entity';
 import {
   Column,
   Entity,
@@ -46,11 +46,11 @@ export class PostEntity extends CreatedUpdatedDate {
   })
   postCategory: string;
 
-  @ManyToOne(() => User, (user) => user.posts, { onDelete: 'CASCADE' })
+  @ManyToOne(() => UserEntity, (user) => user.posts, { onDelete: 'CASCADE' })
   @JoinColumn({
     name: 'writerId',
   })
-  user: User;
+  user: UserEntity;
 
   @OneToMany(() => CommentEntity, (comment) => comment.post)
   comments: CommentEntity[];
