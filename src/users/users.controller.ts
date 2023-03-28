@@ -1,6 +1,7 @@
 import {
   Controller,
   Post,
+  Get,
   Body,
   UseFilters,
   UseInterceptors,
@@ -27,6 +28,20 @@ import { UserDeleteRequest } from './dto/delete.user.dto';
 @Controller('users')
 export class UsersController {
   constructor(private readonly userService: UserService) {}
+
+  @Get(':userId')
+  @ApiOperation({
+    summary: '유저 정보 조회 API',
+    tags: ['Users'],
+  })
+  @ApiResponse({
+    status: 200,
+    description: 'userId에 해당하는 유저 데이터를 반환합니다.',
+    type: UserEntireDataReturn,
+  })
+  getUser(@Param('userId', ParseIntPipe) userId: number) {
+    return this.userService.getUser(userId);
+  }
 
   @Patch(':userId/password')
   @ApiOperation({

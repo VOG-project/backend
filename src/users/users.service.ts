@@ -117,6 +117,10 @@ export class UserService {
     return this.userRepository.findOneByIdWithoutPassword(userId);
   }
 
+  async getUser(userId: number) {
+    return await this.userRepository.findOneByIdWithoutPassword(userId);
+  }
+
   /**
    * 유저의 데이터를 삭제하는 메소드입니다.
    * 유저가 입력한 비밀번호가 옳은 지 확인합니다.
