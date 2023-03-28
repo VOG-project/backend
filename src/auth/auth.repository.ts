@@ -1,6 +1,7 @@
 import { Injectable, HttpException } from '@nestjs/common';
 import { RedisService } from '@liaoliaots/nestjs-redis';
 import { Redis } from 'ioredis';
+import { AuthDeletedSessionCountReturn } from './dto/return.auth.dto';
 
 @Injectable()
 export class AuthRepository {
@@ -10,7 +11,7 @@ export class AuthRepository {
     this.redis = this.redisService.getClient();
   }
 
-  async findSession(sessionId: string) {
+  async findSession(sessionId: string): Promise<string> {
     try {
       return await this.redis.hget(sessionId, 'id');
     } catch (err) {
@@ -18,7 +19,11 @@ export class AuthRepository {
     }
   }
 
-  async createSession(sessionId: string, userId: number, nickname: string) {
+  async createSession(
+    sessionId: string,
+    userId: number,
+    nickname: string,
+  ): Promise<void> {
     try {
       await this.redis.hset(sessionId, { userId, nickname });
       // 숫자 순서대로 초, 분, 시, 일 (7일간 DB에 보관 이후 자동 삭제)
@@ -31,7 +36,9 @@ export class AuthRepository {
     }
   }
 
-  async deleteSession(sessionId: string) {
+  async deleteSession(
+    sessionId: string,
+  ): Promise<AuthDeletedSessionCountReturn> {
     try {
       return { deletedCount: await this.redis.del(sessionId) };
     } catch (err) {

@@ -1,11 +1,11 @@
 import { Injectable, HttpException } from '@nestjs/common';
 import { UserRepository } from './../users/users.repository';
-import { AuthSessionLoginRequestDto } from './dto/auth.request.dto';
 import { v4 } from 'uuid';
 import * as bcrypt from 'bcrypt';
-import { AuthSessionLogoutResponseDto } from './dto/auth.response.dto';
 import { UserEntireDataReturn } from 'src/users/dto/return.user.dto';
 import { AuthRepository } from './auth.repository';
+import { AuthLoginRequest } from './dto/create.auth.dto';
+import { AuthDeletedSessionCountReturn } from './dto/return.auth.dto';
 
 @Injectable()
 export class AuthService {
@@ -14,8 +14,8 @@ export class AuthService {
     private readonly authRepository: AuthRepository,
   ) {}
 
-  async issueSessionId(data: AuthSessionLoginRequestDto): Promise<string> {
-    const { email, password } = data;
+  async issueSessionId(autuLoginRequest: AuthLoginRequest): Promise<string> {
+    const { email, password } = autuLoginRequest;
 
     const user = await this.userRepository.findByEmail(email);
     if (!user) {
@@ -40,9 +40,9 @@ export class AuthService {
 
   async setSessionInformation(
     sessionId: string,
-    body: AuthSessionLoginRequestDto,
+    autuLoginRequest: AuthLoginRequest,
   ): Promise<UserEntireDataReturn> {
-    const { email } = body;
+    const { email } = autuLoginRequest;
 
     const isExistedSessionId = await this.authRepository.findSession(sessionId);
     if (isExistedSessionId) {
@@ -57,7 +57,7 @@ export class AuthService {
 
   async deleteSessionInformation(
     sessionId: string,
-  ): Promise<AuthSessionLogoutResponseDto> {
+  ): Promise<AuthDeletedSessionCountReturn> {
     return await this.authRepository.deleteSession(sessionId);
   }
 }
