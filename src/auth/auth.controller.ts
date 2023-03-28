@@ -23,10 +23,11 @@ import { UserEntireDataReturn } from 'src/users/dto/return.user.dto';
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
-  @ApiOperation({ summary: '로그인', tags: ['Auth'] })
+  @ApiOperation({ summary: '로그인 API', tags: ['Auth'] })
   @ApiResponse({
     status: 201,
-    description: '로그인 성공',
+    description: '로그인을 진행하고 해당 유저에 대한 데이터를 반환합니다.',
+    type: UserEntireDataReturn,
   })
   @Post('login')
   async login(
