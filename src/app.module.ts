@@ -5,7 +5,7 @@ import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { NestModule } from '@nestjs/common/interfaces/modules';
 import { MiddlewareConsumer } from '@nestjs/common/interfaces/middleware';
-import { LoggerMiddleware } from './middlewares/logger.middleware';
+import { LoggerMiddleware } from './common/middlewares/logger.middleware';
 import { UsersModule } from './users/users.module';
 import { UserEntity } from './users/users.entity';
 import { AuthModule } from './auth/auth.module';

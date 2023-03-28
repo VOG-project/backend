@@ -9,8 +9,8 @@ import {
   Delete,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
-import { HttpExceptionFilter } from '../filters/http-exception.filter';
-import { SuccessInterceptor } from '../interceptors/success.interceptor';
+import { HttpExceptionFilter } from '../common/filters/http-exception.filter';
+import { SuccessInterceptor } from '../common/interceptors/success.interceptor';
 import { ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { Response, Request } from 'express';
 import { UserEntireDataReturn } from 'src/users/dto/return.user.dto';

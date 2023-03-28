@@ -9,8 +9,8 @@ import {
   UseFilters,
   UseInterceptors,
 } from '@nestjs/common';
-import { HttpExceptionFilter } from 'src/filters/http-exception.filter';
-import { SuccessInterceptor } from 'src/interceptors/success.interceptor';
+import { HttpExceptionFilter } from 'src/common/filters/http-exception.filter';
+import { SuccessInterceptor } from 'src/common/interceptors/success.interceptor';
 import { LikeService } from './like.service';
 import { ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { LikeUserReturn } from './dto/result.like.dto';

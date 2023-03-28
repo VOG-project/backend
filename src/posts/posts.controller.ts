@@ -12,8 +12,8 @@ import {
   ParseIntPipe,
 } from '@nestjs/common';
 import { ApiOperation, ApiResponse } from '@nestjs/swagger';
-import { HttpExceptionFilter } from 'src/filters/http-exception.filter';
-import { SuccessInterceptor } from './../interceptors/success.interceptor';
+import { HttpExceptionFilter } from 'src/common/filters/http-exception.filter';
+import { SuccessInterceptor } from '../common/interceptors/success.interceptor';
 import { PostCreateRequest } from './dto/create.post.dto';
 import { PostGetCondition } from './dto/get.post.dto';
 import { PostModificationRequest } from './dto/modify.post.dto';

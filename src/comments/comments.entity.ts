@@ -1,4 +1,4 @@
-import { CreatedUpdatedDate } from 'src/commonEntities/date.common.entity';
+import { CreatedUpdatedDate } from 'src/common/commonEntities/date.common.entity';
 import { PostEntity } from 'src/posts/posts.entity';
 import { UserEntity } from 'src/users/users.entity';
 import {

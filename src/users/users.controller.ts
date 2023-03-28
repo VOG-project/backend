@@ -12,8 +12,8 @@ import {
 } from '@nestjs/common';
 import { UserService } from './users.service';
 import { ApiOperation, ApiResponse } from '@nestjs/swagger';
-import { HttpExceptionFilter } from '../filters/http-exception.filter';
-import { SuccessInterceptor } from '../interceptors/success.interceptor';
+import { HttpExceptionFilter } from '../common/filters/http-exception.filter';
+import { SuccessInterceptor } from '../common/interceptors/success.interceptor';
 import {
   UserModificationNicknameRequest,
   UserModificationPasswordRequest,

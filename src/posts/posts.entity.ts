@@ -1,5 +1,5 @@
 import { CommentEntity } from 'src/comments/comments.entity';
-import { CreatedUpdatedDate } from 'src/commonEntities/date.common.entity';
+import { CreatedUpdatedDate } from 'src/common/commonEntities/date.common.entity';
 import { UserEntity } from 'src/users/users.entity';
 import {
   Column,

@@ -11,8 +11,8 @@ import {
   Query,
 } from '@nestjs/common';
 import { ApiOperation, ApiResponse } from '@nestjs/swagger';
-import { SuccessInterceptor } from 'src/interceptors/success.interceptor';
-import { HttpExceptionFilter } from './../filters/http-exception.filter';
+import { SuccessInterceptor } from 'src/common/interceptors/success.interceptor';
+import { HttpExceptionFilter } from '../common/filters/http-exception.filter';
 import { CommentsService } from './comments.service';
 import { CommentCreateRequest } from './dto/create.comment.dto';
 import { CommentDeleteCondition } from './dto/delete.comment.dto';

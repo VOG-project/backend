@@ -7,7 +7,7 @@ import {
   OneToMany,
   PrimaryColumn,
 } from 'typeorm';
-import { CreatedUpdatedDate } from 'src/commonEntities/date.common.entity';
+import { CreatedUpdatedDate } from 'src/common/commonEntities/date.common.entity';
 
 @Entity({
   name: 'chatRoom',

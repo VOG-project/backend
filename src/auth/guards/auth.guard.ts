@@ -8,7 +8,7 @@ import {
 import { Observable } from 'rxjs';
 import { RedisService } from '@liaoliaots/nestjs-redis';
 import Redis from 'ioredis';
-import { HttpExceptionFilter } from 'src/filters/http-exception.filter';
+import { HttpExceptionFilter } from 'src/common/filters/http-exception.filter';
 
 @Injectable()
 @UseFilters(HttpExceptionFilter)

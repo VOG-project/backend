@@ -7,8 +7,8 @@ import {
   Param,
   ParseIntPipe,
 } from '@nestjs/common';
-import { HttpExceptionFilter } from 'src/filters/http-exception.filter';
-import { SuccessInterceptor } from './../interceptors/success.interceptor';
+import { HttpExceptionFilter } from 'src/common/filters/http-exception.filter';
+import { SuccessInterceptor } from '../common/interceptors/success.interceptor';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { UploadsService } from './uploads.service';
 import { ApiOperation, ApiResponse } from '@nestjs/swagger';

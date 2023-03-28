@@ -9,8 +9,8 @@ import {
   Query,
 } from '@nestjs/common';
 import { ApiOperation, ApiResponse } from '@nestjs/swagger';
-import { HttpExceptionFilter } from './../filters/http-exception.filter';
-import { SuccessInterceptor } from './../interceptors/success.interceptor';
+import { HttpExceptionFilter } from '../common/filters/http-exception.filter';
+import { SuccessInterceptor } from '../common/interceptors/success.interceptor';
 import { ChatsService } from './chats.service';
 import { ChatCreateRequest } from './dto/create.chat.dto';
 import {
