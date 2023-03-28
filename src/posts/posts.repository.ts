@@ -72,55 +72,78 @@ export class PostsRepository {
     }
   }
 
-  async findPostAndComments(postId: number): Promise<PostAndCommentsReturn> {
+  async findOneWithUserById(id: number): Promise<PostEntireDataReturn> {
     try {
+      console.log(id);
       return await this.postModel
         .createQueryBuilder('p')
-        .innerJoin('p.user', 'pu')
-        .innerJoin('p.comments', 'c')
-        .innerJoin('c.reply', 'r')
-        .innerJoin('c.user', 'cu')
-        .innerJoin('r.user', 'ru')
+        .innerJoin('p.user', 'u')
         .select([
           'p.id',
           'p.title',
           'p.content',
-          'p.likeCount',
           'p.postCategory',
           'p.createdAt',
           'p.updatedAt',
-          'pu.id',
-          'pu.nickname',
-          'c.id',
-          'c.content',
-          'c.group',
-          'c.sequence',
-          'c.createdAt',
-          'c.updatedAt',
-          'cu.id',
-          'cu.nickname',
-          'r.id',
-          'r.content',
-          'r.group',
-          'r.sequence',
-          'r.createdAt',
-          'r.updatedAt',
-          'ru.id',
-          'ru.nickname',
+          'u.id',
+          'u.nickname',
         ])
-        .where('p.id = :postId', { postId })
-        .andWhere('c.id = r.group')
-        .andWhere('r.sequence != 0')
-        .orderBy('c.id', 'ASC')
-        .addOrderBy('c.sequence', 'ASC')
+        .where('p.id = :id', { id })
         .getOne();
     } catch (err) {
-      throw new HttpException(
-        `[MYSQL ERROR] findPostAndComments: ${err.message}`,
-        500,
-      );
+      throw new HttpException(`[MYSQL ERROR] findOneById: ${err.message}`, 500);
     }
   }
+
+  // async findPostAndComments(postId: number): Promise<PostAndCommentsReturn> {
+  //   try {
+  //     return await this.postModel
+  //       .createQueryBuilder('p')
+  //       .innerJoin('p.user', 'pu')
+  //       .innerJoin('p.comments', 'c')
+  //       .innerJoin('c.reply', 'r')
+  //       .innerJoin('c.user', 'cu')
+  //       .innerJoin('r.user', 'ru')
+  //       .select([
+  //         'p.id',
+  //         'p.title',
+  //         'p.content',
+  //         'p.likeCount',
+  //         'p.postCategory',
+  //         'p.createdAt',
+  //         'p.updatedAt',
+  //         'pu.id',
+  //         'pu.nickname',
+  //         'c.id',
+  //         'c.content',
+  //         'c.group',
+  //         'c.sequence',
+  //         'c.createdAt',
+  //         'c.updatedAt',
+  //         'cu.id',
+  //         'cu.nickname',
+  //         'r.id',
+  //         'r.content',
+  //         'r.group',
+  //         'r.sequence',
+  //         'r.createdAt',
+  //         'r.updatedAt',
+  //         'ru.id',
+  //         'ru.nickname',
+  //       ])
+  //       .where('p.id = :postId', { postId })
+  //       .andWhere('c.id = r.group')
+  //       .andWhere('r.sequence != 0')
+  //       .orderBy('c.id', 'ASC')
+  //       .addOrderBy('c.sequence', 'ASC')
+  //       .getOne();
+  //   } catch (err) {
+  //     throw new HttpException(
+  //       `[MYSQL ERROR] findPostAndComments: ${err.message}`,
+  //       500,
+  //     );
+  //   }
+  // }
 
   async updatePost(
     data: PostModificationRequest,

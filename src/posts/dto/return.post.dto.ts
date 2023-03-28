@@ -25,7 +25,7 @@ export class PostEntireDataReturn {
     example: 712,
     description: '좋아요 개수',
   })
-  likeCount: number;
+  likeCount?: number;
 
   @ApiProperty({
     example: 'free',

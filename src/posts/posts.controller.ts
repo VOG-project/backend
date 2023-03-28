@@ -66,14 +66,12 @@ export class PostsController {
     tags: ['posts'],
   })
   @ApiResponse({
-    description: `게시물 pk를 입력받아 게시물 데이터와 게시물에 쓰인 댓글 데이터를 반환합니다. 
-      댓글 데이터에서 group은 댓글(대댓글)이 속한 댓글의 PK이고 sequence는 대댓글이 달린 순서를 말합니다. 
-      sequence가 0일 경우 댓글, 1 이상일 경우 대댓글입니다.`,
-    type: PostAndCommentsReturn,
+    description: `해당하는 게시물 데이터를 반환합니다.`,
+    type: PostEntireDataReturn,
   })
   getPost(
     @Param('postId', ParseIntPipe) postId: number,
-  ): Promise<PostAndCommentsReturn> {
+  ): Promise<PostEntireDataReturn> {
     return this.postService.getPost(postId);
   }
 
