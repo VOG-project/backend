@@ -27,10 +27,9 @@ import { LikeModule } from './like/like.module';
     }),
     RedisModule.forRoot({
       config: {
-        host: process.env.REDIS_HOST,
-        port: parseInt(process.env.REDIS_PORT, 10),
-        password: process.env.REDIS_PASSWORD,
-        connectTimeout: 1000000,
+        host: process.env.REDIS_SESSION_HOST,
+        port: parseInt(process.env.REDIS_SESSION_PORT, 10),
+        password: process.env.REDIS_SESSION_PASSWORD,
       },
     }),
     TypeOrmModule.forRoot({
