@@ -3,27 +3,21 @@ import { UserRepository } from './../users/users.repository';
 import { AuthSessionLoginRequestDto } from './dto/auth.request.dto';
 import { v4 } from 'uuid';
 import * as bcrypt from 'bcrypt';
-import { RedisService } from '@liaoliaots/nestjs-redis';
-import Redis from 'ioredis';
 import { AuthSessionLogoutResponseDto } from './dto/auth.response.dto';
 import { UserEntireDataReturn } from 'src/users/dto/return.user.dto';
+import { AuthRepository } from './auth.repository';
 
 @Injectable()
 export class AuthService {
-  private readonly redis: Redis;
-
   constructor(
     private readonly userRepository: UserRepository,
-    private readonly redisService: RedisService,
-  ) {
-    this.redis = this.redisService.getClient();
-  }
+    private readonly authRepository: AuthRepository,
+  ) {}
 
   async issueSessionId(data: AuthSessionLoginRequestDto): Promise<string> {
     const { email, password } = data;
 
     const user = await this.userRepository.findByEmail(email);
-
     if (!user) {
       throw new HttpException(
         '이메일 또는 비밀번호를 잘못 입력하셨습니다.',
@@ -32,7 +26,6 @@ export class AuthService {
     }
 
     const isRightPassword = await bcrypt.compare(password, user.password);
-
     if (!isRightPassword) {
       throw new HttpException(
         '이메일 또는 비밀번호를 잘못 입력하셨습니다.',
@@ -50,23 +43,14 @@ export class AuthService {
     body: AuthSessionLoginRequestDto,
   ): Promise<UserEntireDataReturn> {
     const { email } = body;
-    const isExistedSessionId = await this.redis.hget(sessionId, 'id');
 
+    const isExistedSessionId = await this.authRepository.findSession(sessionId);
     if (isExistedSessionId) {
       throw new HttpException('이미 세션이 존재합니다. 로그아웃 하세요.', 401);
     }
 
     const user = await this.userRepository.findByEmail(email);
-
-    await this.redis.hset(sessionId, {
-      id: user.id,
-      nickname: user.nickname,
-    });
-
-    // 숫자 순서대로 초, 분, 시, 일 (7일간 DB에 보관 이후 자동 삭제)
-    await this.redis.expire(sessionId, 60 * 60 * 24 * 7);
-
-    await this.redis.hget(sessionId, 'id');
+    await this.authRepository.createSession(sessionId, user.id, user.nickname);
 
     return await this.userRepository.findOneByIdWithoutPassword(user.id);
   }
@@ -74,8 +58,6 @@ export class AuthService {
   async deleteSessionInformation(
     sessionId: string,
   ): Promise<AuthSessionLogoutResponseDto> {
-    const deletedCount = await this.redis.del(sessionId);
-
-    return { deletedCount };
+    return await this.authRepository.deleteSession(sessionId);
   }
 }

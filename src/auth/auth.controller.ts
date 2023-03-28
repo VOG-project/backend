@@ -56,9 +56,7 @@ export class AuthController {
     @Res({ passthrough: true }) res: Response,
   ): Promise<AuthSessionLogoutResponseDto> {
     const sessionId = req.cookies.sessionId;
-
     res.clearCookie('sessionId');
-
     return await this.authService.deleteSessionInformation(sessionId);
   }
 }
