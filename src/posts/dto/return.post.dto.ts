@@ -44,6 +44,15 @@ export class PostEntireDataReturn {
     description: '게시물 수정 일자',
   })
   updatedAt: Date;
+
+  @ApiProperty({
+    example: {
+      id: '32',
+      nickname: '꾸꾸까까',
+    },
+    description: '게시물 작성자 데이터',
+  })
+  user?: UserPkNicknameReturn;
 }
 
 export class PostPkIdReturn {
