@@ -33,6 +33,14 @@ export class CommentsService {
     return await this.commentRepository.findOneById(commentId);
   }
 
+  async getComments(postId: number): Promise<CommentEntireDataReturn> {
+    const isExitedPost = await this.postRepository.findOneById(postId);
+    if (!isExitedPost)
+      throw new HttpException('존재하지 않는 게시물에 대한 접근입니다.', 400);
+
+    return await this.commentRepository.findOneWithUserByPostId(postId);
+  }
+
   async modifyComment(
     commentUpdateRequest: CommentUpdateRequest,
     commentId: number,

@@ -3,6 +3,7 @@ import {
   UseFilters,
   UseInterceptors,
   Body,
+  Get,
   Post,
   Delete,
   Param,
@@ -27,6 +28,21 @@ import { CommentUpdateRequest } from './dto/update.comment.dto';
 @UseInterceptors(SuccessInterceptor)
 export class CommentsController {
   constructor(private readonly commentService: CommentsService) {}
+
+  @Get(':postId')
+  @ApiOperation({
+    summary: '댓글 반환 API',
+    tags: ['comments'],
+  })
+  @ApiResponse({
+    description: '해당 게시물에 대한 댓글과 대댓글을 반환합니다.',
+    type: CommentEntireDataReturn,
+  })
+  getComments(
+    @Param('postId', ParseIntPipe) postId: number,
+  ): Promise<CommentEntireDataReturn> {
+    return this.commentService.getComments(postId);
+  }
 
   @Post()
   @ApiOperation({

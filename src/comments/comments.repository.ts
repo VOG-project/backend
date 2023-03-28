@@ -47,6 +47,70 @@ export class CommentsRepository {
     }
   }
 
+  async findCommentOneByPostId(postId: number): Promise<any> {
+    try {
+      return await this.commentModel
+        .createQueryBuilder('c')
+        .innerJoin('c.user', 'cu')
+        .select([
+          'c.id',
+          'c.postId',
+          'c.content',
+          'c.group',
+          'c.sequence',
+          'c.createdAt',
+          'c.updatedAt',
+          'cu.id',
+          'cu.nickname',
+        ])
+        .where('postId = :postId', { postId });
+    } catch (err) {
+      throw new HttpException(
+        `[MYSQL ERRO] findCommentOneByPostId: ${err.message}`,
+        500,
+      );
+    }
+  }
+
+  async findOneWithUserByPostId(postId: number): Promise<any> {
+    try {
+      return await this.commentModel
+        .createQueryBuilder('c')
+        .innerJoin('c.user', 'cu')
+        .innerJoin('c.reply', 'r')
+        .innerJoin('r.user', 'ru')
+        .select([
+          'c.id',
+          'c.postId',
+          'c.content',
+          'c.group',
+          'c.sequence',
+          'c.createdAt',
+          'c.updatedAt',
+          'cu.id',
+          'cu.nickname',
+          'r.id',
+          'r.content',
+          'r.group',
+          'r.sequence',
+          'r.createdAt',
+          'r.updatedAt',
+          'ru.id',
+          'ru.nickname',
+        ])
+        .where('c.postId = :postId', { postId })
+        .andWhere('c.id = r.group')
+        .orderBy('c.id', 'ASC')
+        .addOrderBy('c.sequence', 'ASC')
+        .getMany();
+    } catch (err) {
+      throw new HttpException(
+        `[MYSQL ERROR] findOneWithUserByPostId: ${err.message}`,
+        500,
+      );
+    }
+  }
+
   // async findManyByPostId(postId: number): Promise<any> {
   //   try {
   //     return await this.commentModel.createQueryBuilder()
