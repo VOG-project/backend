@@ -9,10 +9,14 @@ import {
 } from './dto/return.post.dto';
 import { PostsRepository } from './posts.repository';
 import { PostModificationRequest } from './dto/modify.post.dto';
+import { LikeRepository } from './../like/like.repository';
 
 @Injectable()
 export class PostsService {
-  constructor(private readonly postRepository: PostsRepository) {}
+  constructor(
+    private readonly postRepository: PostsRepository,
+    private readonly likeRepository: LikeRepository,
+  ) {}
 
   async registerPost(
     postRequestDto: PostCreateRequest,
@@ -59,10 +63,11 @@ export class PostsService {
 
   async removePost(postId: number): Promise<PostDeletedCountReturn> {
     const post = await this.postRepository.findOneById(postId);
-
     if (!post) {
       throw new HttpException('존재하지 않는 게시물입니다.', 404);
     }
+
+    await this.likeRepository.deleteLikeOfPost(postId);
 
     return this.postRepository.deletePost(postId);
   }
