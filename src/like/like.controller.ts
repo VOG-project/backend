@@ -46,6 +46,7 @@ export class LikeController {
   @ApiResponse({
     description:
       '유저 pk와 게시물 pk를 입력 받아 좋아요 데이터를 수정하고 현재 좋아요를 누른 유저 pk 배열을 반환합니다.',
+    type: LikeUserReturn,
   })
   cancelLike(
     @Body('userId', ParseIntPipe) userId: number,
@@ -61,6 +62,7 @@ export class LikeController {
   })
   @ApiResponse({
     description: '해당 게시물에 좋아요를 누른 유저pk 배열을 반환합니다.',
+    type: LikeUserReturn,
   })
   getLikeUser(@Param('postId', ParseIntPipe) postId: number) {
     return this.likeService.getLikeUser(postId);
