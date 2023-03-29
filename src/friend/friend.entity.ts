@@ -3,6 +3,7 @@ import {
   CreateDateColumn,
   Entity,
   JoinColumn,
+  Column,
   ManyToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
@@ -14,6 +15,16 @@ import {
 export class FriendEntity {
   @PrimaryGeneratedColumn()
   id: number;
+
+  @Column({
+    type: 'int',
+  })
+  userId: number;
+
+  @Column({
+    type: 'int',
+  })
+  targetId: number;
 
   @ManyToOne(() => UserEntity, (user) => user.followers)
   @JoinColumn({
