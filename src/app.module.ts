@@ -18,6 +18,8 @@ import { PostEntity } from 'src/posts/posts.entity';
 import { CommentsModule } from './comments/comments.module';
 import { CommentEntity } from './comments/comments.entity';
 import { LikeModule } from './like/like.module';
+import { FriendModule } from './friend/friend.module';
+import { FriendEntity } from './friend/friend.entity';
 
 @Module({
   imports: [
@@ -44,6 +46,7 @@ import { LikeModule } from './like/like.module';
         ChatParticipant,
         PostEntity,
         CommentEntity,
+        FriendEntity,
       ],
       synchronize: true,
       database: 'vog',
@@ -56,6 +59,7 @@ import { LikeModule } from './like/like.module';
     PostsModule,
     CommentsModule,
     LikeModule,
+    FriendModule,
   ],
   controllers: [AppController],
   providers: [AppService],
