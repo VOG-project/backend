@@ -63,6 +63,7 @@ export class FriendController {
   })
   @ApiResponse({
     description: '친구 관계를 삭제합니다.',
+    type: FriendDeletedCountReturn,
   })
   removeFriend(
     @Body('targetId', ParseIntPipe) targetId: number,
