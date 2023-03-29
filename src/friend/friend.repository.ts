@@ -2,7 +2,10 @@ import { Injectable, HttpException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { FriendEntity } from './friend.entity';
 import { Repository } from 'typeorm';
-import { FriendFollowingReturn } from './dto/return.friend.dto';
+import {
+  FriendDeletedCountReturn,
+  FriendFollowingReturn,
+} from './dto/return.friend.dto';
 
 @Injectable()
 export class FriendRepository {
@@ -45,6 +48,27 @@ export class FriendRepository {
         .getMany();
     } catch (err) {
       throw new HttpException(`[MYSQL ERROR] findMany: ${err.message}`, 500);
+    }
+  }
+
+  async deleteFriend(
+    userId: number,
+    targetId: number,
+  ): Promise<FriendDeletedCountReturn> {
+    try {
+      const deletedResult = await this.friendModel
+        .createQueryBuilder()
+        .delete()
+        .where('userId = :userId', { userId })
+        .andWhere('targetId = :targetId', { targetId })
+        .execute();
+
+      return { deletedCount: deletedResult.affected };
+    } catch (err) {
+      throw new HttpException(
+        `[MYSQL ERROR] deleteFriend: ${err.message}`,
+        500,
+      );
     }
   }
 }
