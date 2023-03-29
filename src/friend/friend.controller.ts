@@ -4,6 +4,7 @@ import {
   Param,
   ParseIntPipe,
   Post,
+  Get,
   UseFilters,
   UseInterceptors,
 } from '@nestjs/common';
@@ -12,6 +13,7 @@ import { SuccessInterceptor } from 'src/common/interceptors/success.interceptor'
 import { FriendService } from './friend.service';
 import { ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { UserEntireDataReturn } from 'src/users/dto/return.user.dto';
+import { FriendFollowingReturn } from './dto/return.friend.dto';
 
 @Controller('friend')
 @UseFilters(HttpExceptionFilter)
@@ -33,5 +35,20 @@ export class FriendController {
     @Param('userId', ParseIntPipe) userId: number,
   ): Promise<UserEntireDataReturn> {
     return this.friendService.registerFriend(userId, targetId);
+  }
+
+  @Get(':userId')
+  @ApiOperation({
+    summary: '친구 정보 조회 API',
+    tags: ['Friend'],
+  })
+  @ApiResponse({
+    description: '친구로 등록된 유저들의 데이터를 반환합니다.',
+    type: FriendFollowingReturn,
+  })
+  getFriends(
+    @Param('userId', ParseIntPipe) userId: number,
+  ): Promise<FriendFollowingReturn[]> {
+    return this.friendService.getFriends(userId);
   }
 }
