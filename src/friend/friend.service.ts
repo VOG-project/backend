@@ -1,7 +1,10 @@
 import { Injectable, HttpException } from '@nestjs/common';
 import { UserEntireDataReturn } from 'src/users/dto/return.user.dto';
 import { UserRepository } from 'src/users/users.repository';
-import { FriendFollowingReturn } from './dto/return.friend.dto';
+import {
+  FriendDeletedCountReturn,
+  FriendFollowingReturn,
+} from './dto/return.friend.dto';
 import { FriendRepository } from './friend.repository';
 
 @Injectable()
@@ -20,7 +23,10 @@ export class FriendService {
 
     const isExistedUser = await this.userRepository.findOneById(userId);
     if (!isExistedUser)
-      throw new HttpException('존재하지 않는 유저입니다.', 400);
+      throw new HttpException(
+        '친구 등록을 시도하는 유저는 존재하지 않는 유저입니다.',
+        400,
+      );
 
     const isExistedTarget = await this.userRepository.findOneById(targetId);
     if (!isExistedTarget)
@@ -40,5 +46,15 @@ export class FriendService {
       throw new HttpException('존재하지 않는 유저입니다.', 400);
 
     return await this.friendRepository.findFreindsByUserId(userId);
+  }
+
+  async removeFriend(
+    userId: number,
+    targetId: number,
+  ): Promise<FriendDeletedCountReturn> {
+    if (userId === targetId)
+      throw new HttpException('자기 자신은 친구 삭제할 수 없습니다.', 400);
+
+    return await this.friendRepository.deleteFriend(userId, targetId);
   }
 }
