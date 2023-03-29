@@ -23,10 +23,10 @@ jobs:
         echo MYSQL_HOST=${{ secrets.VOG_NEST_ENV_MYSQL_HOST }} >> .env
         echo MYSQL_PASSWORD=${{ secrets.VOG_NEST_ENV_MYSQL_PASSWORD }} >> .env
         echo MYSQL_PORT=${{ secrets.VOG_NEST_ENV_MYSQL_PORT }} >> .env
-        echo REDIS_USER=${{ secrets.VOG_NEST_ENV_REDIS_SESSION_USER }} >> .env
-        echo REDIS_HOST=${{ secrets.VOG_NEST_ENV_REDIS_SESSION_HOST }} >> .env
-        echo REDIS_PASSWORD=${{ secrets.VOG_NEST_ENV_REDIS_SESSION_PASSWORD }} >> .env
-        echo REDIS_PORT=${{ secrets.VOG_NEST_ENV_REDIS_SESSION_PORT }} >> .env
+        echo REDIS_SESSION_USER=${{ secrets.VOG_NEST_ENV_REDIS_SESSION_USER }} >> .env
+        echo REDIS_SESSION_HOST=${{ secrets.VOG_NEST_ENV_REDIS_SESSION_HOST }} >> .env
+        echo REDIS_SESSION_PASSWORD=${{ secrets.VOG_NEST_ENV_REDIS_SESSION_PASSWORD }} >> .env
+        echo REDIS_SESSION_PORT=${{ secrets.VOG_NEST_ENV_REDIS_SESSION_PORT }} >> .env
         echo SESSION_SECRET=${{ secrets.VOG_NEST_ENV_SESSION_SECRET }} >> .env
         echo AWS_S3_ACCESS_KEY=${{ secrets.VOG_NEST_ENV_AWS_S3_ACCESS_KEY }} >> .env
         echo AWS_S3_SECRET_ACCESS_KEY=${{ secrets.VOG_NEST_ENV_AWS_S3_SECRET_ACCESS_KEY }} >> .env
