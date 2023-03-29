@@ -10,6 +10,7 @@ import { IsEmail, IsString, IsInt, IsNotEmpty } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 import { CommentEntity } from 'src/comments/comments.entity';
 import { PostEntity } from 'src/posts/posts.entity';
+import { FriendEntity } from 'src/friend/friend.entity';
 
 @Entity({
   name: 'user',
@@ -96,4 +97,10 @@ export class UserEntity extends CreatedUpdatedDate {
 
   @OneToMany(() => CommentEntity, (comment) => comment.user)
   comments: CommentEntity[];
+
+  @OneToMany(() => FriendEntity, (friend) => friend.follower)
+  followers: FriendEntity[];
+
+  @OneToMany(() => FriendEntity, (friend) => friend.following)
+  following: FriendEntity[];
 }
