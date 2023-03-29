@@ -5,7 +5,6 @@ import {
   ParseIntPipe,
   Post,
   Get,
-  Delete,
   Patch,
   UseFilters,
   UseInterceptors,

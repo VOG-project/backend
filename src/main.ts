@@ -21,13 +21,12 @@ async function bootstrap() {
   );
   app.useGlobalFilters(new HttpExceptionFilter());
   app.use(cookieParser());
-  // app.enableCors({
-  //   origin: ['http://localhost:3000', 'http://localhost:3002'],
-  //   methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
-  //   preflightContinue: false,
-  //   optionsSuccessStatus: 204,
-  //   credentials: true,
-  // });
+  app.enableCors({
+    origin: 'http://localhost:3002',
+    methods: 'GET, HEAD, PUT, PATCH, POST, DELETE, OPTIONS',
+    credentials: true,
+    optionsSuccessStatus: 204,
+  });
 
   const config = new DocumentBuilder()
     .setTitle('VOG API DOCS')
