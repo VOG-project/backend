@@ -1,6 +1,7 @@
 import { Injectable, HttpException } from '@nestjs/common';
 import { UserEntireDataReturn } from 'src/users/dto/return.user.dto';
 import { UserRepository } from 'src/users/users.repository';
+import { FriendFollowingReturn } from './dto/return.friend.dto';
 import { FriendRepository } from './friend.repository';
 
 @Injectable()
@@ -31,5 +32,13 @@ export class FriendService {
     await this.friendRepository.create(userId, targetId);
 
     return isExistedTarget;
+  }
+
+  async getFriends(userId: number): Promise<FriendFollowingReturn[]> {
+    const isExistedUser = await this.userRepository.findOneById(userId);
+    if (!isExistedUser)
+      throw new HttpException('존재하지 않는 유저입니다.', 400);
+
+    return await this.friendRepository.findFreindsByUserId(userId);
   }
 }
