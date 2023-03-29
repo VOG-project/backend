@@ -1,6 +1,8 @@
 import { Injectable, HttpException } from '@nestjs/common';
 import { UserEntireDataReturn } from 'src/users/dto/return.user.dto';
 import { UserRepository } from 'src/users/users.repository';
+import { FriendCreateRequest } from './dto/create.friend.dto';
+import { FriendDeleteRequest } from './dto/delete.friend.dto';
 import {
   FriendDeletedCountReturn,
   FriendFollowingReturn,
@@ -16,8 +18,9 @@ export class FriendService {
 
   async registerFriend(
     userId: number,
-    targetId: number,
+    friendCreateRequest: FriendCreateRequest,
   ): Promise<UserEntireDataReturn> {
+    const { targetId } = friendCreateRequest;
     if (userId === targetId)
       throw new HttpException('자기 자신은 친구로 추가할 수 없습니다.', 400);
 
@@ -50,8 +53,9 @@ export class FriendService {
 
   async removeFriend(
     userId: number,
-    targetId: number,
+    friendDeleteRequest: FriendDeleteRequest,
   ): Promise<FriendDeletedCountReturn> {
+    const { targetId } = friendDeleteRequest;
     if (userId === targetId)
       throw new HttpException('자기 자신은 친구 삭제할 수 없습니다.', 400);
 

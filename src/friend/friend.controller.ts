@@ -18,6 +18,8 @@ import {
   FriendDeletedCountReturn,
   FriendFollowingReturn,
 } from './dto/return.friend.dto';
+import { FriendCreateRequest } from './dto/create.friend.dto';
+import { FriendDeleteRequest } from './dto/delete.friend.dto';
 
 @Controller('friend')
 @UseFilters(HttpExceptionFilter)
@@ -35,10 +37,10 @@ export class FriendController {
     type: UserEntireDataReturn,
   })
   registerFriend(
-    @Body('targetId', ParseIntPipe) targetId: number,
+    @Body() friendCreateRequest: FriendCreateRequest,
     @Param('userId', ParseIntPipe) userId: number,
   ): Promise<UserEntireDataReturn> {
-    return this.friendService.registerFriend(userId, targetId);
+    return this.friendService.registerFriend(userId, friendCreateRequest);
   }
 
   @Get(':userId')
@@ -66,9 +68,9 @@ export class FriendController {
     type: FriendDeletedCountReturn,
   })
   removeFriend(
-    @Body('targetId', ParseIntPipe) targetId: number,
+    @Body() friendDeleteRequest: FriendDeleteRequest,
     @Param('userId', ParseIntPipe) userId: number,
   ): Promise<FriendDeletedCountReturn> {
-    return this.friendService.removeFriend(userId, targetId);
+    return this.friendService.removeFriend(userId, friendDeleteRequest);
   }
 }
