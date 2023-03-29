@@ -5,6 +5,7 @@ import {
   ParseIntPipe,
   Post,
   Get,
+  Delete,
   UseFilters,
   UseInterceptors,
 } from '@nestjs/common';
@@ -13,7 +14,10 @@ import { SuccessInterceptor } from 'src/common/interceptors/success.interceptor'
 import { FriendService } from './friend.service';
 import { ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { UserEntireDataReturn } from 'src/users/dto/return.user.dto';
-import { FriendFollowingReturn } from './dto/return.friend.dto';
+import {
+  FriendDeletedCountReturn,
+  FriendFollowingReturn,
+} from './dto/return.friend.dto';
 
 @Controller('friend')
 @UseFilters(HttpExceptionFilter)
@@ -50,5 +54,20 @@ export class FriendController {
     @Param('userId', ParseIntPipe) userId: number,
   ): Promise<FriendFollowingReturn[]> {
     return this.friendService.getFriends(userId);
+  }
+
+  @Delete(':userId')
+  @ApiOperation({
+    summary: '친구 삭제 API',
+    tags: ['Friend'],
+  })
+  @ApiResponse({
+    description: '친구 관계를 삭제합니다.',
+  })
+  removeFriend(
+    @Body('targetId', ParseIntPipe) targetId: number,
+    @Param('userId', ParseIntPipe) userId: number,
+  ): Promise<FriendDeletedCountReturn> {
+    return this.friendService.removeFriend(userId, targetId);
   }
 }
