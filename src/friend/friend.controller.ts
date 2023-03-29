@@ -6,6 +6,7 @@ import {
   Post,
   Get,
   Delete,
+  Patch,
   UseFilters,
   UseInterceptors,
 } from '@nestjs/common';
@@ -58,7 +59,7 @@ export class FriendController {
     return this.friendService.getFriends(userId);
   }
 
-  @Delete(':userId')
+  @Patch(':userId')
   @ApiOperation({
     summary: '친구 삭제 API',
     tags: ['Friend'],
