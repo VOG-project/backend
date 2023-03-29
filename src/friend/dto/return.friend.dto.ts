@@ -21,3 +21,11 @@ export class FriendFollowingReturn {
   })
   following: UserEntireDataReturn;
 }
+
+export class FriendDeletedCountReturn {
+  @ApiProperty({
+    example: 2,
+    description: '삭제된 게시물 row 개수',
+  })
+  deletedCount: number;
+}
