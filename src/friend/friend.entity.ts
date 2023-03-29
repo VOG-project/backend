@@ -7,21 +7,22 @@ import {
   ManyToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
+  PrimaryColumn,
 } from 'typeorm';
 
 @Entity({
   name: 'friend',
 })
 export class FriendEntity {
-  @PrimaryGeneratedColumn()
-  id: number;
+  // @PrimaryGeneratedColumn()
+  // id: number;
 
-  @Column({
+  @PrimaryColumn({
     type: 'int',
   })
   userId: number;
 
-  @Column({
+  @PrimaryColumn({
     type: 'int',
   })
   targetId: number;
