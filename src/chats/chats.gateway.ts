@@ -5,10 +5,7 @@ import {
   WebSocketGateway,
   WebSocketServer,
 } from '@nestjs/websockets';
-import {
-  OnGatewayConnection,
-  OnGatewayDisconnect,
-} from '@nestjs/websockets/interfaces';
+import { OnGatewayConnection } from '@nestjs/websockets/interfaces';
 import { Socket, Namespace } from 'socket.io';
 import {
   SocketLeaveChatRequestDto,
@@ -17,7 +14,14 @@ import {
 import { ChatsRepository } from './chats.repository';
 import { ChatsService } from './chats.service';
 
-@WebSocketGateway(80, { namespace: 'chat' })
+@WebSocketGateway(80, {
+  namespace: 'chat',
+  cors: {
+    origin: 'http://localhost:3002',
+    methods: ['HEAD', 'OPTIONS', 'GET', 'POST', 'PATCH', 'PUT', 'DELETE'],
+    credentials: true,
+  },
+})
 export class ChatsGateway implements OnGatewayConnection {
   constructor(
     private readonly chatService: ChatsService,
