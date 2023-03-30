@@ -14,7 +14,7 @@ import {
 import { ChatsRepository } from './chats.repository';
 import { ChatsService } from './chats.service';
 
-@WebSocketGateway(8080, {
+@WebSocketGateway(80, {
   namespace: 'chat',
   cors: {
     origin: 'http://localhost:3002',
