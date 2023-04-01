@@ -61,6 +61,8 @@ export class ChatsGateway implements OnGatewayConnection {
 
       // socket.broadcast.to(roomId).emit('setChat', chatInfo);
 
+      socket.in(roomId).emit('welcome', '입장하셨습니다.');
+
       this.webSocket.to(roomId).emit('setChat', chatInfo);
     } catch (err) {
       console.log(err.message);
