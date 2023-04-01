@@ -28,11 +28,26 @@ import { FriendEntity } from './friend/friend.entity';
       cache: true,
     }),
     RedisModule.forRoot({
-      config: {
-        host: process.env.REDIS_SESSION_HOST,
-        port: parseInt(process.env.REDIS_SESSION_PORT, 10),
-        password: process.env.REDIS_SESSION_PASSWORD,
-      },
+      config: [
+        {
+          namespace: 'session',
+          host: process.env.REDIS_SESSION_HOST,
+          port: parseInt(process.env.REDIS_SESSION_PORT, 10),
+          password: process.env.REDIS_SESSION_PASSWORD,
+        },
+        {
+          namespace: 'like',
+          host: process.env.REDIS_LIKE_HOST,
+          port: parseInt(process.env.REDIS_LIKE_PORT, 10),
+          password: process.env.REDIS_LIKE_PASSWORD,
+        },
+        {
+          namespace: 'cache',
+          host: process.env.REDIS_CACHE_HOST,
+          port: parseInt(process.env.REDIS_CACHE_PORT, 10),
+          password: process.env.REDIS_CACHE_PASSWORD,
+        },
+      ],
     }),
     TypeOrmModule.forRoot({
       type: 'mysql',
