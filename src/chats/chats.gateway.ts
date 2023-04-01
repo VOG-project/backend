@@ -117,4 +117,25 @@ export class ChatsGateway implements OnGatewayConnection {
   //     console.log(err.message);
   //   }
   // }
+
+  @SubscribeMessage('offer')
+  handleOffer(@ConnectedSocket() socket: Socket, @MessageBody() body: any) {
+    const { offer, roomId } = body;
+    socket.in(roomId).emit('offer', offer);
+  }
+
+  @SubscribeMessage('answer')
+  handleAnswer(@ConnectedSocket() socket: Socket, @MessageBody() body: any) {
+    const { answer, roomId } = body;
+    socket.in(roomId).emit('answer', answer);
+  }
+
+  @SubscribeMessage('iceCandidate')
+  handleIceCandidate(
+    @ConnectedSocket() socket: Socket,
+    @MessageBody() body: any,
+  ) {
+    const { iceCandidate, roomId } = body;
+    socket.in(roomId).emit('iceCandidate', iceCandidate);
+  }
 }
