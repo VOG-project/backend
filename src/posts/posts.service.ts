@@ -60,6 +60,10 @@ export class PostsService {
     return this.postRepository.findOneById(postId);
   }
 
+  async getTotalPostsCount(category: string) {
+    return await this.postRepository.findCountByCategory(category);
+  }
+
   async removePost(postId: number): Promise<PostDeletedCountReturn> {
     const post = await this.postRepository.findOneById(postId);
     if (!post) {

@@ -149,6 +149,21 @@ export class PostsRepository {
   //   }
   // }
 
+  async findCountByCategory(category: string) {
+    try {
+      return await this.postModel
+        .createQueryBuilder()
+        .select()
+        .where('postCategory = :category', { category })
+        .getCount();
+    } catch (err) {
+      throw new HttpException(
+        `[MYSQL ERROR] findCountByCategory: ${err.message}`,
+        500,
+      );
+    }
+  }
+
   async updatePost(
     data: PostModificationRequest,
     postId: number,
