@@ -41,6 +41,11 @@ export class PostEntity extends CreatedUpdatedDate {
   likeCount: number;
 
   @Column({
+    type: 'int',
+  })
+  view: number;
+
+  @Column({
     type: 'varchar',
     length: 10,
   })
