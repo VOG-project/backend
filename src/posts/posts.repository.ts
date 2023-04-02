@@ -77,6 +77,31 @@ export class PostsRepository {
     }
   }
 
+  async addView(postId: number) {
+    try {
+      return await this.postModel
+        .createQueryBuilder()
+        .update()
+        .set({ view: () => 'view + 1' })
+        .where('id = :postId', { postId })
+        .execute();
+    } catch (err) {
+      throw new HttpException(`[MYSQL ERROR] addView: ${err.message}`, 500);
+    }
+  }
+
+  async checkExist(postId: number) {
+    try {
+      return await this.postModel
+        .createQueryBuilder()
+        .select()
+        .where('id = :postId', { postId })
+        .getExists();
+    } catch (err) {
+      throw new HttpException(`[MYSQL ERROR] checkExist: ${err.message}`, 500);
+    }
+  }
+
   async findOneWithUserById(id: number): Promise<PostEntireDataReturn> {
     try {
       console.log(id);
