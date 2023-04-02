@@ -73,4 +73,19 @@ export class FriendController {
   ): Promise<FriendDeletedCountReturn> {
     return this.friendService.removeFriend(userId, friendDeleteRequest);
   }
+
+  @Get('search/:nickname')
+  @ApiOperation({
+    summary: '친구 검색 API',
+    tags: ['friend'],
+  })
+  @ApiResponse({
+    description: '닉네임으로 친구를 검색합니다.',
+    type: UserEntireDataReturn,
+  })
+  searchFriend(
+    @Param('nickname') nickname: string,
+  ): Promise<UserEntireDataReturn> {
+    return this.friendService.searchFriend(nickname);
+  }
 }
