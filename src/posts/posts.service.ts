@@ -63,7 +63,7 @@ export class PostsService {
     return this.postRepository.findOneById(postId);
   }
 
-  async getTotalPostsCount(category: string) {
+  async getTotalPostsCount(category: string): Promise<number> {
     return await this.postRepository.findCountByCategory(category);
   }
 

@@ -176,7 +176,7 @@ export class PostsRepository {
   //   }
   // }
 
-  async findCountByCategory(category: string) {
+  async findCountByCategory(category: string): Promise<number> {
     try {
       return await this.postModel
         .createQueryBuilder()
