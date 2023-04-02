@@ -89,6 +89,18 @@ export class PostListReturn {
     description: '게시물 생성 일자',
   })
   createdAt: Date;
+
+  @ApiProperty({
+    example: {
+      id: 35,
+      email: 'test2@test.com',
+      nickname: '테스트 닉네임',
+      profileUrl:
+        'https://vog-image-storage.s3.ap-northeast-2.amazonaws.com/user/17-pro1588abc.jpg',
+    },
+    description: '작성자 정보',
+  })
+  user: object;
 }
 
 export class PostDeletedCountReturn {

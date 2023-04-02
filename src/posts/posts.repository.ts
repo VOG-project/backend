@@ -51,17 +51,22 @@ export class PostsRepository {
     try {
       return await this.postModel
         .createQueryBuilder('p')
+        .innerJoin('p.user', 'u')
         .select([
           'p.id',
           'p.title',
           'p.likeCount',
           'p.postCategory',
           'p.createdAt',
+          'u.id',
+          'u.nickname',
+          'u.email',
+          'u.profileUrl',
         ])
-        .where('postCategory = :postCategory', { postCategory: board })
+        .where('p.postCategory = :postCategory', { postCategory: board })
         .offset(resultRowCount * (page - 1))
         .limit(resultRowCount)
-        .orderBy('id', 'DESC')
+        .orderBy('p.id', 'DESC')
         .getMany();
     } catch (err) {
       throw new HttpException(
