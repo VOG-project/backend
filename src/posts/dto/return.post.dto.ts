@@ -28,6 +28,12 @@ export class PostEntireDataReturn {
   likeCount?: number;
 
   @ApiProperty({
+    example: 3721,
+    description: '게시물 조회 수',
+  })
+  view: number;
+
+  @ApiProperty({
     example: 'free',
     description: '게시판 카테고리(free | humor | championship)',
   })
@@ -77,6 +83,12 @@ export class PostListReturn {
     description: '좋아요 개수',
   })
   likeCount: number;
+
+  @ApiProperty({
+    example: 3621,
+    description: '게시물 조회 수',
+  })
+  view: number;
 
   @ApiProperty({
     example: 'free',

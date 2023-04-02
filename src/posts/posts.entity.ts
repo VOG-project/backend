@@ -42,6 +42,7 @@ export class PostEntity extends CreatedUpdatedDate {
 
   @Column({
     type: 'int',
+    default: 0,
   })
   view: number;
 
