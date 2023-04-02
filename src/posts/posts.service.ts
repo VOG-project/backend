@@ -39,10 +39,13 @@ export class PostsService {
   }
 
   async getPost(postId: number): Promise<PostEntireDataReturn> {
-    const post = await this.postRepository.findOneWithUserById(postId);
-    if (!post) throw new HttpException('존재하지 않는 게시물입니다.', 400);
+    const isExistedPost = await this.postRepository.checkExist(postId);
+    console.log(isExistedPost);
+    if (!isExistedPost)
+      throw new HttpException('존재하지 않는 게시물입니다.', 400);
 
-    return post;
+    await this.postRepository.addView(postId);
+    return await this.postRepository.findOneWithUserById(postId);
   }
 
   async modifyPost(
