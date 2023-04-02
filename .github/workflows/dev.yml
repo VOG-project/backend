@@ -23,16 +23,27 @@ jobs:
         echo MYSQL_HOST=${{ secrets.VOG_NEST_ENV_MYSQL_HOST }} >> .env
         echo MYSQL_PASSWORD=${{ secrets.VOG_NEST_ENV_MYSQL_PASSWORD }} >> .env
         echo MYSQL_PORT=${{ secrets.VOG_NEST_ENV_MYSQL_PORT }} >> .env
-        echo REDIS_SESSION_USER=${{ secrets.VOG_NEST_ENV_REDIS_SESSION_USER }} >> .env
+
         echo REDIS_SESSION_HOST=${{ secrets.VOG_NEST_ENV_REDIS_SESSION_HOST }} >> .env
         echo REDIS_SESSION_PASSWORD=${{ secrets.VOG_NEST_ENV_REDIS_SESSION_PASSWORD }} >> .env
         echo REDIS_SESSION_PORT=${{ secrets.VOG_NEST_ENV_REDIS_SESSION_PORT }} >> .env
+
+        echo REDIS_LIKE_HOST=${{ secrets.VOG_NEST_ENV_REDIS_LIKE_HOST }} >> .env
+        echo REDIS_LIKE_PASSWORD=${{ secrets.VOG_NEST_ENV_REDIS_LIKE_PASSWORD }} >> .env
+        echo REDIS_LIKE_PORT=${{ secrets.VOG_NEST_ENV_REDIS_LIKE_PORT }} >> .env
+
+        echo REDIS_CACHE_HOST=${{ secrets.VOG_NEST_ENV_REDIS_CACHE_HOST }} >> .env
+        echo REDIS_CACHE_PASSWORD=${{ secrets.VOG_NEST_ENV_REDIS_CACHE_PASSWORD }} >> .env
+        echo REDIS_CACHE_PORT=${{ secrets.VOG_NEST_ENV_REDIS_CACHE_PORT }} >> .env
+
         echo SESSION_SECRET=${{ secrets.VOG_NEST_ENV_SESSION_SECRET }} >> .env
+
         echo AWS_S3_ACCESS_KEY=${{ secrets.VOG_NEST_ENV_AWS_S3_ACCESS_KEY }} >> .env
         echo AWS_S3_SECRET_ACCESS_KEY=${{ secrets.VOG_NEST_ENV_AWS_S3_SECRET_ACCESS_KEY }} >> .env
         echo AWS_S3_REGION=${{ secrets.VOG_NEST_ENV_AWS_S3_REGION }} >> .env
         echo AWS_S3_BUCKET_NAME=${{ secrets.VOG_NEST_ENV_AWS_S3_BUCKET_NAME }} >> .env
         echo AWS_S3_File_URL=${{ secrets.VOG_NEST_ENV_AWS_S3_File_URL }} >> .env
+        
         cat .env
         ls -al
     - name: Set up docker build
