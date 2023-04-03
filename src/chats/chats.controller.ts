@@ -44,22 +44,6 @@ export class ChatsController {
     return await this.chatService.registerChatRoom(chatCreateRequest);
   }
 
-  @Get('rooms/:roomId')
-  @ApiOperation({
-    summary: '채팅방 입장 가능 확인 API',
-    tags: ['chats'],
-  })
-  @ApiResponse({
-    description: '채팅방 입장이 가능한 지 확인하고 boolean 값을 리턴합니다.',
-    type: ChatIsAcceptableReturn,
-  })
-  async acceptParticipation(
-    @Param('roomId') roomId: string,
-    @Query() condition: ChatIsAcceptableCondition,
-  ): Promise<ChatIsAcceptableReturn> {
-    return this.chatService.acceptParticipation(roomId, condition);
-  }
-
   @Get('rooms')
   @ApiOperation({
     summary: '채팅방 목록 반환 API',
@@ -84,7 +68,23 @@ export class ChatsController {
     description: '현재 생성된 채팅방의 총 개수를 반환합니다.',
     type: ChatRoomTotalCountReturn,
   })
-  async getChatRoomTotalCount(): Promise<ChatRoomTotalCountReturn> {
+  async getTotalChatRoomCount(): Promise<ChatRoomTotalCountReturn> {
     return await this.chatService.getChatRoomTotalCount();
+  }
+
+  @Get('rooms/:roomId')
+  @ApiOperation({
+    summary: '채팅방 입장 가능 확인 API',
+    tags: ['chats'],
+  })
+  @ApiResponse({
+    description: '채팅방 입장이 가능한 지 확인하고 boolean 값을 리턴합니다.',
+    type: ChatIsAcceptableReturn,
+  })
+  async acceptParticipation(
+    @Param('roomId') roomId: string,
+    @Query() condition: ChatIsAcceptableCondition,
+  ): Promise<ChatIsAcceptableReturn> {
+    return this.chatService.acceptParticipation(roomId, condition);
   }
 }
