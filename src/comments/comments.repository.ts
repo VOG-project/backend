@@ -72,7 +72,7 @@ export class CommentsRepository {
     }
   }
 
-  async findOneWithUserByPostId(postId: number): Promise<any> {
+  async findOneWithUserByPostId(postId: number, cursor: number): Promise<any> {
     try {
       return await this.commentModel
         .createQueryBuilder('c')
@@ -100,6 +100,7 @@ export class CommentsRepository {
         ])
         .where('c.postId = :postId', { postId })
         .andWhere('c.id = r.group')
+        .andWhere('c.id > :cursor', { cursor })
         .orderBy('c.id', 'ASC')
         .addOrderBy('c.sequence', 'ASC')
         .getMany();
