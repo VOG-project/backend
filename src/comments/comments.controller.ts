@@ -35,13 +35,18 @@ export class CommentsController {
     tags: ['comments'],
   })
   @ApiResponse({
-    description: '해당 게시물에 대한 댓글과 대댓글을 반환합니다.',
+    description: `해당 게시물에 대한 댓글과 대댓글을 반환합니다. cursor 값은 postId 값이며, 
+    cursor 값이 0일 시 1~10번까지의 댓글이 반환되고 해당 댓글에 달린 대댓글도 반환됩니다.
+    cursor 값이 10일 시 11~20번까지의 댓글이 반환되고 해당 댓글에 달린 대댓글도 반환됩니다. 
+      
+    `,
     type: CommentEntireDataReturn,
   })
   getComments(
     @Param('postId', ParseIntPipe) postId: number,
+    @Query('cursor', ParseIntPipe) cursor: number,
   ): Promise<CommentEntireDataReturn> {
-    return this.commentService.getComments(postId);
+    return this.commentService.getComments(postId, cursor);
   }
 
   @Post()
