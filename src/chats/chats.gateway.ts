@@ -61,7 +61,7 @@ export class ChatsGateway implements OnGatewayConnection {
 
       // socket.broadcast.to(roomId).emit('setChat', chatInfo);
 
-      //socket.in(roomId).emit('welcome', socket.id);
+      socket.in(roomId).emit('welcome', socket.id);
 
       this.webSocket.to(roomId).emit('setChat', chatInfo);
     } catch (err) {
@@ -91,6 +91,8 @@ export class ChatsGateway implements OnGatewayConnection {
       );
 
       socket.in(roomId).emit('setChat', chatInfo);
+
+      socket.disconnect();
     } catch (err) {
       console.log(err);
     }
