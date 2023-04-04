@@ -69,7 +69,7 @@ jobs:
         sudo docker login -u ${{ secrets.DOCKER_HUB_USER }} -p ${{ secrets.DOCKER_HUB_PASSWORD }}
     - name: Run docker
       run: |
-        docker stop ${{ env.DOCKER_CONTAINER_NAME_NO_1 }} && docker rm ${{ env.DOCKER_CONTAINER_NAME_NO_1 }} && docker rmi ${{ env.DOCKER_HUB_NAME }}/${{ env.DOCKER_IMAGE_NAME }}:latest
+        docker stop ${{ env.DOCKER_CONTAINER_NAME_NO_1 }} && docker rm ${{ env.DOCKER_CONTAINER_NAME_NO_1 }}
         docker stop ${{ env.DOCKER_CONTAINER_NAME_NO_2 }} && docker rm ${{ env.DOCKER_CONTAINER_NAME_NO_2 }} && docker rmi ${{ env.DOCKER_HUB_NAME }}/${{ env.DOCKER_IMAGE_NAME }}:latest
         docker pull ${{ env.DOCKER_HUB_NAME }}/${{ env.DOCKER_IMAGE_NAME }}:latest
         docker run -d -p 3000:3000 --name ${{ env.DOCKER_CONTAINER_NAME_NO_1 }} --restart always ${{ env.DOCKER_HUB_NAME }}/${{ env.DOCKER_IMAGE_NAME }}:latest
