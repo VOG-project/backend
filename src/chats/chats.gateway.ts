@@ -61,7 +61,7 @@ export class ChatsGateway implements OnGatewayConnection {
 
       // socket.broadcast.to(roomId).emit('setChat', chatInfo);
 
-      socket.in(roomId).emit('welcome', '입장하셨습니다.');
+      socket.in(roomId).emit('welcome', socket.id);
 
       this.webSocket.to(roomId).emit('setChat', chatInfo);
     } catch (err) {
@@ -100,7 +100,6 @@ export class ChatsGateway implements OnGatewayConnection {
   handleInputChat(@ConnectedSocket() socket: Socket, @MessageBody() body: any) {
     try {
       const { content, nickname, roomId } = body;
-
       socket.in(roomId).emit('inputChat', { content, nickname, roomId });
     } catch (err) {
       console.log(err);
@@ -122,14 +121,14 @@ export class ChatsGateway implements OnGatewayConnection {
 
   @SubscribeMessage('offer')
   handleOffer(@ConnectedSocket() socket: Socket, @MessageBody() body: any) {
-    const { offer, roomId } = body;
-    socket.in(roomId).emit('offer', offer);
+    const { offer, targetId } = body;
+    socket.to(targetId).emit('offer', { socketId: socket.id, offer });
   }
 
   @SubscribeMessage('answer')
   handleAnswer(@ConnectedSocket() socket: Socket, @MessageBody() body: any) {
-    const { answer, roomId } = body;
-    socket.in(roomId).emit('answer', answer);
+    const { answer, targetId } = body;
+    socket.to(targetId).emit('answer', { socketId: socket.id, answer });
   }
 
   @SubscribeMessage('iceCandidate')
@@ -137,7 +136,9 @@ export class ChatsGateway implements OnGatewayConnection {
     @ConnectedSocket() socket: Socket,
     @MessageBody() body: any,
   ) {
-    const { iceCandidate, roomId } = body;
-    socket.in(roomId).emit('iceCandidate', iceCandidate);
+    const { iceCandidate, targetId } = body;
+    socket
+      .to(targetId)
+      .emit('iceCandidate', { socketId: socket.id, iceCandidate });
   }
 }
