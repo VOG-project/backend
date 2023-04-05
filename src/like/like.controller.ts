@@ -14,6 +14,8 @@ import { SuccessInterceptor } from 'src/common/interceptors/success.interceptor'
 import { LikeService } from './like.service';
 import { ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { LikeUserReturn } from './dto/result.like.dto';
+import { LikeCreatRequest } from './dto/create.like.dto';
+import { LikeDeleteRequest } from './dto/delete.like.dto';
 
 @Controller('like')
 @UseFilters(HttpExceptionFilter)
@@ -32,10 +34,10 @@ export class LikeController {
     type: LikeUserReturn,
   })
   registerLike(
-    @Body('userId', ParseIntPipe) userId: number,
+    @Body() likeCreateRequest: LikeCreatRequest,
     @Param('postId', ParseIntPipe) postId: number,
   ) {
-    return this.likeService.registerLike(postId, userId);
+    return this.likeService.registerLike(postId, likeCreateRequest);
   }
 
   @Patch(':postId')
@@ -49,10 +51,10 @@ export class LikeController {
     type: LikeUserReturn,
   })
   cancelLike(
-    @Body('userId', ParseIntPipe) userId: number,
+    @Body() likeDeleteRequest: LikeDeleteRequest,
     @Param('postId', ParseIntPipe) postId: number,
   ) {
-    return this.likeService.cancelLike(postId, userId);
+    return this.likeService.cancelLike(postId, likeDeleteRequest);
   }
 
   @Get(':postId')
