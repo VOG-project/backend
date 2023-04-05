@@ -8,5 +8,7 @@ export class CommentUpdateRequest {
   })
   @IsNotEmpty()
   @IsString()
-  content: string;
+  content?: string;
+
+  group?: number;
 }
