@@ -43,6 +43,8 @@ jobs:
         echo AWS_S3_REGION=${{ secrets.VOG_NEST_ENV_AWS_S3_REGION }} >> .env
         echo AWS_S3_BUCKET_NAME=${{ secrets.VOG_NEST_ENV_AWS_S3_BUCKET_NAME }} >> .env
         echo AWS_S3_File_URL=${{ secrets.VOG_NEST_ENV_AWS_S3_File_URL }} >> .env
+
+        echo AWS_S3_File_URL=${{ secrets.VOG_NEST_ENV_FRONT_END_SERVER_IP }} >> .env
         
         cat .env
         ls -al
