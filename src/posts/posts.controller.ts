@@ -81,10 +81,10 @@ export class PostsController {
     description: `해당하는 게시물 데이터를 반환합니다.`,
     type: PostEntireDataReturn,
   })
-  getPost(
+  async getPost(
     @Param('postId', ParseIntPipe) postId: number,
   ): Promise<PostEntireDataReturn> {
-    return this.postService.getPost(postId);
+    return await this.postService.getPost(postId);
   }
 
   @Patch(':postId')

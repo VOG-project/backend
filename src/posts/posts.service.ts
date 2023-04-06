@@ -39,13 +39,28 @@ export class PostsService {
   }
 
   async getPost(postId: number): Promise<PostEntireDataReturn> {
+    const cachingPost = await this.postRepository.findCachingPost(postId);
+    if (cachingPost) {
+      return JSON.parse(cachingPost);
+    }
+
     const isExistedPost = await this.postRepository.checkExist(postId);
-    console.log(isExistedPost);
     if (!isExistedPost)
       throw new HttpException('존재하지 않는 게시물입니다.', 400);
 
     await this.postRepository.addView(postId);
-    return await this.postRepository.findOneWithUserById(postId);
+
+    const insertedPost = await this.postRepository.findOneWithUserById(postId);
+    await this.registerPostToCache(postId, insertedPost);
+
+    return insertedPost;
+  }
+
+  async registerPostToCache(
+    postId: number,
+    post: PostEntireDataReturn,
+  ): Promise<void> {
+    await this.postRepository.writeCachingPost(postId, post);
   }
 
   async modifyPost(

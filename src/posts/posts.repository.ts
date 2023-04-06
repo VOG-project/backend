@@ -10,12 +10,19 @@ import {
   PostPkIdReturn,
 } from './dto/return.post.dto';
 import { PostModificationRequest } from './dto/modify.post.dto';
+import { Redis } from 'ioredis';
+import { RedisService } from '@liaoliaots/nestjs-redis';
 
 export class PostsRepository {
+  private readonly redis: Redis;
+
   constructor(
     @InjectRepository(PostEntity)
     private readonly postModel: Repository<PostEntity>,
-  ) {}
+    private readonly redisService: RedisService,
+  ) {
+    this.redis = this.redisService.getClient('cache');
+  }
 
   async create(postRequestDto: PostCreateRequest): Promise<PostPkIdReturn> {
     try {
@@ -124,6 +131,18 @@ export class PostsRepository {
     } catch (err) {
       throw new HttpException(`[MYSQL ERROR] findOneById: ${err.message}`, 500);
     }
+  }
+
+  async findCachingPost(postId: number): Promise<string> {
+    return await this.redis.get(postId.toString());
+  }
+
+  async writeCachingPost(
+    postId: number,
+    post: PostEntireDataReturn,
+  ): Promise<void> {
+    await this.redis.set(postId.toString(), JSON.stringify(post));
+    await this.redis.expire(postId.toString(), 60 * 60 * 12 * 1);
   }
 
   // async findPostAndComments(postId: number): Promise<PostAndCommentsReturn> {
