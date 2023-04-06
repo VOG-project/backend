@@ -5,9 +5,11 @@ import {
   JoinColumn,
   ManyToOne,
   OneToMany,
+  OneToOne,
   PrimaryColumn,
 } from 'typeorm';
 import { CreatedUpdatedDate } from 'src/common/commonEntities/date.common.entity';
+import { UserEntity } from 'src/users/users.entity';
 
 @Entity({
   name: 'chatRoom',
@@ -84,4 +86,8 @@ export class ChatParticipant {
   })
   @JoinColumn({ name: 'roomId' })
   chatRoom: ChatRoom;
+
+  @OneToOne(() => UserEntity)
+  @JoinColumn({ name: 'userId' })
+  user: UserEntity;
 }
