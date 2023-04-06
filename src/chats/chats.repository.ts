@@ -109,6 +109,7 @@ export class ChatsRepository {
       return await this.chatRoomModel
         .createQueryBuilder('c')
         .innerJoin('c.chatParticipant', 'p')
+        .innerJoin('p.user', 'u')
         .select([
           'c.no',
           'c.roomId',
@@ -117,8 +118,10 @@ export class ChatsRepository {
           'c.maximumMember',
           'c.createdAt',
           'p.userId',
-          'p.nickname',
           'p.socketId',
+          'u.profileUrl',
+          'u.nickname',
+          'u.sex',
         ])
         .where('c.roomId = :roomId', { roomId })
         .getOne();
