@@ -22,7 +22,7 @@ async function bootstrap() {
   app.useGlobalFilters(new HttpExceptionFilter());
   app.use(cookieParser());
   app.enableCors({
-    origin: process.env.FRONT_END_SERVER_IP,
+    origin: 'http://ec2-3-39-24-197.ap-northeast-2.compute.amazonaws.com:3000',
     methods: 'GET, HEAD, PUT, PATCH, POST, DELETE, OPTIONS',
     credentials: true,
     optionsSuccessStatus: 204,
