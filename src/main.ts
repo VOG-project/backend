@@ -22,7 +22,10 @@ async function bootstrap() {
   app.useGlobalFilters(new HttpExceptionFilter());
   app.use(cookieParser());
   app.enableCors({
-    origin: process.env.FRONT_END_SERVER_URL,
+    origin: [
+      process.env.FRONT_END_SERVER_URL_1,
+      process.env.FRONT_END_SERVER_URL_2,
+    ],
     methods: 'GET, HEAD, PUT, PATCH, POST, DELETE, OPTIONS',
     credentials: true,
     optionsSuccessStatus: 204,

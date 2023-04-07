@@ -44,7 +44,7 @@ jobs:
         echo AWS_S3_BUCKET_NAME=${{ secrets.VOG_NEST_ENV_AWS_S3_BUCKET_NAME }} >> .env
         echo AWS_S3_File_URL=${{ secrets.VOG_NEST_ENV_AWS_S3_File_URL }} >> .env
 
-        echo FRONT_END_SERVER_URL=${{ secrets.VOG_NEST_ENV_FRONT_END_SERVER_URL }} >> .env
+        echo FRONT_END_SERVER_URL_1=${{ secrets.VOG_NEST_ENV_FRONT_END_SERVER_URL_1 }} >> .env
         
         cat .env
         ls -al
