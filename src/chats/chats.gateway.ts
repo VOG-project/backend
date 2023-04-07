@@ -91,7 +91,7 @@ export class ChatsGateway implements OnGatewayConnection {
       );
 
       socket.in(roomId).emit('setChat', chatInfo);
-
+      this.webSocket.to(roomId).emit('leaveMember', { socketId: socket.id });
       socket.disconnect();
     } catch (err) {
       console.log(err);
