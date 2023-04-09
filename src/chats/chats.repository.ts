@@ -1,13 +1,12 @@
 import { InjectRepository } from '@nestjs/typeorm';
 import { ChatParticipant, ChatRoom } from './chats.entity';
 import { Repository } from 'typeorm';
-import { ChatRegisterRoomRequestDto } from './dto/chat.request.dto';
 import { HttpException } from '@nestjs/common';
 import {
   ChatEntireDataReturn,
   ChatRoomTotalCountReturn,
 } from './dto/return.chat.dto';
-import { SocketCreateRequest } from './dto/create.chat.dto';
+import { ChatCreateRequest, SocketCreateRequest } from './dto/create.chat.dto';
 
 export class ChatsRepository {
   constructor(
@@ -17,10 +16,7 @@ export class ChatsRepository {
     private readonly chatParticipantModel: Repository<ChatParticipant>,
   ) {}
 
-  async createChatRoom(
-    data: ChatRegisterRoomRequestDto,
-    roomId: string,
-  ): Promise<void> {
+  async createChatRoom(data: ChatCreateRequest, roomId: string): Promise<void> {
     try {
       const { title, maximumMember } = data;
 
