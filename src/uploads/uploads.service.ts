@@ -32,7 +32,6 @@ export class UploadsService {
 
       // default.jpg는 삭제되면 안되는 이미지 파일이기 때문에
       // key값이 default.jpg가 아닐 경우에만 삭제 작업을 진행합니다.
-
       if (key !== this.DEFAULT_PROFILE_IMAGE) {
         await new AWS.S3()
           .deleteObject({
