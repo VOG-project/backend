@@ -29,6 +29,12 @@ export class ChatRoomEntity {
   title: string;
 
   @Column({
+    type: 'varchar',
+    length: 30,
+  })
+  description: string;
+
+  @Column({
     type: 'int',
     default: 0,
   })
