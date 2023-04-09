@@ -37,21 +37,17 @@ export class ChatsService {
     condition: ChatIsAcceptableCondition,
   ): Promise<ChatIsAcceptableReturn> {
     const { userId } = condition;
-
     const isParticipating = await this.chatRepository.existsByUserId(userId);
-
     if (isParticipating) {
       throw new HttpException('이미 참여 중인 채팅방이 존재합니다.', 401);
     }
 
     const room = await this.chatRepository.findByRoomId(roomId);
-
     if (!room) {
       throw new HttpException('해당 채팅방은 존재하지 않습니다.', 400);
     }
 
     const { currentMember, maximumMember } = room;
-
     if (currentMember >= maximumMember) {
       throw new HttpException('인원이 초과되어 입장할 수 없습니다.', 400);
     }
