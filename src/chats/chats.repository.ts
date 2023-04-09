@@ -1,5 +1,5 @@
 import { InjectRepository } from '@nestjs/typeorm';
-import { ChatParticipant, ChatRoom } from './chats.entity';
+import { ChatParticipantEntity, ChatRoomEntity } from './chats.entity';
 import { Repository } from 'typeorm';
 import { HttpException } from '@nestjs/common';
 import {
@@ -10,10 +10,10 @@ import { ChatCreateRequest, SocketCreateRequest } from './dto/create.chat.dto';
 
 export class ChatsRepository {
   constructor(
-    @InjectRepository(ChatRoom)
-    private readonly chatRoomModel: Repository<ChatRoom>,
-    @InjectRepository(ChatParticipant)
-    private readonly chatParticipantModel: Repository<ChatParticipant>,
+    @InjectRepository(ChatRoomEntity)
+    private readonly chatRoomModel: Repository<ChatRoomEntity>,
+    @InjectRepository(ChatParticipantEntity)
+    private readonly chatParticipantModel: Repository<ChatParticipantEntity>,
   ) {}
 
   async createChatRoom(data: ChatCreateRequest, roomId: string): Promise<void> {
