@@ -19,6 +19,14 @@ export class ChatCreateRequest {
   title: string;
 
   @ApiProperty({
+    example: '이 채팅방은 이런이런 채팅방입니다.',
+    description: '방 설명',
+  })
+  @IsNotEmpty()
+  @IsString()
+  description: string;
+
+  @ApiProperty({
     example: 5,
     description: '최대 인원',
   })
