@@ -1,5 +1,6 @@
 import {
   Column,
+  CreateDateColumn,
   Entity,
   Generated,
   JoinColumn,
@@ -7,14 +8,14 @@ import {
   OneToMany,
   OneToOne,
   PrimaryColumn,
+  UpdateDateColumn,
 } from 'typeorm';
-import { CreatedUpdatedDate } from 'src/common/commonEntities/date.common.entity';
 import { UserEntity } from 'src/users/users.entity';
 
 @Entity({
   name: 'chatRoom',
 })
-export class ChatRoom extends CreatedUpdatedDate {
+export class ChatRoomEntity {
   @PrimaryColumn({
     type: 'varchar',
     length: 100,
@@ -45,17 +46,23 @@ export class ChatRoom extends CreatedUpdatedDate {
   @Generated('increment')
   no: number;
 
+  @CreateDateColumn()
+  createdAt: Date;
+
+  @UpdateDateColumn()
+  updatedAt: Date;
+
   @OneToMany(
-    () => ChatParticipant,
+    () => ChatParticipantEntity,
     (chatParticipant) => chatParticipant.chatRoom,
   )
-  chatParticipant: ChatParticipant[];
+  chatParticipant: ChatParticipantEntity[];
 }
 
 @Entity({
   name: 'chatParticipant',
 })
-export class ChatParticipant {
+export class ChatParticipantEntity {
   // socketId를 PK로 사용하지 않는 이유는 socketId가 발급되기 전에
   // DB에 참여자 데이터가 존재하는지 확인해야하기 때문
   @PrimaryColumn({
@@ -81,11 +88,17 @@ export class ChatParticipant {
   })
   roomId: string;
 
-  @ManyToOne(() => ChatRoom, (chatRoom) => chatRoom.chatParticipant, {
+  @CreateDateColumn()
+  createdAt: Date;
+
+  @UpdateDateColumn()
+  updatedAt: Date;
+
+  @ManyToOne(() => ChatRoomEntity, (chatRoom) => chatRoom.chatParticipant, {
     onDelete: 'CASCADE',
   })
   @JoinColumn({ name: 'roomId' })
-  chatRoom: ChatRoom;
+  chatRoom: ChatRoomEntity;
 
   @OneToOne(() => UserEntity)
   @JoinColumn({ name: 'userId' })
