@@ -12,7 +12,7 @@ import { AuthModule } from './auth/auth.module';
 import { RedisModule } from '@liaoliaots/nestjs-redis';
 import { UploadsModule } from './uploads/uploads.module';
 import { ChatsModule } from './chats/chats.module';
-import { ChatParticipant, ChatRoom } from './chats/chats.entity';
+import { ChatParticipantEntity, ChatRoomEntity } from './chats/chats.entity';
 import { PostsModule } from './posts/posts.module';
 import { PostEntity } from 'src/posts/posts.entity';
 import { CommentsModule } from './comments/comments.module';
@@ -57,8 +57,8 @@ import { FriendEntity } from './friend/friend.entity';
       password: process.env.MYSQL_PASSWORD,
       entities: [
         UserEntity,
-        ChatRoom,
-        ChatParticipant,
+        ChatRoomEntity,
+        ChatParticipantEntity,
         PostEntity,
         CommentEntity,
         FriendEntity,
