@@ -59,10 +59,7 @@ export class ChatsGateway implements OnGatewayConnection {
         roomId,
       );
 
-      // socket.broadcast.to(roomId).emit('setChat', chatInfo);
-
       socket.in(roomId).emit('welcome', socket.id);
-
       this.webSocket.to(roomId).emit('setChat', chatInfo);
     } catch (err) {
       console.log(err.message);
@@ -111,15 +108,6 @@ export class ChatsGateway implements OnGatewayConnection {
   async handleConnection(@ConnectedSocket() socket: Socket) {
     console.log(socket.id + '가 접속됨');
   }
-
-  // async handleDisconnect(@ConnectedSocket() socket: Socket) {
-  //   try {
-  //     socket.emit('leaveUser', '님이 퇴장하셨습니다.');
-  //     socket.disconnect();
-  //   } catch (err) {
-  //     console.log(err.message);
-  //   }
-  // }
 
   @SubscribeMessage('offer')
   handleOffer(@ConnectedSocket() socket: Socket, @MessageBody() body: any) {
