@@ -14,6 +14,12 @@ export class ChatEntireDataReturn {
   title: string;
 
   @ApiProperty({
+    example: '이 채팅방은 이런이런 채팅방입니다.',
+    description: '방 설명',
+  })
+  description: string;
+
+  @ApiProperty({
     example: 3,
     description: '현재 인원',
   })
