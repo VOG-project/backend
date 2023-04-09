@@ -2,12 +2,10 @@ import {
   Entity,
   Column,
   PrimaryGeneratedColumn,
-  Check,
   OneToMany,
+  CreateDateColumn,
+  UpdateDateColumn,
 } from 'typeorm';
-import { CreatedUpdatedDate } from 'src/common/commonEntities/date.common.entity';
-import { IsEmail, IsString, IsInt, IsNotEmpty } from 'class-validator';
-import { ApiProperty } from '@nestjs/swagger';
 import { CommentEntity } from 'src/comments/comments.entity';
 import { PostEntity } from 'src/posts/posts.entity';
 import { FriendEntity } from 'src/friend/friend.entity';
@@ -15,7 +13,7 @@ import { FriendEntity } from 'src/friend/friend.entity';
 @Entity({
   name: 'user',
 })
-export class UserEntity extends CreatedUpdatedDate {
+export class UserEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
@@ -52,6 +50,12 @@ export class UserEntity extends CreatedUpdatedDate {
     default: `https://vog-image-storage.s3.ap-northeast-2.amazonaws.com/user/default.jpg`,
   })
   profileUrl: string;
+
+  @CreateDateColumn()
+  createdAt: Date;
+
+  @UpdateDateColumn()
+  updatedAt: Date;
 
   @OneToMany(() => PostEntity, (post) => post.user)
   posts: PostEntity[];
