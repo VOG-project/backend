@@ -39,7 +39,7 @@ export class AuthController {
     res.cookie('sessionId', sessionId, {
       httpOnly: true,
       secure: true,
-      //domain: '.vog-api.store',
+      domain: '.vog-api.store',
       maxAge: 60 * 60 * 24 * 7,
       sameSite: 'none',
     });
