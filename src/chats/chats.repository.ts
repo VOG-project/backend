@@ -110,6 +110,7 @@ export class ChatsRepository {
           'c.no',
           'c.roomId',
           'c.title',
+          'c.description',
           'c.currentMember',
           'c.maximumMember',
           'c.createdAt',
