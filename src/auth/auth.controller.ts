@@ -41,7 +41,7 @@ export class AuthController {
       secure: true,
       //domain: '.vog-api.store',
       maxAge: 60 * 60 * 24 * 7,
-      //sameSite: 'none',
+      sameSite: 'none',
     });
 
     return await this.authService.setSessionInformation(
