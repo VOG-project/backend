@@ -22,7 +22,7 @@ export class AuthGuard implements CanActivate {
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const request = context.switchToHttp().getRequest();
     const cookie = request.headers.cookie;
-
+    console.log('쿠키가 있냐?' + cookie);
     // 쿠키에 세션 아이디가 없을 때
     if (!cookie) throw new HttpException('로그인이 필요한 서비스입니다.', 401);
 
