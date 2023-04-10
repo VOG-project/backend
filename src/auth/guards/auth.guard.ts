@@ -16,7 +16,7 @@ export class AuthGuard implements CanActivate {
   private readonly redis: Redis;
 
   constructor(private readonly redisService: RedisService) {
-    this.redis = this.redisService.getClient();
+    this.redis = this.redisService.getClient('session');
   }
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
