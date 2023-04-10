@@ -27,7 +27,9 @@ export class AuthGuard implements CanActivate {
     if (!cookie) throw new HttpException('로그인이 필요한 서비스입니다.', 401);
 
     const sessionId = cookie.split('=')[1];
-    const isExistedSession = await this.redis.hget(sessionId, 'id');
+    console.log(sessionId);
+    //const isExistedSession = await this.redis.hget(sessionId, 'id');
+    const isExistedSession = await this.redis.exists(sessionId);
 
     // 쿠키에 세션 아이디는 있으나, DB에 존재하지 않을 때
     if (!isExistedSession)
