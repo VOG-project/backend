@@ -38,8 +38,9 @@ export class AuthController {
 
     res.cookie('sessionId', sessionId, {
       httpOnly: true,
-      secure: false,
+      secure: true,
       maxAge: 60 * 60 * 24 * 7,
+      sameSite: 'none',
     });
 
     return await this.authService.setSessionInformation(
