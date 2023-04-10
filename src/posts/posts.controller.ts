@@ -29,7 +29,7 @@ import { AuthGuard } from 'src/auth/guards/auth.guard';
 @Controller('posts')
 @UseFilters(HttpExceptionFilter)
 @UseInterceptors(SuccessInterceptor)
-//@UseGuards(AuthGuard)
+@UseGuards(AuthGuard)
 export class PostsController {
   constructor(private readonly postService: PostsService) {}
 
