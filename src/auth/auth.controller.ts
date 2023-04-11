@@ -1,5 +1,6 @@
 import {
   Controller,
+  Get,
   Body,
   UseFilters,
   UseInterceptors,
@@ -50,7 +51,7 @@ export class AuthController {
     );
   }
 
-  @Post('login/naver')
+  @Get('login/naver')
   async naverLogin() {
     return 'dd';
   }
