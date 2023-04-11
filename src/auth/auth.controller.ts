@@ -50,6 +50,11 @@ export class AuthController {
     );
   }
 
+  @Post('login/naver')
+  async naverLogin() {
+    return 'dd';
+  }
+
   @Delete('logout')
   @ApiOperation({ summary: '로그아웃 API', tags: ['Auth'] })
   @ApiResponse({
