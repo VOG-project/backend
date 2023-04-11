@@ -18,6 +18,7 @@ import { Response, Request } from 'express';
 import { UserEntireDataReturn } from 'src/users/dto/return.user.dto';
 import { AuthLoginRequest } from './dto/create.auth.dto';
 import { AuthDeletedSessionCountReturn } from './dto/return.auth.dto';
+import axios from 'axios';
 
 @Controller('auth')
 @UseInterceptors(SuccessInterceptor)
@@ -54,7 +55,12 @@ export class AuthController {
 
   @Get('login/naver')
   async naverLogin(@Query() dd) {
-    return dd;
+    axios({
+      method: 'get',
+      url: `https://nid.naver.com/oauth2.0/token?grant_type=authorization_code&client_id=CVOrbtbzfrKewqSVyirz&client_secret=UOKpr_rHVs&code=${dd.code}&state=${dd.state}`,
+    }).then((res) => {
+      return res;
+    });
   }
 
   @Delete('logout')
