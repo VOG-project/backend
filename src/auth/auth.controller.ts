@@ -55,7 +55,7 @@ export class AuthController {
 
   @Get('login/naver')
   async naverLogin(@Query() dd) {
-    axios({
+    await axios({
       method: 'get',
       url: `https://nid.naver.com/oauth2.0/token?grant_type=authorization_code&client_id=CVOrbtbzfrKewqSVyirz&client_secret=UOKpr_rHVs&code=${dd.code}&state=${dd.state}`,
     }).then((res) => {
