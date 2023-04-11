@@ -40,7 +40,7 @@ export class AuthController {
     const sessionId = await this.authService.issueSessionId(autuLoginRequest);
 
     res.cookie('sessionId', sessionId, {
-      httpOnly: true,
+      httpOnly: false,
       secure: true,
       domain: '.vog-api.store',
       maxAge: 60 * 60 * 24 * 7,
@@ -55,12 +55,13 @@ export class AuthController {
 
   @Get('login/naver')
   async naverLogin(@Query() dd) {
-    await axios({
+    const test = await axios({
       method: 'get',
       url: `https://nid.naver.com/oauth2.0/token?grant_type=authorization_code&client_id=CVOrbtbzfrKewqSVyirz&client_secret=UOKpr_rHVs&code=${dd.code}&state=${dd.state}`,
-    }).then((res) => {
-      return res;
     });
+
+    console.log(test.data);
+    return test.data;
   }
 
   @Delete('logout')
