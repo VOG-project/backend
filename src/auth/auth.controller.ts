@@ -8,6 +8,7 @@ import {
   Res,
   Req,
   Delete,
+  Query,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { HttpExceptionFilter } from '../common/filters/http-exception.filter';
@@ -52,8 +53,8 @@ export class AuthController {
   }
 
   @Get('login/naver')
-  async naverLogin() {
-    return 'dd';
+  async naverLogin(@Query() dd) {
+    return dd;
   }
 
   @Delete('logout')
