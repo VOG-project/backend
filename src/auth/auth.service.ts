@@ -4,8 +4,12 @@ import { v4 } from 'uuid';
 import * as bcrypt from 'bcrypt';
 import { UserEntireDataReturn } from 'src/users/dto/return.user.dto';
 import { AuthRepository } from './auth.repository';
-import { AuthLoginRequest } from './dto/create.auth.dto';
+import {
+  AuthLoginRequest,
+  AuthAuthorizedCallbackCondition,
+} from './dto/login.auth.dto';
 import { AuthDeletedSessionCountReturn } from './dto/return.auth.dto';
+import axios from 'axios';
 
 @Injectable()
 export class AuthService {
@@ -14,45 +18,26 @@ export class AuthService {
     private readonly authRepository: AuthRepository,
   ) {}
 
-  async issueSessionId(autuLoginRequest: AuthLoginRequest): Promise<string> {
-    const { email, password } = autuLoginRequest;
+  async requestNaverAccessToken(callbackData: AuthAuthorizedCallbackCondition) {
+    const { code, state } = callbackData;
+    const responseData = await axios({
+      method: 'get',
+      url: `https://nid.naver.com/oauth2.0/token?grant_type=authorization_code&client_id=CVOrbtbzfrKewqSVyirz&client_secret=UOKpr_rHVs&code=${code}&state=${state}`,
+    });
 
-    const user = await this.userRepository.findByEmail(email);
-    if (!user) {
-      throw new HttpException(
-        '이메일 또는 비밀번호를 잘못 입력하셨습니다.',
-        401,
-      );
-    }
-
-    const isRightPassword = await bcrypt.compare(password, user.password);
-    if (!isRightPassword) {
-      throw new HttpException(
-        '이메일 또는 비밀번호를 잘못 입력하셨습니다.',
-        401,
-      );
-    }
-
-    const sessionId = v4();
-
-    return sessionId;
+    return await this.requestNaverUserData(responseData.data);
   }
 
-  async setSessionInformation(
-    sessionId: string,
-    autuLoginRequest: AuthLoginRequest,
-  ): Promise<UserEntireDataReturn> {
-    const { email } = autuLoginRequest;
+  async requestNaverUserData({ access_token }) {
+    const responseData = await axios({
+      method: 'get',
+      headers: {
+        Authorization: `Bearer ${access_token}`,
+      },
+      url: `https://openapi.naver.com/v1/nid/me`,
+    });
 
-    const isExistedSessionId = await this.authRepository.findSession(sessionId);
-    if (isExistedSessionId) {
-      throw new HttpException('이미 세션이 존재합니다. 로그아웃 하세요.', 401);
-    }
-
-    const user = await this.userRepository.findByEmail(email);
-    await this.authRepository.createSession(sessionId, user.id, user.nickname);
-
-    return await this.userRepository.findOneByIdWithoutPassword(user.id);
+    return responseData.data;
   }
 
   async deleteSessionInformation(
