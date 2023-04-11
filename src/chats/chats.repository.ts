@@ -18,7 +18,7 @@ export class ChatsRepository {
 
   async createChatRoom(data: ChatCreateRequest, roomId: string): Promise<void> {
     try {
-      const { title, maximumMember } = data;
+      const { title, maximumMember, description } = data;
 
       await this.chatRoomModel
         .createQueryBuilder()
@@ -26,6 +26,7 @@ export class ChatsRepository {
         .values({
           roomId,
           title,
+          description,
           maximumMember,
         })
         .execute();
