@@ -16,6 +16,7 @@ import { SuccessInterceptor } from '../common/interceptors/success.interceptor';
 import { UserModificationNicknameRequest } from './dto/modify.user.dto';
 import { UserEntireDataReturn } from './dto/return.user.dto';
 import { UserCreateRequest } from './dto/create.user.dto';
+import { AuthUserEntireDataReturn } from 'src/auth/dto/return.auth.dto';
 
 @UseFilters(HttpExceptionFilter)
 @UseInterceptors(SuccessInterceptor)
@@ -69,7 +70,9 @@ export class UsersController {
       '유저의 이메일, 비밀번호, 닉네임, 성별을 입력받아 DB에 등록하고 해당 유저의 데이터를 반환합니다.',
     type: UserEntireDataReturn,
   })
-  registerUser(@Body() userCreateRequest: UserCreateRequest): Promise<any> {
+  registerUser(
+    @Body() userCreateRequest: UserCreateRequest,
+  ): Promise<AuthUserEntireDataReturn> {
     return this.userService.registerUser(userCreateRequest);
   }
 }
