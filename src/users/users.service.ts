@@ -60,9 +60,6 @@ export class UserService {
       throw new HttpException('이미 존재하는 닉네임입니다.', 400);
     }
 
-    const { userId } = await this.userRepository.create(userCreateRequest);
-
-    // return this.userRepository.findOneByIdWithoutPassword(userId);
     const user = await this.userRepository.findByNickname(nickname);
     const jwtAccessToken = await this.authService.generateJwtAcessToken(user);
 
