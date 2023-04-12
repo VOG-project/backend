@@ -86,7 +86,6 @@ export class UserRepository {
         .createQueryBuilder('u')
         .select([
           'u.id',
-          'u.email',
           'u.nickname',
           'u.sex',
           'u.profileUrl',
