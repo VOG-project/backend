@@ -10,6 +10,7 @@ import {
   ParseIntPipe,
   Patch,
   Query,
+  UseGuards,
 } from '@nestjs/common';
 import { ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { SuccessInterceptor } from 'src/common/interceptors/success.interceptor';
@@ -22,8 +23,10 @@ import {
   CommentEntireDataReturn,
 } from './dto/return.comment.dto';
 import { CommentUpdateRequest } from './dto/update.comment.dto';
+import { AuthGuard } from 'src/auth/guards/auth.guard';
 
 @Controller('comments')
+@UseGuards(AuthGuard)
 @UseFilters(HttpExceptionFilter)
 @UseInterceptors(SuccessInterceptor)
 export class CommentsController {

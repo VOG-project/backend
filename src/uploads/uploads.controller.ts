@@ -6,6 +6,7 @@ import {
   UploadedFile,
   Param,
   ParseIntPipe,
+  UseGuards,
 } from '@nestjs/common';
 import { HttpExceptionFilter } from 'src/common/filters/http-exception.filter';
 import { SuccessInterceptor } from '../common/interceptors/success.interceptor';
@@ -13,6 +14,7 @@ import { FileInterceptor } from '@nestjs/platform-express';
 import { UploadsService } from './uploads.service';
 import { ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { UserEntireDataReturn } from 'src/users/dto/return.user.dto';
+import { AuthGuard } from 'src/auth/guards/auth.guard';
 
 @Controller('uploads')
 @UseFilters(HttpExceptionFilter)
@@ -21,6 +23,7 @@ export class UploadsController {
   constructor(private readonly uploadService: UploadsService) {}
 
   @Patch('users/:userId')
+  @UseGuards(AuthGuard)
   @ApiOperation({
     summary: '유저 프로필 사진 수정 API',
     tags: ['Uploads'],

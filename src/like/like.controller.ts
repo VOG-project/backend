@@ -8,6 +8,7 @@ import {
   Post,
   UseFilters,
   UseInterceptors,
+  UseGuards,
 } from '@nestjs/common';
 import { HttpExceptionFilter } from 'src/common/filters/http-exception.filter';
 import { SuccessInterceptor } from 'src/common/interceptors/success.interceptor';
@@ -16,8 +17,10 @@ import { ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { LikeUserReturn } from './dto/result.like.dto';
 import { LikeCreatRequest } from './dto/create.like.dto';
 import { LikeDeleteRequest } from './dto/delete.like.dto';
+import { AuthGuard } from 'src/auth/guards/auth.guard';
 
 @Controller('like')
+@UseGuards(AuthGuard)
 @UseFilters(HttpExceptionFilter)
 @UseInterceptors(SuccessInterceptor)
 export class LikeController {

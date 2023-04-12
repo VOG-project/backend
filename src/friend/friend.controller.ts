@@ -8,6 +8,7 @@ import {
   Patch,
   UseFilters,
   UseInterceptors,
+  UseGuards,
 } from '@nestjs/common';
 import { HttpExceptionFilter } from 'src/common/filters/http-exception.filter';
 import { SuccessInterceptor } from 'src/common/interceptors/success.interceptor';
@@ -20,6 +21,7 @@ import {
 } from './dto/return.friend.dto';
 import { FriendCreateRequest } from './dto/create.friend.dto';
 import { FriendDeleteRequest } from './dto/delete.friend.dto';
+import { AuthGuard } from 'src/auth/guards/auth.guard';
 
 @Controller('friend')
 @UseFilters(HttpExceptionFilter)
@@ -28,6 +30,7 @@ export class FriendController {
   constructor(private readonly friendService: FriendService) {}
 
   @Post(':userId')
+  @UseGuards(AuthGuard)
   @ApiOperation({
     summary: '친구 등록 API',
     tags: ['Friend'],

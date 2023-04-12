@@ -7,6 +7,7 @@ import {
   UseInterceptors,
   Patch,
   Param,
+  UseGuards,
   ParseIntPipe,
 } from '@nestjs/common';
 import { UserService } from './users.service';
@@ -17,6 +18,7 @@ import { UserModificationNicknameRequest } from './dto/modify.user.dto';
 import { UserEntireDataReturn } from './dto/return.user.dto';
 import { UserCreateRequest } from './dto/create.user.dto';
 import { AuthUserEntireDataReturn } from 'src/auth/dto/return.auth.dto';
+import { AuthGuard } from 'src/auth/guards/auth.guard';
 
 @UseFilters(HttpExceptionFilter)
 @UseInterceptors(SuccessInterceptor)
@@ -39,6 +41,7 @@ export class UsersController {
   }
 
   @Patch(':userId/nickname')
+  @UseGuards(AuthGuard)
   @ApiOperation({
     summary: '닉네임 수정 API',
     tags: ['Users'],

@@ -6,6 +6,7 @@ import {
   Body,
   Param,
   Post,
+  UseGuards,
   Query,
 } from '@nestjs/common';
 import { ApiOperation, ApiResponse } from '@nestjs/swagger';
@@ -22,10 +23,12 @@ import {
   ChatChatRoomListCondition,
   ChatIsAcceptableCondition,
 } from './dto/get.chat.dto';
+import { AuthGuard } from 'src/auth/guards/auth.guard';
 
 @Controller('chats')
 @UseFilters(HttpExceptionFilter)
 @UseInterceptors(SuccessInterceptor)
+@UseGuards(AuthGuard)
 export class ChatsController {
   constructor(private readonly chatService: ChatsService) {}
 
