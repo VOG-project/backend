@@ -21,7 +21,7 @@ export class AuthLoginRequest {
   password: string;
 }
 
-export class AuthAuthorizedCallbackCondition {
+export class AuthAuthorizedCode {
   @ApiProperty({
     example: 'asleifj3ij2la',
     description: '인증 코드',
