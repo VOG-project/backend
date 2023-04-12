@@ -1,13 +1,12 @@
 import {
   Controller,
-  Get,
   Post,
   UseFilters,
   UseInterceptors,
   Res,
   Req,
   Delete,
-  Query,
+  Body
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { HttpExceptionFilter } from '../common/filters/http-exception.filter';
@@ -24,16 +23,9 @@ export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
   @Post('login/naver')
-  async loginByNaver(@Query() authAuthorizedCode: AuthAuthorizedCode) {
+  async loginByNaver(@Body() authAuthorizedCode: AuthAuthorizedCode) {
     return await this.authService.requestNaverAccessToken(authAuthorizedCode);
   }
-  //@Get('test')
-  // async test() {
-  //   return await this.authService.requestNaverAccessToken({
-  //     code: 'V2pRnlKkmPugTiPzmO',
-  //     state: 'orgj8aseuio3',
-  //   });
-  // }
 
   @Delete('logout')
   @ApiOperation({ summary: '로그아웃 API', tags: ['Auth'] })
