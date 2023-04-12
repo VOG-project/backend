@@ -50,6 +50,8 @@ jobs:
         echo OAUTH_NAVER_CLIENT_ID=${{ secrets.VOG_NEST_ENV_OAUTH_NAVER_CLIENT_ID }} >> .env
         echo OAUTH_NAVER_CLIENT_SECRET=${{ secrets.VOG_NEST_ENV_OAUTH_NAVER_CLIENT_SECRET }} >> .env
         echo OAUTH_NAVER_STATE=${{ secrets.VOG_NEST_ENV_OAUTH_NAVER_STATE }} >> .env
+
+        echo JWT_SECRET=${{secrets.VOG_NEST_ENV_JWT_SECRET}} >> .env
         
 
         cat .env
