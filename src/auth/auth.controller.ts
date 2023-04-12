@@ -6,7 +6,7 @@ import {
   Res,
   Req,
   Delete,
-  Body
+  Body,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { HttpExceptionFilter } from '../common/filters/http-exception.filter';
