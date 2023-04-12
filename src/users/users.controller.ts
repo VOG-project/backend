@@ -71,7 +71,7 @@ export class UsersController {
     status: 201,
     description:
       '유저의 이메일, 비밀번호, 닉네임, 성별을 입력받아 DB에 등록하고 해당 유저의 데이터를 반환합니다.',
-    type: UserEntireDataReturn,
+    type: AuthUserEntireDataReturn,
   })
   registerUser(
     @Body() userCreateRequest: UserCreateRequest,
