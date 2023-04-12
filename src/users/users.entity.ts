@@ -5,7 +5,6 @@ import {
   OneToMany,
   CreateDateColumn,
   UpdateDateColumn,
-  Index,
 } from 'typeorm';
 import { CommentEntity } from 'src/comments/comments.entity';
 import { PostEntity } from 'src/posts/posts.entity';
