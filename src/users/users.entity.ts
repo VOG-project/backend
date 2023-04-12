@@ -5,6 +5,7 @@ import {
   OneToMany,
   CreateDateColumn,
   UpdateDateColumn,
+  Index,
 } from 'typeorm';
 import { CommentEntity } from 'src/comments/comments.entity';
 import { PostEntity } from 'src/posts/posts.entity';
@@ -16,6 +17,13 @@ import { FriendEntity } from 'src/friend/friend.entity';
 export class UserEntity {
   @PrimaryGeneratedColumn()
   id: number;
+
+  @Column({
+    type: 'varchar',
+    length: 50,
+    unique: true,
+  })
+  oauthId: string;
 
   @Column({
     type: 'varchar',
