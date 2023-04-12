@@ -4,6 +4,7 @@ import { Repository } from 'typeorm';
 import { UserEntity } from './users.entity';
 import { UserEntireDataReturn, UserPkIdReturn } from './dto/return.user.dto';
 import { PostDeletedCountReturn } from 'src/posts/dto/return.post.dto';
+import { UserCreateRequest } from './dto/create.user.dto';
 
 @Injectable()
 export class UserRepository {
@@ -31,29 +32,6 @@ export class UserRepository {
       throw new HttpException(
         `[MYSQL ERROR] updateProfileUrl ${err.message}`,
         500,
-      );
-    }
-  }
-
-  /**
-   * User 테이블의 password 필드를 새로운 비밀번호로 업데이트하고 업데이트된 row 개수를 반환합니다.
-   * @param userId 유저 아이디(PK)
-   * @param hashedPassword 해시화된 비밀번호
-   */
-  async updatePassword(userId: number, hashedPassword: string): Promise<void> {
-    try {
-      await this.userModel
-        .createQueryBuilder()
-        .update()
-        .set({
-          password: hashedPassword,
-        })
-        .where('id = :userId', { userId })
-        .execute();
-    } catch (err) {
-      throw new HttpException(
-        `[MYSQL ERROR] updatePassword ${err.message}`,
-        400,
       );
     }
   }
@@ -125,6 +103,21 @@ export class UserRepository {
     }
   }
 
+  async findOneByOAuthId(oauthId: string) {
+    try {
+      return await this.userModel
+        .createQueryBuilder()
+        .select()
+        .where('oauthId = :oauthId', { oauthId })
+        .getOne();
+    } catch (err) {
+      throw new HttpException(
+        `[MYSQL ERROR] findOneByAuthId: ${err.message}`,
+        500,
+      );
+    }
+  }
+
   /**
    * User 테이블에 새로운 유저의 정보를 등록합니다.
    * @param email 유저 이메일
@@ -132,22 +125,12 @@ export class UserRepository {
    * @param nickname 유저 닉네임
    * @param sex 유저 성별
    */
-  async create(
-    email: string,
-    password: string,
-    nickname: string,
-    sex: string,
-  ): Promise<UserPkIdReturn> {
+  async create(userCreateRequest: UserCreateRequest): Promise<UserPkIdReturn> {
     try {
       const insertedUser = await this.userModel
         .createQueryBuilder()
         .insert()
-        .values({
-          email,
-          password,
-          nickname,
-          sex,
-        })
+        .values(userCreateRequest)
         .execute();
 
       return { userId: insertedUser.identifiers[0].id };

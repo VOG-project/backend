@@ -20,6 +20,7 @@ import { CommentEntity } from './comments/comments.entity';
 import { LikeModule } from './like/like.module';
 import { FriendModule } from './friend/friend.module';
 import { FriendEntity } from './friend/friend.entity';
+import { JwtModule } from '@nestjs/jwt';
 
 @Module({
   imports: [
@@ -66,6 +67,13 @@ import { FriendEntity } from './friend/friend.entity';
       synchronize: true,
       database: 'vog',
       logging: true,
+    }),
+    JwtModule.register({
+      global: true,
+      secret: process.env.JWT_SECRET,
+      signOptions: {
+        expiresIn: '7d',
+      },
     }),
     UsersModule,
     AuthModule,

@@ -1,24 +1,24 @@
 import {
   Controller,
-  Get,
-  Body,
+  Post,
   UseFilters,
   UseInterceptors,
-  Post,
   Res,
   Req,
   Delete,
-  Query,
+  Body,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { HttpExceptionFilter } from '../common/filters/http-exception.filter';
 import { SuccessInterceptor } from '../common/interceptors/success.interceptor';
 import { ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { Response, Request } from 'express';
-import { UserEntireDataReturn } from 'src/users/dto/return.user.dto';
-import { AuthLoginRequest } from './dto/create.auth.dto';
-import { AuthDeletedSessionCountReturn } from './dto/return.auth.dto';
-import axios from 'axios';
+import { AuthAuthorizedCode } from './dto/login.auth.dto';
+import {
+  AuthDeletedSessionCountReturn,
+  AuthRedirectReturn,
+  AuthUserEntireDataReturn,
+} from './dto/return.auth.dto';
 
 @Controller('auth')
 @UseInterceptors(SuccessInterceptor)
@@ -26,42 +26,27 @@ import axios from 'axios';
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
-  @Post('login')
-  @ApiOperation({ summary: '로그인 API', tags: ['Auth'] })
-  @ApiResponse({
-    status: 201,
-    description: '로그인을 진행하고 해당 유저에 대한 데이터를 반환합니다.',
-    type: UserEntireDataReturn,
+  @Post('login/naver')
+  @ApiOperation({
+    summary: '네이버 로그인 인증 API',
+    tags: ['Auth'],
   })
-  async login(
-    @Body() autuLoginRequest: AuthLoginRequest,
-    @Res({ passthrough: true }) res: Response,
-  ): Promise<UserEntireDataReturn> {
-    const sessionId = await this.authService.issueSessionId(autuLoginRequest);
-
-    res.cookie('sessionId', sessionId, {
-      httpOnly: false,
-      secure: true,
-      //domain: '.vog-api.store',
-      maxAge: 60 * 60 * 24 * 7,
-      sameSite: 'none',
-    });
-
-    return await this.authService.setSessionInformation(
-      sessionId,
-      autuLoginRequest,
-    );
-  }
-
-  @Get('login/naver')
-  async naverLogin(@Query() dd) {
-    const test = await axios({
-      method: 'get',
-      url: `https://nid.naver.com/oauth2.0/token?grant_type=authorization_code&client_id=CVOrbtbzfrKewqSVyirz&client_secret=UOKpr_rHVs&code=${dd.code}&state=${dd.state}`,
-    });
-
-    console.log(test.data);
-    return test.data;
+  @ApiResponse({
+    status: 200,
+    description:
+      'code와 state를 전달받고 결과에 따라 리다이렉션 또는 jwtAccessToken과 회원정보를 반환합니다.',
+    type: AuthUserEntireDataReturn,
+  })
+  @ApiResponse({
+    status: 300,
+    description:
+      'code와 state를 전달받고 결과에 따라 리다이렉션 또는 jwtAccessToken과 회원정보를 반환합니다.',
+    type: AuthRedirectReturn,
+  })
+  async loginByNaver(
+    @Body() authAuthorizedCode: AuthAuthorizedCode,
+  ): Promise<AuthUserEntireDataReturn | AuthRedirectReturn> {
+    return await this.authService.requestNaverAccessToken(authAuthorizedCode);
   }
 
   @Delete('logout')

@@ -1,58 +1,73 @@
 import { Injectable, HttpException } from '@nestjs/common';
 import { UserRepository } from './../users/users.repository';
-import { v4 } from 'uuid';
-import * as bcrypt from 'bcrypt';
-import { UserEntireDataReturn } from 'src/users/dto/return.user.dto';
 import { AuthRepository } from './auth.repository';
-import { AuthLoginRequest } from './dto/create.auth.dto';
-import { AuthDeletedSessionCountReturn } from './dto/return.auth.dto';
+import { AuthAuthorizedCode } from './dto/login.auth.dto';
+import {
+  AuthDeletedSessionCountReturn,
+  AuthRedirectReturn,
+  AuthUserEntireDataReturn,
+} from './dto/return.auth.dto';
+import axios from 'axios';
+import { JwtService } from '@nestjs/jwt';
 
 @Injectable()
 export class AuthService {
   constructor(
     private readonly userRepository: UserRepository,
     private readonly authRepository: AuthRepository,
+    private readonly jwtService: JwtService,
   ) {}
 
-  async issueSessionId(autuLoginRequest: AuthLoginRequest): Promise<string> {
-    const { email, password } = autuLoginRequest;
+  async requestNaverAccessToken(
+    authAuthorizedCode: AuthAuthorizedCode,
+  ): Promise<AuthUserEntireDataReturn | AuthRedirectReturn> {
+    const { code, state } = authAuthorizedCode;
+    if (state !== process.env.OAUTH_NAVER_STATE)
+      throw new HttpException(
+        'state 값이 일치하지 않습니다. CSRF 공격 위험이 있습니다.',
+        400,
+      );
 
-    const user = await this.userRepository.findByEmail(email);
+    const responseData = await axios({
+      method: 'get',
+      url: `https://nid.naver.com/oauth2.0/token?grant_type=authorization_code&client_id=${process.env.OAUTH_NAVER_CLIENT_ID}&client_secret=${process.env.OAUTH_NAVER_CLIENT_SECRET}&code=${code}&state=${state}`,
+    });
+
+    const oauthId = await this.requestNaverUserData(responseData.data);
+    const user = await this.userRepository.findOneByOAuthId(oauthId);
+
     if (!user) {
-      throw new HttpException(
-        '이메일 또는 비밀번호를 잘못 입력하셨습니다.',
-        401,
-      );
+      return {
+        oauthId,
+        message:
+          'oauthId는 발급되었지만 해당하는 유저 데이터가 없습니다. 유저 데이터 입력 창으로 리다이렉트 해주세요',
+        redirectUrl: 'https://talkgg.online/sign-up',
+      };
+    } else {
+      const jwtAccessToken = await this.generateJwtAcessToken(user);
+      return { jwtAccessToken, ...user };
     }
-
-    const isRightPassword = await bcrypt.compare(password, user.password);
-    if (!isRightPassword) {
-      throw new HttpException(
-        '이메일 또는 비밀번호를 잘못 입력하셨습니다.',
-        401,
-      );
-    }
-
-    const sessionId = v4();
-
-    return sessionId;
   }
 
-  async setSessionInformation(
-    sessionId: string,
-    autuLoginRequest: AuthLoginRequest,
-  ): Promise<UserEntireDataReturn> {
-    const { email } = autuLoginRequest;
+  async requestNaverUserData({ access_token }): Promise<string> {
+    const responseData = await axios({
+      method: 'get',
+      headers: {
+        Authorization: `Bearer ${access_token}`,
+      },
+      url: `https://openapi.naver.com/v1/nid/me`,
+    });
 
-    const isExistedSessionId = await this.authRepository.findSession(sessionId);
-    if (isExistedSessionId) {
-      throw new HttpException('이미 세션이 존재합니다. 로그아웃 하세요.', 401);
-    }
+    const oauthId = responseData.data.response.id;
+    if (!oauthId)
+      throw new HttpException('Naver oauthId를 받지 못했습니다.', 400);
 
-    const user = await this.userRepository.findByEmail(email);
-    await this.authRepository.createSession(sessionId, user.id, user.nickname);
+    return oauthId;
+  }
 
-    return await this.userRepository.findOneByIdWithoutPassword(user.id);
+  async generateJwtAcessToken(user): Promise<string> {
+    const payload = { sub: user.id, nickname: user.nickname };
+    return await this.jwtService.signAsync(payload);
   }
 
   async deleteSessionInformation(

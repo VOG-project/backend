@@ -20,3 +20,21 @@ export class AuthLoginRequest {
   @IsString()
   password: string;
 }
+
+export class AuthAuthorizedCode {
+  @ApiProperty({
+    example: 'asleifj3ij2la',
+    description: '인증 코드',
+  })
+  @IsNotEmpty()
+  @IsString()
+  code: string;
+
+  @ApiProperty({
+    example: '23fjs83f',
+    description: 'CRSF 방지 코드',
+  })
+  @IsNotEmpty()
+  @IsString()
+  state: string;
+}

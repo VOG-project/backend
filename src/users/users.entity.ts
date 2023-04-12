@@ -19,17 +19,16 @@ export class UserEntity {
 
   @Column({
     type: 'varchar',
-    length: 20,
+    length: 50,
     unique: true,
   })
-  email: string;
+  oauthId: string;
 
   @Column({
     type: 'varchar',
-    length: 100,
-    unique: true,
+    length: 10,
   })
-  password: string;
+  provider: string;
 
   @Column({
     type: 'varchar',

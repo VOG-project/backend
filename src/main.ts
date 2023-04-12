@@ -25,6 +25,7 @@ async function bootstrap() {
     origin: [
       process.env.FRONT_END_SERVER_URL_1,
       process.env.FRONT_END_SERVER_URL_2,
+      'http://localhost:3002',
     ],
     methods: 'GET, HEAD, PUT, PATCH, POST, DELETE, OPTIONS',
     credentials: true,
