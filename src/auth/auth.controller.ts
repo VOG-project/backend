@@ -14,7 +14,11 @@ import { SuccessInterceptor } from '../common/interceptors/success.interceptor';
 import { ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { Response, Request } from 'express';
 import { AuthAuthorizedCode } from './dto/login.auth.dto';
-import { AuthDeletedSessionCountReturn } from './dto/return.auth.dto';
+import {
+  AuthDeletedSessionCountReturn,
+  AuthRedirectReturn,
+  AuthUserEntireDataReturn,
+} from './dto/return.auth.dto';
 
 @Controller('auth')
 @UseInterceptors(SuccessInterceptor)
@@ -23,7 +27,9 @@ export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
   @Post('login/naver')
-  async loginByNaver(@Body() authAuthorizedCode: AuthAuthorizedCode) {
+  async loginByNaver(
+    @Body() authAuthorizedCode: AuthAuthorizedCode,
+  ): Promise<AuthUserEntireDataReturn | AuthRedirectReturn> {
     return await this.authService.requestNaverAccessToken(authAuthorizedCode);
   }
 
