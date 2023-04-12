@@ -9,7 +9,6 @@ import {
 } from './dto/return.auth.dto';
 import axios from 'axios';
 import { JwtService } from '@nestjs/jwt';
-import { UserEntireDataReturn } from 'src/users/dto/return.user.dto';
 
 @Injectable()
 export class AuthService {
