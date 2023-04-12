@@ -37,7 +37,6 @@ export class FriendRepository {
         .select([
           'f.userId',
           'u.id',
-          'u.email',
           'u.nickname',
           'u.sex',
           'u.profileUrl',

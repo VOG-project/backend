@@ -143,26 +143,6 @@ export class UserRepository {
   }
 
   /**
-   * User 테이블에서 email로 유저의 데이터를 검색하고 해당 유저 데이터의 모든 컬럼을 반환합니다.
-   * @param email 유저 이메일
-   * @returns 검색된 유저 데이터의 모든 컬럼
-   */
-  findByEmail(email: string): Promise<UserEntireDataReturn> {
-    try {
-      return this.userModel
-        .createQueryBuilder()
-        .select()
-        .where('email = :email', { email })
-        .getOne();
-    } catch (err) {
-      throw new HttpException(
-        `[MYSQL Error] existByEmail method: ${err.message}`,
-        400,
-      );
-    }
-  }
-
-  /**
    * User 테이블에서 nickname으로 유저의 데이터를 검색하고 해당 유저 데이터의 모든 컬럼을 반환합니다.
    * @param nickname 유저 닉네임
    * @returns 검색된 유저 데이터의 모든 컬럼

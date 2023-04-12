@@ -68,7 +68,6 @@ export class PostsRepository {
           'p.createdAt',
           'u.id',
           'u.nickname',
-          'u.email',
           'u.profileUrl',
         ])
         .where('p.postCategory = :postCategory', { postCategory: board })
