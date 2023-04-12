@@ -2,9 +2,14 @@ import { Injectable, HttpException } from '@nestjs/common';
 import { UserRepository } from './../users/users.repository';
 import { AuthRepository } from './auth.repository';
 import { AuthAuthorizedCode } from './dto/login.auth.dto';
-import { AuthDeletedSessionCountReturn } from './dto/return.auth.dto';
+import {
+  AuthDeletedSessionCountReturn,
+  AuthRedirectReturn,
+  AuthUserEntireDataReturn,
+} from './dto/return.auth.dto';
 import axios from 'axios';
 import { JwtService } from '@nestjs/jwt';
+import { UserEntireDataReturn } from 'src/users/dto/return.user.dto';
 
 @Injectable()
 export class AuthService {
@@ -14,7 +19,9 @@ export class AuthService {
     private readonly jwtService: JwtService,
   ) {}
 
-  async requestNaverAccessToken(authAuthorizedCode: AuthAuthorizedCode) {
+  async requestNaverAccessToken(
+    authAuthorizedCode: AuthAuthorizedCode,
+  ): Promise<AuthUserEntireDataReturn | AuthRedirectReturn> {
     const { code, state } = authAuthorizedCode;
     if (state !== process.env.OAUTH_NAVER_STATE)
       throw new HttpException(
@@ -43,7 +50,7 @@ export class AuthService {
     }
   }
 
-  async requestNaverUserData({ access_token }) {
+  async requestNaverUserData({ access_token }): Promise<string> {
     const responseData = await axios({
       method: 'get',
       headers: {
@@ -59,7 +66,7 @@ export class AuthService {
     return oauthId;
   }
 
-  async generateJwtAcessToken(user) {
+  async generateJwtAcessToken(user): Promise<string> {
     const payload = { sub: user.id, nickname: user.nickname };
     return await this.jwtService.signAsync(payload);
   }

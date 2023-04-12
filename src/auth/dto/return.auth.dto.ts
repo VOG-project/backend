@@ -1,4 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
+import { UserEntireDataReturn } from 'src/users/dto/return.user.dto';
 
 export class AuthDeletedSessionCountReturn {
   @ApiProperty({
@@ -6,6 +7,14 @@ export class AuthDeletedSessionCountReturn {
     description: '세션 DB에서 삭제된 세션데이터 개수',
   })
   deletedCount: number;
+}
+
+export class AuthUserEntireDataReturn extends UserEntireDataReturn {
+  @ApiProperty({
+    example: 'sl3ijfs3f.3fn2af.adsv35',
+    description: '발급된 accessToken',
+  })
+  jwtAccessToken?: string;
 }
 
 export class AuthRedirectReturn {

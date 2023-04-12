@@ -4,6 +4,7 @@ import { UserModificationNicknameRequest } from './dto/modify.user.dto';
 import { UserEntireDataReturn } from './dto/return.user.dto';
 import { UserCreateRequest } from './dto/create.user.dto';
 import { AuthService } from 'src/auth/auth.service';
+import { AuthUserEntireDataReturn } from 'src/auth/dto/return.auth.dto';
 
 @Injectable()
 export class UserService {
@@ -47,7 +48,9 @@ export class UserService {
    * @param data Object { 이메일, 패스워드, 닉네임, 성별 }
    * @returns 회원가입 성공 문자열
    */
-  async registerUser(userCreateRequest: UserCreateRequest): Promise<any> {
+  async registerUser(
+    userCreateRequest: UserCreateRequest,
+  ): Promise<AuthUserEntireDataReturn> {
     const { nickname } = userCreateRequest;
 
     const isExistedNickname = await this.userRepository.findByNickname(
@@ -61,9 +64,9 @@ export class UserService {
 
     // return this.userRepository.findOneByIdWithoutPassword(userId);
     const user = await this.userRepository.findByNickname(nickname);
-    const jwtToken = await this.authService.generateJwtAcessToken(user);
+    const jwtAccessToken = await this.authService.generateJwtAcessToken(user);
 
-    return { jwtToken, ...user };
+    return { jwtAccessToken, ...user };
   }
 
   async getUser(userId: number) {
