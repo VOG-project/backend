@@ -1,10 +1,7 @@
 import { Injectable, HttpException } from '@nestjs/common';
 import { UserRepository } from './../users/users.repository';
-import { v4 } from 'uuid';
-import * as bcrypt from 'bcrypt';
-import { UserEntireDataReturn } from 'src/users/dto/return.user.dto';
 import { AuthRepository } from './auth.repository';
-import { AuthLoginRequest, AuthAuthorizedCode } from './dto/login.auth.dto';
+import { AuthAuthorizedCode } from './dto/login.auth.dto';
 import { AuthDeletedSessionCountReturn } from './dto/return.auth.dto';
 import axios from 'axios';
 import { JwtService } from '@nestjs/jwt';
