@@ -125,6 +125,21 @@ export class UserRepository {
     }
   }
 
+  async findOneByOAuthId(oauthId: string) {
+    try {
+      return await this.userModel
+        .createQueryBuilder()
+        .select()
+        .where('oauthId = :oauthId', { oauthId })
+        .getOne();
+    } catch (err) {
+      throw new HttpException(
+        `[MYSQL ERROR] findOneByAuthId: ${err.message}`,
+        500,
+      );
+    }
+  }
+
   /**
    * User 테이블에 새로운 유저의 정보를 등록합니다.
    * @param email 유저 이메일
