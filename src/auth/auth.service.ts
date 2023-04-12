@@ -10,12 +10,14 @@ import {
 } from './dto/login.auth.dto';
 import { AuthDeletedSessionCountReturn } from './dto/return.auth.dto';
 import axios from 'axios';
+import { JwtService } from '@nestjs/jwt';
 
 @Injectable()
 export class AuthService {
   constructor(
     private readonly userRepository: UserRepository,
     private readonly authRepository: AuthRepository,
+    private readonly jwtService: JwtService,
   ) {}
 
   async requestNaverAccessToken(callbackData: AuthAuthorizedCallbackCondition) {
@@ -64,8 +66,9 @@ export class AuthService {
     return oauthId;
   }
 
-  async generateJwtAcessToken() {
-    return 'jwt 토큰';
+  async generateJwtAcessToken(user) {
+    const payload = { sub: user.id, nickname: user.nickname };
+    return await this.jwtService.signAsync(payload);
   }
 
   async deleteSessionInformation(
