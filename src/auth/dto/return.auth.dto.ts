@@ -7,3 +7,24 @@ export class AuthDeletedSessionCountReturn {
   })
   deletedCount: number;
 }
+
+export class AuthRedirectReturn {
+  @ApiProperty({
+    example: 'Sb35YY9N_bZgbfSW1jDYkjCcgKrEEHUQ8CLTn',
+    description: 'OAuth Provider로부터 받은 유저의 고유 oauthId',
+  })
+  oauthId: string;
+
+  @ApiProperty({
+    example:
+      'oauthId는 발급되었지만 해당하는 유저 데이터가 없습니다. 유저 데이터 입력 창으로 리다이렉트 해주세요.',
+    description: '리다이렉트 메세지',
+  })
+  message: string;
+
+  @ApiProperty({
+    example: 'https://dkfjsei.com/signup',
+    description: '리다이렉트 URL',
+  })
+  redirectUrl: string;
+}
