@@ -1,10 +1,8 @@
 import {
   Controller,
   Get,
-  Body,
   UseFilters,
   UseInterceptors,
-  Post,
   Res,
   Req,
   Delete,
@@ -15,11 +13,7 @@ import { HttpExceptionFilter } from '../common/filters/http-exception.filter';
 import { SuccessInterceptor } from '../common/interceptors/success.interceptor';
 import { ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { Response, Request } from 'express';
-import { UserEntireDataReturn } from 'src/users/dto/return.user.dto';
-import {
-  AuthLoginRequest,
-  AuthAuthorizedCallbackCondition,
-} from './dto/login.auth.dto';
+import { AuthAuthorizedCode } from './dto/login.auth.dto';
 import { AuthDeletedSessionCountReturn } from './dto/return.auth.dto';
 
 @Controller('auth')
@@ -28,12 +22,9 @@ import { AuthDeletedSessionCountReturn } from './dto/return.auth.dto';
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
-  @Get('login/naver')
-  async naverLogin(
-    @Query() callbackData: AuthAuthorizedCallbackCondition,
-    @Res() res: Response,
-  ) {
-    //return await this.authService.requestNaverAccessToken(callbackData);
+  @Post('login/naver')
+  async loginByNaver(@Query() authAuthorizedCode: AuthAuthorizedCode) {
+    return await this.authService.requestNaverAccessToken(authAuthorizedCode);
   }
   //@Get('test')
   // async test() {
