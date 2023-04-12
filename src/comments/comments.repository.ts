@@ -100,9 +100,10 @@ export class CommentsRepository {
         ])
         .where('c.postId = :postId', { postId })
         .andWhere('c.id = r.group')
-        .andWhere('c.id > :cursor', { cursor })
+        .andWhere('c.id >= :cursor', { cursor })
         .orderBy('c.id', 'ASC')
         .addOrderBy('c.sequence', 'ASC')
+        .limit(10)
         .getMany();
     } catch (err) {
       throw new HttpException(
