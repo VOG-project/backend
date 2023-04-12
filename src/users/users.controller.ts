@@ -13,9 +13,7 @@ import { UserService } from './users.service';
 import { ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { HttpExceptionFilter } from '../common/filters/http-exception.filter';
 import { SuccessInterceptor } from '../common/interceptors/success.interceptor';
-import {
-  UserModificationNicknameRequest,
-} from './dto/modify.user.dto';
+import { UserModificationNicknameRequest } from './dto/modify.user.dto';
 import { UserEntireDataReturn } from './dto/return.user.dto';
 import { UserCreateRequest } from './dto/create.user.dto';
 

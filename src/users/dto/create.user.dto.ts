@@ -3,22 +3,20 @@ import { IsNotEmpty, IsString, IsEmail } from 'class-validator';
 
 export class UserCreateRequest {
   @ApiProperty({
-    example: 'test10@naver.com',
-    description: '이메일',
-    required: true,
-  })
-  @IsNotEmpty()
-  @IsEmail()
-  email: string;
-
-  @ApiProperty({
-    example: 'efo234a08sef',
-    description: '비밀번호',
-    required: true,
+    example: 'Sb35YY9N_bZgbfSW1jDYkjCcgKrEEHUQ8CLTn',
+    description: 'OAuth Provider로부터 받은 유저의 고유 oauthId',
   })
   @IsNotEmpty()
   @IsString()
-  password: string;
+  oauthId: string;
+
+  @ApiProperty({
+    example: 'naver',
+    description: 'Oauth 공급자',
+  })
+  @IsNotEmpty()
+  @IsString()
+  provider: string;
 
   @ApiProperty({
     example: '네스트좋아',
