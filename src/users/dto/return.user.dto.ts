@@ -49,8 +49,6 @@ export class UserEntireDataReturn {
     description: '게시물 수정 일자',
   })
   updatedAt: Date;
-
-  jwtAccessToken?: string;
 }
 
 export class UserPkIdReturn {
