@@ -1,12 +1,12 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsNotEmpty, IsString } from 'class-validator';
+import { IsInt, IsNotEmpty } from 'class-validator';
 
-export class UserDeleteRequest {
+export class UserDeleteParam {
   @ApiProperty({
-    example: 'ekw2a1la',
-    description: '현재 비밀번호',
+    example: 3,
+    description: '유저 아이디(pk)',
   })
   @IsNotEmpty()
-  @IsString()
-  password: string;
+  @IsInt()
+  userId: number;
 }
