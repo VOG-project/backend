@@ -4,10 +4,7 @@ import { v4 } from 'uuid';
 import * as bcrypt from 'bcrypt';
 import { UserEntireDataReturn } from 'src/users/dto/return.user.dto';
 import { AuthRepository } from './auth.repository';
-import {
-  AuthLoginRequest,
-  AuthAuthorizedCallbackCondition,
-} from './dto/login.auth.dto';
+import { AuthLoginRequest, AuthAuthorizedCode } from './dto/login.auth.dto';
 import { AuthDeletedSessionCountReturn } from './dto/return.auth.dto';
 import axios from 'axios';
 import { JwtService } from '@nestjs/jwt';
@@ -20,8 +17,8 @@ export class AuthService {
     private readonly jwtService: JwtService,
   ) {}
 
-  async requestNaverAccessToken(callbackData: AuthAuthorizedCallbackCondition) {
-    const { code, state } = callbackData;
+  async requestNaverAccessToken(authAuthorizedCode: AuthAuthorizedCode) {
+    const { code, state } = authAuthorizedCode;
     if (state !== process.env.OAUTH_NAVER_STATE)
       throw new HttpException(
         'state 값이 일치하지 않습니다. CSRF 공격 위험이 있습니다.',
@@ -34,9 +31,7 @@ export class AuthService {
     });
 
     const oauthId = await this.requestNaverUserData(responseData.data);
-    const user = await this.userRepository.findOneByOAuthId(
-      'tfSb35YY9N_bZgbfSW1jDYkjCcgKrEEHUQ8CLTnmxZM',
-    );
+    const user = await this.userRepository.findOneByOAuthId(oauthId);
 
     if (!user) {
       return {
