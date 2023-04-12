@@ -35,7 +35,13 @@ export class AuthController {
     status: 200,
     description:
       'code와 state를 전달받고 결과에 따라 리다이렉션 또는 jwtAccessToken과 회원정보를 반환합니다.',
-    type: [AuthUserEntireDataReturn],
+    type: AuthUserEntireDataReturn,
+  })
+  @ApiResponse({
+    status: 300,
+    description:
+      'code와 state를 전달받고 결과에 따라 리다이렉션 또는 jwtAccessToken과 회원정보를 반환합니다.',
+    type: AuthRedirectReturn,
   })
   async loginByNaver(
     @Body() authAuthorizedCode: AuthAuthorizedCode,
