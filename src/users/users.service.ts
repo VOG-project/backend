@@ -51,7 +51,7 @@ export class UserService {
   async registerUser(
     userCreateRequest: UserCreateRequest,
   ): Promise<AuthUserEntireDataReturn> {
-    const { nickname } = userCreateRequest;
+    const { nickname, oauthId } = userCreateRequest;
 
     const isExistedNickname = await this.userRepository.findByNickname(
       nickname,
@@ -59,6 +59,15 @@ export class UserService {
     if (isExistedNickname) {
       throw new HttpException('이미 존재하는 닉네임입니다.', 400);
     }
+
+    const isExistedOAuthId = await this.userRepository.findOneByOAuthId(
+      oauthId,
+    );
+    if (isExistedOAuthId) {
+      throw new HttpException('이미 존재하는 OAuthId입니다.', 400);
+    }
+
+    await this.userRepository.create(userCreateRequest);
 
     const user = await this.userRepository.findByNickname(nickname);
     const jwtAccessToken = await this.authService.generateJwtAcessToken(user);
