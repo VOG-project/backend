@@ -46,7 +46,8 @@ export class AuthService {
         redirectUrl: 'https://talkgg.online/sign-up',
       };
     } else {
-      return this.generateJwtAcessToken();
+      const jwtAccessToken = await this.generateJwtAcessToken(user);
+      return { jwtAccessToken, ...user };
     }
   }
 
