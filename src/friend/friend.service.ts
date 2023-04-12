@@ -64,9 +64,7 @@ export class FriendService {
 
   async searchFriend(nickname: string): Promise<UserEntireDataReturn> {
     try {
-      const { password, ...user } = await this.userRepository.findByNickname(
-        nickname,
-      );
+      const user = await this.userRepository.findByNickname(nickname);
       return user;
     } catch (err) {
       throw new HttpException('존재하지 않는 유저입니다.', 404);
