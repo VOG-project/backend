@@ -26,17 +26,23 @@ export class UserEntity {
 
   @Column({
     type: 'varchar',
-    length: 20,
-    unique: true,
+    length: 10,
   })
-  email: string;
+  provider: string;
 
-  @Column({
-    type: 'varchar',
-    length: 100,
-    unique: true,
-  })
-  password: string;
+  // @Column({
+  //   type: 'varchar',
+  //   length: 20,
+  //   unique: true,
+  // })
+  // email: string;
+
+  // @Column({
+  //   type: 'varchar',
+  //   length: 100,
+  //   unique: true,
+  // })
+  // password: string;
 
   @Column({
     type: 'varchar',
