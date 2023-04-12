@@ -9,10 +9,14 @@ import { UserEntireDataReturn } from './dto/return.user.dto';
 import { UserCreateRequest } from './dto/create.user.dto';
 import { PostDeletedCountReturn } from 'src/posts/dto/return.post.dto';
 import { UserDeleteRequest } from './dto/delete.user.dto';
+import { AuthService } from 'src/auth/auth.service';
 
 @Injectable()
 export class UserService {
-  constructor(private readonly userRepository: UserRepository) {}
+  constructor(
+    private readonly userRepository: UserRepository,
+    private readonly authService: AuthService,
+  ) {}
 
   /**
    * 유저의 비밀번호를 갱신하는 메소드입니다.
@@ -115,6 +119,24 @@ export class UserService {
     );
 
     return this.userRepository.findOneByIdWithoutPassword(userId);
+  }
+
+  async createUser(body) {
+    const { nickname } = body;
+
+    const isExistedNickname = await this.userRepository.findByNickname(
+      nickname,
+    );
+    if (isExistedNickname) {
+      throw new HttpException('이미 존재하는 닉네임입니다.', 400);
+    }
+
+    await this.userRepository.tempCreate(body);
+
+    const user = await this.userRepository.findByNickname(nickname);
+    const jwtToken = await this.authService.generateJwtAcessToken(user);
+
+    return { jwtToken, ...user };
   }
 
   async getUser(userId: number) {
