@@ -49,6 +49,9 @@ export class CommentsService {
     postId: number,
     cursor: number,
   ): Promise<CommentEntireDataReturn> {
+    if (cursor < 1)
+      throw new HttpException('cursor의 값은 1 이상이어야 합니다.', 400);
+
     const isExitedPost = await this.postRepository.findOneById(postId);
     if (!isExitedPost)
       throw new HttpException('존재하지 않는 게시물에 대한 접근입니다.', 400);
