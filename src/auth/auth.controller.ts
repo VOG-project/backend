@@ -29,9 +29,19 @@ export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
   @Get('login/naver')
-  async naverLogin(@Query() callbackData: AuthAuthorizedCallbackCondition) {
-    return await this.authService.requestNaverAccessToken(callbackData);
+  async naverLogin(
+    @Query() callbackData: AuthAuthorizedCallbackCondition,
+    @Res() res: Response,
+  ) {
+    //return await this.authService.requestNaverAccessToken(callbackData);
   }
+  //@Get('test')
+  // async test() {
+  //   return await this.authService.requestNaverAccessToken({
+  //     code: 'V2pRnlKkmPugTiPzmO',
+  //     state: 'orgj8aseuio3',
+  //   });
+  // }
 
   @Delete('logout')
   @ApiOperation({ summary: '로그아웃 API', tags: ['Auth'] })
