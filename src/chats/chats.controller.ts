@@ -47,9 +47,9 @@ export class ChatsController {
     return await this.chatService.registerChatRoom(chatCreateRequest);
   }
 
-  @Get('rooms')
+  @Get('rooms/list')
   @ApiOperation({
-    summary: '채팅방 목록 반환 API',
+    summary: '채팅방 목록 조회 API',
     tags: ['chats'],
   })
   @ApiResponse({
@@ -64,7 +64,7 @@ export class ChatsController {
 
   @Get('rooms/count')
   @ApiOperation({
-    summary: '채팅방 총 개수 반환 API',
+    summary: '채팅방 총 개수 조회 API',
     tags: ['chats'],
   })
   @ApiResponse({

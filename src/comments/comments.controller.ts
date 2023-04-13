@@ -34,7 +34,7 @@ export class CommentsController {
 
   @Get(':postId')
   @ApiOperation({
-    summary: '댓글 반환 API',
+    summary: '댓글 조회 API',
     tags: ['comments'],
   })
   @ApiResponse({
