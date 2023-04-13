@@ -8,12 +8,14 @@ import {
   ManyToOne,
   PrimaryGeneratedColumn,
   OneToMany,
+  CreateDateColumn,
+  UpdateDateColumn,
 } from 'typeorm';
 
 @Entity({
   name: 'comment',
 })
-export class CommentEntity extends CreatedUpdatedDate {
+export class CommentEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
@@ -33,15 +35,11 @@ export class CommentEntity extends CreatedUpdatedDate {
   })
   content: string;
 
-  @Column({
-    type: 'int',
-  })
-  group: number;
+  @CreateDateColumn()
+  createdAt: Date;
 
-  @Column({
-    type: 'int',
-  })
-  sequence: number;
+  @UpdateDateColumn()
+  updatedAt: Date;
 
   @ManyToOne(() => PostEntity, (post) => post.comments, { onDelete: 'CASCADE' })
   @JoinColumn({
@@ -54,15 +52,4 @@ export class CommentEntity extends CreatedUpdatedDate {
     name: 'userId',
   })
   user: UserEntity;
-
-  @OneToMany(() => CommentEntity, (comment) => comment.parentComment)
-  reply: CommentEntity[];
-
-  @ManyToOne(() => CommentEntity, (comment) => comment.reply, {
-    onDelete: 'CASCADE',
-  })
-  @JoinColumn({
-    name: 'group',
-  })
-  parentComment: CommentEntity;
 }
