@@ -10,13 +10,15 @@ export class CommentsRepository {
     private readonly commentModel: Repository<CommentEntity>,
   ) {}
 
-  async create(commentRegisterRequest: CommentRegisterRequest): Promise<void> {
+  async create(commentRegisterRequest: CommentRegisterRequest): Promise<any> {
     try {
-      await this.commentModel
+      const insertedComment = await this.commentModel
         .createQueryBuilder()
         .insert()
         .values(commentRegisterRequest)
         .execute();
+
+      return { commentId: insertedComment.identifiers[0].id };
     } catch (err) {
       throw new HttpException(`[MYSQL ERROR] create: ${err.message}`, 500);
     }
