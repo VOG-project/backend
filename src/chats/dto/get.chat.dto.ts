@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsNotEmpty, IsInt } from 'class-validator';
+import { IsNotEmpty, IsInt, IsString } from 'class-validator';
 import { Type } from 'class-transformer';
 
 export class ChatIsAcceptableCondition {
@@ -22,4 +22,14 @@ export class ChatChatRoomListCondition {
   @IsInt()
   @Type(() => Number)
   page: number;
+}
+
+export class ChatRoomSearchCondition {
+  @ApiProperty({
+    example: '게임 한판 합시다',
+    description: '검색할 채팅방 제목',
+  })
+  @IsNotEmpty()
+  @IsString()
+  title: string;
 }
