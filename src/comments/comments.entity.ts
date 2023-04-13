@@ -1,4 +1,5 @@
 import { PostEntity } from 'src/posts/posts.entity';
+import { ReplyEntity } from 'src/replies/replies.entity';
 import { UserEntity } from 'src/users/users.entity';
 import {
   Column,
@@ -8,6 +9,7 @@ import {
   PrimaryGeneratedColumn,
   CreateDateColumn,
   UpdateDateColumn,
+  OneToMany,
 } from 'typeorm';
 
 @Entity({
@@ -46,7 +48,10 @@ export class CommentEntity {
 
   @ManyToOne(() => UserEntity, (user) => user.comments, { onDelete: 'CASCADE' })
   @JoinColumn({
-    name: 'userId',
+    name: 'writerId',
   })
   user: UserEntity;
+
+  @OneToMany(() => ReplyEntity, (reply) => reply.comment)
+  replies: ReplyEntity[];
 }

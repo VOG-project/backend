@@ -1,7 +1,10 @@
+import { CommentEntity } from 'src/comments/comments.entity';
 import {
   Column,
   CreateDateColumn,
   Entity,
+  JoinColumn,
+  ManyToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
@@ -33,4 +36,12 @@ export class ReplyEntity {
 
   @UpdateDateColumn()
   updatedAt: Date;
+
+  @ManyToOne(() => CommentEntity, (comment) => comment.replies, {
+    onDelete: 'CASCADE',
+  })
+  @JoinColumn({
+    name: 'commentId',
+  })
+  comment: CommentEntity;
 }
