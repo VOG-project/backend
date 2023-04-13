@@ -10,6 +10,7 @@ import {
 import {
   ChatChatRoomListCondition,
   ChatIsAcceptableCondition,
+  ChatRoomSearchCondition,
 } from './dto/get.chat.dto';
 
 @Injectable()
@@ -67,5 +68,10 @@ export class ChatsService {
 
   async getChatRoomTotalCount(): Promise<ChatRoomTotalCountReturn> {
     return await this.chatRepository.findChatRoomTotalCount();
+  }
+
+  async searchChatRoom(chatRoomSearchCondition: ChatRoomSearchCondition) {
+    const { title } = chatRoomSearchCondition;
+    return await this.chatRepository.findByTitleForSearch(title);
   }
 }

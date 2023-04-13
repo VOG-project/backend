@@ -22,6 +22,7 @@ import {
 import {
   ChatChatRoomListCondition,
   ChatIsAcceptableCondition,
+  ChatRoomSearchCondition,
 } from './dto/get.chat.dto';
 import { AuthGuard } from 'src/auth/guards/auth.guard';
 
@@ -31,6 +32,20 @@ import { AuthGuard } from 'src/auth/guards/auth.guard';
 @UseGuards(AuthGuard)
 export class ChatsController {
   constructor(private readonly chatService: ChatsService) {}
+
+  @Get('rooms')
+  @ApiOperation({
+    summary: '채팅방 검색 API',
+    tags: ['chats'],
+  })
+  @ApiResponse({
+    description: '채팅방 제목으로 채팅방 데이터를 검색합니다.',
+  })
+  async searchChatRoom(
+    @Query() chatRoomSearchCondition: ChatRoomSearchCondition,
+  ) {
+    return await this.chatService.searchChatRoom(chatRoomSearchCondition);
+  }
 
   @Post('rooms')
   @ApiOperation({
