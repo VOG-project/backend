@@ -66,7 +66,7 @@ export class AuthService {
   }
 
   async requestKakaoAccessToken(authAuthorizedCode: AuthAuthorizedCode) {
-    const { code, state } = authAuthorizedCode;
+    const { code } = authAuthorizedCode;
 
     try {
       const responseData = await axios({
@@ -109,11 +109,5 @@ export class AuthService {
   async generateJwtAcessToken(user): Promise<string> {
     const payload = { sub: user.id, nickname: user.nickname };
     return await this.jwtService.signAsync(payload);
-  }
-
-  async deleteSessionInformation(
-    sessionId: string,
-  ): Promise<AuthDeletedSessionCountReturn> {
-    return await this.authRepository.deleteSession(sessionId);
   }
 }

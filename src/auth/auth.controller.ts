@@ -1,7 +1,6 @@
 import {
   Controller,
   Post,
-  Get,
   UseFilters,
   UseInterceptors,
   Res,
@@ -69,20 +68,5 @@ export class AuthController {
   })
   async loginByKakao(@Body() authAuthorizedCode: AuthAuthorizedCode) {
     return await this.authService.requestKakaoAccessToken(authAuthorizedCode);
-  }
-
-  @Delete('logout')
-  @ApiOperation({ summary: '로그아웃 API', tags: ['Auth'] })
-  @ApiResponse({
-    status: 200,
-    description: '로그아웃을 진행하고 삭제된 세션 개수를 반환합니다.',
-  })
-  async logout(
-    @Req() req: Request,
-    @Res({ passthrough: true }) res: Response,
-  ): Promise<AuthDeletedSessionCountReturn> {
-    const sessionId = req.cookies.sessionId;
-    res.clearCookie('sessionId');
-    return await this.authService.deleteSessionInformation(sessionId);
   }
 }
