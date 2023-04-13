@@ -48,7 +48,7 @@ export class PostEntity extends CreatedUpdatedDate {
 
   @Column({
     type: 'varchar',
-    length: 10,
+    length: 20,
   })
   postCategory: string;
 
