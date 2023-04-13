@@ -20,7 +20,7 @@ import { AuthGuard } from 'src/auth/guards/auth.guard';
 import { CommentRegisterRequest } from './dto/register.comment.dto';
 import {
   CommentEntireDataReturn,
-  PostDeletedCountReturn,
+  CommentDeletedCountReturn,
 } from './dto/return.comment.dto';
 import { CommentModifyRequest } from './dto/modify.comment.dto';
 
@@ -72,11 +72,11 @@ export class CommentsController {
   @ApiResponse({
     description:
       '삭제된 데이터 row 개수를 반환합니다. (1이면 삭제, 0이면 삭제되지 않거나 없는 데이터에 접근)',
-    type: PostDeletedCountReturn,
+    type: CommentDeletedCountReturn,
   })
   async removeComment(
     @Param('commentId', ParseIntPipe) commentId: number,
-  ): Promise<PostDeletedCountReturn> {
+  ): Promise<CommentDeletedCountReturn> {
     return await this.commentService.removeComment(commentId);
   }
 }

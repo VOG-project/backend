@@ -42,7 +42,7 @@ export class CommentPkIdReturn {
   commentId: number;
 }
 
-export class PostDeletedCountReturn {
+export class CommentDeletedCountReturn {
   @ApiProperty({
     example: 2,
     description:

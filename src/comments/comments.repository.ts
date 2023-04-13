@@ -6,7 +6,7 @@ import { HttpException } from '@nestjs/common';
 import {
   CommentEntireDataReturn,
   CommentPkIdReturn,
-  PostDeletedCountReturn,
+  CommentDeletedCountReturn,
 } from './dto/return.comment.dto';
 import { CommentModifyRequest } from './dto/modify.comment.dto';
 
@@ -75,7 +75,7 @@ export class CommentsRepository {
     }
   }
 
-  async delete(commentId: number): Promise<PostDeletedCountReturn> {
+  async delete(commentId: number): Promise<CommentDeletedCountReturn> {
     try {
       const deletedComment = await this.commentModel
         .createQueryBuilder()
