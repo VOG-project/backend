@@ -3,6 +3,7 @@ import {
   CreateDateColumn,
   Entity,
   Generated,
+  Index,
   JoinColumn,
   ManyToOne,
   OneToMany,
@@ -25,6 +26,10 @@ export class ChatRoomEntity {
   @Column({
     type: 'varchar',
     length: 30,
+  })
+  @Index({
+    unique: false,
+    
   })
   title: string;
 
