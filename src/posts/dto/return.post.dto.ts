@@ -1,5 +1,4 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { CommentEntireDataReturn } from 'src/comments/dto/return.comment.dto';
 import { UserPkNicknameReturn } from 'src/users/dto/return.user.dto';
 
 export class PostEntireDataReturn {
@@ -173,18 +172,4 @@ export class PostAndCommentsReturn {
     },
   })
   user: UserPkNicknameReturn;
-
-  @ApiProperty({
-    example: {
-      id: 6,
-      userId: 7,
-      content: '댓글썼어용',
-      group: 6,
-      sequence: 0,
-      createdAt: '2023-03-25T22:24:18.479Z',
-      updatedAt: '2023-03-25T22:24:18.479Z',
-      childeComments: CommentEntireDataReturn,
-    },
-  })
-  comments: CommentEntireDataReturn[];
 }
