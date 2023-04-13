@@ -37,3 +37,7 @@ export class CommentEntireDataReturn {
   })
   updatedAt: Date;
 }
+
+export class CommentPkIdReturn {
+  commentId: number;
+}
