@@ -34,6 +34,7 @@ export class AuthService {
     });
 
     const oauthId = await this.requestNaverUserData(responseData.data);
+    console.log(oauthId);
     const user = await this.userRepository.findOneByOAuthId(oauthId);
 
     if (!user) {
@@ -84,7 +85,7 @@ export class AuthService {
 
       if (!user) {
         return {
-          sub,
+          oauthId: sub,
           message:
             'oauthId는 발급되었지만 해당하는 유저 데이터가 없습니다. 유저 데이터 입력 창으로 리다이렉트 해주세요',
           redirectUrl: 'https://talkgg.online/sign-up',
