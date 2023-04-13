@@ -36,5 +36,5 @@ export class AuthAuthorizedCode {
   })
   @IsNotEmpty()
   @IsString()
-  state: string;
+  state?: string;
 }
