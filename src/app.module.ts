@@ -22,6 +22,7 @@ import { FriendModule } from './friend/friend.module';
 import { FriendEntity } from './friend/friend.entity';
 import { JwtModule } from '@nestjs/jwt';
 import { RepliesModule } from './replies/replies.module';
+import { ReplyEntity } from './replies/replies.entity';
 
 @Module({
   imports: [
@@ -64,6 +65,7 @@ import { RepliesModule } from './replies/replies.module';
         PostEntity,
         CommentEntity,
         FriendEntity,
+        ReplyEntity,
       ],
       synchronize: true,
       database: 'vog',
