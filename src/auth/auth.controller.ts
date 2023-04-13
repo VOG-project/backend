@@ -3,9 +3,6 @@ import {
   Post,
   UseFilters,
   UseInterceptors,
-  Res,
-  Req,
-  Delete,
   Body,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
