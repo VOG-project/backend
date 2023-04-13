@@ -43,13 +43,13 @@ export class CommentEntity extends CreatedUpdatedDate {
   })
   sequence: number;
 
-  @ManyToOne(() => PostEntity, (post) => post.comments)
+  @ManyToOne(() => PostEntity, (post) => post.comments, { onDelete: 'CASCADE' })
   @JoinColumn({
     name: 'postId',
   })
   post: PostEntity;
 
-  @ManyToOne(() => UserEntity, (user) => user.comments)
+  @ManyToOne(() => UserEntity, (user) => user.comments, { onDelete: 'CASCADE' })
   @JoinColumn({
     name: 'userId',
   })
@@ -58,7 +58,9 @@ export class CommentEntity extends CreatedUpdatedDate {
   @OneToMany(() => CommentEntity, (comment) => comment.parentComment)
   reply: CommentEntity[];
 
-  @ManyToOne(() => CommentEntity, (comment) => comment.reply)
+  @ManyToOne(() => CommentEntity, (comment) => comment.reply, {
+    onDelete: 'CASCADE',
+  })
   @JoinColumn({
     name: 'group',
   })

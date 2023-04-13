@@ -25,13 +25,17 @@ export class FriendEntity {
   })
   targetId: number;
 
-  @ManyToOne(() => UserEntity, (user) => user.followers)
+  @ManyToOne(() => UserEntity, (user) => user.followers, {
+    onDelete: 'CASCADE',
+  })
   @JoinColumn({
     name: 'userId',
   })
   follower: UserEntity;
 
-  @ManyToOne(() => UserEntity, (user) => user.following)
+  @ManyToOne(() => UserEntity, (user) => user.following, {
+    onDelete: 'CASCADE',
+  })
   @JoinColumn({
     name: 'targetId',
   })

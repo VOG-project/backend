@@ -106,7 +106,7 @@ export class ChatParticipantEntity {
   @JoinColumn({ name: 'roomId' })
   chatRoom: ChatRoomEntity;
 
-  @OneToOne(() => UserEntity)
+  @OneToOne(() => UserEntity, { onDelete: 'CASCADE' })
   @JoinColumn({ name: 'userId' })
   user: UserEntity;
 }
