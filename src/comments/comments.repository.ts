@@ -6,6 +6,7 @@ import { HttpException } from '@nestjs/common';
 import {
   CommentEntireDataReturn,
   CommentPkIdReturn,
+  PostDeletedCountReturn,
 } from './dto/return.comment.dto';
 import { CommentModifyRequest } from './dto/modify.comment.dto';
 
@@ -69,6 +70,20 @@ export class CommentsRepository {
         .select()
         .where('id = :commentId', { commentId })
         .getExists();
+    } catch (err) {
+      throw new HttpException(`[MYSQL ERROR] checkExist: ${err.message}`, 500);
+    }
+  }
+
+  async delete(commentId: number): Promise<PostDeletedCountReturn> {
+    try {
+      const deletedComment = await this.commentModel
+        .createQueryBuilder()
+        .delete()
+        .where('id = :commentId', { commentId })
+        .execute();
+
+      return { deletedCount: deletedComment.affected };
     } catch (err) {
       throw new HttpException(`[MYSQL ERROR] checkExist: ${err.message}`, 500);
     }

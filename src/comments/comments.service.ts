@@ -2,7 +2,10 @@ import { Injectable, HttpException } from '@nestjs/common';
 import { CommentsRepository } from './comments.repository';
 import { PostsRepository } from 'src/posts/posts.repository';
 import { CommentRegisterRequest } from './dto/register.comment.dto';
-import { CommentEntireDataReturn } from './dto/return.comment.dto';
+import {
+  CommentEntireDataReturn,
+  PostDeletedCountReturn,
+} from './dto/return.comment.dto';
 import { CommentModifyRequest } from './dto/modify.comment.dto';
 
 @Injectable()
@@ -31,5 +34,12 @@ export class CommentsService {
 
     await this.commentRepository.update(commentModifyRequest, commentId);
     return await this.commentRepository.findByCommentId(commentId);
+  }
+  async removeComment(commentId: number): Promise<PostDeletedCountReturn> {
+    const isExistedComment = await this.commentRepository.checkExist(commentId);
+    if (!isExistedComment)
+      throw new HttpException('존재하지 않는 댓글입니다.', 400);
+
+    return await this.commentRepository.delete(commentId);
   }
 }
