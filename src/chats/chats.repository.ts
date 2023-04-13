@@ -50,6 +50,18 @@ export class ChatsRepository {
     }
   }
 
+  async findByTitleForSearch(title: string): Promise<any> {
+    try {
+      return await this.chatRoomModel
+        .createQueryBuilder()
+        .select()
+        .where('title LIKE :title', { title: `${title}%` })
+        .getMany();
+    } catch (err) {
+      throw new HttpException(`[MYSQL ERROR] findByTitle: ${err.message}`, 500);
+    }
+  }
+
   async existsByUserId(userId: number): Promise<boolean> {
     try {
       return await this.chatParticipantModel
