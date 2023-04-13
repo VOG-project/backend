@@ -9,10 +9,8 @@ import { AuthService } from './auth.service';
 import { HttpExceptionFilter } from '../common/filters/http-exception.filter';
 import { SuccessInterceptor } from '../common/interceptors/success.interceptor';
 import { ApiOperation, ApiResponse } from '@nestjs/swagger';
-import { Response, Request } from 'express';
 import { AuthAuthorizedCode } from './dto/login.auth.dto';
 import {
-  AuthDeletedSessionCountReturn,
   AuthRedirectReturn,
   AuthUserEntireDataReturn,
 } from './dto/return.auth.dto';
