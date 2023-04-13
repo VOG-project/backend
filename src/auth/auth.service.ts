@@ -65,6 +65,47 @@ export class AuthService {
     return oauthId;
   }
 
+  async requestKakaoAccessToken(authAuthorizedCode: AuthAuthorizedCode) {
+    const { code, state } = authAuthorizedCode;
+
+    try {
+      const responseData = await axios({
+        method: 'post',
+        url: `https://kauth.kakao.com/oauth/token?grant_type=authorization_code&client_id=${process.env.OAUTH_KAKAO_CLIENT_ID}&redirect_uri=http://localhost:3002/auth/login/kakao&code=${code}&client_secret=${process.env.OAUTH_KAKAO_CLIENT_SECRET}`,
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+        },
+      });
+
+      const { id_token } = responseData.data;
+      const { sub } = await this.decodeKakaoIdToken(id_token);
+
+      const user = await this.userRepository.findOneByOAuthId(sub);
+
+      if (!user) {
+        return {
+          sub,
+          message:
+            'oauthId는 발급되었지만 해당하는 유저 데이터가 없습니다. 유저 데이터 입력 창으로 리다이렉트 해주세요',
+          redirectUrl: 'https://talkgg.online/sign-up',
+        };
+      } else {
+        const jwtAccessToken = await this.generateJwtAcessToken(user);
+        return { jwtAccessToken, ...user };
+      }
+    } catch (err) {
+      throw new HttpException(
+        `[AXIOS ERROR] requestKakaoAccessToken: ${err.message}`,
+        500,
+      );
+    }
+  }
+
+  async decodeKakaoIdToken(idToken: string) {
+    const decodedIdToken = this.jwtService.decode(idToken);
+    return decodedIdToken;
+  }
+
   async generateJwtAcessToken(user): Promise<string> {
     const payload = { sub: user.id, nickname: user.nickname };
     return await this.jwtService.signAsync(payload);

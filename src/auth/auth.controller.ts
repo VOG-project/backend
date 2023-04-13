@@ -1,6 +1,7 @@
 import {
   Controller,
   Post,
+  Get,
   UseFilters,
   UseInterceptors,
   Res,
@@ -47,6 +48,27 @@ export class AuthController {
     @Body() authAuthorizedCode: AuthAuthorizedCode,
   ): Promise<AuthUserEntireDataReturn | AuthRedirectReturn> {
     return await this.authService.requestNaverAccessToken(authAuthorizedCode);
+  }
+
+  @Post('login/kakao')
+  @ApiOperation({
+    summary: '카카오 로그인 인증 API',
+    tags: ['Auth'],
+  })
+  @ApiResponse({
+    status: 200,
+    description:
+      'code와 state를 전달받고 결과에 따라 리다이렉션 또는 jwtAccessToken과 회원정보를 반환합니다.',
+    type: AuthUserEntireDataReturn,
+  })
+  @ApiResponse({
+    status: 300,
+    description:
+      'code와 state를 전달받고 결과에 따라 리다이렉션 또는 jwtAccessToken과 회원정보를 반환합니다.',
+    type: AuthRedirectReturn,
+  })
+  async loginByKakao(@Body() authAuthorizedCode: AuthAuthorizedCode) {
+    return await this.authService.requestKakaoAccessToken(authAuthorizedCode);
   }
 
   @Delete('logout')
