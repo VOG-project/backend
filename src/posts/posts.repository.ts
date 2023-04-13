@@ -238,4 +238,15 @@ export class PostsRepository {
       throw new HttpException(`[MYSQL ERROR] deletePost: ${err.message}`, 500);
     }
   }
+
+  async deleteCachingPost(postId: number): Promise<void> {
+    try {
+      await this.redis.del(postId.toString());
+    } catch (err) {
+      throw new HttpException(
+        `[REDIS ERROR] deleteCachingPost: ${err.message}`,
+        500,
+      );
+    }
+  }
 }

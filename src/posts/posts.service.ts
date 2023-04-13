@@ -89,7 +89,7 @@ export class PostsService {
     }
 
     await this.likeRepository.deleteLikeOfPost(postId);
-
+    await this.postRepository.deleteCachingPost(postId);
     return this.postRepository.deletePost(postId);
   }
 }
