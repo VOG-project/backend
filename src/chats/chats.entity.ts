@@ -29,7 +29,6 @@ export class ChatRoomEntity {
   })
   @Index({
     unique: false,
-    
   })
   title: string;
 
