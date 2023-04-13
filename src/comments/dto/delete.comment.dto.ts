@@ -14,9 +14,9 @@ export class CommentDeleteCondition {
     example: 1,
     description: '댓글의 순서(0은 댓글, 1 이상은 답글)',
   })
-  sequence: number;
   @IsNotEmpty()
   @IsInt()
+  sequence: number;
 
   @ApiProperty({
     example: 31,
