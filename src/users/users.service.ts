@@ -5,6 +5,7 @@ import { UserEntireDataReturn } from './dto/return.user.dto';
 import { UserCreateRequest } from './dto/create.user.dto';
 import { AuthService } from 'src/auth/auth.service';
 import { AuthUserEntireDataReturn } from 'src/auth/dto/return.auth.dto';
+import { PostDeletedCountReturn } from 'src/posts/dto/return.post.dto';
 
 @Injectable()
 export class UserService {
@@ -77,5 +78,13 @@ export class UserService {
 
   async getUser(userId: number) {
     return await this.userRepository.findOneByIdWithoutPassword(userId);
+  }
+
+  async removeUser(userId: number): Promise<PostDeletedCountReturn> {
+    const isExistedUser = await this.userRepository.findOneById(userId);
+    if (!isExistedUser)
+      throw new HttpException('존재하지 않는 유저입니다.', 400);
+
+    return await this.userRepository.deleteById(userId);
   }
 }

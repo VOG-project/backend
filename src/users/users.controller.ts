@@ -9,6 +9,7 @@ import {
   Param,
   UseGuards,
   ParseIntPipe,
+  Delete,
 } from '@nestjs/common';
 import { UserService } from './users.service';
 import { ApiOperation, ApiResponse } from '@nestjs/swagger';
@@ -19,6 +20,7 @@ import { UserEntireDataReturn } from './dto/return.user.dto';
 import { UserCreateRequest } from './dto/create.user.dto';
 import { AuthUserEntireDataReturn } from 'src/auth/dto/return.auth.dto';
 import { AuthGuard } from 'src/auth/guards/auth.guard';
+import { PostDeletedCountReturn } from 'src/posts/dto/return.post.dto';
 
 @UseFilters(HttpExceptionFilter)
 @UseInterceptors(SuccessInterceptor)
@@ -77,5 +79,20 @@ export class UsersController {
     @Body() userCreateRequest: UserCreateRequest,
   ): Promise<AuthUserEntireDataReturn> {
     return this.userService.registerUser(userCreateRequest);
+  }
+
+  @Delete(':userId')
+  @ApiOperation({
+    summary: '회원탈퇴 API',
+    tags: ['Users'],
+  })
+  @ApiResponse({
+    status: 201,
+    description: '유저 아이디에 해당하는 유저 데이터를 삭제합니다.',
+  })
+  async removeUser(
+    @Param('userId', ParseIntPipe) userId: number,
+  ): Promise<PostDeletedCountReturn> {
+    return await this.userService.removeUser(userId);
   }
 }
