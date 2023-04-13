@@ -1,4 +1,3 @@
-import { CreatedUpdatedDate } from 'src/common/commonEntities/date.common.entity';
 import { PostEntity } from 'src/posts/posts.entity';
 import { UserEntity } from 'src/users/users.entity';
 import {
@@ -7,7 +6,6 @@ import {
   JoinColumn,
   ManyToOne,
   PrimaryGeneratedColumn,
-  OneToMany,
   CreateDateColumn,
   UpdateDateColumn,
 } from 'typeorm';
@@ -22,7 +20,7 @@ export class CommentEntity {
   @Column({
     type: 'int',
   })
-  userId: number;
+  writerId: number;
 
   @Column({
     type: 'int',
@@ -30,8 +28,7 @@ export class CommentEntity {
   postId: number;
 
   @Column({
-    type: 'varchar',
-    length: 100,
+    type: 'tinytext',
   })
   content: string;
 
