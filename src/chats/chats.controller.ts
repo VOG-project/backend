@@ -40,10 +40,11 @@ export class ChatsController {
   })
   @ApiResponse({
     description: '채팅방 제목으로 채팅방 데이터를 검색합니다.',
+    type: [ChatEntireDataReturn],
   })
   async searchChatRoom(
     @Query() chatRoomSearchCondition: ChatRoomSearchCondition,
-  ) {
+  ): Promise<ChatEntireDataReturn[]> {
     return await this.chatService.searchChatRoom(chatRoomSearchCondition);
   }
 

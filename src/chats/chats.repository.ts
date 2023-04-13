@@ -50,7 +50,7 @@ export class ChatsRepository {
     }
   }
 
-  async findByTitleForSearch(title: string): Promise<any> {
+  async findByTitleForSearch(title: string): Promise<ChatEntireDataReturn[]> {
     try {
       return await this.chatRoomModel
         .createQueryBuilder()

@@ -70,7 +70,9 @@ export class ChatsService {
     return await this.chatRepository.findChatRoomTotalCount();
   }
 
-  async searchChatRoom(chatRoomSearchCondition: ChatRoomSearchCondition) {
+  async searchChatRoom(
+    chatRoomSearchCondition: ChatRoomSearchCondition,
+  ): Promise<ChatEntireDataReturn[]> {
     const { title } = chatRoomSearchCondition;
     return await this.chatRepository.findByTitleForSearch(title);
   }
