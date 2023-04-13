@@ -16,7 +16,7 @@ export class ChatsRepository {
     private readonly chatParticipantModel: Repository<ChatParticipantEntity>,
   ) {}
 
-  async createChatRoom(data: ChatCreateRequest, roomId: string): Promise<void> {
+  async createRoom(data: ChatCreateRequest, roomId: string): Promise<void> {
     try {
       const { title, maximumMember, description } = data;
 
@@ -113,7 +113,7 @@ export class ChatsRepository {
     }
   }
 
-  async findChatRoomAndParticipantInfo(roomId: string) {
+  async findRoomAndParticipantInfo(roomId: string) {
     try {
       return await this.chatRoomModel
         .createQueryBuilder('c')
@@ -182,7 +182,7 @@ export class ChatsRepository {
     }
   }
 
-  async deleteChatRoom(roomId: string): Promise<void> {
+  async deleteRoom(roomId: string): Promise<void> {
     try {
       await this.chatRoomModel
         .createQueryBuilder()
@@ -212,7 +212,7 @@ export class ChatsRepository {
     }
   }
 
-  async findChatRoomList(
+  async findRoomList(
     page: number,
     resultRowCount: number,
   ): Promise<ChatEntireDataReturn[]> {
@@ -232,7 +232,7 @@ export class ChatsRepository {
     }
   }
 
-  async findChatRoomTotalCount(): Promise<ChatRoomTotalCountReturn> {
+  async findRoomTotalCount(): Promise<ChatRoomTotalCountReturn> {
     try {
       const chatRoomCount = await this.chatRoomModel
         .createQueryBuilder()

@@ -17,7 +17,7 @@ import {
 export class ChatsService {
   constructor(private readonly chatRepository: ChatsRepository) {}
 
-  async registerChatRoom(
+  async registerRoom(
     chatCreateRequest: ChatCreateRequest,
   ): Promise<ChatEntireDataReturn> {
     const { userId } = chatCreateRequest;
@@ -28,7 +28,7 @@ export class ChatsService {
     }
 
     const roomId = v4();
-    await this.chatRepository.createChatRoom(chatCreateRequest, roomId);
+    await this.chatRepository.createRoom(chatCreateRequest, roomId);
 
     return await this.chatRepository.findByRoomId(roomId);
   }
@@ -58,19 +58,19 @@ export class ChatsService {
     };
   }
 
-  async getChatRoomList(
+  async getRoomList(
     condition: ChatChatRoomListCondition,
   ): Promise<ChatEntireDataReturn[]> {
     const { page } = condition;
     const RESULT_ROW_COUNT = 10;
-    return await this.chatRepository.findChatRoomList(page, RESULT_ROW_COUNT);
+    return await this.chatRepository.findRoomList(page, RESULT_ROW_COUNT);
   }
 
-  async getChatRoomTotalCount(): Promise<ChatRoomTotalCountReturn> {
-    return await this.chatRepository.findChatRoomTotalCount();
+  async getRoomTotalCount(): Promise<ChatRoomTotalCountReturn> {
+    return await this.chatRepository.findRoomTotalCount();
   }
 
-  async searchChatRoom(
+  async searchRoom(
     chatRoomSearchCondition: ChatRoomSearchCondition,
   ): Promise<ChatEntireDataReturn[]> {
     const { title } = chatRoomSearchCondition;

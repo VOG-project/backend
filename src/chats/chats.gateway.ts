@@ -55,7 +55,7 @@ export class ChatsGateway implements OnGatewayConnection {
 
       socket.join(roomId);
 
-      const chatInfo = await this.chatRepository.findChatRoomAndParticipantInfo(
+      const chatInfo = await this.chatRepository.findRoomAndParticipantInfo(
         roomId,
       );
 
@@ -80,10 +80,10 @@ export class ChatsGateway implements OnGatewayConnection {
       const { currentMember } = await this.chatRepository.findByRoomId(roomId);
 
       if (!currentMember) {
-        await this.chatRepository.deleteChatRoom(roomId);
+        await this.chatRepository.deleteRoom(roomId);
       }
 
-      const chatInfo = await this.chatRepository.findChatRoomAndParticipantInfo(
+      const chatInfo = await this.chatRepository.findRoomAndParticipantInfo(
         roomId,
       );
 

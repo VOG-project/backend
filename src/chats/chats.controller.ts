@@ -42,10 +42,10 @@ export class ChatsController {
     description: '채팅방 제목으로 채팅방 데이터를 검색합니다.',
     type: [ChatEntireDataReturn],
   })
-  async searchChatRoom(
+  async searchRoom(
     @Query() chatRoomSearchCondition: ChatRoomSearchCondition,
   ): Promise<ChatEntireDataReturn[]> {
-    return await this.chatService.searchChatRoom(chatRoomSearchCondition);
+    return await this.chatService.searchRoom(chatRoomSearchCondition);
   }
 
   @Post('rooms')
@@ -57,10 +57,10 @@ export class ChatsController {
     description: '채팅방을 생성하고 해당 채팅방의 정보를 반환합니다.',
     type: ChatEntireDataReturn,
   })
-  async registerChatRoom(
+  async registerRoom(
     @Body() chatCreateRequest: ChatCreateRequest,
   ): Promise<ChatEntireDataReturn> {
-    return await this.chatService.registerChatRoom(chatCreateRequest);
+    return await this.chatService.registerRoom(chatCreateRequest);
   }
 
   @Get('rooms/list')
@@ -72,10 +72,10 @@ export class ChatsController {
     description: '입력 페이지에 해당하는 채팅방 목록을 반환합니다. (기본 10개)',
     type: ChatEntireDataReturn,
   })
-  async getChatRoomList(
+  async getRoomList(
     @Query() condition: ChatChatRoomListCondition,
   ): Promise<ChatEntireDataReturn[]> {
-    return await this.chatService.getChatRoomList(condition);
+    return await this.chatService.getRoomList(condition);
   }
 
   @Get('rooms/count')
@@ -87,8 +87,8 @@ export class ChatsController {
     description: '현재 생성된 채팅방의 총 개수를 반환합니다.',
     type: ChatRoomTotalCountReturn,
   })
-  async getTotalChatRoomCount(): Promise<ChatRoomTotalCountReturn> {
-    return await this.chatService.getChatRoomTotalCount();
+  async getTotalRoomCount(): Promise<ChatRoomTotalCountReturn> {
+    return await this.chatService.getRoomTotalCount();
   }
 
   @Get('rooms/:roomId')
