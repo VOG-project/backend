@@ -19,6 +19,7 @@ import { CommentsService } from './comments.service';
 import { AuthGuard } from 'src/auth/guards/auth.guard';
 import { CommentRegisterRequest } from './dto/register.comment.dto';
 import { CommentEntireDataReturn } from './dto/return.comment.dto';
+import { CommentModifyRequest } from './dto/modify.comment.dto';
 
 @Controller('comments')
 @UseGuards(AuthGuard)
@@ -39,6 +40,24 @@ export class CommentsController {
   async registerPost(
     @Body() commentRegisterRequest: CommentRegisterRequest,
   ): Promise<CommentEntireDataReturn> {
-    return await this.commentService.registerPost(commentRegisterRequest);
+    return await this.commentService.registerComment(commentRegisterRequest);
+  }
+
+  @Patch('commentId')
+  @ApiOperation({
+    summary: '댓글 수정 API',
+    tags: ['Comment'],
+  })
+  @ApiResponse({
+    description: '수정한 댓글에 대한 모든 데이터를 반환합니다.',
+  })
+  async modifyComment(
+    @Body() commentModifyRequest: CommentModifyRequest,
+    @Param('commentId', ParseIntPipe) commentId: number,
+  ) {
+    return await this.commentService.modifyComment(
+      commentModifyRequest,
+      commentId,
+    );
   }
 }

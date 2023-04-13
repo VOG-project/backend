@@ -7,6 +7,7 @@ import {
   CommentEntireDataReturn,
   CommentPkIdReturn,
 } from './dto/return.comment.dto';
+import { CommentModifyRequest } from './dto/modify.comment.dto';
 
 export class CommentsRepository {
   constructor(
@@ -42,6 +43,34 @@ export class CommentsRepository {
         `[MYSQL ERROR] findByCommentId: ${err.message}`,
         500,
       );
+    }
+  }
+
+  async update(
+    commentModifyRequest: CommentModifyRequest,
+    commentId: number,
+  ): Promise<void> {
+    try {
+      await this.commentModel
+        .createQueryBuilder()
+        .update()
+        .set(commentModifyRequest)
+        .where('id = :commentId', { commentId })
+        .execute();
+    } catch (err) {
+      throw new HttpException(`[MYSQL ERROR] update: ${err.message}`, 500);
+    }
+  }
+
+  async checkExist(commentId: number): Promise<boolean> {
+    try {
+      return await this.commentModel
+        .createQueryBuilder()
+        .select()
+        .where('id = :commentId', { commentId })
+        .getExists();
+    } catch (err) {
+      throw new HttpException(`[MYSQL ERROR] checkExist: ${err.message}`, 500);
     }
   }
 }
