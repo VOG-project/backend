@@ -71,7 +71,7 @@ export class AuthService {
     try {
       const responseData = await axios({
         method: 'post',
-        url: `https://kauth.kakao.com/oauth/token?grant_type=authorization_code&client_id=${process.env.OAUTH_KAKAO_CLIENT_ID}&redirect_uri=http://localhost:3002/auth/login/kakao&code=${code}&client_secret=${process.env.OAUTH_KAKAO_CLIENT_SECRET}`,
+        url: `https://kauth.kakao.com/oauth/token?grant_type=authorization_code&client_id=${process.env.OAUTH_KAKAO_CLIENT_ID}&redirect_uri=http://talkgg.online/auth/login/kakao&code=${code}&client_secret=${process.env.OAUTH_KAKAO_CLIENT_SECRET}`,
         headers: {
           'Content-Type': 'application/x-www-form-urlencoded',
         },
