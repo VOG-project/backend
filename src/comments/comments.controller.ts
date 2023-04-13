@@ -83,7 +83,7 @@ export class CommentsController {
     return this.commentService.modifyComment(commentUpdateRequest, commentId);
   }
 
-  @Delete()
+  @Delete(':commentId')
   @ApiOperation({
     summary: '댓글 삭제 API',
     tags: ['comments'],
