@@ -21,6 +21,7 @@ import { LikeModule } from './like/like.module';
 import { FriendModule } from './friend/friend.module';
 import { FriendEntity } from './friend/friend.entity';
 import { JwtModule } from '@nestjs/jwt';
+import { RepliesModule } from './replies/replies.module';
 
 @Module({
   imports: [
@@ -83,6 +84,7 @@ import { JwtModule } from '@nestjs/jwt';
     CommentsModule,
     LikeModule,
     FriendModule,
+    RepliesModule,
   ],
   controllers: [AppController],
   providers: [AppService],
