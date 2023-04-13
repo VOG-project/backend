@@ -38,3 +38,11 @@ export class AuthAuthorizedCode {
   @IsString()
   state: string;
 }
+
+export class AuthProviderParam {
+  @ApiProperty({
+    example: 'kakao',
+    description: 'OAUTH 서비스 제공자 명',
+  })
+  provider: string;
+}
