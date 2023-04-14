@@ -1,4 +1,5 @@
 import { CommentEntity } from 'src/comments/comments.entity';
+import { UserEntity } from 'src/users/users.entity';
 import {
   Column,
   CreateDateColumn,
@@ -36,6 +37,14 @@ export class ReplyEntity {
 
   @UpdateDateColumn()
   updatedAt: Date;
+
+  @ManyToOne(() => UserEntity, (user) => user.replies, {
+    onDelete: 'CASCADE',
+  })
+  @JoinColumn({
+    name: 'writerId',
+  })
+  user: UserEntity;
 
   @ManyToOne(() => CommentEntity, (comment) => comment.replies, {
     onDelete: 'CASCADE',

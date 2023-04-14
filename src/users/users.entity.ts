@@ -9,6 +9,7 @@ import {
 import { CommentEntity } from 'src/comments/comments.entity';
 import { PostEntity } from 'src/posts/posts.entity';
 import { FriendEntity } from 'src/friend/friend.entity';
+import { ReplyEntity } from 'src/replies/replies.entity';
 
 @Entity({
   name: 'user',
@@ -61,6 +62,9 @@ export class UserEntity {
 
   @OneToMany(() => CommentEntity, (comment) => comment.user)
   comments: CommentEntity[];
+
+  @OneToMany(() => ReplyEntity, (reply) => reply.user)
+  replies: ReplyEntity[];
 
   @OneToMany(() => FriendEntity, (friend) => friend.follower)
   followers: FriendEntity[];
