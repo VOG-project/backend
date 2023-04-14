@@ -1,6 +1,10 @@
 import { Injectable, HttpException } from '@nestjs/common';
 import { PostCreateRequest } from './dto/create.post.dto';
-import { PostGetCondition } from './dto/get.post.dto';
+import {
+  PostGetCondition,
+  PostSearchCondition,
+  PostSearchRequest,
+} from './dto/get.post.dto';
 import {
   PostDeletedCountReturn,
   PostEntireDataReturn,
@@ -80,6 +84,26 @@ export class PostsService {
 
   async getTotalPostsCount(category: string): Promise<number> {
     return await this.postRepository.findCountByCategory(category);
+  }
+
+  async searchPost(
+    postSearchCondition: PostSearchCondition,
+    postSearchRequest: PostSearchRequest,
+  ) {
+    const { searchType } = postSearchCondition;
+    if (searchType === 'nickname') {
+      return await this.postRepository.findPostListByNickname(
+        postSearchCondition,
+        postSearchRequest,
+      );
+    } else if (searchType === 'title') {
+      return await this.postRepository.findPostListByTitle(
+        postSearchCondition,
+        postSearchRequest,
+      );
+    } else {
+      throw new HttpException('닉네임과 제목으로만 검색할 수 있습니다.', 400);
+    }
   }
 
   async removePost(postId: number): Promise<PostDeletedCountReturn> {

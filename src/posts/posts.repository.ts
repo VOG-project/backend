@@ -12,6 +12,7 @@ import {
 import { PostModificationRequest } from './dto/modify.post.dto';
 import { Redis } from 'ioredis';
 import { RedisService } from '@liaoliaots/nestjs-redis';
+import { PostSearchCondition, PostSearchRequest } from './dto/get.post.dto';
 
 export class PostsRepository {
   private readonly redis: Redis;
@@ -78,6 +79,88 @@ export class PostsRepository {
     } catch (err) {
       throw new HttpException(
         `[MYSQL ERROR] findPostListByBoardType: ${err.message}`,
+        500,
+      );
+    }
+  }
+
+  async findPostListByNickname(
+    postSearchCondition: PostSearchCondition,
+    postSearchRequest: PostSearchRequest,
+  ) {
+    const { page, board } = postSearchCondition;
+    const { keyword } = postSearchRequest;
+    try {
+      const query = this.postModel
+        .createQueryBuilder('p')
+        .innerJoin('p.user', 'u')
+        .select([
+          'p.id',
+          'p.title',
+          'p.likeCount',
+          'p.view',
+          'p.postCategory',
+          'p.createdAt',
+          'u.id',
+          'u.nickname',
+          'u.profileUrl',
+        ])
+        .where('u.nickname LIKE :keyword', { keyword: `%${keyword}%` })
+        .andWhere('p.postCategory = :postCategory', { postCategory: board });
+
+      const searchedResult = await query
+        .offset(10 * (page - 1))
+        .limit(10)
+        .orderBy('p.id', 'DESC')
+        .getMany();
+
+      const totalCount = await query.getCount();
+
+      return { totalCount, searchedResult };
+    } catch (err) {
+      throw new HttpException(
+        `[MYSQL ERROR] findPostListByNickname: ${err.message}`,
+        500,
+      );
+    }
+  }
+
+  async findPostListByTitle(
+    postSearchCondition: PostSearchCondition,
+    postSearchRequest: PostSearchRequest,
+  ) {
+    const { page, board } = postSearchCondition;
+    const { keyword } = postSearchRequest;
+    try {
+      const query = this.postModel
+        .createQueryBuilder('p')
+        .innerJoin('p.user', 'u')
+        .select([
+          'p.id',
+          'p.title',
+          'p.likeCount',
+          'p.view',
+          'p.postCategory',
+          'p.createdAt',
+          'u.id',
+          'u.nickname',
+          'u.profileUrl',
+        ])
+        .where('p.title LIKE :keyword', { keyword: `%${keyword}%` })
+        .andWhere('p.postCategory = :postCategory', { postCategory: board });
+
+      const searchedResult = await query
+        .offset(10 * (page - 1))
+        .limit(10)
+        .orderBy('p.id', 'DESC')
+        .getMany();
+
+      const totalCount = await query.getCount();
+
+      return { totalCount, searchedResult };
+    } catch (err) {
+      throw new HttpException(
+        `[MYSQL ERROR] findPostListByTitle: ${err.message}`,
         500,
       );
     }

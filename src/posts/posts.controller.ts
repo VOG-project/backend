@@ -16,7 +16,11 @@ import { ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { HttpExceptionFilter } from 'src/common/filters/http-exception.filter';
 import { SuccessInterceptor } from '../common/interceptors/success.interceptor';
 import { PostCreateRequest } from './dto/create.post.dto';
-import { PostGetCondition } from './dto/get.post.dto';
+import {
+  PostGetCondition,
+  PostSearchCondition,
+  PostSearchRequest,
+} from './dto/get.post.dto';
 import { PostModificationRequest } from './dto/modify.post.dto';
 import {
   PostDeletedCountReturn,
@@ -36,7 +40,7 @@ export class PostsController {
   @Post()
   @ApiOperation({
     summary: '게시물 등록 API',
-    tags: ['posts'],
+    tags: ['Posts'],
   })
   @ApiResponse({
     description: '게시물을 등록하면 등록된 게시물 데이터를 반환합니다.',
@@ -48,10 +52,28 @@ export class PostsController {
     return this.postService.registerPost(postRequestDto);
   }
 
+  @Get('search')
+  @ApiOperation({
+    summary: '게시물 검색 API',
+    tags: ['Posts'],
+  })
+  @ApiResponse({
+    description: '검색어에 해당하는 게시물 데이터를 반환합니다.',
+  })
+  async searchPost(
+    @Query() postSearchCondition: PostSearchCondition,
+    @Body() postSearchRequest: PostSearchRequest,
+  ) {
+    return await this.postService.searchPost(
+      postSearchCondition,
+      postSearchRequest,
+    );
+  }
+
   @Get()
   @ApiOperation({
     summary: '게시물 목록 조회 API',
-    tags: ['posts'],
+    tags: ['Posts'],
   })
   @ApiResponse({
     description:
@@ -65,7 +87,7 @@ export class PostsController {
   @Get('/count')
   @ApiOperation({
     summary: '게시물 총 개수 반환 API',
-    tags: ['posts'],
+    tags: ['Posts'],
   })
   @ApiResponse({
     description: '카테고리에 해당하는 게시물의 총 개수를 반환합니다.',
@@ -78,7 +100,7 @@ export class PostsController {
   @Get(':postId')
   @ApiOperation({
     summary: '게시물 조회 API',
-    tags: ['posts'],
+    tags: ['Posts'],
   })
   @ApiResponse({
     description: `해당하는 게시물 데이터를 반환합니다.`,
@@ -93,7 +115,7 @@ export class PostsController {
   @Patch(':postId')
   @ApiOperation({
     summary: '게시물 수정 API',
-    tags: ['posts'],
+    tags: ['Posts'],
   })
   @ApiResponse({
     description:
@@ -110,7 +132,7 @@ export class PostsController {
   @Delete(':postId')
   @ApiOperation({
     summary: '게시물 삭제 API',
-    tags: ['posts'],
+    tags: ['Posts'],
   })
   @ApiResponse({
     description:
