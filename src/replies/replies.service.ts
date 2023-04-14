@@ -1,7 +1,10 @@
 import { Injectable, HttpException } from '@nestjs/common';
 import { RepliesRepository } from './replies.repository';
 import { ReplyRegisterRequest } from './dto/register.reply.dto';
-import { ReplyEntireDataReturn } from './dto/return.reply.dto';
+import {
+  ReplyDeletedCountReturn,
+  ReplyEntireDataReturn,
+} from './dto/return.reply.dto';
 import { ReplyModifyRequest } from './dto/modify.reply.dto';
 
 @Injectable()
@@ -25,5 +28,13 @@ export class RepliesService {
 
     await this.replyRepository.update(replyModifyRequest, replyId);
     return await this.replyRepository.findByReplyId(replyId);
+  }
+
+  async removeReply(replyId: number): Promise<ReplyDeletedCountReturn> {
+    const isExistedComment = await this.replyRepository.checkExist(replyId);
+    if (!isExistedComment)
+      throw new HttpException('존재하지 않는 답글입니다.', 400);
+
+    return await this.replyRepository.delete(replyId);
   }
 }
