@@ -6,6 +6,7 @@ import {
   ChatEntireDataReturn,
   ChatIsAcceptableReturn,
   ChatRoomTotalCountReturn,
+  ChatSearchReturn,
 } from './dto/return.chat.dto';
 import {
   ChatChatRoomListCondition,
@@ -72,8 +73,8 @@ export class ChatsService {
 
   async searchRoom(
     chatRoomSearchCondition: ChatRoomSearchCondition,
-  ): Promise<ChatEntireDataReturn[]> {
-    const { title } = chatRoomSearchCondition;
-    return await this.chatRepository.findByTitleForSearch(title);
+  ): Promise<ChatSearchReturn> {
+    const { title, page } = chatRoomSearchCondition;
+    return await this.chatRepository.findRoomListByTitle(title, page);
   }
 }

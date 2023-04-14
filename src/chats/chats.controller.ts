@@ -18,6 +18,7 @@ import {
   ChatEntireDataReturn,
   ChatIsAcceptableReturn,
   ChatRoomTotalCountReturn,
+  ChatSearchReturn,
 } from './dto/return.chat.dto';
 import {
   ChatChatRoomListCondition,
@@ -40,11 +41,11 @@ export class ChatsController {
   })
   @ApiResponse({
     description: '채팅방 제목으로 채팅방 데이터를 검색합니다.',
-    type: [ChatEntireDataReturn],
+    type: ChatSearchReturn,
   })
   async searchRoom(
     @Query() chatRoomSearchCondition: ChatRoomSearchCondition,
-  ): Promise<ChatEntireDataReturn[]> {
+  ): Promise<ChatSearchReturn> {
     return await this.chatService.searchRoom(chatRoomSearchCondition);
   }
 

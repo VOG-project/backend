@@ -50,6 +50,29 @@ export class ChatEntireDataReturn {
   updatedAt: Date;
 }
 
+export class ChatSearchReturn {
+  @ApiProperty({
+    example: [
+      {
+        roomId: '9db4c-4e6f-4bb3-a226-e0e23',
+        title: 'qwerasdf',
+        description: '2361',
+        currentMember: 1,
+        maximumMember: 2,
+        no: 2,
+        createdAt: '2023-04-14T06:07:45.777Z',
+        updatedAt: '2023-04-14T06:07:45.000Z',
+      },
+    ],
+  })
+  searchedResult: ChatEntireDataReturn[];
+  @ApiProperty({
+    example: 30,
+    description: '총 채팅방 개수',
+  })
+  totalCount: number;
+}
+
 export class ChatIsAcceptableReturn {
   @ApiProperty({
     example: true,
