@@ -3,7 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { ReplyEntity } from './replies.entity';
 import { Repository } from 'typeorm';
 import { ReplyRegisterRequest } from './dto/register.reply.dto';
-import { ReplyEntireDataReturn, ReplyPkIdReturn } from './dto/return.reply.dto';
+import { ReplyDeletedCountReturn, ReplyEntireDataReturn, ReplyPkIdReturn } from './dto/return.reply.dto';
 import { ReplyModifyRequest } from './dto/modify.reply.dto';
 
 @Injectable()
@@ -69,6 +69,20 @@ export class RepliesRepository {
         .getExists();
     } catch (err) {
       throw new HttpException(`[MYSQL ERROR] checkExist: ${err.message}`, 500);
+    }
+  }
+
+  async delete(replyId: number): Promise<ReplyDeletedCountReturn> {
+    try {
+      const deletedComment = await this.replyModel
+        .createQueryBuilder()
+        .delete()
+        .where('id = :replyId', { replyId })
+        .execute();
+
+      return { deletedCount: deletedComment.affected };
+    } catch (err) {
+      throw new HttpException(`[MYSQL ERROR] delete: ${err.message}`, 500);
     }
   }
 }

@@ -85,7 +85,7 @@ export class CommentsRepository {
 
       return { deletedCount: deletedComment.affected };
     } catch (err) {
-      throw new HttpException(`[MYSQL ERROR] checkExist: ${err.message}`, 500);
+      throw new HttpException(`[MYSQL ERROR] delete: ${err.message}`, 500);
     }
   }
 }
