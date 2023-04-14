@@ -5,6 +5,7 @@ import { HttpException } from '@nestjs/common';
 import {
   ChatEntireDataReturn,
   ChatRoomTotalCountReturn,
+  ChatSearchReturn,
 } from './dto/return.chat.dto';
 import { ChatCreateRequest, SocketCreateRequest } from './dto/create.chat.dto';
 
@@ -50,15 +51,30 @@ export class ChatsRepository {
     }
   }
 
-  async findByTitleForSearch(title: string): Promise<ChatEntireDataReturn[]> {
+  async findRoomListByTitle(
+    title: string,
+    page: number,
+  ): Promise<ChatSearchReturn> {
     try {
-      return await this.chatRoomModel
+      const query = this.chatRoomModel
         .createQueryBuilder()
         .select()
-        .where('title LIKE :title', { title: `${title}%` })
+        .where('title LIKE :title', { title: `%${title}%` });
+
+      const searchedResult = await query
+        .offset(10 * (page - 1))
+        .limit(10)
+        .orderBy('no', 'DESC')
         .getMany();
+
+      const totalCount = await query.getCount();
+
+      return { totalCount, searchedResult };
     } catch (err) {
-      throw new HttpException(`[MYSQL ERROR] findByTitle: ${err.message}`, 500);
+      throw new HttpException(
+        `[MYSQL ERROR] findRoomListByTitle: ${err.message}`,
+        500,
+      );
     }
   }
 
