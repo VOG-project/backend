@@ -35,6 +35,7 @@ export class CommentsService {
     await this.commentRepository.update(commentModifyRequest, commentId);
     return await this.commentRepository.findByCommentId(commentId);
   }
+
   async removeComment(commentId: number): Promise<CommentDeletedCountReturn> {
     const isExistedComment = await this.commentRepository.checkExist(commentId);
     if (!isExistedComment)
