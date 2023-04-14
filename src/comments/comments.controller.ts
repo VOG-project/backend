@@ -37,22 +37,6 @@ export class CommentsController {
 
   @Get()
   @ApiOperation({
-    summary: '댓글 총 개수 조회 API',
-    tags: ['Comments'],
-  })
-  @ApiResponse({
-    description: '댓글 총 개수를 반환합니다.',
-  })
-  async getTotalCommentCount(
-    @Query() commentGetTotalCountCondition: CommentGetTotalCountCondition,
-  ) {
-    return await this.commentService.getTotalCommentCount(
-      commentGetTotalCountCondition,
-    );
-  }
-
-  @Get()
-  @ApiOperation({
     summary: '댓글 조회 API',
     tags: ['Comments'],
   })
@@ -65,6 +49,22 @@ export class CommentsController {
   ) {
     return await this.commentService.getComment(
       commentGetCommentAndReplyCondition,
+    );
+  }
+
+  @Get('count')
+  @ApiOperation({
+    summary: '댓글 총 개수 조회 API',
+    tags: ['Comments'],
+  })
+  @ApiResponse({
+    description: '댓글 총 개수를 반환합니다.',
+  })
+  async getTotalCommentCount(
+    @Query() commentGetTotalCountCondition: CommentGetTotalCountCondition,
+  ) {
+    return await this.commentService.getTotalCommentCount(
+      commentGetTotalCountCondition,
     );
   }
 
