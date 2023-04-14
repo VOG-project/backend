@@ -76,8 +76,8 @@ export class CommentsRepository {
           'ru.updatedAt',
         ])
         .where('c.postId = :postId', { postId })
-        .offset(10 * (page - 1))
-        .limit(10)
+        .skip(10 * (page - 1))
+        .take(10)
         .getMany();
     } catch (err) {
       throw new HttpException(
