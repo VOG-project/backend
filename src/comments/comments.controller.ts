@@ -23,6 +23,7 @@ import {
   CommentDeletedCountReturn,
 } from './dto/return.comment.dto';
 import { CommentModifyRequest } from './dto/modify.comment.dto';
+import { CommentGetCommentAndReplyCondition } from './dto/get.comment.dto';
 
 @Controller('comments')
 @UseGuards(AuthGuard)
@@ -30,6 +31,23 @@ import { CommentModifyRequest } from './dto/modify.comment.dto';
 @UseInterceptors(SuccessInterceptor)
 export class CommentsController {
   constructor(private readonly commentService: CommentsService) {}
+
+  @Get()
+  @ApiOperation({
+    summary: '댓글 조회 API',
+    tags: ['Comments'],
+  })
+  @ApiResponse({
+    description: '댓글과 댓글에 포함된 대댓글을 반환합니다.',
+  })
+  async getCommentAndReply(
+    @Query()
+    commentGetCommentAndReplyCondition: CommentGetCommentAndReplyCondition,
+  ) {
+    return await this.commentService.getComment(
+      commentGetCommentAndReplyCondition,
+    );
+  }
 
   @Post()
   @ApiOperation({
@@ -40,7 +58,7 @@ export class CommentsController {
     description: '등록한 댓글에 대한 모든 데이터를 반환합니다.',
     type: CommentEntireDataReturn,
   })
-  async registerPost(
+  async registerComment(
     @Body() commentRegisterRequest: CommentRegisterRequest,
   ): Promise<CommentEntireDataReturn> {
     return await this.commentService.registerComment(commentRegisterRequest);

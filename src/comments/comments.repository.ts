@@ -47,6 +47,46 @@ export class CommentsRepository {
     }
   }
 
+  async findCommentAndReplyByPostId(postId: number, page: number) {
+    try {
+      return await this.commentModel
+        .createQueryBuilder('c')
+        .innerJoin('c.user', 'cu')
+        .innerJoin('c.replies', 'r')
+        .innerJoin('r.user', 'ru')
+        .select([
+          'c.id',
+          'c.content',
+          'c.createdAt',
+          'c.updatedAt',
+          'cu.id',
+          'cu.nickname',
+          'cu.sex',
+          'cu.profileUrl',
+          'cu.createdAt',
+          'cu.updatedAt',
+          'r.id',
+          'r.content',
+          'r.createdAt',
+          'r.updatedAt',
+          'ru.id',
+          'ru.nickname',
+          'ru.profileUrl',
+          'ru.createdAt',
+          'ru.updatedAt',
+        ])
+        .where('c.postId = :postId', { postId })
+        .offset(10 * (page - 1))
+        .limit(10)
+        .getMany();
+    } catch (err) {
+      throw new HttpException(
+        `[MYSQL ERROR] findCommentAndReplyByCommentId: ${err.message}`,
+        500,
+      );
+    }
+  }
+
   async update(
     commentModifyRequest: CommentModifyRequest,
     commentId: number,
