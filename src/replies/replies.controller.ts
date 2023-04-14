@@ -20,8 +20,14 @@ import {
   ReplyEntireDataReturn,
 } from './dto/return.reply.dto';
 import { ReplyModifyRequest } from './dto/modify.reply.dto';
+import { AuthGuard } from 'src/auth/guards/auth.guard';
+import { HttpExceptionFilter } from 'src/common/filters/http-exception.filter';
+import { SuccessInterceptor } from 'src/common/interceptors/success.interceptor';
 
 @Controller('replies')
+@UseGuards(AuthGuard)
+@UseFilters(HttpExceptionFilter)
+@UseInterceptors(SuccessInterceptor)
 export class RepliesController {
   constructor(private readonly replyService: RepliesService) {}
 
