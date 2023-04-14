@@ -52,8 +52,8 @@ export class CommentsRepository {
       return await this.commentModel
         .createQueryBuilder('c')
         .innerJoin('c.user', 'cu')
-        .innerJoin('c.replies', 'r')
-        .innerJoin('r.user', 'ru')
+        .leftJoin('c.replies', 'r')
+        .leftJoin('r.user', 'ru')
         .select([
           'c.id',
           'c.content',
@@ -71,13 +71,12 @@ export class CommentsRepository {
           'r.updatedAt',
           'ru.id',
           'ru.nickname',
+          'ru.sex',
           'ru.profileUrl',
           'ru.createdAt',
           'ru.updatedAt',
         ])
         .where('c.postId = :postId', { postId })
-        .skip(10 * (page - 1))
-        .take(10)
         .getMany();
     } catch (err) {
       throw new HttpException(
@@ -85,6 +84,43 @@ export class CommentsRepository {
         500,
       );
     }
+    // try {
+    //   return await this.commentModel
+    //     .createQueryBuilder('c')
+    //     .innerJoin('c.user', 'cu')
+    //     .innerJoin('c.replies', 'r')
+    //     .innerJoin('r.user', 'ru')
+    //     .select([
+    //       'c.id',
+    //       'c.content',
+    //       'c.createdAt',
+    //       'c.updatedAt',
+    //       'cu.id',
+    //       'cu.nickname',
+    //       'cu.sex',
+    //       'cu.profileUrl',
+    //       'cu.createdAt',
+    //       'cu.updatedAt',
+    //       'r.id',
+    //       'r.content',
+    //       'r.createdAt',
+    //       'r.updatedAt',
+    //       'ru.id',
+    //       'ru.nickname',
+    //       'ru.profileUrl',
+    //       'ru.createdAt',
+    //       'ru.updatedAt',
+    //     ])
+    //     .where('c.postId = :postId', { postId })
+    //     .skip(10 * (page - 1))
+    //     .take(10)
+    //     .getMany();
+    // } catch (err) {
+    //   throw new HttpException(
+    //     `[MYSQL ERROR] findCommentAndReplyByCommentId: ${err.message}`,
+    //     500,
+    //   );
+    // }
   }
 
   async findCountByPostId(postId: number) {
