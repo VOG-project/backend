@@ -41,3 +41,12 @@ export class ReplyEntireDataReturn {
 export class ReplyPkIdReturn {
   replyId: number;
 }
+
+export class ReplyDeletedCountReturn {
+  @ApiProperty({
+    example: 2,
+    description:
+      '삭제된 답글 row 개수 (1이면 삭제, 0이면 삭제되지 않거나 없는 데이터에 접근)',
+  })
+  deletedCount: number;
+}

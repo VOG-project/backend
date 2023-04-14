@@ -3,7 +3,11 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { ReplyEntity } from './replies.entity';
 import { Repository } from 'typeorm';
 import { ReplyRegisterRequest } from './dto/register.reply.dto';
-import { ReplyDeletedCountReturn, ReplyEntireDataReturn, ReplyPkIdReturn } from './dto/return.reply.dto';
+import {
+  ReplyDeletedCountReturn,
+  ReplyEntireDataReturn,
+  ReplyPkIdReturn,
+} from './dto/return.reply.dto';
 import { ReplyModifyRequest } from './dto/modify.reply.dto';
 
 @Injectable()
