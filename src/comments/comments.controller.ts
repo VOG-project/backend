@@ -53,11 +53,12 @@ export class CommentsController {
   })
   @ApiResponse({
     description: '수정한 댓글에 대한 모든 데이터를 반환합니다.',
+    type: CommentEntireDataReturn,
   })
   async modifyComment(
     @Body() commentModifyRequest: CommentModifyRequest,
     @Param('commentId', ParseIntPipe) commentId: number,
-  ) {
+  ): Promise<CommentEntireDataReturn> {
     return await this.commentService.modifyComment(
       commentModifyRequest,
       commentId,
