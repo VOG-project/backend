@@ -85,12 +85,8 @@ export class PostsRepository {
     }
   }
 
-  async findPostListByNickname(
-    postSearchCondition: PostSearchCondition,
-    postSearchRequest: PostSearchRequest,
-  ) {
-    const { page, board } = postSearchCondition;
-    const { keyword } = postSearchRequest;
+  async findPostListByNickname(postSearchCondition: PostSearchCondition) {
+    const { page, board, keyword } = postSearchCondition;
     try {
       const query = this.postModel
         .createQueryBuilder('p')
@@ -128,10 +124,8 @@ export class PostsRepository {
 
   async findPostListByTitle(
     postSearchCondition: PostSearchCondition,
-    postSearchRequest: PostSearchRequest,
   ): Promise<PostSearchReturn> {
-    const { page, board } = postSearchCondition;
-    const { keyword } = postSearchRequest;
+    const { page, board, keyword } = postSearchCondition;
     try {
       const query = this.postModel
         .createQueryBuilder('p')

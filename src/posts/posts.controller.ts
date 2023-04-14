@@ -53,7 +53,7 @@ export class PostsController {
     return this.postService.registerPost(postRequestDto);
   }
 
-  @Post('search')
+  @Get('search')
   @ApiOperation({
     summary: '게시물 검색 API',
     tags: ['Posts'],
@@ -64,12 +64,8 @@ export class PostsController {
   })
   async searchPost(
     @Query() postSearchCondition: PostSearchCondition,
-    @Body() postSearchRequest: PostSearchRequest,
   ): Promise<PostSearchReturn> {
-    return await this.postService.searchPost(
-      postSearchCondition,
-      postSearchRequest,
-    );
+    return await this.postService.searchPost(postSearchCondition);
   }
 
   @Get()

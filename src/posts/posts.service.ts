@@ -89,19 +89,14 @@ export class PostsService {
 
   async searchPost(
     postSearchCondition: PostSearchCondition,
-    postSearchRequest: PostSearchRequest,
   ): Promise<PostSearchReturn> {
     const { searchType } = postSearchCondition;
     if (searchType === 'nickname') {
       return await this.postRepository.findPostListByNickname(
         postSearchCondition,
-        postSearchRequest,
       );
     } else if (searchType === 'title') {
-      return await this.postRepository.findPostListByTitle(
-        postSearchCondition,
-        postSearchRequest,
-      );
+      return await this.postRepository.findPostListByTitle(postSearchCondition);
     } else {
       throw new HttpException('닉네임과 제목으로만 검색할 수 있습니다.', 400);
     }

@@ -59,4 +59,12 @@ export class PostSearchCondition {
   @IsNotEmpty()
   @IsString()
   board: string;
+
+  @ApiProperty({
+    example: '꾸꾸까까',
+    description: '검색어',
+  })
+  @IsNotEmpty()
+  @IsString()
+  keyword: string;
 }
