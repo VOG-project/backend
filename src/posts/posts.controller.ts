@@ -53,7 +53,7 @@ export class PostsController {
     return this.postService.registerPost(postRequestDto);
   }
 
-  @Get('search')
+  @Post('search')
   @ApiOperation({
     summary: '게시물 검색 API',
     tags: ['Posts'],
