@@ -104,7 +104,6 @@ export class PostListReturn {
   @ApiProperty({
     example: {
       id: 35,
-      email: 'test2@test.com',
       nickname: '테스트 닉네임',
       profileUrl:
         'https://vog-image-storage.s3.ap-northeast-2.amazonaws.com/user/17-pro1588abc.jpg',
@@ -112,6 +111,33 @@ export class PostListReturn {
     description: '작성자 정보',
   })
   user: object;
+}
+
+export class PostSearchReturn {
+  @ApiProperty({
+    example: [
+      {
+        createdAt: '2023-04-14T04:38:48.250Z',
+        id: 3,
+        title: '하하하하',
+        likeCount: 0,
+        view: 0,
+        postCategory: 'free',
+        user: {
+          id: 1,
+          nickname: '꾸꾸까까',
+          profileUrl: 'https://vog-image-s2.amazonaws.com/user/default.jpg',
+        },
+      },
+    ],
+  })
+  searchedResult: PostListReturn[];
+
+  @ApiProperty({
+    example: 362,
+    description: '검색한 게시물 총 개수',
+  })
+  totalCount: number;
 }
 
 export class PostDeletedCountReturn {

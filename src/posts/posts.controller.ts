@@ -26,6 +26,7 @@ import {
   PostDeletedCountReturn,
   PostEntireDataReturn,
   PostListReturn,
+  PostSearchReturn,
 } from './dto/return.post.dto';
 import { PostsService } from './posts.service';
 import { AuthGuard } from 'src/auth/guards/auth.guard';
@@ -59,11 +60,12 @@ export class PostsController {
   })
   @ApiResponse({
     description: '검색어에 해당하는 게시물 데이터를 반환합니다.',
+    type: PostSearchReturn,
   })
   async searchPost(
     @Query() postSearchCondition: PostSearchCondition,
     @Body() postSearchRequest: PostSearchRequest,
-  ) {
+  ): Promise<PostSearchReturn> {
     return await this.postService.searchPost(
       postSearchCondition,
       postSearchRequest,

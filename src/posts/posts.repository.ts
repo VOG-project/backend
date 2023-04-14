@@ -8,6 +8,7 @@ import {
   PostEntireDataReturn,
   PostListReturn,
   PostPkIdReturn,
+  PostSearchReturn,
 } from './dto/return.post.dto';
 import { PostModificationRequest } from './dto/modify.post.dto';
 import { Redis } from 'ioredis';
@@ -128,7 +129,7 @@ export class PostsRepository {
   async findPostListByTitle(
     postSearchCondition: PostSearchCondition,
     postSearchRequest: PostSearchRequest,
-  ) {
+  ): Promise<PostSearchReturn> {
     const { page, board } = postSearchCondition;
     const { keyword } = postSearchRequest;
     try {

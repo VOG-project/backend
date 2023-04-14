@@ -9,6 +9,7 @@ import {
   PostDeletedCountReturn,
   PostEntireDataReturn,
   PostListReturn,
+  PostSearchReturn,
 } from './dto/return.post.dto';
 import { PostsRepository } from './posts.repository';
 import { PostModificationRequest } from './dto/modify.post.dto';
@@ -89,7 +90,7 @@ export class PostsService {
   async searchPost(
     postSearchCondition: PostSearchCondition,
     postSearchRequest: PostSearchRequest,
-  ) {
+  ): Promise<PostSearchReturn> {
     const { searchType } = postSearchCondition;
     if (searchType === 'nickname') {
       return await this.postRepository.findPostListByNickname(
