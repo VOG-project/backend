@@ -36,7 +36,7 @@ export class PostSearchRequest {
 
 export class PostSearchCondition {
   @ApiProperty({
-    example: '닉네임',
+    example: 'title',
     description: '어떤 키워드로 검색할 것인지(nickname || title)',
   })
   @IsNotEmpty()
