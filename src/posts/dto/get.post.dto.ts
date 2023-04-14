@@ -1,9 +1,9 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsInt, IsNotEmpty, IsString } from 'class-validator';
+import { IsEnum, IsInt, IsNotEmpty, IsString } from 'class-validator';
 
 enum SearchTypeEnum {
-  닉네임,
-  제목,
+  t1 = 'nickname',
+  t2 = 'title',
 }
 
 export class PostGetCondition {
@@ -41,6 +41,7 @@ export class PostSearchCondition {
   })
   @IsNotEmpty()
   @IsString()
+  @IsEnum(SearchTypeEnum)
   searchType: string;
 
   @ApiProperty({
