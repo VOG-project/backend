@@ -87,6 +87,21 @@ export class CommentsRepository {
     }
   }
 
+  async findCountByPostId(postId: number) {
+    try {
+      await this.commentModel
+        .createQueryBuilder()
+        .select()
+        .where('postId = :postId', { postId })
+        .getCount();
+    } catch (err) {
+      throw new HttpException(
+        `[MYSQL ERROR] findCountByPostId: ${err.message}`,
+        500,
+      );
+    }
+  }
+
   async update(
     commentModifyRequest: CommentModifyRequest,
     commentId: number,

@@ -7,7 +7,10 @@ import {
   CommentDeletedCountReturn,
 } from './dto/return.comment.dto';
 import { CommentModifyRequest } from './dto/modify.comment.dto';
-import { CommentGetCommentAndReplyCondition } from './dto/get.comment.dto';
+import {
+  CommentGetCommentAndReplyCondition,
+  CommentGetTotalCountCondition,
+} from './dto/get.comment.dto';
 
 @Injectable()
 export class CommentsService {
@@ -26,6 +29,17 @@ export class CommentsService {
       postId,
       page,
     );
+  }
+
+  async getTotalCommentCount(
+    commentGetTotalCountCondition: CommentGetTotalCountCondition,
+  ) {
+    const { postId } = commentGetTotalCountCondition;
+    //예외 처리
+
+    const aa = await this.commentRepository.findCountByPostId(postId);
+    console.log(aa);
+    return aa;
   }
 
   async registerComment(
