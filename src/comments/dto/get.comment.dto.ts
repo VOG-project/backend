@@ -9,4 +9,12 @@ export class CommentGetCommentAndReplyCondition {
   @IsNotEmpty()
   @IsInt()
   postId: number;
+
+  @ApiProperty({
+    example: 2,
+    description: '조회할 페이지 번호',
+  })
+  @IsNotEmpty()
+  @IsInt()
+  page: number;
 }
