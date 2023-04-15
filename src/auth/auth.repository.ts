@@ -8,7 +8,7 @@ export class AuthRepository {
   private readonly redis: Redis;
 
   constructor(private readonly redisService: RedisService) {
-    this.redis = this.redisService.getClient('session');
+    this.redis = this.redisService.getClient('login');
   }
 
   async findAuthInfo(userId: number): Promise<string> {
@@ -27,19 +27,6 @@ export class AuthRepository {
     } catch (err) {
       throw new HttpException(
         `[REDIS ERROR] createAuthInfo: ${err.message}`,
-        500,
-      );
-    }
-  }
-
-  async deleteSession(
-    sessionId: string,
-  ): Promise<AuthDeletedSessionCountReturn> {
-    try {
-      return { deletedCount: await this.redis.del(sessionId) };
-    } catch (err) {
-      throw new HttpException(
-        `[REDIS ERROR] deleteSession: ${err.message}`,
         500,
       );
     }
