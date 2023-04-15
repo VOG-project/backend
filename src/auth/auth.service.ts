@@ -111,4 +111,8 @@ export class AuthService {
     const payload = { sub: user.id, nickname: user.nickname };
     return await this.jwtService.signAsync(payload);
   }
+
+  async registerAuthInfo(jwtAccessToken: string, userId: number) {
+    await this.authRepository.createAuthInfo(jwtAccessToken, userId);
+  }
 }
