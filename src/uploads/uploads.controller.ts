@@ -19,11 +19,11 @@ import { AuthGuard } from 'src/auth/guards/auth.guard';
 @Controller('uploads')
 @UseFilters(HttpExceptionFilter)
 @UseInterceptors(SuccessInterceptor)
+@UseGuards(AuthGuard)
 export class UploadsController {
   constructor(private readonly uploadService: UploadsService) {}
 
   @Patch('users/:userId')
-  @UseGuards(AuthGuard)
   @ApiOperation({
     summary: '유저 프로필 사진 수정 API',
     tags: ['Uploads'],

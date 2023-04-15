@@ -82,6 +82,7 @@ export class UsersController {
   }
 
   @Delete(':userId')
+  @UseGuards(AuthGuard)
   @ApiOperation({
     summary: '회원탈퇴 API',
     tags: ['Users'],

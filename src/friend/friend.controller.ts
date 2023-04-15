@@ -24,13 +24,13 @@ import { FriendDeleteRequest } from './dto/delete.friend.dto';
 import { AuthGuard } from 'src/auth/guards/auth.guard';
 
 @Controller('friend')
+@UseGuards(AuthGuard)
 @UseFilters(HttpExceptionFilter)
 @UseInterceptors(SuccessInterceptor)
 export class FriendController {
   constructor(private readonly friendService: FriendService) {}
 
   @Post(':userId')
-  @UseGuards(AuthGuard)
   @ApiOperation({
     summary: '친구 등록 API',
     tags: ['Friend'],
