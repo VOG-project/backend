@@ -72,6 +72,7 @@ export class UserService {
 
     const user = await this.userRepository.findByNickname(nickname);
     const jwtAccessToken = await this.authService.generateJwtAcessToken(user);
+    await this.authService.registerAuthInfo(jwtAccessToken, user.id);
 
     return { jwtAccessToken, ...user };
   }
