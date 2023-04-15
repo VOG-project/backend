@@ -43,10 +43,10 @@ export class AuthService {
           'oauthId는 발급되었지만 해당하는 유저 데이터가 없습니다. 유저 데이터 입력 창으로 리다이렉트 해주세요',
         redirectUrl: 'https://talkgg.online/sign-up',
       };
-    } else {
-      const jwtAccessToken = await this.generateJwtAcessToken(user);
-      return { jwtAccessToken, ...user };
     }
+    const jwtAccessToken = await this.generateJwtAcessToken(user);
+    await this.registerAuthInfo(jwtAccessToken, user.id);
+    return { jwtAccessToken, ...user };
   }
 
   async requestNaverUserData({ access_token }): Promise<string> {
@@ -89,11 +89,10 @@ export class AuthService {
             'oauthId는 발급되었지만 해당하는 유저 데이터가 없습니다. 유저 데이터 입력 창으로 리다이렉트 해주세요',
           redirectUrl: 'https://talkgg.online/sign-up',
         };
-      } else {
-        const jwtAccessToken = await this.generateJwtAcessToken(user);
-        await this.registerAuthInfo(jwtAccessToken, user.id);
-        return { jwtAccessToken, ...user };
       }
+      const jwtAccessToken = await this.generateJwtAcessToken(user);
+      await this.registerAuthInfo(jwtAccessToken, user.id);
+      return { jwtAccessToken, ...user };
     } catch (err) {
       throw new HttpException(
         `[AXIOS ERROR] requestKakaoAccessToken: ${err.message}`,
