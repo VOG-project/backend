@@ -22,7 +22,7 @@ export class AuthRepository {
     try {
       await this.redis.set(userId.toString(), jwtAccessToken);
       // 숫자 순서대로 초, 분, 시, 일 (7일간 DB에 보관 이후 자동 삭제)
-      await this.redis.expire(jwtAccessToken, 60 * 60 * 24 * 7);
+      await this.redis.expire(userId.toString(), 60 * 60 * 24 * 7);
     } catch (err) {
       throw new HttpException(
         `[REDIS ERROR] createAuthInfo: ${err.message}`,
