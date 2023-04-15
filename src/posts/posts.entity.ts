@@ -1,21 +1,22 @@
 import { CommentEntity } from 'src/comments/comments.entity';
-import { CreatedUpdatedDate } from 'src/common/commonEntities/date.common.entity';
 import { UserEntity } from 'src/users/users.entity';
 import {
   Column,
+  CreateDateColumn,
   Entity,
   Index,
   JoinColumn,
   ManyToOne,
   OneToMany,
   PrimaryGeneratedColumn,
+  UpdateDateColumn,
 } from 'typeorm';
 
 @Entity({
   name: 'post',
 })
 @Index('idx_1_postCategory', ['postCategory'])
-export class PostEntity extends CreatedUpdatedDate {
+export class PostEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
@@ -51,6 +52,12 @@ export class PostEntity extends CreatedUpdatedDate {
     length: 20,
   })
   postCategory: string;
+
+  @CreateDateColumn()
+  createdAt: Date;
+
+  @UpdateDateColumn()
+  updatedAt: Date;
 
   @ManyToOne(() => UserEntity, (user) => user.posts, { onDelete: 'CASCADE' })
   @JoinColumn({
