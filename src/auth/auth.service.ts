@@ -92,6 +92,7 @@ export class AuthService {
         };
       } else {
         const jwtAccessToken = await this.generateJwtAcessToken(user);
+        await this.registerAuthInfo(jwtAccessToken, user.id);
         return { jwtAccessToken, ...user };
       }
     } catch (err) {
