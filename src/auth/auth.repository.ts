@@ -11,26 +11,22 @@ export class AuthRepository {
     this.redis = this.redisService.getClient('session');
   }
 
-  async findSession(sessionId: string): Promise<string> {
+  async findAuthInfo(userId: number): Promise<string> {
     try {
-      return await this.redis.hget(sessionId, 'id');
+      return await this.redis.get(userId.toString());
     } catch (err) {
       throw new HttpException(`[REDIS ERROR] findSession: ${err.message}`, 500);
     }
   }
 
-  async createSession(
-    sessionId: string,
-    userId: number,
-    nickname: string,
-  ): Promise<void> {
+  async createAuthInfo(jwtAccessToken: string, userId: number): Promise<void> {
     try {
-      await this.redis.hset(sessionId, { userId, nickname });
+      await this.redis.set(userId.toString(), jwtAccessToken);
       // 숫자 순서대로 초, 분, 시, 일 (7일간 DB에 보관 이후 자동 삭제)
-      await this.redis.expire(sessionId, 60 * 60 * 24 * 7);
+      await this.redis.expire(jwtAccessToken, 60 * 60 * 24 * 7);
     } catch (err) {
       throw new HttpException(
-        `[REDIS ERROR] createSession: ${err.message}`,
+        `[REDIS ERROR] createAuthInfo: ${err.message}`,
         500,
       );
     }
