@@ -112,6 +112,6 @@ export class AuthService {
   }
 
   async registerAuthInfo(jwtAccessToken: string, userId: number) {
-    await this.authRepository.createAuthInfo(jwtAccessToken, userId);
+    return await this.authRepository.createAuthInfo(jwtAccessToken, userId);
   }
 }
