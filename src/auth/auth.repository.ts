@@ -1,7 +1,6 @@
 import { Injectable, HttpException } from '@nestjs/common';
 import { RedisService } from '@liaoliaots/nestjs-redis';
 import { Redis } from 'ioredis';
-import { AuthDeletedSessionCountReturn } from './dto/return.auth.dto';
 
 @Injectable()
 export class AuthRepository {
