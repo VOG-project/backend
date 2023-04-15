@@ -33,7 +33,7 @@ import { ReplyEntity } from './replies/replies.entity';
     RedisModule.forRoot({
       config: [
         {
-          namespace: 'session',
+          namespace: 'login',
           host: process.env.REDIS_SESSION_HOST,
           port: parseInt(process.env.REDIS_SESSION_PORT, 10),
           password: process.env.REDIS_SESSION_PASSWORD,
