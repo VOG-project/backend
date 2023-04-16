@@ -60,23 +60,27 @@
 ![Git](https://img.shields.io/badge/git-%23F05033.svg?style=for-the-badge&logo=git&logoColor=white)
 ![GitHub](https://img.shields.io/badge/github-%23121011.svg?style=for-the-badge&logo=github&logoColor=white)
 ![GitHub Actions](https://img.shields.io/badge/github%20actions-%232671E5.svg?style=for-the-badge&logo=githubactions&logoColor=white)
+![Docker](https://img.shields.io/badge/docker-%230db7ed.svg?style=for-the-badge&logo=docker&logoColor=white)
 
 <br />
 
 ## 📐 프로젝트 아키텍처
 
-![agw3g](https://user-images.githubusercontent.com/81323697/232242191-698e35eb-9461-4303-9cc6-a0cea116b60e.svg)
-
-
+![fawg3](https://user-images.githubusercontent.com/81323697/232329209-f5c4d720-a06d-4b44-b8bb-908e369f18f6.svg)
 
 <br />
-
 
 ## 📁 프로젝트 구조
 
 ### Front-End
 
 ### Back-End
+
+<br />
+
+## 서비스 기능
+
+
 
 <br />
 
