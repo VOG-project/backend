@@ -8,6 +8,7 @@ import {
   ChatSearchReturn,
 } from './dto/return.chat.dto';
 import { ChatCreateRequest, SocketCreateRequest } from './dto/create.chat.dto';
+import { ChatChatRoomListCondition } from './dto/get.chat.dto';
 
 export class ChatsRepository {
   constructor(
@@ -228,18 +229,19 @@ export class ChatsRepository {
     }
   }
 
-  async findRoomList(
-    page: number,
-    resultRowCount: number,
-  ): Promise<ChatEntireDataReturn[]> {
+  async findRoomList(chatRoomListCondition: ChatChatRoomListCondition) {
     try {
-      return await this.chatRoomModel
-        .createQueryBuilder('p')
-        .select()
-        .offset(resultRowCount * (page - 1))
-        .limit(resultRowCount)
+      const { page } = chatRoomListCondition;
+      const query = this.chatRoomModel.createQueryBuilder('p').select();
+
+      const result = await query
+        .offset(10 * (page - 1))
+        .limit(10)
         .orderBy('p.no', 'DESC')
         .getMany();
+      const totalCount = await query.getCount();
+
+      return { totalCount, result };
     } catch (err) {
       throw new HttpException(
         `[MYSQL ERROR] findChatRoomList: ${err.message}`,

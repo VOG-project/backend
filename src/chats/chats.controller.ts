@@ -73,10 +73,8 @@ export class ChatsController {
     description: '입력 페이지에 해당하는 채팅방 목록을 반환합니다. (기본 10개)',
     type: ChatEntireDataReturn,
   })
-  async getRoomList(
-    @Query() condition: ChatChatRoomListCondition,
-  ): Promise<ChatEntireDataReturn[]> {
-    return await this.chatService.getRoomList(condition);
+  async getRoomList(@Query() chatRoomListCondition: ChatChatRoomListCondition) {
+    return await this.chatService.getRoomList(chatRoomListCondition);
   }
 
   @Get('rooms/count')

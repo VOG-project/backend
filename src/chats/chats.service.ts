@@ -59,12 +59,8 @@ export class ChatsService {
     };
   }
 
-  async getRoomList(
-    condition: ChatChatRoomListCondition,
-  ): Promise<ChatEntireDataReturn[]> {
-    const { page } = condition;
-    const RESULT_ROW_COUNT = 10;
-    return await this.chatRepository.findRoomList(page, RESULT_ROW_COUNT);
+  async getRoomList(chatRoomListCondition: ChatChatRoomListCondition) {
+    return await this.chatRepository.findRoomList(chatRoomListCondition);
   }
 
   async getRoomTotalCount(): Promise<ChatRoomTotalCountReturn> {
