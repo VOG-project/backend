@@ -1,5 +1,10 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsNotEmpty, IsString } from 'class-validator';
+import { IsEnum, IsNotEmpty, IsString } from 'class-validator';
+
+enum ProviderEnum {
+  naver = 'naver',
+  kakao = 'kakao',
+}
 
 export class UserCreateRequest {
   @ApiProperty({
@@ -16,6 +21,7 @@ export class UserCreateRequest {
   })
   @IsNotEmpty()
   @IsString()
+  @IsEnum(ProviderEnum)
   provider: string;
 
   @ApiProperty({

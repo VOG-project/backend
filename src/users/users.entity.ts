@@ -10,6 +10,7 @@ import { CommentEntity } from 'src/comments/comments.entity';
 import { PostEntity } from 'src/posts/posts.entity';
 import { FriendEntity } from 'src/friend/friend.entity';
 import { ReplyEntity } from 'src/replies/replies.entity';
+import { Exclude } from 'class-transformer';
 
 @Entity({
   name: 'user',
@@ -23,12 +24,14 @@ export class UserEntity {
     length: 50,
     unique: true,
   })
+  @Exclude()
   oauthId: string;
 
   @Column({
     type: 'varchar',
     length: 10,
   })
+  @Exclude()
   provider: string;
 
   @Column({

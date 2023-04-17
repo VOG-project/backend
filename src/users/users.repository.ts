@@ -76,32 +76,6 @@ export class UserRepository {
     }
   }
 
-  /**
-   * User 테이블에서 userId에 해당하는 데이터를 비밀번호를 제외하고 반환합니다.
-   * @param userId 유저 아이디(PK)
-   */
-  findOneByIdWithoutPassword(userId: number): Promise<UserEntireDataReturn> {
-    try {
-      return this.userModel
-        .createQueryBuilder('u')
-        .select([
-          'u.id',
-          'u.nickname',
-          'u.sex',
-          'u.profileUrl',
-          'u.createdAt',
-          'u.updatedAt',
-        ])
-        .where('id = :userId', { userId })
-        .getOne();
-    } catch (err) {
-      throw new HttpException(
-        `[MYSQL ERROR] findOneByIdWithoutPassword: ${err.message}`,
-        500,
-      );
-    }
-  }
-
   async findOneByOAuthId(oauthId: string) {
     try {
       return await this.userModel

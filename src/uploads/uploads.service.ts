@@ -59,7 +59,7 @@ export class UploadsService {
     userId: number,
   ): Promise<UserEntireDataReturn> {
     try {
-      const user = await this.userRepository.findOneByIdWithoutPassword(userId);
+      const user = await this.userRepository.findOneById(userId);
 
       if (!user) {
         throw new HttpException('존재하지 않는 유저입니다.', 400);
@@ -85,7 +85,7 @@ export class UploadsService {
 
       await this.userRepository.updateProfileUrl(userId, fileUrl);
 
-      return await this.userRepository.findOneByIdWithoutPassword(userId);
+      return await this.userRepository.findOneById(userId);
     } catch (err) {
       throw new HttpException(
         `[S3 ERROR] uploadUserProfileImageFile: ${err.message}`,
