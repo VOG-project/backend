@@ -80,7 +80,7 @@ export class PostsService {
 
     await this.postRepository.updatePost(postModificationRequest, postId);
 
-    return this.postRepository.findOneById(postId);
+    return await this.postRepository.findOneById(postId);
   }
 
   async getTotalPostsCount(category: string): Promise<number> {
