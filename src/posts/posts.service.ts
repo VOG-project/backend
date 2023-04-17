@@ -24,13 +24,28 @@ export class PostsService {
     return await this.postRepository.findOneById(postId);
   }
 
+  // 반환 타입 다시
   async getPostList(
     postGetListCondition: PostGetListCondition,
   ): Promise<PostPagenationReturn> {
     postGetListCondition;
-    return await this.postRepository.findPostListByBoardType(
+    const postList = await this.postRepository.findPostListByBoardType(
       postGetListCondition,
     );
+
+    const totalCount = postList.totalCount;
+    const result = await Promise.all(
+      postList.result.map(async (post) => {
+        const likeIds = await this.likeRepository.findLikeUsersByPostId(
+          post.id,
+        );
+
+        return { ...likeIds, ...post };
+      }),
+    );
+
+    const listResult = { totalCount, result };
+    return listResult;
   }
 
   async getPost(postId: number): Promise<PostEntireDataReturn> {
