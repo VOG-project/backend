@@ -115,7 +115,7 @@ export class PostListReturn {
   user: object;
 }
 
-export class PostSearchReturn {
+export class PostPagenationReturn {
   @ApiProperty({
     example: [
       {
@@ -133,7 +133,7 @@ export class PostSearchReturn {
       },
     ],
   })
-  searchedResult: PostListReturn[];
+  result: PostListReturn[];
 
   @ApiProperty({
     example: 362,
