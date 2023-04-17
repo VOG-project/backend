@@ -145,7 +145,6 @@ export class UserRepository {
       const deletedResult = await this.userModel
         .createQueryBuilder()
         .delete()
-        .from('user')
         .where('id = :userId', { userId })
         .execute();
 
