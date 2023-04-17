@@ -9,6 +9,7 @@ import {
   CommentDeletedCountReturn,
 } from './dto/return.comment.dto';
 import { CommentModifyRequest } from './dto/modify.comment.dto';
+import { CommentGetCommentAndReplyCondition } from './dto/get.comment.dto';
 
 export class CommentsRepository {
   constructor(
@@ -47,9 +48,12 @@ export class CommentsRepository {
     }
   }
 
-  async findCommentAndReplyByPostId(postId: number, page: number) {
+  async findCommentAndReplyByPostId(
+    commentGetCommentAndReplyCondition: CommentGetCommentAndReplyCondition,
+  ) {
     try {
-      return await this.commentModel
+      const { postId, page } = commentGetCommentAndReplyCondition;
+      const query = this.commentModel
         .createQueryBuilder('c')
         .innerJoin('c.user', 'cu')
         .leftJoin('c.replies', 'r')
@@ -76,10 +80,16 @@ export class CommentsRepository {
           'ru.createdAt',
           'ru.updatedAt',
         ])
-        .where('c.postId = :postId', { postId })
+        .where('c.postId = :postId', { postId });
+
+      const result = await query
         .skip((page - 1) * 10)
         .take(10)
         .getMany();
+
+      const totalCount = await query.getCount();
+
+      return { totalCount, result };
     } catch (err) {
       throw new HttpException(
         `[MYSQL ERROR] findCommentAndReplyByCommentId: ${err.message}`,
