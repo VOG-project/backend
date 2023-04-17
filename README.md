@@ -1,11 +1,3 @@
-# 타이틀
-<br />
-<br />
-
-사진
-
-<br />
-
 ## 📃 개요
 
 - 서비스명: 게이머들의 음성 채팅 커뮤니티 VOG
@@ -27,6 +19,14 @@
 - Gmail : bolton7425@gmail.com
 - Github : [@iHateAI](https://github.com/iHateAI)
 
+## 서비스 기능
+
+## 서비스 디자인
+
+![디자인 보러가기](https://www.figma.com/file/IjqWsoAxIe6KCYpaByLCrB/Untitled)
+
+<br />
+
 ## 🔧 기술 스택
 
 
@@ -42,9 +42,6 @@
 ![TailwindCSS](https://img.shields.io/badge/tailwindcss-%2338B2AC.svg?style=for-the-badge&logo=tailwind-css&logoColor=white)
 ![AWS](https://img.shields.io/badge/AWS-%23FF9900.svg?style=for-the-badge&logo=amazon-aws&logoColor=white)
 ![webRTC](https://img.shields.io/badge/webRTC-B59A30?style=for-the-badge&logo=webRTC&logoColor=white)
-
-
-
 
 ### Back-End
 
@@ -67,12 +64,6 @@
 ## 📐 프로젝트 아키텍처
 
 ![fawg3](https://user-images.githubusercontent.com/81323697/232329209-f5c4d720-a06d-4b44-b8bb-908e369f18f6.svg)
-
-<br />
-
-## 서비스 기능
-
-
 
 <br />
 
@@ -433,9 +424,6 @@
  ┣ 📜app.module.ts
  ┣ 📜app.service.ts
  ┗ 📜main.ts
-
-<br />
-
 
 
 <br />
