@@ -23,7 +23,7 @@
 
 ## 서비스 디자인
 
-![디자인 보러가기](https://www.figma.com/file/IjqWsoAxIe6KCYpaByLCrB/Untitled)
+- 디자인 보러가기: https://www.figma.com/file/IjqWsoAxIe6KCYpaByLCrB/Untitled
 
 <br />
 
