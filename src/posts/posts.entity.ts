@@ -38,11 +38,6 @@ export class PostEntity {
 
   @Column({
     type: 'int',
-  })
-  likeCount: number;
-
-  @Column({
-    type: 'int',
     default: 0,
   })
   view: number;
