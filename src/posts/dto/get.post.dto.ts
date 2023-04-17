@@ -12,7 +12,7 @@ enum GetListTypeEnum {
   board3 = 'championship',
 }
 
-export class PostGetCondition {
+export class PostGetListCondition {
   @ApiProperty({
     example: 'championship',
     description: '게시판 카테고리 명(free | humor | championship)',
