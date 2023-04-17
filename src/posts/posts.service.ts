@@ -1,11 +1,10 @@
 import { Injectable, HttpException } from '@nestjs/common';
 import { PostCreateRequest } from './dto/create.post.dto';
-import { PostGetCondition, PostSearchCondition } from './dto/get.post.dto';
+import { PostGetListCondition, PostSearchCondition } from './dto/get.post.dto';
 import {
   PostDeletedCountReturn,
   PostEntireDataReturn,
-  PostListReturn,
-  PostSearchReturn,
+  PostPagenationReturn,
 } from './dto/return.post.dto';
 import { PostsRepository } from './posts.repository';
 import { PostModificationRequest } from './dto/modify.post.dto';
@@ -25,17 +24,12 @@ export class PostsService {
     return await this.postRepository.findOneById(postId);
   }
 
-  async getPostList(condition: PostGetCondition): Promise<PostListReturn[]> {
-    let { board } = condition;
-    const { page } = condition;
-    const RESULT_ROW_COUNT = 10;
-
-    board = board.toLowerCase();
-
-    return this.postRepository.findPostListByBoardType(
-      board,
-      page,
-      RESULT_ROW_COUNT,
+  async getPostList(
+    postGetListCondition: PostGetListCondition,
+  ): Promise<PostPagenationReturn> {
+    postGetListCondition;
+    return await this.postRepository.findPostListByBoardType(
+      postGetListCondition,
     );
   }
 
@@ -88,7 +82,7 @@ export class PostsService {
 
   async searchPost(
     postSearchCondition: PostSearchCondition,
-  ): Promise<PostSearchReturn> {
+  ): Promise<PostPagenationReturn> {
     const { searchType } = postSearchCondition;
     if (searchType === 'nickname') {
       return await this.postRepository.findPostListByNickname(

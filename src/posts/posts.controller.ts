@@ -16,13 +16,13 @@ import { ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { HttpExceptionFilter } from 'src/common/filters/http-exception.filter';
 import { SuccessInterceptor } from '../common/interceptors/success.interceptor';
 import { PostCreateRequest } from './dto/create.post.dto';
-import { PostGetCondition, PostSearchCondition } from './dto/get.post.dto';
+import { PostGetListCondition, PostSearchCondition } from './dto/get.post.dto';
 import { PostModificationRequest } from './dto/modify.post.dto';
 import {
   PostDeletedCountReturn,
   PostEntireDataReturn,
   PostListReturn,
-  PostSearchReturn,
+  PostPagenationReturn,
 } from './dto/return.post.dto';
 import { PostsService } from './posts.service';
 import { AuthGuard } from 'src/auth/guards/auth.guard';
@@ -56,11 +56,11 @@ export class PostsController {
   })
   @ApiResponse({
     description: '검색어에 해당하는 게시물 데이터를 반환합니다.',
-    type: PostSearchReturn,
+    type: PostPagenationReturn,
   })
   async searchPost(
     @Query() postSearchCondition: PostSearchCondition,
-  ): Promise<PostSearchReturn> {
+  ): Promise<PostPagenationReturn> {
     return await this.postService.searchPost(postSearchCondition);
   }
 
@@ -74,7 +74,9 @@ export class PostsController {
       '쿼리 스트링으로 게시판 이름을 전달하면 최신 순으로 10개씩 게시물 목록을 반환합니다.',
     type: PostListReturn,
   })
-  getPostList(@Query() condition: PostGetCondition): Promise<PostListReturn[]> {
+  getPostList(
+    @Query() condition: PostGetListCondition,
+  ): Promise<PostPagenationReturn> {
     return this.postService.getPostList(condition);
   }
 

@@ -6,14 +6,13 @@ import { HttpException } from '@nestjs/common';
 import {
   PostDeletedCountReturn,
   PostEntireDataReturn,
-  PostListReturn,
   PostPkIdReturn,
-  PostSearchReturn,
+  PostPagenationReturn,
 } from './dto/return.post.dto';
 import { PostModificationRequest } from './dto/modify.post.dto';
 import { Redis } from 'ioredis';
 import { RedisService } from '@liaoliaots/nestjs-redis';
-import { PostSearchCondition } from './dto/get.post.dto';
+import { PostGetListCondition, PostSearchCondition } from './dto/get.post.dto';
 
 export class PostsRepository {
   private readonly redis: Redis;
@@ -53,12 +52,11 @@ export class PostsRepository {
   }
 
   async findPostListByBoardType(
-    board: string,
-    page: number,
-    resultRowCount: number,
-  ): Promise<PostListReturn[]> {
+    postGetListCondition: PostGetListCondition,
+  ): Promise<PostPagenationReturn> {
+    const { board, page } = postGetListCondition;
     try {
-      return await this.postModel
+      const query = this.postModel
         .createQueryBuilder('p')
         .innerJoin('p.user', 'u')
         .select([
@@ -72,11 +70,17 @@ export class PostsRepository {
           'u.nickname',
           'u.profileUrl',
         ])
-        .where('p.postCategory = :postCategory', { postCategory: board })
-        .offset(resultRowCount * (page - 1))
-        .limit(resultRowCount)
+        .where('p.postCategory = :postCategory', { postCategory: board });
+
+      const result = await query
+        .offset(10 * (page - 1))
+        .limit(10)
         .orderBy('p.id', 'DESC')
         .getMany();
+
+      const totalCount = await query.getCount();
+
+      return { totalCount, result };
     } catch (err) {
       throw new HttpException(
         `[MYSQL ERROR] findPostListByBoardType: ${err.message}`,
@@ -105,7 +109,7 @@ export class PostsRepository {
         .where('u.nickname LIKE :keyword', { keyword: `%${keyword}%` })
         .andWhere('p.postCategory = :postCategory', { postCategory: board });
 
-      const searchedResult = await query
+      const result = await query
         .offset(10 * (page - 1))
         .limit(10)
         .orderBy('p.id', 'DESC')
@@ -113,7 +117,7 @@ export class PostsRepository {
 
       const totalCount = await query.getCount();
 
-      return { totalCount, searchedResult };
+      return { totalCount, result };
     } catch (err) {
       throw new HttpException(
         `[MYSQL ERROR] findPostListByNickname: ${err.message}`,
@@ -124,7 +128,7 @@ export class PostsRepository {
 
   async findPostListByTitle(
     postSearchCondition: PostSearchCondition,
-  ): Promise<PostSearchReturn> {
+  ): Promise<PostPagenationReturn> {
     const { page, board, keyword } = postSearchCondition;
     try {
       const query = this.postModel
@@ -144,7 +148,7 @@ export class PostsRepository {
         .where('p.title LIKE :keyword', { keyword: `%${keyword}%` })
         .andWhere('p.postCategory = :postCategory', { postCategory: board });
 
-      const searchedResult = await query
+      const result = await query
         .offset(10 * (page - 1))
         .limit(10)
         .orderBy('p.id', 'DESC')
@@ -152,7 +156,7 @@ export class PostsRepository {
 
       const totalCount = await query.getCount();
 
-      return { totalCount, searchedResult };
+      return { totalCount, result };
     } catch (err) {
       throw new HttpException(
         `[MYSQL ERROR] findPostListByTitle: ${err.message}`,
