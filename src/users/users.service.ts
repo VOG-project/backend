@@ -39,7 +39,7 @@ export class UserService {
 
     await this.userRepository.updateNickname(newNickname, userId);
 
-    return await this.userRepository.findOneByIdWithoutPassword(userId);
+    return await this.userRepository.findOneById(userId);
   }
 
   /**
@@ -78,7 +78,7 @@ export class UserService {
   }
 
   async getUser(userId: number) {
-    return await this.userRepository.findOneByIdWithoutPassword(userId);
+    return await this.userRepository.findOneById(userId);
   }
 
   async removeUser(userId: number): Promise<PostDeletedCountReturn> {
