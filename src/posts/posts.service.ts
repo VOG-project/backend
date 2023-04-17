@@ -1,10 +1,6 @@
 import { Injectable, HttpException } from '@nestjs/common';
 import { PostCreateRequest } from './dto/create.post.dto';
-import {
-  PostGetCondition,
-  PostSearchCondition,
-  PostSearchRequest,
-} from './dto/get.post.dto';
+import { PostGetCondition, PostSearchCondition } from './dto/get.post.dto';
 import {
   PostDeletedCountReturn,
   PostEntireDataReturn,
