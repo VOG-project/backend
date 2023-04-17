@@ -17,7 +17,6 @@ import { ChatCreateRequest } from './dto/create.chat.dto';
 import {
   ChatEntireDataReturn,
   ChatIsAcceptableReturn,
-  ChatRoomTotalCountReturn,
   ChatSearchReturn,
 } from './dto/return.chat.dto';
 import {
@@ -75,19 +74,6 @@ export class ChatsController {
   })
   async getRoomList(@Query() chatRoomListCondition: ChatChatRoomListCondition) {
     return await this.chatService.getRoomList(chatRoomListCondition);
-  }
-
-  @Get('rooms/count')
-  @ApiOperation({
-    summary: '채팅방 총 개수 조회 API',
-    tags: ['chats'],
-  })
-  @ApiResponse({
-    description: '현재 생성된 채팅방의 총 개수를 반환합니다.',
-    type: ChatRoomTotalCountReturn,
-  })
-  async getTotalRoomCount(): Promise<ChatRoomTotalCountReturn> {
-    return await this.chatService.getRoomTotalCount();
   }
 
   @Get('rooms/:roomId')

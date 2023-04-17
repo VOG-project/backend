@@ -5,7 +5,6 @@ import { ChatCreateRequest } from './dto/create.chat.dto';
 import {
   ChatEntireDataReturn,
   ChatIsAcceptableReturn,
-  ChatRoomTotalCountReturn,
   ChatSearchReturn,
 } from './dto/return.chat.dto';
 import {
@@ -61,10 +60,6 @@ export class ChatsService {
 
   async getRoomList(chatRoomListCondition: ChatChatRoomListCondition) {
     return await this.chatRepository.findRoomList(chatRoomListCondition);
-  }
-
-  async getRoomTotalCount(): Promise<ChatRoomTotalCountReturn> {
-    return await this.chatRepository.findRoomTotalCount();
   }
 
   async searchRoom(

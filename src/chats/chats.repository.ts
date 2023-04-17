@@ -2,11 +2,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { ChatParticipantEntity, ChatRoomEntity } from './chats.entity';
 import { Repository } from 'typeorm';
 import { HttpException } from '@nestjs/common';
-import {
-  ChatEntireDataReturn,
-  ChatRoomTotalCountReturn,
-  ChatSearchReturn,
-} from './dto/return.chat.dto';
+import { ChatEntireDataReturn, ChatSearchReturn } from './dto/return.chat.dto';
 import { ChatCreateRequest, SocketCreateRequest } from './dto/create.chat.dto';
 import { ChatChatRoomListCondition } from './dto/get.chat.dto';
 
@@ -245,22 +241,6 @@ export class ChatsRepository {
     } catch (err) {
       throw new HttpException(
         `[MYSQL ERROR] findChatRoomList: ${err.message}`,
-        500,
-      );
-    }
-  }
-
-  async findRoomTotalCount(): Promise<ChatRoomTotalCountReturn> {
-    try {
-      const chatRoomCount = await this.chatRoomModel
-        .createQueryBuilder()
-        .select()
-        .getCount();
-
-      return { chatRoomCount };
-    } catch (err) {
-      throw new HttpException(
-        `[MYSQL ERROR] findChatRoomTotalCount: ${err.message}`,
         500,
       );
     }
