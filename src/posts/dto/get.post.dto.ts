@@ -6,6 +6,12 @@ enum SearchTypeEnum {
   t2 = 'title',
 }
 
+enum GetListTypeEnum {
+  board1 = 'free',
+  board2 = 'humor',
+  board3 = 'championship',
+}
+
 export class PostGetCondition {
   @ApiProperty({
     example: 'championship',
@@ -13,6 +19,7 @@ export class PostGetCondition {
   })
   @IsNotEmpty()
   @IsString()
+  @IsEnum(GetListTypeEnum)
   board: string;
 
   @ApiProperty({
