@@ -7,6 +7,7 @@ import {
   Param,
   ParseIntPipe,
   UseGuards,
+  ClassSerializerInterceptor,
 } from '@nestjs/common';
 import { HttpExceptionFilter } from 'src/common/filters/http-exception.filter';
 import { SuccessInterceptor } from '../common/interceptors/success.interceptor';
@@ -19,6 +20,7 @@ import { AuthGuard } from 'src/auth/guards/auth.guard';
 @Controller('uploads')
 @UseFilters(HttpExceptionFilter)
 @UseInterceptors(SuccessInterceptor)
+@UseInterceptors(ClassSerializerInterceptor)
 @UseGuards(AuthGuard)
 export class UploadsController {
   constructor(private readonly uploadService: UploadsService) {}

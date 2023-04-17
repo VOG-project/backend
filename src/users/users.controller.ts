@@ -10,6 +10,7 @@ import {
   UseGuards,
   ParseIntPipe,
   Delete,
+  ClassSerializerInterceptor,
 } from '@nestjs/common';
 import { UserService } from './users.service';
 import { ApiOperation, ApiResponse } from '@nestjs/swagger';
@@ -24,6 +25,7 @@ import { PostDeletedCountReturn } from 'src/posts/dto/return.post.dto';
 
 @UseFilters(HttpExceptionFilter)
 @UseInterceptors(SuccessInterceptor)
+@UseInterceptors(ClassSerializerInterceptor)
 @Controller('users')
 export class UsersController {
   constructor(private readonly userService: UserService) {}
