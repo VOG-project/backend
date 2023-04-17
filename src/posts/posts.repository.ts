@@ -13,7 +13,7 @@ import {
 import { PostModificationRequest } from './dto/modify.post.dto';
 import { Redis } from 'ioredis';
 import { RedisService } from '@liaoliaots/nestjs-redis';
-import { PostSearchCondition, PostSearchRequest } from './dto/get.post.dto';
+import { PostSearchCondition } from './dto/get.post.dto';
 
 export class PostsRepository {
   private readonly redis: Redis;
@@ -43,7 +43,7 @@ export class PostsRepository {
   async findOneById(id: number): Promise<PostEntireDataReturn> {
     try {
       return await this.postModel
-        .createQueryBuilder('p')
+        .createQueryBuilder()
         .select()
         .where('id = :id', { id })
         .getOne();
@@ -202,6 +202,8 @@ export class PostsRepository {
           'p.updatedAt',
           'u.id',
           'u.nickname',
+          'u.profileUrl',
+          'u.updatedAt',
         ])
         .where('p.id = :id', { id })
         .getOne();
