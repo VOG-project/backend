@@ -54,6 +54,8 @@ export class PostEntireDataReturn {
     example: {
       id: '32',
       nickname: '꾸꾸까까',
+      profileUrl: 'dkfjaoef.com/user/efwef.jpg',
+      updatedAt: '2023-03-05 16:25:04.871850',
     },
     description: '게시물 작성자 데이터',
   })
