@@ -70,7 +70,7 @@
 ## 📁 프로젝트 소스 구조
 
 ### Front-End
-
+```
 📦src
  ┣ 📂apis
  ┃ ┣ 📜auth.ts
@@ -300,10 +300,10 @@
  ┃ ┣ 📜timeDifference.ts
  ┃ ┣ 📜tokenManager.ts
  ┃ ┗ 📜validatePassword.ts
-
+```
 
 ### Back-End
-
+```
 📦src
  ┣ 📂auth
  ┃ ┣ 📂dto
@@ -424,7 +424,7 @@
  ┣ 📜app.module.ts
  ┣ 📜app.service.ts
  ┗ 📜main.ts
-
+```
 
 <br />
 
