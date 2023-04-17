@@ -62,7 +62,6 @@ export class PostsRepository {
         .select([
           'p.id',
           'p.title',
-          'p.likeCount',
           'p.view',
           'p.postCategory',
           'p.createdAt',
@@ -98,7 +97,6 @@ export class PostsRepository {
         .select([
           'p.id',
           'p.title',
-          'p.likeCount',
           'p.view',
           'p.postCategory',
           'p.createdAt',
@@ -137,7 +135,6 @@ export class PostsRepository {
         .select([
           'p.id',
           'p.title',
-          'p.likeCount',
           'p.view',
           'p.postCategory',
           'p.createdAt',
