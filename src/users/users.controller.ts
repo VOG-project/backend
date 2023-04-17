@@ -38,7 +38,7 @@ export class UsersController {
     description: 'userId에 해당하는 유저 데이터를 반환합니다.',
     type: UserEntireDataReturn,
   })
-  getUser(@Param('userId', ParseIntPipe) userId: number) {
+  async getUser(@Param('userId', ParseIntPipe) userId: number) {
     return this.userService.getUser(userId);
   }
 
@@ -54,7 +54,7 @@ export class UsersController {
       '유저 pk와 새로운 닉네임을 입력받아 기존의 닉네임을 수정하고 해당 유저의 데이터를 반환합니다.',
     type: UserEntireDataReturn,
   })
-  modifyNickname(
+  async modifyNickname(
     @Body() userModificationNicknameRequest: UserModificationNicknameRequest,
     @Param('userId', ParseIntPipe) userId: number,
   ): Promise<UserEntireDataReturn> {
@@ -75,7 +75,7 @@ export class UsersController {
       '유저의 이메일, 비밀번호, 닉네임, 성별을 입력받아 DB에 등록하고 해당 유저의 데이터를 반환합니다.',
     type: AuthUserEntireDataReturn,
   })
-  registerUser(
+  async registerUser(
     @Body() userCreateRequest: UserCreateRequest,
   ): Promise<AuthUserEntireDataReturn> {
     return this.userService.registerUser(userCreateRequest);
