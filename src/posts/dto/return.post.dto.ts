@@ -80,12 +80,6 @@ export class PostListReturn {
   title: string;
 
   @ApiProperty({
-    example: 712,
-    description: '좋아요 개수',
-  })
-  likeCount: number;
-
-  @ApiProperty({
     example: 3621,
     description: '게시물 조회 수',
   })
