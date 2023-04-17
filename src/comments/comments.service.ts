@@ -22,24 +22,14 @@ export class CommentsService {
   async getComment(
     commentGetCommentAndReplyCondition: CommentGetCommentAndReplyCondition,
   ) {
-    const { postId, page } = commentGetCommentAndReplyCondition;
-    // 예외 처리
+    const { postId } = commentGetCommentAndReplyCondition;
+    const isExistedPost = await this.postRepository.checkExist(postId);
+    if (!isExistedPost)
+      throw new HttpException('존재하지 않는 게시물에 대한 접근입니다.', 400);
 
     return await this.commentRepository.findCommentAndReplyByPostId(
-      postId,
-      page,
+      commentGetCommentAndReplyCondition,
     );
-  }
-
-  async getTotalCommentCount(
-    commentGetTotalCountCondition: CommentGetTotalCountCondition,
-  ) {
-    const { postId } = commentGetTotalCountCondition;
-    //예외 처리
-
-    const aa = await this.commentRepository.findCountByPostId(postId);
-    console.log(aa);
-    return aa;
   }
 
   async registerComment(
