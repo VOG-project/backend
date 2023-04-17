@@ -76,7 +76,10 @@ export class PostsService {
 
     await this.postRepository.updatePost(postModificationRequest, postId);
 
-    return await this.postRepository.findPostAndUserById(postId);
+    const modifiedPost = await this.postRepository.findPostAndUserById(postId);
+    await this.registerPostToCache(postId, modifiedPost);
+
+    return modifiedPost;
   }
 
   async getTotalPostsCount(category: string): Promise<number> {
