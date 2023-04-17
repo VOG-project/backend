@@ -70,15 +70,371 @@
 
 <br />
 
-## 📁 프로젝트 구조
+## 서비스 기능
 
-### Front-End
 
-### Back-End
 
 <br />
 
-## 서비스 기능
+## 📁 프로젝트 소스 구조
+
+### Front-End
+
+📦src
+ ┣ 📂apis
+ ┃ ┣ 📜auth.ts
+ ┃ ┣ 📜chat.ts
+ ┃ ┣ 📜comment.ts
+ ┃ ┣ 📜community.ts
+ ┃ ┣ 📜friend.ts
+ ┃ ┣ 📜like.ts
+ ┃ ┗ 📜user.ts
+ ┣ 📂components
+ ┃ ┣ 📂Auth
+ ┃ ┃ ┣ 📜Auth.tsx
+ ┃ ┃ ┗ 📜index.tsx
+ ┃ ┣ 📂Chat
+ ┃ ┃ ┣ 📂ChatEdit
+ ┃ ┃ ┃ ┣ 📜ChatEdit.tsx
+ ┃ ┃ ┃ ┗ 📜index.tsx
+ ┃ ┃ ┣ 📂ChatRoom
+ ┃ ┃ ┃ ┣ 📜ChatMember.tsx
+ ┃ ┃ ┃ ┣ 📜ChatMessage.tsx
+ ┃ ┃ ┃ ┣ 📜ChatRoom.tsx
+ ┃ ┃ ┃ ┗ 📜index.tsx
+ ┃ ┃ ┣ 📂RoomList
+ ┃ ┃ ┃ ┣ 📜index.tsx
+ ┃ ┃ ┃ ┗ 📜RoomList.tsx
+ ┃ ┃ ┣ 📜Chat.tsx
+ ┃ ┃ ┗ 📜index.tsx
+ ┃ ┣ 📂common
+ ┃ ┃ ┣ 📂Audio
+ ┃ ┃ ┃ ┣ 📜Audio.tsx
+ ┃ ┃ ┃ ┗ 📜index.tsx
+ ┃ ┃ ┣ 📂Button
+ ┃ ┃ ┃ ┣ 📜Button.tsx
+ ┃ ┃ ┃ ┗ 📜index.tsx
+ ┃ ┃ ┣ 📂ErrorMessage
+ ┃ ┃ ┃ ┣ 📜ErrorMessage.tsx
+ ┃ ┃ ┃ ┗ 📜index.tsx
+ ┃ ┃ ┣ 📂Header
+ ┃ ┃ ┃ ┣ 📜Header.tsx
+ ┃ ┃ ┃ ┗ 📜index.tsx
+ ┃ ┃ ┣ 📂Input
+ ┃ ┃ ┃ ┣ 📜index.tsx
+ ┃ ┃ ┃ ┗ 📜Input.tsx
+ ┃ ┃ ┣ 📂Loading
+ ┃ ┃ ┃ ┣ 📜Circle.tsx
+ ┃ ┃ ┃ ┣ 📜index.tsx
+ ┃ ┃ ┃ ┗ 📜Loading.tsx
+ ┃ ┃ ┣ 📂Modal
+ ┃ ┃ ┃ ┣ 📜index.tsx
+ ┃ ┃ ┃ ┗ 📜Modal.tsx
+ ┃ ┃ ┣ 📂MyPageCard
+ ┃ ┃ ┃ ┣ 📜Left.tsx
+ ┃ ┃ ┃ ┗ 📜Right.tsx
+ ┃ ┃ ┣ 📂Search
+ ┃ ┃ ┃ ┣ 📜index.tsx
+ ┃ ┃ ┃ ┗ 📜Search.tsx
+ ┃ ┃ ┣ 📂Textarea
+ ┃ ┃ ┃ ┗ 📜index.tsx
+ ┃ ┃ ┗ 📂UserCard
+ ┃ ┃ ┃ ┣ 📜index.tsx
+ ┃ ┃ ┃ ┗ 📜UserCard.tsx
+ ┃ ┣ 📂Community
+ ┃ ┃ ┣ 📂Contents
+ ┃ ┃ ┃ ┣ 📜Contents.tsx
+ ┃ ┃ ┃ ┗ 📜index.tsx
+ ┃ ┃ ┣ 📂Detail
+ ┃ ┃ ┃ ┣ 📂Comments
+ ┃ ┃ ┃ ┃ ┣ 📜Comment.tsx
+ ┃ ┃ ┃ ┃ ┣ 📜CommentEdit.tsx
+ ┃ ┃ ┃ ┃ ┣ 📜Comments.tsx
+ ┃ ┃ ┃ ┃ ┣ 📜index.tsx
+ ┃ ┃ ┃ ┃ ┗ 📜Reply.tsx
+ ┃ ┃ ┃ ┣ 📂Post
+ ┃ ┃ ┃ ┃ ┣ 📜index.tsx
+ ┃ ┃ ┃ ┃ ┗ 📜Post.tsx
+ ┃ ┃ ┃ ┣ 📜Detail.tsx
+ ┃ ┃ ┃ ┗ 📜index.tsx
+ ┃ ┃ ┣ 📂Edit
+ ┃ ┃ ┃ ┣ 📜Edit.tsx
+ ┃ ┃ ┃ ┗ 📜index.tsx
+ ┃ ┃ ┣ 📂Navigation
+ ┃ ┃ ┃ ┣ 📜index.tsx
+ ┃ ┃ ┃ ┗ 📜Navigation.tsx
+ ┃ ┃ ┣ 📜Community.tsx
+ ┃ ┃ ┗ 📜index.tsx
+ ┃ ┣ 📂ErrorBoundary
+ ┃ ┃ ┣ 📜ErrorBoundary.tsx
+ ┃ ┃ ┗ 📜index.tsx
+ ┃ ┣ 📂Friend
+ ┃ ┃ ┣ 📜Friend.tsx
+ ┃ ┃ ┣ 📜FriendContext.tsx
+ ┃ ┃ ┗ 📜index.tsx
+ ┃ ┣ 📂Home
+ ┃ ┃ ┣ 📜Home.tsx
+ ┃ ┃ ┗ 📜index.tsx
+ ┃ ┣ 📂icons
+ ┃ ┃ ┗ 📜index.tsx
+ ┃ ┣ 📂layout
+ ┃ ┃ ┗ 📜MainLayout.tsx
+ ┃ ┣ 📂Login
+ ┃ ┃ ┣ 📜index.tsx
+ ┃ ┃ ┣ 📜Login.tsx
+ ┃ ┃ ┗ 📜OAuthLogin.tsx
+ ┃ ┣ 📂MyPage
+ ┃ ┃ ┣ 📂MyPageCards
+ ┃ ┃ ┃ ┣ 📜DeleteAccount.tsx
+ ┃ ┃ ┃ ┣ 📜History.tsx
+ ┃ ┃ ┃ ┣ 📜NicknameEdit.tsx
+ ┃ ┃ ┃ ┗ 📜ProfilePicEdit.tsx
+ ┃ ┃ ┣ 📜index.tsx
+ ┃ ┃ ┣ 📜MyPage.tsx
+ ┃ ┃ ┗ 📜Profile.tsx
+ ┃ ┣ 📂Pagination
+ ┃ ┃ ┣ 📜index.tsx
+ ┃ ┃ ┗ 📜Pagination.tsx
+ ┃ ┣ 📂SelectGame
+ ┃ ┃ ┣ 📜GameCard.tsx
+ ┃ ┃ ┣ 📜index.tsx
+ ┃ ┃ ┗ 📜SelectGame.tsx
+ ┃ ┣ 📂Sidebar
+ ┃ ┃ ┣ 📜index.tsx
+ ┃ ┃ ┗ 📜Sidebar.tsx
+ ┃ ┣ 📂SignUp
+ ┃ ┃ ┣ 📜index.tsx
+ ┃ ┃ ┗ 📜SignUp.tsx
+ ┃ ┣ 📂Socket
+ ┃ ┃ ┣ 📜ChatSocket.tsx
+ ┃ ┃ ┣ 📜DeviceSetting.tsx
+ ┃ ┃ ┣ 📜index.tsx
+ ┃ ┃ ┗ 📜Socket.tsx
+ ┃ ┣ 📂Toast
+ ┃ ┃ ┣ 📜index.tsx
+ ┃ ┃ ┣ 📜Toast.tsx
+ ┃ ┃ ┗ 📜ToastText.tsx
+ ┃ ┗ 📂UserProfileModal
+ ┃ ┃ ┣ 📜index.tsx
+ ┃ ┃ ┗ 📜UserProfileModal.tsx
+ ┣ 📂constants
+ ┃ ┣ 📜Auth.ts
+ ┃ ┣ 📜friend.ts
+ ┃ ┣ 📜games.ts
+ ┃ ┣ 📜nav.ts
+ ┃ ┗ 📜search.ts
+ ┣ 📂hooks
+ ┃ ┣ 📜useChatEditForm.ts
+ ┃ ┣ 📜useChatState.ts
+ ┃ ┣ 📜useFriendState.ts
+ ┃ ┣ 📜useInfiniteScroll.ts
+ ┃ ┣ 📜useLoadingState.ts
+ ┃ ┣ 📜useMediaDevice.ts
+ ┃ ┣ 📜useModal.ts
+ ┃ ┣ 📜useNicknameEditForm.ts
+ ┃ ┣ 📜usePagination.ts
+ ┃ ┣ 📜useProfilePicEditForm.ts
+ ┃ ┣ 📜useSignUpForm.ts
+ ┃ ┣ 📜useToast.ts
+ ┃ ┣ 📜useUserProfileState.ts
+ ┃ ┣ 📜useUserState.ts
+ ┃ ┗ 📜useWebRTC.ts
+ ┣ 📂pages
+ ┃ ┣ 📂auth
+ ┃ ┃ ┗ 📂login
+ ┃ ┃ ┃ ┗ 📜[provider].tsx
+ ┃ ┣ 📂chat
+ ┃ ┃ ┣ 📜index.tsx
+ ┃ ┃ ┗ 📜[id].tsx
+ ┃ ┣ 📂community
+ ┃ ┃ ┣ 📂edit
+ ┃ ┃ ┃ ┣ 📜index.tsx
+ ┃ ┃ ┃ ┗ 📜[id].tsx
+ ┃ ┃ ┣ 📜index.tsx
+ ┃ ┃ ┗ 📜[id].tsx
+ ┃ ┣ 📂mypage
+ ┃ ┃ ┗ 📜index.tsx
+ ┃ ┣ 📜index.tsx
+ ┃ ┣ 📜login.tsx
+ ┃ ┣ 📜select-game.tsx
+ ┃ ┣ 📜sign-up.tsx
+ ┃ ┣ 📜_app.tsx
+ ┃ ┗ 📜_document.tsx
+ ┣ 📂public
+ ┃ ┣ 📂image
+ ┃ ┃ ┣ 📜blank_profile.png
+ ┃ ┃ ┣ 📜home.jpg
+ ┃ ┃ ┣ 📜LeagueofLegends.jpg
+ ┃ ┃ ┣ 📜logo_kakao.png
+ ┃ ┃ ┣ 📜logo_naver.png
+ ┃ ┃ ┣ 📜LoL_logo.png
+ ┃ ┃ ┣ 📜naver.png
+ ┃ ┃ ┣ 📜valorant.jpg
+ ┃ ┃ ┣ 📜valorant_jett.jpg
+ ┃ ┃ ┣ 📜valorant_logo.png
+ ┃ ┃ ┣ 📜valorant_logo2.png
+ ┃ ┃ ┗ 📜yasou.webp
+ ┃ ┣ 📜favicon.ico
+ ┃ ┣ 📜next.svg
+ ┃ ┣ 📜thirteen.svg
+ ┃ ┗ 📜vercel.svg
+ ┣ 📂recoil
+ ┃ ┣ 📂atoms
+ ┃ ┃ ┣ 📜chatState.ts
+ ┃ ┃ ┣ 📜friendState.ts
+ ┃ ┃ ┣ 📜loadingState.ts
+ ┃ ┃ ┣ 📜selectedGameState.ts
+ ┃ ┃ ┣ 📜toastState.ts
+ ┃ ┃ ┣ 📜userProfileState.ts
+ ┃ ┃ ┗ 📜userState.ts
+ ┃ ┗ 📂selectors
+ ┃ ┃ ┗ 📜loginState.ts
+ ┣ 📂styles
+ ┃ ┗ 📜GlobalStyle.tsx
+ ┣ 📂types
+ ┃ ┣ 📜auth.ts
+ ┃ ┣ 📜chat.ts
+ ┃ ┣ 📜community.ts
+ ┃ ┣ 📜friend.ts
+ ┃ ┣ 📜myPage.ts
+ ┃ ┗ 📜twin.d.ts
+ ┗ 📂utils
+ ┃ ┣ 📜customAxios.ts
+ ┃ ┣ 📜getGameLogo.ts
+ ┃ ┣ 📜getTitle.ts
+ ┃ ┣ 📜imageResize.ts
+ ┃ ┣ 📜localStorage.ts
+ ┃ ┣ 📜sessionStorage.ts
+ ┃ ┣ 📜socketClient.ts
+ ┃ ┣ 📜timeDifference.ts
+ ┃ ┣ 📜tokenManager.ts
+ ┃ ┗ 📜validatePassword.ts
+
+
+### Back-End
+
+📦src
+ ┣ 📂auth
+ ┃ ┣ 📂dto
+ ┃ ┃ ┣ 📜login.auth.dto.ts
+ ┃ ┃ ┗ 📜return.auth.dto.ts
+ ┃ ┣ 📂guards
+ ┃ ┃ ┗ 📜auth.guard.ts
+ ┃ ┣ 📜auth.controller.spec.ts
+ ┃ ┣ 📜auth.controller.ts
+ ┃ ┣ 📜auth.module.ts
+ ┃ ┣ 📜auth.repository.ts
+ ┃ ┣ 📜auth.service.spec.ts
+ ┃ ┗ 📜auth.service.ts
+ ┣ 📂chats
+ ┃ ┣ 📂dto
+ ┃ ┃ ┣ 📜create.chat.dto.ts
+ ┃ ┃ ┣ 📜get.chat.dto.ts
+ ┃ ┃ ┣ 📜return.chat.dto.ts
+ ┃ ┃ ┗ 📜socket.request.dto.ts
+ ┃ ┣ 📜chats.controller.spec.ts
+ ┃ ┣ 📜chats.controller.ts
+ ┃ ┣ 📜chats.entity.ts
+ ┃ ┣ 📜chats.gateway.spec.ts
+ ┃ ┣ 📜chats.gateway.ts
+ ┃ ┣ 📜chats.module.ts
+ ┃ ┣ 📜chats.repository.ts
+ ┃ ┣ 📜chats.service.spec.ts
+ ┃ ┗ 📜chats.service.ts
+ ┣ 📂comments
+ ┃ ┣ 📂dto
+ ┃ ┃ ┣ 📜get.comment.dto.ts
+ ┃ ┃ ┣ 📜modify.comment.dto.ts
+ ┃ ┃ ┣ 📜register.comment.dto.ts
+ ┃ ┃ ┗ 📜return.comment.dto.ts
+ ┃ ┣ 📜comments.controller.spec.ts
+ ┃ ┣ 📜comments.controller.ts
+ ┃ ┣ 📜comments.entity.ts
+ ┃ ┣ 📜comments.module.ts
+ ┃ ┣ 📜comments.repository.ts
+ ┃ ┣ 📜comments.service.spec.ts
+ ┃ ┗ 📜comments.service.ts
+ ┣ 📂common
+ ┃ ┣ 📂filters
+ ┃ ┃ ┗ 📜http-exception.filter.ts
+ ┃ ┣ 📂interceptors
+ ┃ ┃ ┗ 📜success.interceptor.ts
+ ┃ ┗ 📂middlewares
+ ┃ ┃ ┣ 📜logger.middleware.spec.ts
+ ┃ ┃ ┗ 📜logger.middleware.ts
+ ┣ 📂friend
+ ┃ ┣ 📂dto
+ ┃ ┃ ┣ 📜create.friend.dto.ts
+ ┃ ┃ ┣ 📜delete.friend.dto.ts
+ ┃ ┃ ┗ 📜return.friend.dto.ts
+ ┃ ┣ 📜friend.controller.spec.ts
+ ┃ ┣ 📜friend.controller.ts
+ ┃ ┣ 📜friend.entity.ts
+ ┃ ┣ 📜friend.module.ts
+ ┃ ┣ 📜friend.repository.ts
+ ┃ ┣ 📜friend.service.spec.ts
+ ┃ ┗ 📜friend.service.ts
+ ┣ 📂like
+ ┃ ┣ 📂dto
+ ┃ ┃ ┣ 📜create.like.dto.ts
+ ┃ ┃ ┣ 📜delete.like.dto.ts
+ ┃ ┃ ┗ 📜result.like.dto.ts
+ ┃ ┣ 📜like.controller.spec.ts
+ ┃ ┣ 📜like.controller.ts
+ ┃ ┣ 📜like.module.ts
+ ┃ ┣ 📜like.repository.ts
+ ┃ ┣ 📜like.service.spec.ts
+ ┃ ┗ 📜like.service.ts
+ ┣ 📂posts
+ ┃ ┣ 📂dto
+ ┃ ┃ ┣ 📜create.post.dto.ts
+ ┃ ┃ ┣ 📜get.post.dto.ts
+ ┃ ┃ ┣ 📜modify.post.dto.ts
+ ┃ ┃ ┗ 📜return.post.dto.ts
+ ┃ ┣ 📜posts.controller.spec.ts
+ ┃ ┣ 📜posts.controller.ts
+ ┃ ┣ 📜posts.entity.ts
+ ┃ ┣ 📜posts.module.ts
+ ┃ ┣ 📜posts.repository.ts
+ ┃ ┣ 📜posts.service.spec.ts
+ ┃ ┗ 📜posts.service.ts
+ ┣ 📂replies
+ ┃ ┣ 📂dto
+ ┃ ┃ ┣ 📜modify.reply.dto.ts
+ ┃ ┃ ┣ 📜register.reply.dto.ts
+ ┃ ┃ ┗ 📜return.reply.dto.ts
+ ┃ ┣ 📜replies.controller.spec.ts
+ ┃ ┣ 📜replies.controller.ts
+ ┃ ┣ 📜replies.entity.ts
+ ┃ ┣ 📜replies.module.ts
+ ┃ ┣ 📜replies.repository.ts
+ ┃ ┣ 📜replies.service.spec.ts
+ ┃ ┗ 📜replies.service.ts
+ ┣ 📂uploads
+ ┃ ┣ 📜uploads.controller.spec.ts
+ ┃ ┣ 📜uploads.controller.ts
+ ┃ ┣ 📜uploads.module.ts
+ ┃ ┣ 📜uploads.service.spec.ts
+ ┃ ┗ 📜uploads.service.ts
+ ┣ 📂users
+ ┃ ┣ 📂dto
+ ┃ ┃ ┣ 📜create.user.dto.ts
+ ┃ ┃ ┣ 📜modify.user.dto.ts
+ ┃ ┃ ┗ 📜return.user.dto.ts
+ ┃ ┣ 📜users.controller.spec.ts
+ ┃ ┣ 📜users.controller.ts
+ ┃ ┣ 📜users.entity.ts
+ ┃ ┣ 📜users.module.ts
+ ┃ ┣ 📜users.repository.ts
+ ┃ ┣ 📜users.service.spec.ts
+ ┃ ┗ 📜users.service.ts
+ ┣ 📜app.controller.spec.ts
+ ┣ 📜app.controller.ts
+ ┣ 📜app.module.ts
+ ┣ 📜app.service.ts
+ ┗ 📜main.ts
+
+<br />
 
 
 
