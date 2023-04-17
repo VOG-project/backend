@@ -186,7 +186,7 @@ export class PostsRepository {
     }
   }
 
-  async findOneWithUserById(id: number): Promise<PostEntireDataReturn> {
+  async findPostAndUserById(id: number): Promise<PostEntireDataReturn> {
     try {
       console.log(id);
       return await this.postModel

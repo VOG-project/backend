@@ -22,7 +22,7 @@ export class PostsService {
     postRequestDto: PostCreateRequest,
   ): Promise<PostEntireDataReturn> {
     const { postId } = await this.postRepository.create(postRequestDto);
-    return this.postRepository.findOneById(postId);
+    return await this.postRepository.findOneById(postId);
   }
 
   async getPostList(condition: PostGetCondition): Promise<PostListReturn[]> {
@@ -51,7 +51,7 @@ export class PostsService {
 
     await this.postRepository.addView(postId);
 
-    const insertedPost = await this.postRepository.findOneWithUserById(postId);
+    const insertedPost = await this.postRepository.findPostAndUserById(postId);
     await this.registerPostToCache(postId, insertedPost);
 
     return insertedPost;
@@ -106,6 +106,6 @@ export class PostsService {
 
     await this.likeRepository.deleteLikeOfPost(postId);
     await this.postRepository.deleteCachingPost(postId);
-    return this.postRepository.deletePost(postId);
+    return await this.postRepository.deletePost(postId);
   }
 }
