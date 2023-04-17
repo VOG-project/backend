@@ -98,16 +98,32 @@ export class PostsService {
   async searchPost(
     postSearchCondition: PostSearchCondition,
   ): Promise<PostPagenationReturn> {
+    let postList: PostPagenationReturn;
     const { searchType } = postSearchCondition;
     if (searchType === 'nickname') {
-      return await this.postRepository.findPostListByNickname(
+      postList = await this.postRepository.findPostListByNickname(
         postSearchCondition,
       );
     } else if (searchType === 'title') {
-      return await this.postRepository.findPostListByTitle(postSearchCondition);
+      postList = await this.postRepository.findPostListByTitle(
+        postSearchCondition,
+      );
     } else {
       throw new HttpException('닉네임과 제목으로만 검색할 수 있습니다.', 400);
     }
+
+    const totalCount = postList.totalCount;
+    const result = await Promise.all(
+      postList.result.map(async (post) => {
+        const likeIds = await this.likeRepository.findLikeUsersByPostId(
+          post.id,
+        );
+
+        return { ...likeIds, ...post };
+      }),
+    );
+    const listResult = { totalCount, result };
+    return listResult;
   }
 
   async removePost(postId: number): Promise<PostDeletedCountReturn> {
