@@ -7,10 +7,7 @@ import {
   CommentDeletedCountReturn,
 } from './dto/return.comment.dto';
 import { CommentModifyRequest } from './dto/modify.comment.dto';
-import {
-  CommentGetCommentAndReplyCondition,
-  CommentGetTotalCountCondition,
-} from './dto/get.comment.dto';
+import { CommentGetCommentAndReplyCondition } from './dto/get.comment.dto';
 
 @Injectable()
 export class CommentsService {
