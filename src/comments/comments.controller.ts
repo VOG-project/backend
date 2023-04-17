@@ -23,10 +23,7 @@ import {
   CommentDeletedCountReturn,
 } from './dto/return.comment.dto';
 import { CommentModifyRequest } from './dto/modify.comment.dto';
-import {
-  CommentGetCommentAndReplyCondition,
-  CommentGetTotalCountCondition,
-} from './dto/get.comment.dto';
+import { CommentGetCommentAndReplyCondition } from './dto/get.comment.dto';
 
 @Controller('comments')
 @UseGuards(AuthGuard)
@@ -49,22 +46,6 @@ export class CommentsController {
   ) {
     return await this.commentService.getComment(
       commentGetCommentAndReplyCondition,
-    );
-  }
-
-  @Get('count')
-  @ApiOperation({
-    summary: '댓글 총 개수 조회 API',
-    tags: ['Comments'],
-  })
-  @ApiResponse({
-    description: '댓글 총 개수를 반환합니다.',
-  })
-  async getTotalCommentCount(
-    @Query() commentGetTotalCountCondition: CommentGetTotalCountCondition,
-  ) {
-    return await this.commentService.getTotalCommentCount(
-      commentGetTotalCountCondition,
     );
   }
 
