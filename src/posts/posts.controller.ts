@@ -80,19 +80,6 @@ export class PostsController {
     return this.postService.getPostList(condition);
   }
 
-  @Get('/count')
-  @ApiOperation({
-    summary: '게시물 총 개수 반환 API',
-    tags: ['Posts'],
-  })
-  @ApiResponse({
-    description: '카테고리에 해당하는 게시물의 총 개수를 반환합니다.',
-    type: '총 게시물 개수',
-  })
-  getTotalPostsCount(@Query('category') category: string): Promise<number> {
-    return this.postService.getTotalPostsCount(category);
-  }
-
   @Get(':postId')
   @ApiOperation({
     summary: '게시물 조회 API',
