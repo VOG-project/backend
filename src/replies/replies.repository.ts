@@ -17,6 +17,9 @@ export class RepliesRepository {
     private readonly replyModel: Repository<ReplyEntity>,
   ) {}
 
+  /**
+   * 답글 데이터를 생성합니다.
+   */
   async create(
     replyRegisterRequest: ReplyRegisterRequest,
   ): Promise<ReplyPkIdReturn> {
@@ -33,6 +36,9 @@ export class RepliesRepository {
     }
   }
 
+  /**
+   * 답글 아이디에 해당하는 row 값을 반환합니다.
+   */
   async findByReplyId(replyId: number): Promise<ReplyEntireDataReturn> {
     try {
       return await this.replyModel
@@ -48,6 +54,9 @@ export class RepliesRepository {
     }
   }
 
+  /**
+   * Dto에 담긴 데이터로 row를 갱신합니다.
+   */
   async update(
     replyModifyRequest: ReplyModifyRequest,
     replyId: number,
@@ -64,6 +73,9 @@ export class RepliesRepository {
     }
   }
 
+  /**
+   * 답글 아이디에 해당하는 데이터가 존재하는 지 확인합니다.
+   */
   async checkExist(replyId: number): Promise<boolean> {
     try {
       return await this.replyModel
@@ -76,6 +88,9 @@ export class RepliesRepository {
     }
   }
 
+  /**
+   * 답글 아이디에 해당하는 데이터 row를 삭제합니다.
+   */
   async delete(replyId: number): Promise<ReplyDeletedCountReturn> {
     try {
       const deletedComment = await this.replyModel

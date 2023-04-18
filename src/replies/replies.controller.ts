@@ -4,13 +4,11 @@ import {
   UseFilters,
   UseInterceptors,
   Body,
-  Get,
   Post,
   Delete,
   Param,
   ParseIntPipe,
   Patch,
-  Query,
   UseGuards,
 } from '@nestjs/common';
 import { ApiOperation, ApiResponse } from '@nestjs/swagger';
