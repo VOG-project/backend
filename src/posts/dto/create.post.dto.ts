@@ -1,5 +1,11 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsNotEmpty, IsString, IsInt } from 'class-validator';
+import { IsNotEmpty, IsString, IsInt, IsEnum } from 'class-validator';
+
+enum CreateRequestTypeEnum {
+  category1 = 'free',
+  category2 = 'humor',
+  category3 = 'championship',
+}
 
 export class PostCreateRequest {
   @ApiProperty({
@@ -32,5 +38,6 @@ export class PostCreateRequest {
   })
   @IsNotEmpty()
   @IsString()
+  @IsEnum(CreateRequestTypeEnum)
   postCategory: string;
 }
