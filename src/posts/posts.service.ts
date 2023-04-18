@@ -17,6 +17,9 @@ export class PostsService {
     private readonly likeRepository: LikeRepository,
   ) {}
 
+  /**
+   * 댓글 데이터를 생성하고 생성한 데이터를 반환합니다.
+   */
   async registerPost(
     postRequestDto: PostCreateRequest,
   ): Promise<PostEntireDataReturn> {
@@ -24,16 +27,18 @@ export class PostsService {
     return await this.postRepository.findOneById(postId);
   }
 
-  // 반환 타입 다시
+  /**
+   * 카테고리와 page 번호에 해당하는 게시물 목록을 반환합니다.
+   */
   async getPostList(
     postGetListCondition: PostGetListCondition,
   ): Promise<PostPagenationReturn> {
-    postGetListCondition;
     const postList = await this.postRepository.findPostListByBoardType(
       postGetListCondition,
     );
-
     const totalCount = postList.totalCount;
+
+    // 하나의 게시물 데이터 객체마다 Redis에 존재하는 좋아요 데이터를 추가합니다.
     const result = await Promise.all(
       postList.result.map(async (post) => {
         const likeIds = await this.likeRepository.findLikeUsersByPostId(
@@ -48,24 +53,34 @@ export class PostsService {
     return listResult;
   }
 
+  /**
+   * 게시물 아이디에 해당하는 데이터를 반환합니다.
+   */
   async getPost(postId: number): Promise<PostEntireDataReturn> {
+    // mysql에 접근하기 전에 redis에서 데이터를 가져옵니다. 없으면 mysql로 접근합니다.
     const cachingPost = await this.postRepository.findCachingPost(postId);
     if (cachingPost) {
+      // 가져온 데이터는 문자열이기 때문에 JSON 객체로 변환해야합니다.
       return JSON.parse(cachingPost);
     }
 
     const isExistedPost = await this.postRepository.checkExist(postId);
+    // 데이터가 존재하지 않으면 예외처리 합니다.
     if (!isExistedPost)
       throw new HttpException('존재하지 않는 게시물입니다.', 400);
 
     await this.postRepository.addView(postId);
 
     const insertedPost = await this.postRepository.findPostAndUserById(postId);
+    // mysql에서 가져온 데이터를 캐싱이 가능하도록 redis에 저장합니다.
     await this.registerPostToCache(postId, insertedPost);
 
     return insertedPost;
   }
 
+  /**
+   * redis에 게시물 데이터를 저장합니다.
+   */
   async registerPostToCache(
     postId: number,
     post: PostEntireDataReturn,
@@ -73,28 +88,31 @@ export class PostsService {
     await this.postRepository.writeCachingPost(postId, post);
   }
 
+  /**
+   * 게시물 데이터를 갱신합니다.
+   */
   async modifyPost(
     postModificationRequest: PostModificationRequest,
     postId: number,
   ): Promise<PostEntireDataReturn> {
     const post = await this.postRepository.findOneById(postId);
-
+    // 게시물 데이터가 존재하지 않으면 예외처리합니다.
     if (!post) {
       throw new HttpException('존재하지 않는 게시물입니다.', 404);
     }
 
-    await this.postRepository.updatePost(postModificationRequest, postId);
+    await this.postRepository.update(postModificationRequest, postId);
 
     const modifiedPost = await this.postRepository.findPostAndUserById(postId);
+    // 수정된 데이터를 캐싱하기 위해 redis에 저장합니다.
     await this.registerPostToCache(postId, modifiedPost);
 
     return modifiedPost;
   }
 
-  async getTotalPostsCount(category: string): Promise<number> {
-    return await this.postRepository.findCountByCategory(category);
-  }
-
+  /**
+   * searchType에 해당하는 게시물 데이터를 반환합니다.
+   */
   async searchPost(
     postSearchCondition: PostSearchCondition,
   ): Promise<PostPagenationReturn> {
@@ -109,10 +127,12 @@ export class PostsService {
         postSearchCondition,
       );
     } else {
+      // searchType이 nickname이나 title이 아니면 예외처리
       throw new HttpException('닉네임과 제목으로만 검색할 수 있습니다.', 400);
     }
 
     const totalCount = postList.totalCount;
+    // 하나의 게시물 데이터 객체마다 Redis에 존재하는 좋아요 데이터를 추가합니다.
     const result = await Promise.all(
       postList.result.map(async (post) => {
         const likeIds = await this.likeRepository.findLikeUsersByPostId(
@@ -126,13 +146,19 @@ export class PostsService {
     return listResult;
   }
 
+  /**
+   * 게시물 아이디에 해당하는 데이터 row를 삭제합니다.
+   */
   async removePost(postId: number): Promise<PostDeletedCountReturn> {
     const post = await this.postRepository.findOneById(postId);
+    // 게시물 아이디에 해당하는 데이터가 없으면 예외처리
     if (!post) {
       throw new HttpException('존재하지 않는 게시물입니다.', 404);
     }
 
+    // 게시물에 대한 좋아요 데이터를 삭제합니다.
     await this.likeRepository.deleteLikeOfPost(postId);
+    // 게시물에 대한 캐시 데이터를 삭제합니다.
     await this.postRepository.deleteCachingPost(postId);
     return await this.postRepository.deletePost(postId);
   }

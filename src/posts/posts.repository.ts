@@ -25,6 +25,9 @@ export class PostsRepository {
     this.redis = this.redisService.getClient('cache');
   }
 
+  /**
+   * 게시물 데이터를 생성합니다.
+   */
   async create(postRequestDto: PostCreateRequest): Promise<PostPkIdReturn> {
     try {
       const insertedPost = await this.postModel
@@ -39,6 +42,9 @@ export class PostsRepository {
     }
   }
 
+  /**
+   * 게시물 아이디에 해당하는 데이터를 반환합니다.
+   */
   async findOneById(id: number): Promise<PostEntireDataReturn> {
     try {
       return await this.postModel
@@ -51,6 +57,9 @@ export class PostsRepository {
     }
   }
 
+  /**
+   * 게시물 카테고리와 페이지에 해당하는 게시물 리스트를 반환합니다.
+   */
   async findPostListByBoardType(
     postGetListCondition: PostGetListCondition,
   ): Promise<PostPagenationReturn> {
@@ -71,12 +80,14 @@ export class PostsRepository {
         ])
         .where('p.postCategory = :postCategory', { postCategory: board });
 
+      // 10개씩 페이지네이션
       const result = await query
         .offset(10 * (page - 1))
         .limit(10)
         .orderBy('p.id', 'DESC')
         .getMany();
 
+      // 게시물 총 개수
       const totalCount = await query.getCount();
 
       return { totalCount, result };
@@ -88,6 +99,9 @@ export class PostsRepository {
     }
   }
 
+  /**
+   * 게시물 카테고리와 페이지, 닉네임에 해당하는 게시물 리스트를 반환합니다.
+   */
   async findPostListByNickname(postSearchCondition: PostSearchCondition) {
     const { page, board, keyword } = postSearchCondition;
     try {
@@ -107,12 +121,14 @@ export class PostsRepository {
         .where('u.nickname LIKE :keyword', { keyword: `%${keyword}%` })
         .andWhere('p.postCategory = :postCategory', { postCategory: board });
 
+      // 10개씩 페이지네이션
       const result = await query
         .offset(10 * (page - 1))
         .limit(10)
         .orderBy('p.id', 'DESC')
         .getMany();
 
+      // 게시물 총 개수
       const totalCount = await query.getCount();
 
       return { totalCount, result };
@@ -124,6 +140,9 @@ export class PostsRepository {
     }
   }
 
+  /**
+   * 게시물 카테고리와 페이지, 닉네임에 해당하는 게시물 리스트를 반환합니다.
+   */
   async findPostListByTitle(
     postSearchCondition: PostSearchCondition,
   ): Promise<PostPagenationReturn> {
@@ -145,12 +164,14 @@ export class PostsRepository {
         .where('p.title LIKE :keyword', { keyword: `%${keyword}%` })
         .andWhere('p.postCategory = :postCategory', { postCategory: board });
 
+      // 10개씩 페이지네이션
       const result = await query
         .offset(10 * (page - 1))
         .limit(10)
         .orderBy('p.id', 'DESC')
         .getMany();
 
+      // 게시물 총 개수
       const totalCount = await query.getCount();
 
       return { totalCount, result };
@@ -162,6 +183,9 @@ export class PostsRepository {
     }
   }
 
+  /**
+   * 게시물의 view(조회수) 컬럼을 1 증가시킵니다.
+   */
   async addView(postId: number) {
     try {
       return await this.postModel
@@ -175,6 +199,9 @@ export class PostsRepository {
     }
   }
 
+  /**
+   * 게시물 아이디에 해당하는 데이터가 존재하는 지 확인합니다.
+   */
   async checkExist(postId: number) {
     try {
       return await this.postModel
@@ -213,10 +240,16 @@ export class PostsRepository {
     }
   }
 
+  /**
+   * 게시물 아이디에 해당하는 데이터를 캐싱합니다.
+   */
   async findCachingPost(postId: number): Promise<string> {
     return await this.redis.get(postId.toString());
   }
 
+  /**
+   * mysql에서 가져온 게시물 데이터를 캐시 데이터로 저장합니다.
+   */
   async writeCachingPost(
     postId: number,
     post: PostEntireDataReturn,
@@ -275,30 +308,18 @@ export class PostsRepository {
   //   }
   // }
 
-  async findCountByCategory(category: string): Promise<number> {
-    try {
-      return await this.postModel
-        .createQueryBuilder()
-        .select()
-        .where('postCategory = :category', { category })
-        .getCount();
-    } catch (err) {
-      throw new HttpException(
-        `[MYSQL ERROR] findCountByCategory: ${err.message}`,
-        500,
-      );
-    }
-  }
-
-  async updatePost(
-    data: PostModificationRequest,
+  /**
+   * Dto에 담긴 데이터로 row를 갱신합니다.
+   */
+  async update(
+    postModificationRequest: PostModificationRequest,
     postId: number,
   ): Promise<void> {
     try {
       await this.postModel
         .createQueryBuilder()
         .update()
-        .set(data)
+        .set(postModificationRequest)
         .where('id = :postId', { postId })
         .execute();
     } catch (err) {
@@ -306,6 +327,9 @@ export class PostsRepository {
     }
   }
 
+  /**
+   * 게시물 아이디에 해당하는 게시물 데이터를 삭제합니다.
+   */
   async deletePost(postId: number): Promise<PostDeletedCountReturn> {
     try {
       const deletedPost = await this.postModel
@@ -320,6 +344,9 @@ export class PostsRepository {
     }
   }
 
+  /**
+   * 게시물 아이디에 해당하는 게시물 캐시 데이터를 삭제합니다.
+   */
   async deleteCachingPost(postId: number): Promise<void> {
     try {
       await this.redis.del(postId.toString());
