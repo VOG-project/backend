@@ -8,5 +8,5 @@ export class UserModificationNicknameRequest {
   })
   @IsNotEmpty()
   @IsString()
-  newNickname: string;
+  nickname: string;
 }

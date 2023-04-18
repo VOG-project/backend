@@ -60,10 +60,7 @@ export class UsersController {
     @Body() userModificationNicknameRequest: UserModificationNicknameRequest,
     @Param('userId', ParseIntPipe) userId: number,
   ): Promise<UserEntireDataReturn> {
-    return this.userService.modifyNickname(
-      userModificationNicknameRequest,
-      userId,
-    );
+    return this.userService.modifyUser(userModificationNicknameRequest, userId);
   }
 
   @Post('register')

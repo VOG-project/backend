@@ -5,6 +5,7 @@ import { UserEntity } from './users.entity';
 import { UserEntireDataReturn, UserPkIdReturn } from './dto/return.user.dto';
 import { PostDeletedCountReturn } from 'src/posts/dto/return.post.dto';
 import { UserCreateRequest } from './dto/create.user.dto';
+import { UserModificationNicknameRequest } from './dto/modify.user.dto';
 
 @Injectable()
 export class UserRepository {
@@ -37,19 +38,20 @@ export class UserRepository {
   }
 
   /**
-   * User 테이블의 nickname 필드를 새로운 닉네임으로 업데이트하고 업데이트된 row 개수를 반환합니다.
+   * User 테이블의 컬럼을 갱신합니다.
    * @param userId 유저 아이디(PK)
-   * @param newNickname 닉네임
+   * @param nickname 닉네임
    * @returns Object { 업데이트된 row 개수 }
    */
-  async updateNickname(newNickname: string, userId: number): Promise<void> {
+  async update(
+    userModificationNicknameRequest: UserModificationNicknameRequest,
+    userId: number,
+  ): Promise<void> {
     try {
       await this.userModel
         .createQueryBuilder()
         .update()
-        .set({
-          nickname: newNickname,
-        })
+        .set(userModificationNicknameRequest)
         .where('id = :userId', { userId })
         .execute();
     } catch (err) {

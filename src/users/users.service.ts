@@ -22,23 +22,20 @@ export class UserService {
    * @param userId 유저 아이디(PK)
    * @returns Object { 업데이트된 row 개수 }
    */
-  async modifyNickname(
+  async modifyUser(
     userModificationNicknameRequest: UserModificationNicknameRequest,
     userId: number,
   ): Promise<UserEntireDataReturn> {
-    const { newNickname } = userModificationNicknameRequest;
+    const { nickname } = userModificationNicknameRequest;
 
     const user = await this.userRepository.findOneById(userId);
-
     if (!user) throw new HttpException('존재하지 않는 유저입니다.', 400);
 
-    const isExistedUser = await this.userRepository.findByNickname(newNickname);
-
+    const isExistedUser = await this.userRepository.findByNickname(nickname);
     if (isExistedUser)
       throw new HttpException('이미 존재하는 닉네임입니다.', 400);
 
-    await this.userRepository.updateNickname(newNickname, userId);
-
+    await this.userRepository.update(userModificationNicknameRequest, userId);
     return await this.userRepository.findOneById(userId);
   }
 
