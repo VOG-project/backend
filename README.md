@@ -432,7 +432,4 @@
 
 ## RDB ERD
 
-![vKf8dA5axr4Z6LA36](https://user-images.githubusercontent.com/81323697/233021633-93d69d6a-a02b-467b-8ef4-430d721f54f2.png)
-
-
-
+![4eyhsh](https://user-images.githubusercontent.com/81323697/233022946-5ea4a7fa-8698-4012-8cca-b2644ad2c8e4.png)
