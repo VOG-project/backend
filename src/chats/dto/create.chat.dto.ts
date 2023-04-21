@@ -42,10 +42,6 @@ export class SocketCreateRequest {
 
   @IsNotEmpty()
   @IsString()
-  nickname: string;
-
-  @IsNotEmpty()
-  @IsString()
   roomId: string;
 
   @IsString()

@@ -7,10 +7,6 @@ export class SocketRegisterInfoRequestDto {
 
   @IsNotEmpty()
   @IsString()
-  nickname: string;
-
-  @IsNotEmpty()
-  @IsString()
   roomId: string;
 
   @IsString()

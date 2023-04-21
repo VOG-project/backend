@@ -183,7 +183,7 @@ export class ChatsRepository {
   async createSocketInfo(
     socketCreateRequest: SocketCreateRequest,
   ): Promise<void> {
-    const { userId, roomId, socketId, nickname } = socketCreateRequest;
+    const { userId, roomId, socketId } = socketCreateRequest;
 
     try {
       await this.chatParticipantModel
@@ -192,7 +192,6 @@ export class ChatsRepository {
         .values({
           userId,
           socketId,
-          nickname,
           roomId,
         })
         .execute();

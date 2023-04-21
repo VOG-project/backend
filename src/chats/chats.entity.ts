@@ -89,12 +89,6 @@ export class ChatParticipantEntity {
 
   @Column({
     type: 'varchar',
-    length: 20,
-  })
-  nickname: string;
-
-  @Column({
-    type: 'varchar',
   })
   roomId: string;
 
