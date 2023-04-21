@@ -5,7 +5,6 @@ import {
   WebSocketGateway,
   WebSocketServer,
 } from '@nestjs/websockets';
-import { OnGatewayConnection } from '@nestjs/websockets/interfaces';
 import { Socket, Namespace } from 'socket.io';
 import {
   SocketLeaveChatRequestDto,
@@ -22,7 +21,7 @@ import { ChatsService } from './chats.service';
     credentials: true,
   },
 })
-export class ChatsGateway implements OnGatewayConnection {
+export class ChatsGateway {
   constructor(
     private readonly chatService: ChatsService,
     private readonly chatRepository: ChatsRepository,
@@ -30,6 +29,7 @@ export class ChatsGateway implements OnGatewayConnection {
 
   @WebSocketServer() webSocket: Namespace;
 
+  // 채팅방에 입장했을 경우 발생하는 이벤트
   @SubscribeMessage('enterChatRoom')
   async handleEnterChatRoom(
     @ConnectedSocket() socket: Socket,
@@ -37,14 +37,13 @@ export class ChatsGateway implements OnGatewayConnection {
   ) {
     try {
       const { userId, roomId } = body;
-
       body.socketId = socket.id;
 
+      // 유저가 채팅방에 참여 가능한 지 확인
       const { canParticipant } = await this.chatService.acceptParticipation(
         roomId,
         { userId },
       );
-
       if (!canParticipant) {
         socket.emit('acceptParticipant', '이미 가득 찬 방입니다.');
         socket.disconnect();
@@ -60,12 +59,15 @@ export class ChatsGateway implements OnGatewayConnection {
       );
 
       socket.in(roomId).emit('welcome', socket.id);
+
+      // 채팅방에 접속한 모든 멤버(본인 포함)에게 참여자와 채팅방 정보를 전달
       this.webSocket.to(roomId).emit('setChat', chatInfo);
     } catch (err) {
       console.log(err.message);
     }
   }
 
+  // 채팅방에서 나갈 경우 발생하는 이벤트
   @SubscribeMessage('leaveChatRoom')
   async handleLeaveChatRoom(
     @ConnectedSocket() socket: Socket,
@@ -77,8 +79,8 @@ export class ChatsGateway implements OnGatewayConnection {
       await this.chatRepository.deleteSocketInfo(userId);
       await this.chatRepository.subtractMemberCountOne(roomId);
 
+      // 채팅방에 속한 인원이 0명일 경우 채팅방 데이터를 삭제
       const { currentMember } = await this.chatRepository.findByRoomId(roomId);
-
       if (!currentMember) {
         await this.chatRepository.deleteRoom(roomId);
       }
@@ -95,6 +97,7 @@ export class ChatsGateway implements OnGatewayConnection {
     }
   }
 
+  // 채팅을 입력할 경우 발생하는 이벤트
   @SubscribeMessage('inputChat')
   handleInputChat(@ConnectedSocket() socket: Socket, @MessageBody() body: any) {
     try {
@@ -105,22 +108,24 @@ export class ChatsGateway implements OnGatewayConnection {
     }
   }
 
-  async handleConnection(@ConnectedSocket() socket: Socket) {
-    console.log(socket.id + '가 접속됨');
-  }
-
+  /**
+   * ---------------------------------WebRTC 시그널링----------------------------
+   */
+  // 참여자들 간의 offer 교환
   @SubscribeMessage('offer')
   handleOffer(@ConnectedSocket() socket: Socket, @MessageBody() body: any) {
     const { offer, targetId } = body;
     socket.to(targetId).emit('offer', { socketId: socket.id, offer });
   }
 
+  // 참여자들 간의 answer 교환
   @SubscribeMessage('answer')
   handleAnswer(@ConnectedSocket() socket: Socket, @MessageBody() body: any) {
     const { answer, targetId } = body;
     socket.to(targetId).emit('answer', { socketId: socket.id, answer });
   }
 
+  // 참여자들 간의 candidate 교환
   @SubscribeMessage('iceCandidate')
   handleIceCandidate(
     @ConnectedSocket() socket: Socket,

@@ -14,6 +14,9 @@ export class ChatsRepository {
     private readonly chatParticipantModel: Repository<ChatParticipantEntity>,
   ) {}
 
+  /**
+   * 채팅방 데이터를 생성합니다.
+   */
   async createRoom(data: ChatCreateRequest, roomId: string): Promise<void> {
     try {
       const { title, maximumMember, description } = data;
@@ -33,6 +36,9 @@ export class ChatsRepository {
     }
   }
 
+  /**
+   * 채팅방 아이디에 해당하는 데이터를 반환합니다.
+   */
   async findByRoomId(roomId: string): Promise<ChatEntireDataReturn> {
     try {
       return await this.chatRoomModel
@@ -48,6 +54,9 @@ export class ChatsRepository {
     }
   }
 
+  /**
+   * 방제목에 해당하는 채팅방 데이터를 반환합니다.
+   */
   async findRoomListByTitle(
     title: string,
     page: number,
@@ -75,6 +84,9 @@ export class ChatsRepository {
     }
   }
 
+  /**
+   * 유저 아이디에 해당하는 유저의 채팅 참여 유무를 반환합니다.
+   */
   async existsByUserId(userId: number): Promise<boolean> {
     try {
       return await this.chatParticipantModel
@@ -90,6 +102,9 @@ export class ChatsRepository {
     }
   }
 
+  /**
+   * 채팅방 아이디에 해당하는 현재 인원의 수를 1 증가시킵니다.
+   */
   async addMemberCountOne(roomId: string): Promise<void> {
     try {
       await this.chatRoomModel
@@ -108,6 +123,9 @@ export class ChatsRepository {
     }
   }
 
+  /**
+   * 채팅방 아이디에 해당하는 현재 인원의 수를 1 감소시킵니다.
+   */
   async subtractMemberCountOne(roomId: string): Promise<void> {
     try {
       await this.chatRoomModel
@@ -126,6 +144,9 @@ export class ChatsRepository {
     }
   }
 
+  /**
+   * 채팅방 아이디에 해당하는 채팅방 정보와 참여 중인 모든 유저의 데이터를 반환합니다.
+   */
   async findRoomAndParticipantInfo(roomId: string) {
     try {
       return await this.chatRoomModel
@@ -156,6 +177,9 @@ export class ChatsRepository {
     }
   }
 
+  /**
+   * 채팅방에 참여한 유저의 소켓 정보를 생성합니다.
+   */
   async createSocketInfo(
     socketCreateRequest: SocketCreateRequest,
   ): Promise<void> {
@@ -180,6 +204,9 @@ export class ChatsRepository {
     }
   }
 
+  /**
+   * 채팅방에서 나간 유저의 소켓 정보를 삭제합니다.
+   */
   async deleteSocketInfo(userId: number): Promise<void> {
     try {
       await this.chatParticipantModel
@@ -195,6 +222,9 @@ export class ChatsRepository {
     }
   }
 
+  /**
+   * 채팅방 아이디에 해당하는 채팅방 데이터를 삭제합니다.
+   */
   async deleteRoom(roomId: string): Promise<void> {
     try {
       await this.chatRoomModel
@@ -210,6 +240,9 @@ export class ChatsRepository {
     }
   }
 
+  /**
+   * 소켓 아이디에 해당하는 유저 소켓 정보를 반환합니다.
+   */
   async findParticipantBySocketId(socketId: string) {
     try {
       return await this.chatParticipantModel
@@ -225,6 +258,9 @@ export class ChatsRepository {
     }
   }
 
+  /**
+   * 조건에 해당하는 채팅방 정보를 페이지네이션하여 채팅방 총 개수와 함께 반환합니다.
+   */
   async findRoomList(chatRoomListCondition: ChatChatRoomListCondition) {
     try {
       const { page } = chatRoomListCondition;
