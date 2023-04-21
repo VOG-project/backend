@@ -38,7 +38,9 @@ export class AuthGuard implements CanActivate {
 
     let userId: number;
 
+    // JWT 토큰만 가져오기
     const accessToken = authorization.split(' ')[1];
+
     try {
       const verifiedAccessToken = this.jwtService.verify(accessToken, {
         secret: process.env.JWT_SECRET,
@@ -54,6 +56,8 @@ export class AuthGuard implements CanActivate {
         'DB에 유저에 대한 로그인 정보가 존재하지 않습니다. 다시 로그인하세요.',
         401,
       );
+
+    // DB에 저장된 토큰과 authorization 헤더의 토큰이 다르면 예외처리
     if (accessToken !== storedAccessToken)
       throw new HttpException(
         '다른 컴퓨터에서 로그인하였습니다. 로그아웃 처리해주세요.',

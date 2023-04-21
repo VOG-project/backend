@@ -78,7 +78,7 @@ export class UserRepository {
     }
   }
 
-  async findOneByOAuthId(oauthId: string) {
+  async findOneByOAuthId(oauthId: string): Promise<UserEntireDataReturn> {
     try {
       return await this.userModel
         .createQueryBuilder()

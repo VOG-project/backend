@@ -41,7 +41,7 @@ export class AuthController {
   async loginByNaver(
     @Body() authAuthorizedCode: AuthAuthorizedCode,
   ): Promise<AuthUserEntireDataReturn | AuthRedirectReturn> {
-    return await this.authService.requestNaverAccessToken(authAuthorizedCode);
+    return await this.authService.loginByNaver(authAuthorizedCode);
   }
 
   @Post('login/kakao')
@@ -62,6 +62,6 @@ export class AuthController {
     type: AuthRedirectReturn,
   })
   async loginByKakao(@Body() authAuthorizedCode: AuthAuthorizedCode) {
-    return await this.authService.requestKakaoAccessToken(authAuthorizedCode);
+    return await this.authService.loginByKakao(authAuthorizedCode);
   }
 }
