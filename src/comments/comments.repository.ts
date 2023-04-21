@@ -17,6 +17,9 @@ export class CommentsRepository {
     private readonly commentModel: Repository<CommentEntity>,
   ) {}
 
+  /**
+   * 댓글 데이터를 생성합니다.
+   */
   async create(
     commentRegisterRequest: CommentRegisterRequest,
   ): Promise<CommentPkIdReturn> {
@@ -33,6 +36,9 @@ export class CommentsRepository {
     }
   }
 
+  /**
+   * 댓글 아이디에 해당하는 데이터를 반환합니다.
+   */
   async findByCommentId(commentId: number): Promise<CommentEntireDataReturn> {
     try {
       return await this.commentModel
@@ -48,11 +54,16 @@ export class CommentsRepository {
     }
   }
 
+  /**
+   * 댓글 아이디와 페이지에 해당하는 데이터(댓글 + 답글)를 페이지네이션 하여 반환합니다.
+   */
   async findCommentAndReplyByPostId(
     commentGetCommentAndReplyCondition: CommentGetCommentAndReplyCondition,
   ) {
     try {
       const { postId, page } = commentGetCommentAndReplyCondition;
+      // comment, user, repliy 엔티티 조인
+      // null인 경우도 반환할 수 있도록 leftjoin
       const query = this.commentModel
         .createQueryBuilder('c')
         .innerJoin('c.user', 'cu')
@@ -135,21 +146,9 @@ export class CommentsRepository {
     // }
   }
 
-  async findCountByPostId(postId: number) {
-    try {
-      await this.commentModel
-        .createQueryBuilder()
-        .select()
-        .where('postId = :postId', { postId })
-        .getCount();
-    } catch (err) {
-      throw new HttpException(
-        `[MYSQL ERROR] findCountByPostId: ${err.message}`,
-        500,
-      );
-    }
-  }
-
+  /**
+   * 댓글 아이디에 해당하는 데이터를 업데이트합니다.
+   */
   async update(
     commentModifyRequest: CommentModifyRequest,
     commentId: number,
@@ -166,6 +165,9 @@ export class CommentsRepository {
     }
   }
 
+  /**
+   * 댓글 아이디에 해당하는 데이터의 존재 유무를 반환합니다.
+   */
   async checkExist(commentId: number): Promise<boolean> {
     try {
       return await this.commentModel
@@ -178,6 +180,9 @@ export class CommentsRepository {
     }
   }
 
+  /**
+   * 댓글 아이디에 해당하는 데이터를 삭제합니다.
+   */
   async delete(commentId: number): Promise<CommentDeletedCountReturn> {
     try {
       const deletedComment = await this.commentModel
