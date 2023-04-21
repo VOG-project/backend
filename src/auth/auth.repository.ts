@@ -10,6 +10,9 @@ export class AuthRepository {
     this.redis = this.redisService.getClient('login');
   }
 
+  /**
+   * 유저 아이디에 해당하는 토큰 데이터를 반환합니다.
+   */
   async findAuthInfo(userId: number): Promise<string> {
     try {
       return await this.redis.get(userId.toString());
@@ -18,6 +21,9 @@ export class AuthRepository {
     }
   }
 
+  /**
+   * 유저 아이디와 토큰 데이터를 생성합니다.
+   */
   async createAuthInfo(jwtAccessToken: string, userId: number): Promise<void> {
     try {
       await this.redis.set(userId.toString(), jwtAccessToken);
