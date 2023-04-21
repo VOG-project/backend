@@ -14,6 +14,9 @@ export class FriendRepository {
     private readonly friendModel: Repository<FriendEntity>,
   ) {}
 
+  /**
+   * 친구 데이터를 생성합니다.
+   */
   async create(userId: number, targetId: number): Promise<void> {
     try {
       await this.friendModel
@@ -29,6 +32,9 @@ export class FriendRepository {
     }
   }
 
+  /**
+   * 유저 아이디에 해당하는 친구들의 데이터를 반환합니다.
+   */
   async findFreindsByUserId(userId: number): Promise<FriendFollowingReturn[]> {
     try {
       return await this.friendModel
@@ -50,6 +56,9 @@ export class FriendRepository {
     }
   }
 
+  /**
+   * 유저 아이디와 타겟 아이디에 해당하는 데이터를 삭제합니다.
+   */
   async deleteFriend(
     userId: number,
     targetId: number,
