@@ -17,7 +17,7 @@ export class FriendService {
   ) {}
 
   /**
-   * 친구 추가 데이터를 생성합니다.
+   * 친구를 추가할 경우 데이터를 생성합니다.
    */
   async registerFriend(
     userId: number,
