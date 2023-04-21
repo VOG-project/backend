@@ -5,8 +5,6 @@
 - 목표: 게임을 함께 하고 싶은 유저 간의 커뮤니티 서비스 및 음성(+텍스트) 채팅 서비스 제공
 - [서비스 URL](https://talkgg.online/)
 
-<br />
-
 ## 👪 팀원 소개
 
 **윤태경**
@@ -20,6 +18,10 @@
 - Github : [@iHateAI](https://github.com/iHateAI)
 
 ## 서비스 기능
+
+![기능 설명 영상으로!]()
+
+<br />
 
 ## 서비스 디자인
 
@@ -42,6 +44,8 @@
 ![TailwindCSS](https://img.shields.io/badge/tailwindcss-%2338B2AC.svg?style=for-the-badge&logo=tailwind-css&logoColor=white)
 ![AWS](https://img.shields.io/badge/AWS-%23FF9900.svg?style=for-the-badge&logo=amazon-aws&logoColor=white)
 ![webRTC](https://img.shields.io/badge/webRTC-B59A30?style=for-the-badge&logo=webRTC&logoColor=white)
+![Git](https://img.shields.io/badge/git-%23F05033.svg?style=for-the-badge&logo=git&logoColor=white)
+![GitHub](https://img.shields.io/badge/github-%23121011.svg?style=for-the-badge&logo=github&logoColor=white)
 
 ### Back-End
 
@@ -428,4 +432,6 @@
 
 <br />
 
-## DB 
+## RDB ERD
+
+![4eyhsh](https://user-images.githubusercontent.com/81323697/233022946-5ea4a7fa-8698-4012-8cca-b2644ad2c8e4.png)
