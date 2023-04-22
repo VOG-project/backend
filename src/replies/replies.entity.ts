@@ -28,6 +28,11 @@ export class ReplyEntity {
   writerId: number;
 
   @Column({
+    type: 'int',
+  })
+  postId: number;
+
+  @Column({
     type: 'tinytext',
   })
   content: string;

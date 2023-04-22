@@ -20,6 +20,12 @@ export class ReplyEntireDataReturn {
   commentId: number;
 
   @ApiProperty({
+    example: 123,
+    description: '답글이 작성된 게시물 Id',
+  })
+  postId: number;
+
+  @ApiProperty({
     example: '댓글 달아봅니다~',
     description: '댓글 내용',
   })
