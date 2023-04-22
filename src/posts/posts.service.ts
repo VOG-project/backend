@@ -9,12 +9,14 @@ import {
 import { PostsRepository } from './posts.repository';
 import { PostModificationRequest } from './dto/modify.post.dto';
 import { LikeRepository } from './../like/like.repository';
+import { CommentsRepository } from 'src/comments/comments.repository';
 
 @Injectable()
 export class PostsService {
   constructor(
     private readonly postRepository: PostsRepository,
     private readonly likeRepository: LikeRepository,
+    private readonly commentRepository: CommentsRepository,
   ) {}
 
   /**
@@ -45,7 +47,12 @@ export class PostsService {
           post.id,
         );
 
-        return { ...likeIds, ...post };
+        const commentCount =
+          await this.commentRepository.findCommentAndReplyCountByPostId(
+            post.id,
+          );
+
+        return { ...likeIds, ...post, ...commentCount };
       }),
     );
 

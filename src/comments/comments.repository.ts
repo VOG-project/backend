@@ -1,6 +1,6 @@
 import { InjectRepository } from '@nestjs/typeorm';
 import { CommentEntity } from './comments.entity';
-import { Repository, DataSource } from 'typeorm';
+import { Repository } from 'typeorm';
 import { CommentRegisterRequest } from './dto/register.comment.dto';
 import { HttpException, Injectable } from '@nestjs/common';
 import {
