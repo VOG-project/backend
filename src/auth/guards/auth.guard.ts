@@ -7,8 +7,6 @@ import {
   Inject,
 } from '@nestjs/common';
 //import { Observable } from 'rxjs';
-import { RedisService } from '@liaoliaots/nestjs-redis';
-import Redis from 'ioredis';
 import { HttpExceptionFilter } from 'src/common/filters/http-exception.filter';
 import { JwtService } from '@nestjs/jwt';
 import { AuthRepository } from '../auth.repository';
@@ -16,16 +14,10 @@ import { AuthRepository } from '../auth.repository';
 @Injectable()
 @UseFilters(HttpExceptionFilter)
 export class AuthGuard implements CanActivate {
-  private readonly redis: Redis;
-
   constructor(
-    private readonly redisService: RedisService,
     private readonly jwtService: JwtService,
-    //private readonly authRepository: AuthRepository,
     @Inject(AuthRepository) private readonly authRepository: AuthRepository,
-  ) {
-    this.redis = this.redisService.getClient('login');
-  }
+  ) {}
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const request = context.switchToHttp().getRequest();
