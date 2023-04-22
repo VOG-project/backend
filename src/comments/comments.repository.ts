@@ -1,8 +1,8 @@
 import { InjectRepository } from '@nestjs/typeorm';
 import { CommentEntity } from './comments.entity';
-import { Repository } from 'typeorm';
+import { Repository, DataSource } from 'typeorm';
 import { CommentRegisterRequest } from './dto/register.comment.dto';
-import { HttpException } from '@nestjs/common';
+import { HttpException, Injectable } from '@nestjs/common';
 import {
   CommentEntireDataReturn,
   CommentPkIdReturn,
@@ -11,6 +11,7 @@ import {
 import { CommentModifyRequest } from './dto/modify.comment.dto';
 import { CommentGetCommentAndReplyCondition } from './dto/get.comment.dto';
 
+@Injectable()
 export class CommentsRepository {
   constructor(
     @InjectRepository(CommentEntity)
@@ -144,6 +145,21 @@ export class CommentsRepository {
     //     500,
     //   );
     // }
+  }
+
+  async findCommentAndReplyCountByPostId(postId: number) {
+    try {
+      const result = await this.commentModel.query(
+        `SELECT COUNT(1) + (SELECT COUNT(1) FROM reply WHERE postId = ?) AS commentCount FROM comment WHERE postId = ?`,
+        [postId, postId],
+      );
+      return result[0];
+    } catch (err) {
+      throw new HttpException(
+        `[MYSQL ERROR] findCommentAndReplyCountByPostId: ${err.message}`,
+        500,
+      );
+    }
   }
 
   /**
