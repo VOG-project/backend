@@ -5,10 +5,12 @@ import { PostsRepository } from './posts.repository';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { PostEntity } from './posts.entity';
 import { LikeModule } from 'src/like/like.module';
+import { CommentsModule } from 'src/comments/comments.module';
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([PostEntity]),
+    forwardRef(() => CommentsModule),
     forwardRef(() => LikeModule),
   ],
   providers: [PostsService, PostsRepository],
