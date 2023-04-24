@@ -2,132 +2,100 @@ import {
   Controller,
   UseFilters,
   UseInterceptors,
-  Post,
   Body,
-  Query,
+  Get,
+  Post,
   Delete,
   Param,
+  ParseIntPipe,
+  Patch,
+  Query,
+  UseGuards,
 } from '@nestjs/common';
-import { HttpExceptionFilter } from 'src/filters/http-exception.filter';
-import { SuccessInterceptor } from './../interceptors/success.interceptor';
-import { CommentRegisterRequestDto } from './dto/comment.request.dto';
-import {
-  CommentDeleteQueryDto,
-  CommentRegisterQueryDto,
-} from './dto/comment.query.dto';
-import { CommentsService } from './comments.service';
 import { ApiOperation, ApiResponse } from '@nestjs/swagger';
+import { SuccessInterceptor } from 'src/common/interceptors/success.interceptor';
+import { HttpExceptionFilter } from '../common/filters/http-exception.filter';
+import { CommentsService } from './comments.service';
+import { AuthGuard } from 'src/auth/guards/auth.guard';
+import { CommentRegisterRequest } from './dto/register.comment.dto';
 import {
-  CommentDeleteResponseDto,
-  CommentRegisterResponseDto,
-} from './dto/comment.response.dto';
-import { CommentDeleteParamDto } from './dto/comment.param.dto';
+  CommentEntireDataReturn,
+  CommentDeletedCountReturn,
+} from './dto/return.comment.dto';
+import { CommentModifyRequest } from './dto/modify.comment.dto';
+import { CommentGetCommentAndReplyCondition } from './dto/get.comment.dto';
 
 @Controller('comments')
+@UseGuards(AuthGuard)
 @UseFilters(HttpExceptionFilter)
 @UseInterceptors(SuccessInterceptor)
 export class CommentsController {
   constructor(private readonly commentService: CommentsService) {}
 
-  @Post()
+  @Get()
   @ApiOperation({
-    summary: '자유게시판 댓글 생성',
+    summary: '댓글 조회 API',
     tags: ['Comments'],
   })
   @ApiResponse({
-    status: 201,
-    description: '댓글 생성 성공',
-    type: CommentRegisterResponseDto,
+    description: '댓글과 댓글에 포함된 대댓글을 반환합니다.',
   })
-  async registerFreePostComment(
-    @Body() body: CommentRegisterRequestDto,
-    @Query() query: CommentRegisterQueryDto,
-  ): Promise<CommentRegisterResponseDto> {
-    return await this.commentService.registerComment(body, query);
-  }
-
-  @Delete(':commentId')
-  @ApiOperation({
-    summary: '자유게시판 댓글 삭제',
-    tags: ['Comments'],
-  })
-  @ApiResponse({
-    status: 201,
-    description: '댓글 삭제 성공',
-    type: CommentDeleteResponseDto,
-  })
-  async deleteFreePostComment(
-    @Param() param: CommentDeleteParamDto,
-    @Query() query: CommentDeleteQueryDto,
-  ): Promise<CommentDeleteResponseDto> {
-    return await this.commentService.deleteComment(param, query);
+  async getCommentAndReply(
+    @Query()
+    commentGetCommentAndReplyCondition: CommentGetCommentAndReplyCondition,
+  ) {
+    return await this.commentService.getComment(
+      commentGetCommentAndReplyCondition,
+    );
   }
 
   @Post()
   @ApiOperation({
-    summary: '유머게시판 댓글 생성',
+    summary: '댓글 생성 API',
     tags: ['Comments'],
   })
   @ApiResponse({
-    status: 201,
-    description: '댓글 생성 성공',
-    type: CommentRegisterResponseDto,
+    description: '등록한 댓글에 대한 모든 데이터를 반환합니다.',
+    type: CommentEntireDataReturn,
   })
-  async registerHumorPostComment(
-    @Body() body: CommentRegisterRequestDto,
-    @Query() query: CommentRegisterQueryDto,
-  ): Promise<CommentRegisterResponseDto> {
-    return await this.commentService.registerComment(body, query);
+  async registerComment(
+    @Body() commentRegisterRequest: CommentRegisterRequest,
+  ): Promise<CommentEntireDataReturn> {
+    return await this.commentService.registerComment(commentRegisterRequest);
+  }
+
+  @Patch(':commentId')
+  @ApiOperation({
+    summary: '댓글 수정 API',
+    tags: ['Comments'],
+  })
+  @ApiResponse({
+    description: '수정한 댓글에 대한 모든 데이터를 반환합니다.',
+    type: CommentEntireDataReturn,
+  })
+  async modifyComment(
+    @Body() commentModifyRequest: CommentModifyRequest,
+    @Param('commentId', ParseIntPipe) commentId: number,
+  ): Promise<CommentEntireDataReturn> {
+    return await this.commentService.modifyComment(
+      commentModifyRequest,
+      commentId,
+    );
   }
 
   @Delete(':commentId')
   @ApiOperation({
-    summary: '유머게시판 댓글 삭제',
+    summary: '댓글 삭제 API',
     tags: ['Comments'],
   })
   @ApiResponse({
-    status: 201,
-    description: '댓글 삭제 성공',
-    type: CommentDeleteResponseDto,
+    description:
+      '삭제된 데이터 row 개수를 반환합니다. (1이면 삭제, 0이면 삭제되지 않거나 없는 데이터에 접근)',
+    type: CommentDeletedCountReturn,
   })
-  async deleteHumorPostComment(
-    @Param() param: CommentDeleteParamDto,
-    @Query() query: CommentDeleteQueryDto,
-  ): Promise<CommentDeleteResponseDto> {
-    return await this.commentService.deleteComment(param, query);
-  }
-
-  @Post()
-  @ApiOperation({
-    summary: '대회소식게시판 댓글 생성',
-    tags: ['Comments'],
-  })
-  @ApiResponse({
-    status: 201,
-    description: '댓글 생성 성공',
-    type: CommentRegisterResponseDto,
-  })
-  async registerChampionshipPostComment(
-    @Body() body: CommentRegisterRequestDto,
-    @Query() query: CommentRegisterQueryDto,
-  ): Promise<CommentRegisterResponseDto> {
-    return await this.commentService.registerComment(body, query);
-  }
-
-  @Delete(':commentId')
-  @ApiOperation({
-    summary: '대회소식게시판 댓글 삭제',
-    tags: ['Comments'],
-  })
-  @ApiResponse({
-    status: 201,
-    description: '댓글 삭제 성공',
-    type: CommentDeleteResponseDto,
-  })
-  async deleteChampionshipPostComment(
-    @Param() param: CommentDeleteParamDto,
-    @Query() query: CommentDeleteQueryDto,
-  ): Promise<CommentDeleteResponseDto> {
-    return await this.commentService.deleteComment(param, query);
+  async removeComment(
+    @Param('commentId', ParseIntPipe) commentId: number,
+  ): Promise<CommentDeletedCountReturn> {
+    return await this.commentService.removeComment(commentId);
   }
 }

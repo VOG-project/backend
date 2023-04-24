@@ -1,235 +1,360 @@
-import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { DataSource, Repository } from 'typeorm';
-import { PostUpdateRequestDto } from './dto/post.request.dto';
-import { PostRegisterRequestDto } from './dto/post.request.dto';
-import { FreePost, HumorPost } from 'src/posts/posts.entity';
-import { ChampionshipPost } from './posts.entity';
+import { PostEntity } from './posts.entity';
+import { Repository } from 'typeorm';
+import { PostCreateRequest } from './dto/create.post.dto';
+import { HttpException } from '@nestjs/common';
 import {
-  PostRegisterResponseDto,
-  PostDeleteResponseDto,
-  PostUpdateResponseDto,
-  PostGetListResponseDto,
-  PostGetResponseDto,
-} from './dto/post.response.dto';
+  PostDeletedCountReturn,
+  PostEntireDataReturn,
+  PostPkIdReturn,
+  PostPagenationReturn,
+} from './dto/return.post.dto';
+import { PostModificationRequest } from './dto/modify.post.dto';
+import { Redis } from 'ioredis';
+import { RedisService } from '@liaoliaots/nestjs-redis';
+import { PostGetListCondition, PostSearchCondition } from './dto/get.post.dto';
 
-@Injectable()
 export class PostsRepository {
+  private readonly redis: Redis;
+
   constructor(
-    private readonly dataSource: DataSource,
-    @InjectRepository(FreePost) private freePostModel: Repository<FreePost>,
-    @InjectRepository(HumorPost) private humorPostModel: Repository<HumorPost>,
-    @InjectRepository(ChampionshipPost)
-    private championshipPostModel: Repository<ChampionshipPost>,
-  ) {}
-
-  async findFreePostById(id: number): Promise<PostGetResponseDto> {
-    const post = await this.freePostModel
-      .createQueryBuilder('p')
-      .innerJoin('p.user', 'u')
-      .select([
-        'p.id',
-        'p.writerId',
-        'p.title',
-        'p.content',
-        'p.likeCount',
-        'p.gameCategory',
-        'p.updatedAt',
-        'u.id',
-        'u.email',
-        'u.nickname',
-        'u.sex',
-        'u.profileUrl',
-        'u.updatedAt',
-      ])
-      .where('p.id = :id', { id })
-      .getOne();
-
-    return post;
+    @InjectRepository(PostEntity)
+    private readonly postModel: Repository<PostEntity>,
+    private readonly redisService: RedisService,
+  ) {
+    this.redis = this.redisService.getClient('cache');
   }
 
-  async findHumorPostById(id: number): Promise<PostGetResponseDto> {
-    const post = await this.humorPostModel
-      .createQueryBuilder('p')
-      .innerJoin('p.user', 'u')
-      .select([
-        'p.id',
-        'p.writerId',
-        'p.title',
-        'p.content',
-        'p.likeCount',
-        'p.gameCategory',
-        'p.updatedAt',
-        'u.id',
-        'u.email',
-        'u.nickname',
-        'u.sex',
-        'u.profileUrl',
-        'u.updatedAt',
-      ])
-      .where('p.id = :id', { id })
-      .getOne();
+  /**
+   * 게시물 데이터를 생성합니다.
+   */
+  async create(postRequestDto: PostCreateRequest): Promise<PostPkIdReturn> {
+    try {
+      const insertedPost = await this.postModel
+        .createQueryBuilder()
+        .insert()
+        .values(postRequestDto)
+        .execute();
 
-    return post;
+      return { postId: insertedPost.identifiers[0].id };
+    } catch (err) {
+      throw new HttpException(`[MYSQL ERROR] create: ${err.message}`, 500);
+    }
   }
 
-  async findChampionshipPostById(id: number): Promise<PostGetResponseDto> {
-    const post = await this.championshipPostModel
-      .createQueryBuilder('p')
-      .innerJoin('p.user', 'u')
-      .select([
-        'p.id',
-        'p.writerId',
-        'p.title',
-        'p.content',
-        'p.likeCount',
-        'p.gameCategory',
-        'p.updatedAt',
-        'u.id',
-        'u.email',
-        'u.nickname',
-        'u.sex',
-        'u.profileUrl',
-        'u.updatedAt',
-      ])
-      .where('p.id = :id', { id })
-      .getOne();
-
-    return post;
+  /**
+   * 게시물 아이디에 해당하는 데이터를 반환합니다.
+   */
+  async findOneById(id: number): Promise<PostEntireDataReturn> {
+    try {
+      return await this.postModel
+        .createQueryBuilder()
+        .select()
+        .where('id = :id', { id })
+        .getOne();
+    } catch (err) {
+      throw new HttpException(`[MYSQL ERROR] findOneById: ${err.message}`, 500);
+    }
   }
 
-  async find10EachListFromChampionshipPost(
-    page: number,
-  ): Promise<PostGetListResponseDto[]> {
-    const count = 10;
+  /**
+   * 게시물 카테고리와 페이지에 해당하는 게시물 리스트를 반환합니다.
+   */
+  async findPostListByBoardType(
+    postGetListCondition: PostGetListCondition,
+  ): Promise<PostPagenationReturn> {
+    const { board, page } = postGetListCondition;
+    try {
+      const query = this.postModel
+        .createQueryBuilder('p')
+        .innerJoin('p.user', 'u')
+        .select([
+          'p.id',
+          'p.title',
+          'p.view',
+          'p.postCategory',
+          'p.createdAt',
+          'u.id',
+          'u.nickname',
+          'u.profileUrl',
+        ])
+        .where('p.postCategory = :postCategory', { postCategory: board });
 
-    const posts = await this.championshipPostModel
-      .createQueryBuilder('p')
-      .innerJoinAndSelect('p.user', 'u')
-      .select([
-        'p.id',
-        'p.writerId',
-        'p.title',
-        'p.likeCount',
-        'p.gameCategory',
-        'p.createdAt',
-        'u.id',
-        'u.nickname',
-      ])
-      .offset(count * (page - 1))
-      .limit(count)
-      .orderBy('p.id', 'DESC')
-      .getMany();
+      // 10개씩 페이지네이션
+      const result = await query
+        .offset(10 * (page - 1))
+        .limit(10)
+        .orderBy('p.id', 'DESC')
+        .getMany();
 
-    return posts;
+      // 게시물 총 개수
+      const totalCount = await query.getCount();
+
+      return { totalCount, result };
+    } catch (err) {
+      throw new HttpException(
+        `[MYSQL ERROR] findPostListByBoardType: ${err.message}`,
+        500,
+      );
+    }
   }
 
-  async find10EachListFromHumorPost(
-    page: number,
-  ): Promise<PostGetListResponseDto[]> {
-    const count = 10;
+  /**
+   * 게시물 카테고리와 페이지, 닉네임에 해당하는 게시물 리스트를 반환합니다.
+   */
+  async findPostListByNickname(postSearchCondition: PostSearchCondition) {
+    const { page, board, keyword } = postSearchCondition;
+    try {
+      const query = this.postModel
+        .createQueryBuilder('p')
+        .innerJoin('p.user', 'u')
+        .select([
+          'p.id',
+          'p.title',
+          'p.view',
+          'p.postCategory',
+          'p.createdAt',
+          'u.id',
+          'u.nickname',
+          'u.profileUrl',
+        ])
+        .where('u.nickname LIKE :keyword', { keyword: `%${keyword}%` })
+        .andWhere('p.postCategory = :postCategory', { postCategory: board });
 
-    const posts = await this.humorPostModel
-      .createQueryBuilder('p')
-      .innerJoinAndSelect('p.user', 'u')
-      .select([
-        'p.id',
-        'p.writerId',
-        'p.title',
-        'p.likeCount',
-        'p.gameCategory',
-        'p.createdAt',
-        'u.id',
-        'u.nickname',
-      ])
-      .offset(count * (page - 1))
-      .limit(count)
-      .orderBy('p.id', 'DESC')
-      .getMany();
+      // 10개씩 페이지네이션
+      const result = await query
+        .offset(10 * (page - 1))
+        .limit(10)
+        .orderBy('p.id', 'DESC')
+        .getMany();
 
-    return posts;
+      // 게시물 총 개수
+      const totalCount = await query.getCount();
+
+      return { totalCount, result };
+    } catch (err) {
+      throw new HttpException(
+        `[MYSQL ERROR] findPostListByNickname: ${err.message}`,
+        500,
+      );
+    }
   }
 
-  async find10EachListFromFreePost(
-    page: number,
-  ): Promise<PostGetListResponseDto[]> {
-    const count = 10;
+  /**
+   * 게시물 카테고리와 페이지, 닉네임에 해당하는 게시물 리스트를 반환합니다.
+   */
+  async findPostListByTitle(
+    postSearchCondition: PostSearchCondition,
+  ): Promise<PostPagenationReturn> {
+    const { page, board, keyword } = postSearchCondition;
+    try {
+      const query = this.postModel
+        .createQueryBuilder('p')
+        .innerJoin('p.user', 'u')
+        .select([
+          'p.id',
+          'p.title',
+          'p.view',
+          'p.postCategory',
+          'p.createdAt',
+          'u.id',
+          'u.nickname',
+          'u.profileUrl',
+        ])
+        .where('p.title LIKE :keyword', { keyword: `%${keyword}%` })
+        .andWhere('p.postCategory = :postCategory', { postCategory: board });
 
-    const posts = await this.freePostModel
-      .createQueryBuilder('p')
-      .innerJoinAndSelect('p.user', 'u')
-      .select([
-        'p.id',
-        'p.writerId',
-        'p.title',
-        'p.likeCount',
-        'p.gameCategory',
-        'p.createdAt',
-        'u.id',
-        'u.nickname',
-      ])
-      .offset(count * (page - 1))
-      .limit(count)
-      .orderBy('p.id', 'DESC')
-      .getMany();
+      // 10개씩 페이지네이션
+      const result = await query
+        .offset(10 * (page - 1))
+        .limit(10)
+        .orderBy('p.id', 'DESC')
+        .getMany();
 
-    return posts;
+      // 게시물 총 개수
+      const totalCount = await query.getCount();
+
+      return { totalCount, result };
+    } catch (err) {
+      throw new HttpException(
+        `[MYSQL ERROR] findPostListByTitle: ${err.message}`,
+        500,
+      );
+    }
   }
 
-  async delete(
+  /**
+   * 게시물의 view(조회수) 컬럼을 1 증가시킵니다.
+   */
+  async addView(postId: number) {
+    try {
+      return await this.postModel
+        .createQueryBuilder()
+        .update()
+        .set({ view: () => 'view + 1' })
+        .where('id = :postId', { postId })
+        .execute();
+    } catch (err) {
+      throw new HttpException(`[MYSQL ERROR] addView: ${err.message}`, 500);
+    }
+  }
+
+  /**
+   * 게시물 아이디에 해당하는 데이터가 존재하는 지 확인합니다.
+   */
+  async checkExist(postId: number) {
+    try {
+      return await this.postModel
+        .createQueryBuilder()
+        .select()
+        .where('id = :postId', { postId })
+        .getExists();
+    } catch (err) {
+      throw new HttpException(`[MYSQL ERROR] checkExist: ${err.message}`, 500);
+    }
+  }
+
+  async findPostAndUserById(id: number): Promise<PostEntireDataReturn> {
+    try {
+      console.log(id);
+      return await this.postModel
+        .createQueryBuilder('p')
+        .innerJoin('p.user', 'u')
+        .select([
+          'p.id',
+          'p.title',
+          'p.content',
+          'p.postCategory',
+          'p.view',
+          'p.createdAt',
+          'p.updatedAt',
+          'u.id',
+          'u.nickname',
+          'u.profileUrl',
+          'u.updatedAt',
+        ])
+        .where('p.id = :id', { id })
+        .getOne();
+    } catch (err) {
+      throw new HttpException(`[MYSQL ERROR] findOneById: ${err.message}`, 500);
+    }
+  }
+
+  /**
+   * 게시물 아이디에 해당하는 데이터를 캐싱합니다.
+   */
+  async findCachingPost(postId: number): Promise<string> {
+    return await this.redis.get(postId.toString());
+  }
+
+  /**
+   * mysql에서 가져온 게시물 데이터를 캐시 데이터로 저장합니다.
+   */
+  async writeCachingPost(
     postId: number,
-    targetEntity: string,
-  ): Promise<PostDeleteResponseDto> {
-    const deletedResult = await this.dataSource
-      .createQueryBuilder()
-      .delete()
-      .from(targetEntity)
-      .where('id = :id', { id: postId })
-      .execute();
-
-    return { deletedCount: deletedResult.affected };
+    post: PostEntireDataReturn,
+  ): Promise<void> {
+    await this.redis.set(postId.toString(), JSON.stringify(post));
+    await this.redis.expire(postId.toString(), 60 * 60 * 12 * 1);
   }
 
-  async create(
-    data: PostRegisterRequestDto,
-    targetEntity: string,
-  ): Promise<PostRegisterResponseDto> {
-    const { title, content, gameCategory, writerId } = data;
+  // async findPostAndComments(postId: number): Promise<PostAndCommentsReturn> {
+  //   try {
+  //     return await this.postModel
+  //       .createQueryBuilder('p')
+  //       .innerJoin('p.user', 'pu')
+  //       .innerJoin('p.comments', 'c')
+  //       .innerJoin('c.reply', 'r')
+  //       .innerJoin('c.user', 'cu')
+  //       .innerJoin('r.user', 'ru')
+  //       .select([
+  //         'p.id',
+  //         'p.title',
+  //         'p.content',
+  //         'p.likeCount',
+  //         'p.postCategory',
+  //         'p.createdAt',
+  //         'p.updatedAt',
+  //         'pu.id',
+  //         'pu.nickname',
+  //         'c.id',
+  //         'c.content',
+  //         'c.group',
+  //         'c.sequence',
+  //         'c.createdAt',
+  //         'c.updatedAt',
+  //         'cu.id',
+  //         'cu.nickname',
+  //         'r.id',
+  //         'r.content',
+  //         'r.group',
+  //         'r.sequence',
+  //         'r.createdAt',
+  //         'r.updatedAt',
+  //         'ru.id',
+  //         'ru.nickname',
+  //       ])
+  //       .where('p.id = :postId', { postId })
+  //       .andWhere('c.id = r.group')
+  //       .andWhere('r.sequence != 0')
+  //       .orderBy('c.id', 'ASC')
+  //       .addOrderBy('c.sequence', 'ASC')
+  //       .getOne();
+  //   } catch (err) {
+  //     throw new HttpException(
+  //       `[MYSQL ERROR] findPostAndComments: ${err.message}`,
+  //       500,
+  //     );
+  //   }
+  // }
 
-    const insertedResult = await this.dataSource
-      .createQueryBuilder()
-      .insert()
-      .into(targetEntity)
-      .values([
-        {
-          title,
-          content,
-          gameCategory,
-          writerId,
-        },
-      ])
-      .execute();
-
-    return { postId: insertedResult.identifiers[0].id };
-  }
-
+  /**
+   * Dto에 담긴 데이터로 row를 갱신합니다.
+   */
   async update(
-    data: PostUpdateRequestDto,
+    postModificationRequest: PostModificationRequest,
     postId: number,
-    targetEntity: string,
-  ): Promise<PostUpdateResponseDto> {
-    const { title, content } = data;
+  ): Promise<void> {
+    try {
+      await this.postModel
+        .createQueryBuilder()
+        .update()
+        .set(postModificationRequest)
+        .where('id = :postId', { postId })
+        .execute();
+    } catch (err) {
+      throw new HttpException(`[MYSQL ERROR] updatePost: ${err.message}`, 500);
+    }
+  }
 
-    const updatedResult = await this.dataSource
-      .createQueryBuilder()
-      .update(targetEntity)
-      .set({
-        title,
-        content,
-      })
-      .where('id = :id', { id: postId })
-      .execute();
+  /**
+   * 게시물 아이디에 해당하는 게시물 데이터를 삭제합니다.
+   */
+  async deletePost(postId: number): Promise<PostDeletedCountReturn> {
+    try {
+      const deletedPost = await this.postModel
+        .createQueryBuilder()
+        .delete()
+        .where('id = :postId', { postId })
+        .execute();
 
-    return { updatedCount: updatedResult.affected };
+      return { deletedCount: deletedPost.affected };
+    } catch (err) {
+      throw new HttpException(`[MYSQL ERROR] deletePost: ${err.message}`, 500);
+    }
+  }
+
+  /**
+   * 게시물 아이디에 해당하는 게시물 캐시 데이터를 삭제합니다.
+   */
+  async deleteCachingPost(postId: number): Promise<void> {
+    try {
+      await this.redis.del(postId.toString());
+    } catch (err) {
+      throw new HttpException(
+        `[REDIS ERROR] deleteCachingPost: ${err.message}`,
+        500,
+      );
+    }
   }
 }

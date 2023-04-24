@@ -2,24 +2,27 @@ import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { ConfigModule } from '@nestjs/config';
-import { MongooseModule } from '@nestjs/mongoose';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { NestModule } from '@nestjs/common/interfaces/modules';
 import { MiddlewareConsumer } from '@nestjs/common/interfaces/middleware';
-import { LoggerMiddleware } from './middlewares/logger.middleware';
+import { LoggerMiddleware } from './common/middlewares/logger.middleware';
 import { UsersModule } from './users/users.module';
-import { User } from './users/users.entity';
+import { UserEntity } from './users/users.entity';
 import { AuthModule } from './auth/auth.module';
 import { RedisModule } from '@liaoliaots/nestjs-redis';
-import { PostsModule } from './posts/posts.module';
-import { FreePost, HumorPost, ChampionshipPost } from './posts/posts.entity';
 import { UploadsModule } from './uploads/uploads.module';
+import { ChatsModule } from './chats/chats.module';
+import { ChatParticipantEntity, ChatRoomEntity } from './chats/chats.entity';
+import { PostsModule } from './posts/posts.module';
+import { PostEntity } from 'src/posts/posts.entity';
 import { CommentsModule } from './comments/comments.module';
-import {
-  ChampionshipPostComment,
-  FreePostComment,
-  HumorPostComment,
-} from './comments/comments.entity';
+import { CommentEntity } from './comments/comments.entity';
+import { LikeModule } from './like/like.module';
+import { FriendModule } from './friend/friend.module';
+import { FriendEntity } from './friend/friend.entity';
+import { JwtModule } from '@nestjs/jwt';
+import { RepliesModule } from './replies/replies.module';
+import { ReplyEntity } from './replies/replies.entity';
 
 @Module({
   imports: [
@@ -27,7 +30,28 @@ import {
       isGlobal: true,
       cache: true,
     }),
-    MongooseModule.forRoot(process.env.MONGO_CONNECTION),
+    RedisModule.forRoot({
+      config: [
+        {
+          namespace: 'login',
+          host: process.env.REDIS_SESSION_HOST,
+          port: parseInt(process.env.REDIS_SESSION_PORT, 10),
+          password: process.env.REDIS_SESSION_PASSWORD,
+        },
+        {
+          namespace: 'like',
+          host: process.env.REDIS_LIKE_HOST,
+          port: parseInt(process.env.REDIS_LIKE_PORT, 10),
+          password: process.env.REDIS_LIKE_PASSWORD,
+        },
+        {
+          namespace: 'cache',
+          host: process.env.REDIS_CACHE_HOST,
+          port: parseInt(process.env.REDIS_CACHE_PORT, 10),
+          password: process.env.REDIS_CACHE_PASSWORD,
+        },
+      ],
+    }),
     TypeOrmModule.forRoot({
       type: 'mysql',
       host: process.env.MYSQL_HOST,
@@ -35,30 +59,34 @@ import {
       username: process.env.MYSQL_USER,
       password: process.env.MYSQL_PASSWORD,
       entities: [
-        User,
-        FreePost,
-        HumorPost,
-        ChampionshipPost,
-        FreePostComment,
-        HumorPostComment,
-        ChampionshipPostComment,
+        UserEntity,
+        ChatRoomEntity,
+        ChatParticipantEntity,
+        PostEntity,
+        CommentEntity,
+        FriendEntity,
+        ReplyEntity,
       ],
       synchronize: true,
       database: 'vog',
       logging: true,
     }),
-    RedisModule.forRoot({
-      config: {
-        host: process.env.REDIS_HOST,
-        port: parseInt(process.env.REDIS_PORT, 10),
-        password: process.env.REDIS_PASSWORD,
+    JwtModule.register({
+      global: true,
+      secret: process.env.JWT_SECRET,
+      signOptions: {
+        expiresIn: '7d',
       },
     }),
     UsersModule,
     AuthModule,
-    PostsModule,
     UploadsModule,
+    ChatsModule,
+    PostsModule,
     CommentsModule,
+    LikeModule,
+    FriendModule,
+    RepliesModule,
   ],
   controllers: [AppController],
   providers: [AppService],

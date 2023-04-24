@@ -2,93 +2,51 @@ import {
   Entity,
   Column,
   PrimaryGeneratedColumn,
-  Check,
   OneToMany,
+  CreateDateColumn,
+  UpdateDateColumn,
 } from 'typeorm';
-import { CreatedUpdatedDate } from 'src/commonEntities/date.common.entity';
-import { IsEmail, IsString, IsInt, IsNotEmpty } from 'class-validator';
-import { ApiProperty } from '@nestjs/swagger';
-import { FreePost, HumorPost } from 'src/posts/posts.entity';
-import { ChampionshipPost } from './../posts/posts.entity';
-import {
-  ChampionshipPostComment,
-  FreePostComment,
-  HumorPostComment,
-} from './../comments/comments.entity';
+import { CommentEntity } from 'src/comments/comments.entity';
+import { PostEntity } from 'src/posts/posts.entity';
+import { FriendEntity } from 'src/friend/friend.entity';
+import { ReplyEntity } from 'src/replies/replies.entity';
+import { Exclude } from 'class-transformer';
 
 @Entity({
-  engine: 'InnoDB',
+  name: 'user',
 })
-@Check(`"sex IN ("남", "여")"`)
-export class User extends CreatedUpdatedDate {
-  @ApiProperty({
-    example: '35',
-    description: '식별아이디',
-  })
+export class UserEntity {
   @PrimaryGeneratedColumn()
-  @IsInt()
-  @IsNotEmpty()
   id: number;
 
-  @ApiProperty({
-    example: 'test10@naver.com',
-    description: '이메일',
-    required: true,
-  })
   @Column({
     type: 'varchar',
-    length: 20,
+    length: 50,
     unique: true,
   })
-  @IsEmail()
-  @IsNotEmpty()
-  email: string;
+  @Exclude()
+  oauthId: string;
 
-  @ApiProperty({
-    example: 'efo234a08sef',
-    description: '비밀번호',
-    required: true,
-  })
   @Column({
     type: 'varchar',
-    length: 100,
-    unique: true,
+    length: 10,
   })
-  @IsString()
-  @IsNotEmpty()
-  password: string;
+  @Exclude()
+  provider: string;
 
-  @ApiProperty({
-    example: '네스트좋아',
-    description: '닉네임',
-    required: true,
-  })
   @Column({
     type: 'varchar',
     length: 10,
     unique: true,
   })
-  @IsString()
-  @IsNotEmpty()
   nickname: string;
 
-  @ApiProperty({
-    example: '남',
-    description: '성별',
-    required: true,
-  })
   @Column({
     type: 'char',
     length: 2,
   })
-  @IsString()
-  @IsNotEmpty()
   sex: string;
 
-  @ApiProperty({
-    example: 'https://www.vog-storage/user/efsef.jpg',
-    description: '유저 프로필 사진 URL',
-  })
   @Column({
     type: 'varchar',
     length: 120,
@@ -96,30 +54,24 @@ export class User extends CreatedUpdatedDate {
   })
   profileUrl: string;
 
-  @OneToMany(() => FreePost, (freePost) => freePost.user)
-  freePost: FreePost[];
+  @CreateDateColumn()
+  createdAt: Date;
 
-  @OneToMany(() => HumorPost, (humorPost) => humorPost.user)
-  humorPost: HumorPost[];
+  @UpdateDateColumn()
+  updatedAt: Date;
 
-  @OneToMany(
-    () => ChampionshipPost,
-    (championshipPost) => championshipPost.user,
-  )
-  championshipPost: ChampionshipPost[];
+  @OneToMany(() => PostEntity, (post) => post.user)
+  posts: PostEntity[];
 
-  @OneToMany(() => FreePostComment, (freePostComment) => freePostComment.user)
-  freePostComment: FreePostComment[];
+  @OneToMany(() => CommentEntity, (comment) => comment.user)
+  comments: CommentEntity[];
 
-  @OneToMany(
-    () => HumorPostComment,
-    (humorPostComment) => humorPostComment.user,
-  )
-  humorPostComment: HumorPostComment[];
+  @OneToMany(() => ReplyEntity, (reply) => reply.user)
+  replies: ReplyEntity[];
 
-  @OneToMany(
-    () => ChampionshipPostComment,
-    (championshipPostComment) => championshipPostComment.user,
-  )
-  championshipPostComment: ChampionshipPostComment[];
+  @OneToMany(() => FriendEntity, (friend) => friend.follower)
+  followers: FriendEntity[];
+
+  @OneToMany(() => FriendEntity, (friend) => friend.following)
+  following: FriendEntity[];
 }

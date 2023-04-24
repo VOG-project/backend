@@ -1,23 +1,18 @@
-import { Module } from '@nestjs/common';
+import { Module, forwardRef } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { PostsModule } from 'src/posts/posts.module';
 import { CommentsController } from './comments.controller';
-import {
-  ChampionshipPostComment,
-  FreePostComment,
-  HumorPostComment,
-} from './comments.entity';
+import { CommentEntity } from './comments.entity';
 import { CommentsRepository } from './comments.repository';
 import { CommentsService } from './comments.service';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([
-      FreePostComment,
-      HumorPostComment,
-      ChampionshipPostComment,
-    ]),
+    TypeOrmModule.forFeature([CommentEntity]),
+    forwardRef(() => PostsModule),
   ],
   controllers: [CommentsController],
   providers: [CommentsService, CommentsRepository],
+  exports: [CommentsRepository],
 })
 export class CommentsModule {}

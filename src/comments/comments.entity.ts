@@ -1,66 +1,57 @@
-import { Entity, JoinColumn, ManyToOne } from 'typeorm';
-import { CommonCommentEntity } from './../commonEntities/comment.common.entity';
-import { User } from 'src/users/users.entity';
-import { FreePost, HumorPost } from 'src/posts/posts.entity';
-import { ChampionshipPost } from './../posts/posts.entity';
+import { PostEntity } from 'src/posts/posts.entity';
+import { ReplyEntity } from 'src/replies/replies.entity';
+import { UserEntity } from 'src/users/users.entity';
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+  CreateDateColumn,
+  UpdateDateColumn,
+  OneToMany,
+} from 'typeorm';
 
 @Entity({
-  name: 'freePostComment',
+  name: 'comment',
 })
-export class FreePostComment extends CommonCommentEntity {
-  @ManyToOne(() => User, (user) => user.freePostComment, {
-    onDelete: 'CASCADE',
-    onUpdate: 'CASCADE',
-  })
-  @JoinColumn({ name: 'writerId' })
-  user: User;
+export class CommentEntity {
+  @PrimaryGeneratedColumn()
+  id: number;
 
-  @ManyToOne(() => FreePost, (freePost) => freePost.freePostComment, {
-    onDelete: 'CASCADE',
-    onUpdate: 'CASCADE',
+  @Column({
+    type: 'int',
   })
-  @JoinColumn({ name: 'postId' })
-  freePost: FreePost;
-}
+  writerId: number;
 
-@Entity({
-  name: 'humorPostComment',
-})
-export class HumorPostComment extends CommonCommentEntity {
-  @ManyToOne(() => User, (user) => user.humorPostComment, {
-    onDelete: 'CASCADE',
-    onUpdate: 'CASCADE',
+  @Column({
+    type: 'int',
   })
-  @JoinColumn({ name: 'writerId' })
-  user: User;
+  postId: number;
 
-  @ManyToOne(() => HumorPost, (humorPost) => humorPost.humorPostComment, {
-    onDelete: 'CASCADE',
-    onUpdate: 'CASCADE',
+  @Column({
+    type: 'tinytext',
   })
-  @JoinColumn({ name: 'postId' })
-  humorPost: HumorPost;
-}
+  content: string;
 
-@Entity({
-  name: 'championshipPostComment',
-})
-export class ChampionshipPostComment extends CommonCommentEntity {
-  @ManyToOne(() => User, (user) => user.championshipPostComment, {
-    onDelete: 'CASCADE',
-    onUpdate: 'CASCADE',
+  @CreateDateColumn()
+  createdAt: Date;
+
+  @UpdateDateColumn()
+  updatedAt: Date;
+
+  @ManyToOne(() => PostEntity, (post) => post.comments, { onDelete: 'CASCADE' })
+  @JoinColumn({
+    name: 'postId',
   })
-  @JoinColumn({ name: 'writerId' })
-  user: User;
+  post: PostEntity;
 
-  @ManyToOne(
-    () => ChampionshipPost,
-    (championshipPost) => championshipPost.championshipPostComment,
-    {
-      onDelete: 'CASCADE',
-      onUpdate: 'CASCADE',
-    },
-  )
-  @JoinColumn({ name: 'postId' })
-  championshipPost: ChampionshipPost;
+  @ManyToOne(() => UserEntity, (user) => user.comments, { onDelete: 'CASCADE' })
+  @JoinColumn({
+    name: 'writerId',
+  })
+  user: UserEntity;
+
+  @OneToMany(() => ReplyEntity, (reply) => reply.comment)
+  replies: ReplyEntity[];
 }

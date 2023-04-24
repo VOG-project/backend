@@ -1,32 +1,34 @@
 import { Injectable, HttpException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { UserUpdatedCountResponseDto } from './dto/users.response.dto';
-import { User } from './users.entity';
-import { UploadUserProfileImageResponseDto } from './../uploads/dto/uploads.response.dto';
+import { UserEntity } from './users.entity';
+import { UserEntireDataReturn, UserPkIdReturn } from './dto/return.user.dto';
+import { PostDeletedCountReturn } from 'src/posts/dto/return.post.dto';
+import { UserCreateRequest } from './dto/create.user.dto';
+import { UserModificationNicknameRequest } from './dto/modify.user.dto';
 
 @Injectable()
 export class UserRepository {
-  constructor(@InjectRepository(User) private userModel: Repository<User>) {}
+  constructor(
+    @InjectRepository(UserEntity) private userModel: Repository<UserEntity>,
+  ) {}
 
-  async updateProfileUrl(
-    userId: number,
-    fileUrl: string,
-  ): Promise<UploadUserProfileImageResponseDto> {
+  /**
+   * User 테이블의 profileUrl 필드를 새로운 이미지 URL로 업데이트하고 업데이트된 row 개수와 이미지 URl을 반환합니다.
+   * @param userId 유저 아이디(PK)
+   * @param fileUrl 유저 프로필 이미지가 저장된 S3 URL
+   * @returns Object { 업데이트된 row 개수, 프로필 이미지 URL }
+   */
+  async updateProfileUrl(userId: number, fileUrl: string): Promise<void> {
     try {
-      const updateResult = await this.userModel
+      await this.userModel
         .createQueryBuilder()
-        .update(User)
+        .update()
         .set({
           profileUrl: fileUrl,
         })
-        .where('id = :id', { id: userId })
+        .where('id = :userId', { userId })
         .execute();
-
-      return {
-        updatedCount: updateResult.affected,
-        profileUrl: fileUrl,
-      };
     } catch (err) {
       throw new HttpException(
         `[MYSQL ERROR] updateProfileUrl ${err.message}`,
@@ -35,46 +37,23 @@ export class UserRepository {
     }
   }
 
-  async updatePassword(
+  /**
+   * User 테이블의 컬럼을 갱신합니다.
+   * @param userId 유저 아이디(PK)
+   * @param nickname 닉네임
+   * @returns Object { 업데이트된 row 개수 }
+   */
+  async update(
+    userModificationNicknameRequest: UserModificationNicknameRequest,
     userId: number,
-    hashedPassword: string,
-  ): Promise<UserUpdatedCountResponseDto> {
+  ): Promise<void> {
     try {
-      const updatedResult = await this.userModel
+      await this.userModel
         .createQueryBuilder()
-        .update(User)
-        .set({
-          password: hashedPassword,
-        })
-        .where('id = :id', { id: userId })
+        .update()
+        .set(userModificationNicknameRequest)
+        .where('id = :userId', { userId })
         .execute();
-
-      return { updatedCount: updatedResult.affected };
-    } catch (err) {
-      throw new HttpException(
-        `[MYSQL ERROR] updatePassword ${err.message}`,
-        400,
-      );
-    }
-  }
-
-  async updateNickname(
-    userId: number,
-    newNickname: string,
-  ): Promise<UserUpdatedCountResponseDto> {
-    try {
-      const updatedResult = await this.userModel
-        .createQueryBuilder()
-        .update(User)
-        .set({
-          nickname: newNickname,
-        })
-        .where('id = :id', { id: userId })
-        .execute();
-
-      return {
-        updatedCount: updatedResult.affected,
-      };
     } catch (err) {
       throw new HttpException(
         `[MYSQL Error] updateNickname ${err.message}`,
@@ -83,38 +62,53 @@ export class UserRepository {
     }
   }
 
-  async findById(userId: number) {
+  /**
+   * User 테이블에서 userId에 해당하는 데이터를 반환합니다.
+   * @param userId 유저 아이디(PK)
+   */
+  findOneById(userId: number): Promise<UserEntireDataReturn> {
     try {
-      const user = await this.userModel
+      return this.userModel
         .createQueryBuilder()
         .select()
-        .where('id = :id', { id: userId })
+        .where('id = :userId', { userId })
         .getOne();
-
-      return user;
     } catch (err) {
       throw new HttpException(`[MYSQL Error] findById: ${err.message}`, 400);
     }
   }
 
-  async create(
-    email: string,
-    password: string,
-    nickname: string,
-    sex: string,
-  ): Promise<void> {
+  async findOneByOAuthId(oauthId: string): Promise<UserEntireDataReturn> {
     try {
-      await this.userModel
+      return await this.userModel
+        .createQueryBuilder()
+        .select()
+        .where('oauthId = :oauthId', { oauthId })
+        .getOne();
+    } catch (err) {
+      throw new HttpException(
+        `[MYSQL ERROR] findOneByAuthId: ${err.message}`,
+        500,
+      );
+    }
+  }
+
+  /**
+   * User 테이블에 새로운 유저의 정보를 등록합니다.
+   * @param email 유저 이메일
+   * @param password 유저 패스워드
+   * @param nickname 유저 닉네임
+   * @param sex 유저 성별
+   */
+  async create(userCreateRequest: UserCreateRequest): Promise<UserPkIdReturn> {
+    try {
+      const insertedUser = await this.userModel
         .createQueryBuilder()
         .insert()
-        .into('user')
-        .values({
-          email,
-          password,
-          nickname,
-          sex,
-        })
+        .values(userCreateRequest)
         .execute();
+
+      return { userId: insertedUser.identifiers[0].id };
     } catch (err) {
       throw new HttpException(
         `[MYSQL Error] create method: ${err.message}`,
@@ -123,33 +117,44 @@ export class UserRepository {
     }
   }
 
-  async findByEmail(email: string) {
+  /**
+   * User 테이블에서 nickname으로 유저의 데이터를 검색하고 해당 유저 데이터의 모든 컬럼을 반환합니다.
+   * @param nickname 유저 닉네임
+   * @returns 검색된 유저 데이터의 모든 컬럼
+   */
+  findByNickname(nickname: string): Promise<UserEntireDataReturn> {
     try {
-      const exUser = await this.userModel
-        .createQueryBuilder('user')
-        .where('email = :email', { email })
+      return this.userModel
+        .createQueryBuilder()
+        .select()
+        .where('nickname = :nickname', { nickname })
         .getOne();
-
-      return exUser;
     } catch (err) {
       throw new HttpException(
-        `[MYSQL Error] existByEmail method: ${err.message}`,
+        `[MYSQL Error] existByNickname method: ${err.message}`,
         400,
       );
     }
   }
 
-  async findByNickname(nickname: string) {
+  /**
+   * User 테이블에서 userId와 일치하는 유저의 데이터(row)를 삭제하고 삭제된 row 개수를 반환합니다.
+   * @param userId 유저 아이디(PK)
+   * @returns 삭제된 row 개수
+   */
+  async deleteById(userId: number): Promise<PostDeletedCountReturn> {
     try {
-      const exUser = await this.userModel
-        .createQueryBuilder('user')
-        .where('nickname = :nickname', { nickname })
-        .getOne();
-      return exUser;
+      const deletedResult = await this.userModel
+        .createQueryBuilder()
+        .delete()
+        .where('id = :userId', { userId })
+        .execute();
+
+      return { deletedCount: deletedResult.affected };
     } catch (err) {
       throw new HttpException(
-        `[MYSQL Error] existByNickname method: ${err.message}`,
-        400,
+        `[MySQL ERROR] deleteById method: ${err.message}`,
+        500,
       );
     }
   }

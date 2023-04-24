@@ -1,293 +1,130 @@
 import {
   Controller,
-  UseInterceptors,
   UseFilters,
-  Post,
-  Body,
-  Query,
+  UseInterceptors,
   UseGuards,
-  Param,
-  Put,
-  Delete,
+  Post,
   Get,
+  Delete,
+  Body,
+  Patch,
+  Query,
+  Param,
+  ParseIntPipe,
 } from '@nestjs/common';
-import { HttpExceptionFilter } from 'src/filters/http-exception.filter';
-import { SuccessInterceptor } from './../interceptors/success.interceptor';
-import {
-  PostRegisterRequestDto,
-  PostUpdateRequestDto,
-} from './dto/post.request.dto';
-import {
-  PostDeleteResponseDto,
-  PostGetListResponseDto,
-  PostGetResponseDto,
-  PostRegisterResponseDto,
-  PostUpdateResponseDto,
-} from './dto/post.response.dto';
-import { AuthGuard } from './../auth/guards/auth.guard';
-import { PostsService } from './posts.service';
 import { ApiOperation, ApiResponse } from '@nestjs/swagger';
+import { HttpExceptionFilter } from 'src/common/filters/http-exception.filter';
+import { SuccessInterceptor } from '../common/interceptors/success.interceptor';
+import { PostCreateRequest } from './dto/create.post.dto';
+import { PostGetListCondition, PostSearchCondition } from './dto/get.post.dto';
+import { PostModificationRequest } from './dto/modify.post.dto';
+import {
+  PostDeletedCountReturn,
+  PostEntireDataReturn,
+  PostListReturn,
+  PostPagenationReturn,
+} from './dto/return.post.dto';
+import { PostsService } from './posts.service';
+import { AuthGuard } from 'src/auth/guards/auth.guard';
 
 @Controller('posts')
-@UseInterceptors(SuccessInterceptor)
 @UseFilters(HttpExceptionFilter)
+@UseInterceptors(SuccessInterceptor)
+@UseGuards(AuthGuard)
 export class PostsController {
-  private FREE_POST_TABLE_NAME = 'freePost';
-  private HUMOR_POST_TABLE_NAME = 'humorPost';
-  private CHAMPION_POST_TABLE_NAME = 'championshipPost';
-
   constructor(private readonly postService: PostsService) {}
 
-  @Get('championship')
+  @Post()
   @ApiOperation({
-    summary: '대회소식게시판 게시물 10개씩 목록 불러오기',
+    summary: '게시물 등록 API',
     tags: ['Posts'],
   })
   @ApiResponse({
-    status: 200,
-    description: '게시물 목록 10개 불러오기 완료',
-    type: PostGetListResponseDto,
+    description: '게시물을 등록하면 등록된 게시물 데이터를 반환합니다.',
+    type: PostEntireDataReturn,
   })
-  async getChampionshipPostList(
-    @Query('page') page: number,
-  ): Promise<PostGetListResponseDto[]> {
-    return this.postService.getPostList(page, this.CHAMPION_POST_TABLE_NAME);
+  registerPost(
+    @Body() postRequestDto: PostCreateRequest,
+  ): Promise<PostEntireDataReturn> {
+    return this.postService.registerPost(postRequestDto);
   }
 
-  @Get('championship/:postId')
+  @Get('search')
   @ApiOperation({
-    summary: '대회소식게시판 특정 id 게시물 불러오기',
+    summary: '게시물 검색 API',
     tags: ['Posts'],
   })
   @ApiResponse({
-    status: 200,
-    description: '게시물 불러오기 완료',
+    description: '검색어에 해당하는 게시물 데이터를 반환합니다.',
+    type: PostPagenationReturn,
   })
-  async getChampionshipPost(
-    @Param('postId') id: number,
-  ): Promise<PostGetResponseDto> {
-    return this.postService.getPost(id, this.CHAMPION_POST_TABLE_NAME);
+  async searchPost(
+    @Query() postSearchCondition: PostSearchCondition,
+  ): Promise<PostPagenationReturn> {
+    return await this.postService.searchPost(postSearchCondition);
   }
 
-  @Post('championship')
+  @Get()
   @ApiOperation({
-    summary: '대회소식게시판 게시물 등록',
+    summary: '게시물 목록 조회 API',
     tags: ['Posts'],
   })
   @ApiResponse({
-    status: 201,
-    description: '대회소식게시판 게시물 등록 완료',
-    type: PostRegisterResponseDto,
+    description:
+      '쿼리 스트링으로 게시판 이름을 전달하면 최신 순으로 10개씩 게시물 목록을 반환합니다.',
+    type: PostListReturn,
   })
-  async registerChampionshipPost(
-    @Body() body: PostRegisterRequestDto,
-  ): Promise<PostRegisterResponseDto> {
-    return await this.postService.registerPost(
-      body,
-      this.CHAMPION_POST_TABLE_NAME,
-    );
+  getPostList(
+    @Query() condition: PostGetListCondition,
+  ): Promise<PostPagenationReturn> {
+    return this.postService.getPostList(condition);
   }
 
-  @Put('championship/:postId')
+  @Get(':postId')
   @ApiOperation({
-    summary: '대회소식게시판 게시물 수정',
+    summary: '게시물 조회 API',
     tags: ['Posts'],
   })
   @ApiResponse({
-    status: 201,
-    description: '게시물 수정 완료',
-    type: PostUpdateResponseDto,
+    description: `해당하는 게시물 데이터를 반환합니다.`,
+    type: PostEntireDataReturn,
   })
-  async updateChampionshipPost(
-    @Body() body: PostUpdateRequestDto,
-    @Param('postId') id: number,
-  ): Promise<PostUpdateResponseDto> {
-    return await this.postService.updatePost(
-      body,
-      id,
-      this.CHAMPION_POST_TABLE_NAME,
-    );
+  async getPost(
+    @Param('postId', ParseIntPipe) postId: number,
+  ): Promise<PostEntireDataReturn> {
+    return await this.postService.getPost(postId);
   }
 
-  @Delete('championship/:postId')
+  @Patch(':postId')
   @ApiOperation({
-    summary: '대회소식게시판 게시물 삭제',
+    summary: '게시물 수정 API',
     tags: ['Posts'],
   })
   @ApiResponse({
-    status: 200,
-    description: '게시물 삭제 완료',
-    type: PostDeleteResponseDto,
+    description:
+      '타이틀과 내용과 게시물 pk를 입력받아 데이터 수정 후 변경 내용을 반환합니다. 타이틀과 내용 중 수정이 없는 경우 원본 데이터를 담아 보내주시면 됩니다.',
+    type: PostEntireDataReturn,
   })
-  async deleteChampionshipPost(
-    @Param('postId') id: number,
-  ): Promise<PostDeleteResponseDto> {
-    return this.postService.deletePost(id, this.CHAMPION_POST_TABLE_NAME);
+  modifyPost(
+    @Body() postModificationRequest: PostModificationRequest,
+    @Param('postId', ParseIntPipe) postId: number,
+  ): Promise<PostEntireDataReturn> {
+    return this.postService.modifyPost(postModificationRequest, postId);
   }
 
-  @Get('humor')
+  @Delete(':postId')
   @ApiOperation({
-    summary: '유머게시판 게시물 10개씩 목록 불러오기',
+    summary: '게시물 삭제 API',
     tags: ['Posts'],
   })
   @ApiResponse({
-    status: 200,
-    description: '게시물 목록 10개 불러오기 완료',
-    type: PostGetListResponseDto,
+    description:
+      '게시물 PK에 해당하는 데이터를 삭제하고 삭제된 row 개수를 반환합니다.',
+    type: PostDeletedCountReturn,
   })
-  async getHumorPostList(
-    @Query('page') page: number,
-  ): Promise<PostGetListResponseDto[]> {
-    return this.postService.getPostList(page, this.HUMOR_POST_TABLE_NAME);
-  }
-
-  @Get('humor/:postId')
-  @ApiOperation({
-    summary: '유머게시판 특정 id 게시물 불러오기',
-    tags: ['Posts'],
-  })
-  @ApiResponse({
-    status: 200,
-    description: '게시물 불러오기 완료',
-  })
-  async getHumorPost(@Param('postId') id: number): Promise<PostGetResponseDto> {
-    return this.postService.getPost(id, this.HUMOR_POST_TABLE_NAME);
-  }
-
-  @Post('humor')
-  @ApiOperation({
-    summary: '유머게시판 게시물 등록',
-    tags: ['Posts'],
-  })
-  @ApiResponse({
-    status: 201,
-    description: '유머게시판 게시물 등록 완료',
-    type: PostRegisterResponseDto,
-  })
-  async registerHumorPost(
-    @Body() body: PostRegisterRequestDto,
-  ): Promise<PostRegisterResponseDto> {
-    return await this.postService.registerPost(
-      body,
-      this.HUMOR_POST_TABLE_NAME,
-    );
-  }
-
-  @Put('humor/:postId')
-  @ApiOperation({
-    summary: '유머게시판 게시물 수정',
-    tags: ['Posts'],
-  })
-  @ApiResponse({
-    status: 201,
-    description: '게시물 수정 완료',
-    type: PostUpdateResponseDto,
-  })
-  async updateHumorPost(
-    @Body() body: PostUpdateRequestDto,
-    @Param('postId') id: number,
-  ): Promise<PostUpdateResponseDto> {
-    return await this.postService.updatePost(
-      body,
-      id,
-      this.HUMOR_POST_TABLE_NAME,
-    );
-  }
-
-  @Delete('humor/:postId')
-  @ApiOperation({
-    summary: '유머게시판 게시물 삭제',
-    tags: ['Posts'],
-  })
-  @ApiResponse({
-    status: 200,
-    description: '게시물 삭제 완료',
-    type: PostDeleteResponseDto,
-  })
-  async deleteHumorPost(
-    @Param('postId') id: number,
-  ): Promise<PostDeleteResponseDto> {
-    return this.postService.deletePost(id, this.HUMOR_POST_TABLE_NAME);
-  }
-
-  @Get('free')
-  @ApiOperation({
-    summary: '자유게시판 게시물 10개씩 목록 불러오기',
-    tags: ['Posts'],
-  })
-  @ApiResponse({
-    status: 200,
-    description: '게시물 목록 10개 불러오기 완료',
-    type: PostGetListResponseDto,
-  })
-  async getFreePostList(
-    @Query('page') page: number,
-  ): Promise<PostGetListResponseDto[]> {
-    return this.postService.getPostList(page, this.FREE_POST_TABLE_NAME);
-  }
-
-  @Get('free/:postId')
-  @ApiOperation({
-    summary: '자유게시판 특정 id 게시물 불러오기',
-    tags: ['Posts'],
-  })
-  @ApiResponse({
-    status: 200,
-    description: '게시물 불러오기 완료',
-  })
-  async getFreePost(@Param('postId') id: number): Promise<PostGetResponseDto> {
-    return this.postService.getPost(id, this.FREE_POST_TABLE_NAME);
-  }
-
-  @Post('free')
-  @ApiOperation({
-    summary: '자유게시판 게시물 등록',
-    tags: ['Posts'],
-  })
-  @ApiResponse({
-    status: 201,
-    description: '게시물 등록 완료',
-    type: PostRegisterResponseDto,
-  })
-  async registerFreePost(
-    @Body() body: PostRegisterRequestDto,
-  ): Promise<PostRegisterResponseDto> {
-    return await this.postService.registerPost(body, this.FREE_POST_TABLE_NAME);
-  }
-
-  @Put('free/:postId')
-  @ApiOperation({
-    summary: '자유게시판 게시물 수정',
-    tags: ['Posts'],
-  })
-  @ApiResponse({
-    status: 201,
-    description: '게시물 수정 완료',
-  })
-  async updateFreePost(
-    @Body() body: PostUpdateRequestDto,
-    @Param('postId') id: number,
-  ): Promise<PostUpdateResponseDto> {
-    return await this.postService.updatePost(
-      body,
-      id,
-      this.FREE_POST_TABLE_NAME,
-    );
-  }
-
-  @Delete('free/:postId')
-  @ApiOperation({
-    summary: '자유게시판 게시물 삭제',
-    tags: ['Posts'],
-  })
-  @ApiResponse({
-    status: 200,
-    description: '게시물 삭제 완료',
-    type: PostDeleteResponseDto,
-  })
-  async deleteFreePost(
-    @Param('postId') id: number,
-  ): Promise<PostDeleteResponseDto> {
-    return this.postService.deletePost(id, this.FREE_POST_TABLE_NAME);
+  removePost(
+    @Param('postId', ParseIntPipe) postId: number,
+  ): Promise<PostDeletedCountReturn> {
+    return this.postService.removePost(postId);
   }
 }
