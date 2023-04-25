@@ -101,8 +101,10 @@ export class ChatsGateway {
   @SubscribeMessage('inputChat')
   handleInputChat(@ConnectedSocket() socket: Socket, @MessageBody() body: any) {
     try {
-      const { content, nickname, roomId } = body;
-      socket.in(roomId).emit('inputChat', { content, nickname, roomId });
+      const { content, nickname, roomId, profileUrl } = body;
+      socket
+        .in(roomId)
+        .emit('inputChat', { content, nickname, roomId, profileUrl });
     } catch (err) {
       console.log(err);
     }
