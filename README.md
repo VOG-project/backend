@@ -17,10 +17,6 @@
 - Gmail : bolton7425@gmail.com
 - Github : [@iHateAI](https://github.com/iHateAI)
 
-## 서비스 기능
-
-![기능 설명 영상으로!]()
-
 <br />
 
 ## 서비스 디자인
