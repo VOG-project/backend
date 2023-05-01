@@ -26,6 +26,7 @@ export class PostsService {
     postRequestDto: PostCreateRequest,
   ): Promise<PostEntireDataReturn> {
     const { postId } = await this.postRepository.create(postRequestDto);
+    this.postRepository.createView(postId);
     return await this.postRepository.findOneById(postId);
   }
 
@@ -46,13 +47,13 @@ export class PostsService {
         const likeIds = await this.likeRepository.findLikeUsersByPostId(
           post.id,
         );
-
         const commentCount =
           await this.commentRepository.findCommentAndReplyCountByPostId(
             post.id,
           );
+        const view = await this.postRepository.findViewByPostId(post.id);
 
-        return { ...likeIds, ...post, ...commentCount };
+        return { ...likeIds, ...post, ...commentCount, view };
       }),
     );
 
@@ -115,8 +116,9 @@ export class PostsService {
     const modifiedPost = await this.postRepository.findPostAndUserById(postId);
     // 수정된 데이터를 캐싱하기 위해 redis에 저장합니다.
     await this.registerPostToCache(postId, modifiedPost);
+    const view = await this.postRepository.findViewByPostId(postId);
 
-    return modifiedPost;
+    return { ...modifiedPost, view };
   }
 
   /**
@@ -147,8 +149,9 @@ export class PostsService {
         const likeIds = await this.likeRepository.findLikeUsersByPostId(
           post.id,
         );
+        const view = await this.postRepository.findViewByPostId(post.id);
 
-        return { ...likeIds, ...post };
+        return { ...likeIds, ...post, view };
       }),
     );
     const listResult = { totalCount, result };

@@ -112,7 +112,6 @@ export class PostsRepository {
         .select([
           'p.id',
           'p.title',
-          'p.view',
           'p.postCategory',
           'p.createdAt',
           'u.id',
@@ -186,25 +185,29 @@ export class PostsRepository {
   /**
    * 게시물의 view(조회수) 컬럼을 1 증가시킵니다.
    */
-  // async addView(postId: number) {
-  //   try {
-  //     return await this.postModel
-  //       .createQueryBuilder()
-  //       .update()
-  //       .set({ view: () => 'view + 1' })
-  //       .where('id = :postId', { postId })
-  //       .execute();
-  //   } catch (err) {
-  //     throw new HttpException(`[MYSQL ERROR] addView: ${err.message}`, 500);
-  //   }
-  // }
-
-  /**
-   * 게시물의 view(조회수) 컬럼을 1 증가시킵니다.
-   */
   async addView(postId: number) {
     try {
-      return this.redisForViews.incr(postId.toString());
+      return await this.redisForViews.incr(postId.toString());
+    } catch (err) {
+      throw new HttpException(`[REDIS ERROR] addView: ${err.message}`, 500);
+    }
+  }
+
+  /**
+   * postId에 해당하는 게시물의 view(조회수)를 반환합니다.
+   */
+  async findViewByPostId(postId: number) {
+    try {
+      const view = await this.redisForViews.get(postId.toString());
+      return parseInt(view, 10);
+    } catch (err) {
+      throw new HttpException(`[REDIS ERROR] addView: ${err.message}`, 500);
+    }
+  }
+
+  async createView(postId: number) {
+    try {
+      return await this.redisForViews.set(postId.toString(), 0);
     } catch (err) {
       throw new HttpException(`[REDIS ERROR] addView: ${err.message}`, 500);
     }
