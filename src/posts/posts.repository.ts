@@ -185,7 +185,7 @@ export class PostsRepository {
   /**
    * 게시물의 view(조회수) 컬럼을 1 증가시킵니다.
    */
-  async addView(postId: number) {
+  async addView(postId: number): Promise<number> {
     try {
       return await this.redisForViews.incr(postId.toString());
     } catch (err) {
@@ -196,7 +196,7 @@ export class PostsRepository {
   /**
    * postId에 해당하는 게시물의 view(조회수)를 반환합니다.
    */
-  async findViewByPostId(postId: number) {
+  async findViewByPostId(postId: number): Promise<number | null> {
     try {
       const view = await this.redisForViews.get(postId.toString());
       return parseInt(view, 10);
@@ -208,9 +208,9 @@ export class PostsRepository {
   /**
    * postId에 해당하는 조회수를 0으로 초기화 합니다.
    */
-  async createView(postId: number) {
+  async createView(postId: number): Promise<void> {
     try {
-      return await this.redisForViews.set(postId.toString(), 0);
+      await this.redisForViews.set(postId.toString(), 0);
     } catch (err) {
       throw new HttpException(`[REDIS ERROR] addView: ${err.message}`, 500);
     }
@@ -219,7 +219,7 @@ export class PostsRepository {
   /**
    * postId에 해당하는 조회수 데이터를 삭제합니다
    */
-  async deleteView(postId: number) {
+  async deleteView(postId: number): Promise<void> {
     try {
       await this.redisForViews.del(postId.toString());
     } catch (err) {

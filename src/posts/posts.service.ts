@@ -26,7 +26,7 @@ export class PostsService {
     postRequestDto: PostCreateRequest,
   ): Promise<PostEntireDataReturn> {
     const { postId } = await this.postRepository.create(postRequestDto);
-    this.postRepository.createView(postId);
+    await this.postRepository.createView(postId);
     return await this.postRepository.findOneById(postId);
   }
 
