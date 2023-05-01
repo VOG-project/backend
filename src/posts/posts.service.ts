@@ -172,6 +172,8 @@ export class PostsService {
     await this.likeRepository.deleteLikeOfPost(postId);
     // 게시물에 대한 캐시 데이터를 삭제합니다.
     await this.postRepository.deleteCachingPost(postId);
+    // 게시물에 대한 조회수 데이터를 삭제합니다.
+    await this.postRepository.deleteView(postId);
     return await this.postRepository.deletePost(postId);
   }
 }

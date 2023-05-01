@@ -205,9 +205,23 @@ export class PostsRepository {
     }
   }
 
+  /**
+   * postId에 해당하는 조회수를 0으로 초기화 합니다.
+   */
   async createView(postId: number) {
     try {
       return await this.redisForViews.set(postId.toString(), 0);
+    } catch (err) {
+      throw new HttpException(`[REDIS ERROR] addView: ${err.message}`, 500);
+    }
+  }
+
+  /**
+   * postId에 해당하는 조회수 데이터를 삭제합니다
+   */
+  async deleteView(postId: number) {
+    try {
+      await this.redisForViews.del(postId.toString());
     } catch (err) {
       throw new HttpException(`[REDIS ERROR] addView: ${err.message}`, 500);
     }
