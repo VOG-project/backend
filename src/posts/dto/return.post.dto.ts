@@ -30,7 +30,7 @@ export class PostEntireDataReturn {
     example: 3721,
     description: '게시물 조회 수',
   })
-  view: number;
+  view?: number;
 
   @ApiProperty({
     example: 'free',
@@ -83,7 +83,7 @@ export class PostListReturn {
     example: 3621,
     description: '게시물 조회 수',
   })
-  view: number;
+  view?: number;
 
   @ApiProperty({
     example: 'free',
