@@ -8,7 +8,7 @@ env:
 
 on:
   push:
-    branches: ["dev"]
+    branches: ["main"]
 
 jobs:
   build:
