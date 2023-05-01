@@ -25,12 +25,12 @@ export class LikeService {
     // 존재하지 않는 유저가 좋아요 할 경우 예외처리
     const isExistedUser = await this.userRepository.findOneById(userId);
     if (!isExistedUser)
-      throw new HttpException('존재하지 않는 유저입니다.', 400);
+      throw new HttpException('존재하지 않는 유저입니다.', 404);
 
     // 존재하지 않는 게시물에 좋아요 할 경우 예외처리
     const isExistedPost = await this.postRepository.findOneById(postId);
     if (!isExistedPost)
-      throw new HttpException('존재하지 않는 게시물입니다.', 400);
+      throw new HttpException('존재하지 않는 게시물입니다.', 404);
 
     await this.likeRepository.createLike(postId, userId);
 
@@ -50,12 +50,12 @@ export class LikeService {
     // 존재하지 않는 유저가 좋아요 취소 할 경우 예외처리
     const isExistedUser = await this.userRepository.findOneById(userId);
     if (!isExistedUser)
-      throw new HttpException('존재하지 않는 유저입니다.', 400);
+      throw new HttpException('존재하지 않는 유저입니다.', 404);
 
     // 존재하지 않는 게시물에 좋아요 취소 할 경우 예외처리
     const isExistedPost = await this.postRepository.findOneById(postId);
     if (!isExistedPost)
-      throw new HttpException('존재하지 않는 게시물입니다.', 400);
+      throw new HttpException('존재하지 않는 게시물입니다.', 404);
 
     await this.likeRepository.deleteLike(postId, userId);
 
@@ -73,7 +73,7 @@ export class LikeService {
     const isExistedPost = await this.postRepository.findOneById(postId);
     // 존재하지 않는 게시물에 접근할 경우 예외처리
     if (!isExistedPost)
-      throw new HttpException('존재하지 않는 게시물입니다.', 400);
+      throw new HttpException('존재하지 않는 게시물입니다.', 404);
 
     const { userIds } = await this.likeRepository.findLikeUsersByPostId(postId);
     // redis에서 id가 문자열로 반환되기 때문에 number 타입으로 변환

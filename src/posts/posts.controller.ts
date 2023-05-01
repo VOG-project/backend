@@ -42,6 +42,7 @@ export class PostsController {
   @ApiResponse({
     description: '게시물을 등록하면 등록된 게시물 데이터를 반환합니다.',
     type: PostEntireDataReturn,
+    status: 201,
   })
   registerPost(
     @Body() postRequestDto: PostCreateRequest,
@@ -57,6 +58,7 @@ export class PostsController {
   @ApiResponse({
     description: '검색어에 해당하는 게시물 데이터를 반환합니다.',
     type: PostPagenationReturn,
+    status: 200,
   })
   async searchPost(
     @Query() postSearchCondition: PostSearchCondition,
@@ -73,6 +75,7 @@ export class PostsController {
     description:
       '쿼리 스트링으로 게시판 이름을 전달하면 최신 순으로 10개씩 게시물 목록을 반환합니다.',
     type: PostListReturn,
+    status: 200,
   })
   getPostList(
     @Query() condition: PostGetListCondition,
@@ -88,6 +91,7 @@ export class PostsController {
   @ApiResponse({
     description: `해당하는 게시물 데이터를 반환합니다.`,
     type: PostEntireDataReturn,
+    status: 200,
   })
   async getPost(
     @Param('postId', ParseIntPipe) postId: number,
@@ -104,6 +108,7 @@ export class PostsController {
     description:
       '타이틀과 내용과 게시물 pk를 입력받아 데이터 수정 후 변경 내용을 반환합니다. 타이틀과 내용 중 수정이 없는 경우 원본 데이터를 담아 보내주시면 됩니다.',
     type: PostEntireDataReturn,
+    status: 201,
   })
   modifyPost(
     @Body() postModificationRequest: PostModificationRequest,
@@ -121,6 +126,7 @@ export class PostsController {
     description:
       '게시물 PK에 해당하는 데이터를 삭제하고 삭제된 row 개수를 반환합니다.',
     type: PostDeletedCountReturn,
+    status: 200,
   })
   removePost(
     @Param('postId', ParseIntPipe) postId: number,

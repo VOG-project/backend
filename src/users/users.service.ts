@@ -29,7 +29,7 @@ export class UserService {
     const { nickname } = userModificationNicknameRequest;
 
     const user = await this.userRepository.findOneById(userId);
-    if (!user) throw new HttpException('존재하지 않는 유저입니다.', 400);
+    if (!user) throw new HttpException('존재하지 않는 유저입니다.', 404);
 
     const isExistedUser = await this.userRepository.findByNickname(nickname);
     if (isExistedUser)
@@ -81,7 +81,7 @@ export class UserService {
   async removeUser(userId: number): Promise<PostDeletedCountReturn> {
     const isExistedUser = await this.userRepository.findOneById(userId);
     if (!isExistedUser)
-      throw new HttpException('존재하지 않는 유저입니다.', 400);
+      throw new HttpException('존재하지 않는 유저입니다.', 404);
 
     return await this.userRepository.deleteById(userId);
   }

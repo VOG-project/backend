@@ -39,7 +39,7 @@ export class AuthGuard implements CanActivate {
       });
       userId = verifiedAccessToken.sub;
     } catch (err) {
-      throw new HttpException('변조되었거나 만료기간이 지난 토큰입니다.', 400);
+      throw new HttpException('변조되었거나 만료기간이 지난 토큰입니다.', 403);
     }
 
     const storedAccessToken = await this.authRepository.findAuthInfo(userId);
@@ -53,7 +53,7 @@ export class AuthGuard implements CanActivate {
     if (accessToken !== storedAccessToken)
       throw new HttpException(
         '다른 컴퓨터에서 로그인하였습니다. 로그아웃 처리해주세요.',
-        401,
+        403,
       );
 
     return true;

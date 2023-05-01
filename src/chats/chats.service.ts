@@ -28,7 +28,7 @@ export class ChatsService {
     // 채팅방에 참여 중인 유저는 채팅방을 만들 수 없도록 예외처리
     const existedUser = await this.chatRepository.existsByUserId(userId);
     if (existedUser) {
-      throw new HttpException('이미 참여 중인 채팅방이 존재합니다.', 401);
+      throw new HttpException('이미 참여 중인 채팅방이 존재합니다.', 400);
     }
 
     // 채팅방을 식별하기 위해 고유한 roomId를 생성
@@ -49,13 +49,13 @@ export class ChatsService {
     // 이미 채팅방에 참여 중이라면 다른 방에 참여할 수 없도록 예외 처리
     const isParticipating = await this.chatRepository.existsByUserId(userId);
     if (isParticipating) {
-      throw new HttpException('이미 참여 중인 채팅방이 존재합니다.', 401);
+      throw new HttpException('이미 참여 중인 채팅방이 존재합니다.', 400);
     }
 
     // 존재하지 않는 채팅방에 접근할 경우 예외 처리
     const room = await this.chatRepository.findByRoomId(roomId);
     if (!room) {
-      throw new HttpException('해당 채팅방은 존재하지 않습니다.', 400);
+      throw new HttpException('해당 채팅방은 존재하지 않습니다.', 404);
     }
 
     // 인원이 꽉 찼을 경우 접근할 수 없도록 예외 처리

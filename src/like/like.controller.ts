@@ -35,6 +35,7 @@ export class LikeController {
     description:
       '유저 pk와 게시물 pk를 입력받아 좋아요를 추가하고 좋아요를 누른 유저 pk 배열을 반환합니다.',
     type: LikeUserReturn,
+    status: 201,
   })
   registerLike(
     @Body() likeCreateRequest: LikeCreatRequest,
@@ -52,6 +53,7 @@ export class LikeController {
     description:
       '유저 pk와 게시물 pk를 입력 받아 좋아요 데이터를 수정하고 현재 좋아요를 누른 유저 pk 배열을 반환합니다.',
     type: LikeUserReturn,
+    status: 200,
   })
   cancelLike(
     @Body() likeDeleteRequest: LikeDeleteRequest,
@@ -68,6 +70,7 @@ export class LikeController {
   @ApiResponse({
     description: '해당 게시물에 좋아요를 누른 유저pk 배열을 반환합니다.',
     type: LikeUserReturn,
+    status: 200,
   })
   getLikeUser(@Param('postId', ParseIntPipe) postId: number) {
     return this.likeService.getLikeUser(postId);

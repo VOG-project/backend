@@ -62,7 +62,7 @@ export class UploadsService {
       const user = await this.userRepository.findOneById(userId);
 
       if (!user) {
-        throw new HttpException('존재하지 않는 유저입니다.', 400);
+        throw new HttpException('존재하지 않는 유저입니다.', 404);
       }
 
       await this.deleteUserProfileImageFile(userId);

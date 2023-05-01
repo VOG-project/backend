@@ -39,6 +39,7 @@ export class CommentsController {
   })
   @ApiResponse({
     description: '댓글과 댓글에 포함된 대댓글을 반환합니다.',
+    status: 200,
   })
   async getCommentAndReply(
     @Query()
@@ -57,6 +58,7 @@ export class CommentsController {
   @ApiResponse({
     description: '등록한 댓글에 대한 모든 데이터를 반환합니다.',
     type: CommentEntireDataReturn,
+    status: 201,
   })
   async registerComment(
     @Body() commentRegisterRequest: CommentRegisterRequest,
@@ -72,6 +74,7 @@ export class CommentsController {
   @ApiResponse({
     description: '수정한 댓글에 대한 모든 데이터를 반환합니다.',
     type: CommentEntireDataReturn,
+    status: 201,
   })
   async modifyComment(
     @Body() commentModifyRequest: CommentModifyRequest,
@@ -92,6 +95,7 @@ export class CommentsController {
     description:
       '삭제된 데이터 row 개수를 반환합니다. (1이면 삭제, 0이면 삭제되지 않거나 없는 데이터에 접근)',
     type: CommentDeletedCountReturn,
+    status: 200,
   })
   async removeComment(
     @Param('commentId', ParseIntPipe) commentId: number,

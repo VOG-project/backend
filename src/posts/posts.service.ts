@@ -68,7 +68,7 @@ export class PostsService {
     const isExistedPost = await this.postRepository.checkExist(postId);
     // 데이터가 존재하지 않으면 예외처리 합니다.
     if (!isExistedPost)
-      throw new HttpException('존재하지 않는 게시물입니다.', 400);
+      throw new HttpException('존재하지 않는 게시물입니다.', 404);
 
     // 조회수 1 증가
     const view = await this.postRepository.addView(postId);
