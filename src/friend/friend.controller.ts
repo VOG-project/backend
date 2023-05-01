@@ -38,6 +38,7 @@ export class FriendController {
   @ApiResponse({
     description: '친구를 추가하고 추가한 유저의 데이터를 반환합니다.',
     type: UserEntireDataReturn,
+    status: 201,
   })
   registerFriend(
     @Body() friendCreateRequest: FriendCreateRequest,
@@ -54,6 +55,7 @@ export class FriendController {
   @ApiResponse({
     description: '친구로 등록된 유저들의 데이터를 반환합니다.',
     type: FriendFollowingReturn,
+    status: 200,
   })
   getFriends(
     @Param('userId', ParseIntPipe) userId: number,
@@ -69,6 +71,7 @@ export class FriendController {
   @ApiResponse({
     description: '친구 관계를 삭제합니다.',
     type: FriendDeletedCountReturn,
+    status: 200,
   })
   removeFriend(
     @Body() friendDeleteRequest: FriendDeleteRequest,
@@ -85,6 +88,7 @@ export class FriendController {
   @ApiResponse({
     description: '닉네임으로 친구를 검색합니다.',
     type: UserEntireDataReturn,
+    status: 200,
   })
   searchFriend(
     @Param('nickname') nickname: string,

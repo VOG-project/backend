@@ -31,7 +31,7 @@ export class RepliesService {
     const isExistedReply = await this.replyRepository.checkExist(replyId);
     // 답글 데이터가 존재할 때에만 갱신하도록 합니다.
     if (!isExistedReply)
-      throw new HttpException('존재하지 않는 답글입니다.', 400);
+      throw new HttpException('존재하지 않는 답글입니다.', 404);
 
     await this.replyRepository.update(replyModifyRequest, replyId);
     return await this.replyRepository.findByReplyId(replyId);
@@ -41,7 +41,7 @@ export class RepliesService {
     const isExistedComment = await this.replyRepository.checkExist(replyId);
     // 답글 데이터가 존재할 때에만 갱신하도록 합니다.
     if (!isExistedComment)
-      throw new HttpException('존재하지 않는 답글입니다.', 400);
+      throw new HttpException('존재하지 않는 답글입니다.', 404);
 
     return await this.replyRepository.delete(replyId);
   }

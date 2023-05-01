@@ -33,7 +33,7 @@ export class FriendService {
     if (!isExistedUser)
       throw new HttpException(
         '친구 등록을 시도하는 유저는 존재하지 않는 유저입니다.',
-        400,
+        404,
       );
 
     const isExistedTarget = await this.userRepository.findOneById(targetId);
@@ -41,7 +41,7 @@ export class FriendService {
     if (!isExistedTarget)
       throw new HttpException(
         '친구 추가하려는 대상은 존재하지 않는 유저입니다.',
-        400,
+        404,
       );
 
     await this.friendRepository.create(userId, targetId);
@@ -56,7 +56,7 @@ export class FriendService {
     const isExistedUser = await this.userRepository.findOneById(userId);
     // 존재하지 않는 유저에 접근할 경우 예외처리
     if (!isExistedUser)
-      throw new HttpException('존재하지 않는 유저입니다.', 400);
+      throw new HttpException('존재하지 않는 유저입니다.', 404);
 
     return await this.friendRepository.findFreindsByUserId(userId);
   }

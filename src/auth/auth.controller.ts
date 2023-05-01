@@ -33,7 +33,7 @@ export class AuthController {
     type: AuthUserEntireDataReturn,
   })
   @ApiResponse({
-    status: 300,
+    status: 301,
     description:
       'code와 state를 전달받고 결과에 따라 리다이렉션 또는 jwtAccessToken과 회원정보를 반환합니다.',
     type: AuthRedirectReturn,
@@ -56,7 +56,7 @@ export class AuthController {
     type: AuthUserEntireDataReturn,
   })
   @ApiResponse({
-    status: 300,
+    status: 301,
     description:
       'code와 state를 전달받고 결과에 따라 리다이렉션 또는 jwtAccessToken과 회원정보를 반환합니다.',
     type: AuthRedirectReturn,

@@ -37,6 +37,7 @@ export class RepliesController {
   @ApiResponse({
     description: '생성된 답글의 전체 데이터를 반환합니다.',
     type: ReplyEntireDataReturn,
+    status: 201,
   })
   async registerReply(
     @Body() replyRegisterRequest: ReplyRegisterRequest,
@@ -51,6 +52,7 @@ export class RepliesController {
   })
   @ApiResponse({
     description: '수정한 댓글에 대한 모든 데이터를 반환합니다.',
+    status: 201,
   })
   async modifyReply(
     @Body() replyModifyRequest: ReplyModifyRequest,
@@ -68,6 +70,7 @@ export class RepliesController {
     description:
       '삭제된 데이터 row 개수를 반환합니다. (1이면 삭제, 0이면 삭제되지 않거나 없는 데이터에 접근)',
     type: ReplyDeletedCountReturn,
+    status: 200,
   })
   async removeReply(
     @Param('replyId', ParseIntPipe) replyId: number,

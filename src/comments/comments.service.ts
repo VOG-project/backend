@@ -26,7 +26,7 @@ export class CommentsService {
     const isExistedPost = await this.postRepository.checkExist(postId);
     // 존재하지 않는 댓글에 접근하면 예외처리
     if (!isExistedPost)
-      throw new HttpException('존재하지 않는 게시물에 대한 접근입니다.', 400);
+      throw new HttpException('존재하지 않는 게시물에 대한 접근입니다.', 404);
 
     return await this.commentRepository.findCommentAndReplyByPostId(
       commentGetCommentAndReplyCondition,
@@ -55,7 +55,7 @@ export class CommentsService {
     const isExistedComment = await this.commentRepository.checkExist(commentId);
     // 존재하지 않는 댓글에 접근하면 예외처리
     if (!isExistedComment)
-      throw new HttpException('존재하지 않는 댓글입니다.', 400);
+      throw new HttpException('존재하지 않는 댓글입니다.', 404);
 
     await this.commentRepository.update(commentModifyRequest, commentId);
     return await this.commentRepository.findByCommentId(commentId);
@@ -68,7 +68,7 @@ export class CommentsService {
     const isExistedComment = await this.commentRepository.checkExist(commentId);
     // 존재하지 않는 댓글에 접근하면 예외처리
     if (!isExistedComment)
-      throw new HttpException('존재하지 않는 댓글입니다.', 400);
+      throw new HttpException('존재하지 않는 댓글입니다.', 404);
 
     return await this.commentRepository.delete(commentId);
   }

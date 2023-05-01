@@ -40,6 +40,7 @@ export class ChatsController {
   })
   @ApiResponse({
     description: '채팅방 제목으로 채팅방 데이터를 검색합니다.',
+    status: 200,
     type: ChatSearchReturn,
   })
   async searchRoom(
@@ -56,6 +57,7 @@ export class ChatsController {
   @ApiResponse({
     description: '채팅방을 생성하고 해당 채팅방의 정보를 반환합니다.',
     type: ChatEntireDataReturn,
+    status: 201,
   })
   async registerRoom(
     @Body() chatCreateRequest: ChatCreateRequest,
@@ -71,6 +73,7 @@ export class ChatsController {
   @ApiResponse({
     description: '입력 페이지에 해당하는 채팅방 목록을 반환합니다. (기본 10개)',
     type: ChatEntireDataReturn,
+    status: 200,
   })
   async getRoomList(@Query() chatRoomListCondition: ChatChatRoomListCondition) {
     return await this.chatService.getRoomList(chatRoomListCondition);
@@ -84,6 +87,7 @@ export class ChatsController {
   @ApiResponse({
     description: '채팅방 입장이 가능한 지 확인하고 boolean 값을 리턴합니다.',
     type: ChatIsAcceptableReturn,
+    status: 200,
   })
   async acceptParticipation(
     @Param('roomId') roomId: string,

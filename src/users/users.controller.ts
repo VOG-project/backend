@@ -87,7 +87,7 @@ export class UsersController {
     tags: ['Users'],
   })
   @ApiResponse({
-    status: 201,
+    status: 200,
     description: '유저 아이디에 해당하는 유저 데이터를 삭제합니다.',
   })
   async removeUser(
