@@ -50,6 +50,12 @@ import { ReplyEntity } from './replies/replies.entity';
           port: parseInt(process.env.REDIS_CACHE_PORT, 10),
           password: process.env.REDIS_CACHE_PASSWORD,
         },
+        {
+          namespace: 'views',
+          host: process.env.REDIS_VIEWS_HOST,
+          port: parseInt(process.env.REDIS_VIEWS_PORT, 10),
+          password: process.env.REDIS_VIEWS_PASSWORD,
+        },
       ],
     }),
     TypeOrmModule.forRoot({

@@ -15,14 +15,16 @@ import { RedisService } from '@liaoliaots/nestjs-redis';
 import { PostGetListCondition, PostSearchCondition } from './dto/get.post.dto';
 
 export class PostsRepository {
-  private readonly redis: Redis;
+  private readonly redisForCache: Redis;
+  private readonly redisForViews: Redis;
 
   constructor(
     @InjectRepository(PostEntity)
     private readonly postModel: Repository<PostEntity>,
     private readonly redisService: RedisService,
   ) {
-    this.redis = this.redisService.getClient('cache');
+    this.redisForCache = this.redisService.getClient('cache');
+    this.redisForViews = this.redisService.getClient('views');
   }
 
   /**
@@ -71,7 +73,6 @@ export class PostsRepository {
         .select([
           'p.id',
           'p.title',
-          'p.view',
           'p.postCategory',
           'p.createdAt',
           'u.id',
@@ -111,7 +112,6 @@ export class PostsRepository {
         .select([
           'p.id',
           'p.title',
-          'p.view',
           'p.postCategory',
           'p.createdAt',
           'u.id',
@@ -154,7 +154,6 @@ export class PostsRepository {
         .select([
           'p.id',
           'p.title',
-          'p.view',
           'p.postCategory',
           'p.createdAt',
           'u.id',
@@ -186,16 +185,45 @@ export class PostsRepository {
   /**
    * 게시물의 view(조회수) 컬럼을 1 증가시킵니다.
    */
-  async addView(postId: number) {
+  async addView(postId: number): Promise<number> {
     try {
-      return await this.postModel
-        .createQueryBuilder()
-        .update()
-        .set({ view: () => 'view + 1' })
-        .where('id = :postId', { postId })
-        .execute();
+      return await this.redisForViews.incr(postId.toString());
     } catch (err) {
-      throw new HttpException(`[MYSQL ERROR] addView: ${err.message}`, 500);
+      throw new HttpException(`[REDIS ERROR] addView: ${err.message}`, 500);
+    }
+  }
+
+  /**
+   * postId에 해당하는 게시물의 view(조회수)를 반환합니다.
+   */
+  async findViewByPostId(postId: number): Promise<number | null> {
+    try {
+      const view = await this.redisForViews.get(postId.toString());
+      return parseInt(view, 10);
+    } catch (err) {
+      throw new HttpException(`[REDIS ERROR] addView: ${err.message}`, 500);
+    }
+  }
+
+  /**
+   * postId에 해당하는 조회수를 0으로 초기화 합니다.
+   */
+  async createView(postId: number): Promise<void> {
+    try {
+      await this.redisForViews.set(postId.toString(), 0);
+    } catch (err) {
+      throw new HttpException(`[REDIS ERROR] addView: ${err.message}`, 500);
+    }
+  }
+
+  /**
+   * postId에 해당하는 조회수 데이터를 삭제합니다
+   */
+  async deleteView(postId: number): Promise<void> {
+    try {
+      await this.redisForViews.del(postId.toString());
+    } catch (err) {
+      throw new HttpException(`[REDIS ERROR] addView: ${err.message}`, 500);
     }
   }
 
@@ -216,7 +244,6 @@ export class PostsRepository {
 
   async findPostAndUserById(id: number): Promise<PostEntireDataReturn> {
     try {
-      console.log(id);
       return await this.postModel
         .createQueryBuilder('p')
         .innerJoin('p.user', 'u')
@@ -225,7 +252,6 @@ export class PostsRepository {
           'p.title',
           'p.content',
           'p.postCategory',
-          'p.view',
           'p.createdAt',
           'p.updatedAt',
           'u.id',
@@ -244,7 +270,7 @@ export class PostsRepository {
    * 게시물 아이디에 해당하는 데이터를 캐싱합니다.
    */
   async findCachingPost(postId: number): Promise<string> {
-    return await this.redis.get(postId.toString());
+    return await this.redisForCache.get(postId.toString());
   }
 
   /**
@@ -254,8 +280,8 @@ export class PostsRepository {
     postId: number,
     post: PostEntireDataReturn,
   ): Promise<void> {
-    await this.redis.set(postId.toString(), JSON.stringify(post));
-    await this.redis.expire(postId.toString(), 60 * 60 * 12 * 1);
+    await this.redisForCache.set(postId.toString(), JSON.stringify(post));
+    await this.redisForCache.expire(postId.toString(), 60 * 60 * 12 * 1);
   }
 
   // async findPostAndComments(postId: number): Promise<PostAndCommentsReturn> {
@@ -349,7 +375,7 @@ export class PostsRepository {
    */
   async deleteCachingPost(postId: number): Promise<void> {
     try {
-      await this.redis.del(postId.toString());
+      await this.redisForCache.del(postId.toString());
     } catch (err) {
       throw new HttpException(
         `[REDIS ERROR] deleteCachingPost: ${err.message}`,

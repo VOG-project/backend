@@ -37,12 +37,6 @@ export class PostEntity {
   content: string;
 
   @Column({
-    type: 'int',
-    default: 0,
-  })
-  view: number;
-
-  @Column({
     type: 'varchar',
     length: 20,
   })
