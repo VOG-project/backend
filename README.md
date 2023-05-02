@@ -63,7 +63,8 @@
 
 ## 📐 프로젝트 아키텍처
 
-![fawg3](https://user-images.githubusercontent.com/81323697/232329209-f5c4d720-a06d-4b44-b8bb-908e369f18f6.svg)
+![asefasef](https://user-images.githubusercontent.com/81323697/235777748-9ae95e3f-6bed-417a-869b-90e092f1002c.svg)
+
 
 <br />
 
