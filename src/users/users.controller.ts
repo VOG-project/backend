@@ -47,7 +47,7 @@ export class UsersController {
   }
 
   @Patch(':userId/nickname')
-  //@UseGuards(AuthGuard)
+  @UseGuards(AuthGuard)
   @ApiOperation({
     summary: '닉네임 수정 API',
     tags: ['Users'],
@@ -86,7 +86,7 @@ export class UsersController {
   }
 
   @Delete(':userId')
-  //@UseGuards(AuthGuard)
+  @UseGuards(AuthGuard)
   @ApiOperation({
     summary: '회원탈퇴 API',
     tags: ['Users'],

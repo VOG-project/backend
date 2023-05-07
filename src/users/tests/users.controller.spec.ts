@@ -10,6 +10,8 @@ import {
   setDeletedRowReturnDummy,
   setUserReturnDummy,
 } from './dummies/users.return.dummy';
+import { AuthGuard } from 'src/auth/guards/auth.guard';
+import { mockAuthGuard } from 'src/auth/tests/mocks/auth.guard.mock';
 
 describe('UsersController', () => {
   let userController: UsersController;
@@ -28,7 +30,10 @@ describe('UsersController', () => {
           useValue: mockUserService(),
         },
       ],
-    }).compile();
+    })
+      .overrideGuard(AuthGuard)
+      .useValue(mockAuthGuard())
+      .compile();
 
     userController = module.get<UsersController>(UsersController);
     userService = module.get<UserService>(UserService);
