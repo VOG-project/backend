@@ -40,8 +40,10 @@ export class UsersController {
     description: 'userId에 해당하는 유저 데이터를 반환합니다.',
     type: UserEntireDataReturn,
   })
-  async getUser(@Param('userId', ParseIntPipe) userId: number) {
-    return this.userService.getUser(userId);
+  async getUser(
+    @Param('userId', ParseIntPipe) userId: number,
+  ): Promise<UserEntireDataReturn> {
+    return await this.userService.getUser(userId);
   }
 
   @Patch(':userId/nickname')
@@ -60,7 +62,10 @@ export class UsersController {
     @Body() userModificationNicknameRequest: UserModificationNicknameRequest,
     @Param('userId', ParseIntPipe) userId: number,
   ): Promise<UserEntireDataReturn> {
-    return this.userService.modifyUser(userModificationNicknameRequest, userId);
+    return await this.userService.modifyUser(
+      userModificationNicknameRequest,
+      userId,
+    );
   }
 
   @Post('register')
