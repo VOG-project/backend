@@ -44,4 +44,11 @@ describe('LikeController', () => {
       expect(likeService.cancelLike).toHaveBeenCalledTimes(1);
     });
   });
+
+  describe('Get Like List', () => {
+    it('SUCCESS: postId에 해당하는 게시물에 등록된 좋아요 userId 리스트 반환', async () => {
+      expect(await likeController.getLikeUser(1)).toEqual(likeList);
+      expect(likeService.getLikeUser).toHaveBeenCalledTimes(1);
+    });
+  });
 });

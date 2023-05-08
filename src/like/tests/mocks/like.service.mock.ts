@@ -6,6 +6,6 @@ export const mockLikeService = () => {
   return {
     registerLike: jest.fn().mockResolvedValue(likeList),
     cancelLike: jest.fn().mockResolvedValue(likeList),
-    getLikeUser: jest.fn(),
+    getLikeUser: jest.fn().mockResolvedValue(likeList),
   };
 };

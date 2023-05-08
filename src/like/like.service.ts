@@ -73,7 +73,7 @@ export class LikeService {
   /**
    * 게시물 아이디에 포함되는 좋아요 데이터를 반환합니다
    */
-  async getLikeUser(postId: number) {
+  async getLikeUser(postId: number): Promise<LikeUserReturn> {
     const isExistedPost = await this.postRepository.findOneById(postId);
     // 존재하지 않는 게시물에 접근할 경우 예외처리
     if (!isExistedPost)

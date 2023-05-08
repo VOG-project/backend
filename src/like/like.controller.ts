@@ -72,7 +72,9 @@ export class LikeController {
     type: LikeUserReturn,
     status: 200,
   })
-  getLikeUser(@Param('postId', ParseIntPipe) postId: number) {
-    return this.likeService.getLikeUser(postId);
+  async getLikeUser(
+    @Param('postId', ParseIntPipe) postId: number,
+  ): Promise<LikeUserReturn> {
+    return await this.likeService.getLikeUser(postId);
   }
 }
