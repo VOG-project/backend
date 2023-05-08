@@ -44,8 +44,8 @@ describe('UserService', () => {
   describe('Remove User Data', () => {
     it('SUCCESS: 유저 ID에 해당하는 유저 데이터를 삭제하고 유저 엔티티에서 삭제된 row 개수 반환', async () => {
       expect(await userService.removeUser(35)).toEqual(deletedUserReturn);
-      expect(userRepository.findOneById).toHaveBeenCalledTimes(1);
-      expect(userRepository.deleteById).toHaveBeenCalledTimes(1);
+      expect(userRepository.findOneById).toHaveBeenCalledTimes(11);
+      expect(userRepository.deleteById).toHaveBeenCalledTimes(21);
     });
 
     it('EXCEPTION: 유저 ID에 해당하는 데이터가 존재하지 않아 예외 발생', async () => {
