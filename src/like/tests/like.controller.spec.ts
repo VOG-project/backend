@@ -31,7 +31,7 @@ describe('LikeController', () => {
     likeService = module.get<LikeService>(LikeService);
   });
 
-  describe('Register Like Data', () => {
+  describe('Register Like', () => {
     it('SUCCESS: 좋아요 버튼을 클릭할 시 좋아요 데이터 등록', async () => {
       expect(await likeController.registerLike(likeDto, 1)).toEqual(likeList);
       expect(likeService.registerLike).toHaveBeenCalledTimes(1);
