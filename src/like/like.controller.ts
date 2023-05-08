@@ -37,11 +37,11 @@ export class LikeController {
     type: LikeUserReturn,
     status: 201,
   })
-  registerLike(
+  async registerLike(
     @Body() likeCreateRequest: LikeCreatRequest,
     @Param('postId', ParseIntPipe) postId: number,
-  ) {
-    return this.likeService.registerLike(postId, likeCreateRequest);
+  ): Promise<LikeUserReturn> {
+    return await this.likeService.registerLike(postId, likeCreateRequest);
   }
 
   @Patch(':postId')
@@ -55,11 +55,11 @@ export class LikeController {
     type: LikeUserReturn,
     status: 200,
   })
-  cancelLike(
+  async cancelLike(
     @Body() likeDeleteRequest: LikeDeleteRequest,
     @Param('postId', ParseIntPipe) postId: number,
-  ) {
-    return this.likeService.cancelLike(postId, likeDeleteRequest);
+  ): Promise<LikeUserReturn> {
+    return await this.likeService.cancelLike(postId, likeDeleteRequest);
   }
 
   @Get(':postId')
@@ -72,7 +72,9 @@ export class LikeController {
     type: LikeUserReturn,
     status: 200,
   })
-  getLikeUser(@Param('postId', ParseIntPipe) postId: number) {
-    return this.likeService.getLikeUser(postId);
+  async getLikeUser(
+    @Param('postId', ParseIntPipe) postId: number,
+  ): Promise<LikeUserReturn> {
+    return await this.likeService.getLikeUser(postId);
   }
 }

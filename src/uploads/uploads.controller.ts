@@ -41,6 +41,6 @@ export class UploadsController {
     @UploadedFile() image: Express.Multer.File,
     @Param('userId', ParseIntPipe) userId: number,
   ): Promise<UserEntireDataReturn> {
-    return this.uploadService.uploadUserProfileImageFile(image, userId);
+    return await this.uploadService.uploadUserProfileImageFile(image, userId);
   }
 }

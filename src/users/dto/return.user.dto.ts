@@ -1,7 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 export class UserEntireDataReturn {
   @ApiProperty({
-    example: '35',
+    example: 35,
     description: '식별아이디',
   })
   id: number;

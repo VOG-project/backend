@@ -4,6 +4,7 @@ import { UserRepository } from 'src/users/users.repository';
 import { LikeRepository } from './like.repository';
 import { LikeCreatRequest } from './dto/create.like.dto';
 import { LikeDeleteRequest } from './dto/delete.like.dto';
+import { LikeUserReturn } from './dto/result.like.dto';
 
 @Injectable()
 export class LikeService {
@@ -19,7 +20,7 @@ export class LikeService {
   async registerLike(
     postId: number,
     likeCreateRequest: LikeCreatRequest,
-  ): Promise<any> {
+  ): Promise<LikeUserReturn> {
     const { userId } = likeCreateRequest;
 
     // 존재하지 않는 유저가 좋아요 할 경우 예외처리
@@ -44,7 +45,10 @@ export class LikeService {
   /**
    * 좋아요 취소할 경우 좋아요 데이터를 삭제합니다.
    */
-  async cancelLike(postId: number, likeDeleteRequest: LikeDeleteRequest) {
+  async cancelLike(
+    postId: number,
+    likeDeleteRequest: LikeDeleteRequest,
+  ): Promise<LikeUserReturn> {
     const { userId } = likeDeleteRequest;
 
     // 존재하지 않는 유저가 좋아요 취소 할 경우 예외처리
@@ -69,7 +73,7 @@ export class LikeService {
   /**
    * 게시물 아이디에 포함되는 좋아요 데이터를 반환합니다
    */
-  async getLikeUser(postId: number) {
+  async getLikeUser(postId: number): Promise<LikeUserReturn> {
     const isExistedPost = await this.postRepository.findOneById(postId);
     // 존재하지 않는 게시물에 접근할 경우 예외처리
     if (!isExistedPost)

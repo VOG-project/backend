@@ -66,9 +66,9 @@ export class UserRepository {
    * User 테이블에서 userId에 해당하는 데이터를 반환합니다.
    * @param userId 유저 아이디(PK)
    */
-  findOneById(userId: number): Promise<UserEntireDataReturn> {
+  async findOneById(userId: number): Promise<UserEntireDataReturn> {
     try {
-      return this.userModel
+      return await this.userModel
         .createQueryBuilder()
         .select()
         .where('id = :userId', { userId })
@@ -122,9 +122,9 @@ export class UserRepository {
    * @param nickname 유저 닉네임
    * @returns 검색된 유저 데이터의 모든 컬럼
    */
-  findByNickname(nickname: string): Promise<UserEntireDataReturn> {
+  async findByNickname(nickname: string): Promise<UserEntireDataReturn> {
     try {
-      return this.userModel
+      return await this.userModel
         .createQueryBuilder()
         .select()
         .where('nickname = :nickname', { nickname })
