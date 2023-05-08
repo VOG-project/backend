@@ -55,11 +55,11 @@ export class LikeController {
     type: LikeUserReturn,
     status: 200,
   })
-  cancelLike(
+  async cancelLike(
     @Body() likeDeleteRequest: LikeDeleteRequest,
     @Param('postId', ParseIntPipe) postId: number,
-  ) {
-    return this.likeService.cancelLike(postId, likeDeleteRequest);
+  ): Promise<LikeUserReturn> {
+    return await this.likeService.cancelLike(postId, likeDeleteRequest);
   }
 
   @Get(':postId')

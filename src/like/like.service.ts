@@ -45,7 +45,10 @@ export class LikeService {
   /**
    * 좋아요 취소할 경우 좋아요 데이터를 삭제합니다.
    */
-  async cancelLike(postId: number, likeDeleteRequest: LikeDeleteRequest) {
+  async cancelLike(
+    postId: number,
+    likeDeleteRequest: LikeDeleteRequest,
+  ): Promise<LikeUserReturn> {
     const { userId } = likeDeleteRequest;
 
     // 존재하지 않는 유저가 좋아요 취소 할 경우 예외처리

@@ -10,8 +10,8 @@ import { setLikeListReturnDummy } from './dummies/like.return.dummy';
 describe('LikeController', () => {
   let likeController: LikeController;
   let likeService: LikeService;
-  const registerDto = setLikeRegisterDtoDummy();
-  const registerReturn = setLikeListReturnDummy();
+  const likeDto = setLikeRegisterDtoDummy();
+  const likeList = setLikeListReturnDummy();
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -33,10 +33,15 @@ describe('LikeController', () => {
 
   describe('Register Like Data', () => {
     it('SUCCESS: 좋아요 버튼을 클릭할 시 좋아요 데이터 등록', async () => {
-      expect(await likeController.registerLike(registerDto, 1)).toEqual(
-        registerReturn,
-      );
+      expect(await likeController.registerLike(likeDto, 1)).toEqual(likeList);
       expect(likeService.registerLike).toHaveBeenCalledTimes(1);
+    });
+  });
+
+  describe('Cancel Like', () => {
+    it('SUCCESS: 좋아요 버튼을 다시 클릭할 시 좋아요 등록 취소', async () => {
+      expect(await likeController.cancelLike(likeDto, 1)).toEqual(likeList);
+      expect(likeService.cancelLike).toHaveBeenCalledTimes(1);
     });
   });
 });
