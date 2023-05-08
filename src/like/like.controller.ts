@@ -37,11 +37,11 @@ export class LikeController {
     type: LikeUserReturn,
     status: 201,
   })
-  registerLike(
+  async registerLike(
     @Body() likeCreateRequest: LikeCreatRequest,
     @Param('postId', ParseIntPipe) postId: number,
-  ) {
-    return this.likeService.registerLike(postId, likeCreateRequest);
+  ): Promise<LikeUserReturn> {
+    return await this.likeService.registerLike(postId, likeCreateRequest);
   }
 
   @Patch(':postId')

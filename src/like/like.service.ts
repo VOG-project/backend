@@ -4,6 +4,7 @@ import { UserRepository } from 'src/users/users.repository';
 import { LikeRepository } from './like.repository';
 import { LikeCreatRequest } from './dto/create.like.dto';
 import { LikeDeleteRequest } from './dto/delete.like.dto';
+import { LikeUserReturn } from './dto/result.like.dto';
 
 @Injectable()
 export class LikeService {
@@ -19,7 +20,7 @@ export class LikeService {
   async registerLike(
     postId: number,
     likeCreateRequest: LikeCreatRequest,
-  ): Promise<any> {
+  ): Promise<LikeUserReturn> {
     const { userId } = likeCreateRequest;
 
     // 존재하지 않는 유저가 좋아요 할 경우 예외처리
