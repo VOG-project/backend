@@ -63,7 +63,8 @@
 
 ## 📐 프로젝트 아키텍처
 
-![fawg3](https://user-images.githubusercontent.com/81323697/232329209-f5c4d720-a06d-4b44-b8bb-908e369f18f6.svg)
+![asefasef](https://user-images.githubusercontent.com/81323697/235777748-9ae95e3f-6bed-417a-869b-90e092f1002c.svg)
+
 
 <br />
 
@@ -430,4 +431,5 @@
 
 ## RDB ERD
 
-![4eyhsh](https://user-images.githubusercontent.com/81323697/233022946-5ea4a7fa-8698-4012-8cca-b2644ad2c8e4.png)
+![vKf8dA5axr4Z6LA36 (1)](https://user-images.githubusercontent.com/81323697/235772202-6792a723-93f6-411a-a5b2-79f236d8deb2.png)
+
