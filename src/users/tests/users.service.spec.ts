@@ -8,7 +8,6 @@ import {
   setDeletedRowReturnDummy,
   setUserReturnDummy,
 } from './dummies/users.return.dummy';
-import { HttpException } from '@nestjs/common';
 
 describe('UserService', () => {
   let userService: UserService;
