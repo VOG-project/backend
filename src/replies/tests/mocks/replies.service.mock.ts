@@ -1,8 +1,12 @@
 import { ReplyModifyRequest } from 'src/replies/dto/modify.reply.dto';
-import { setReplyRegisterReturn } from './../dummies/replies.return.dummy';
+import {
+  setReplyDeletedRowReturn,
+  setReplyRegisterReturn,
+} from './../dummies/replies.return.dummy';
 
 export const mockReplyService = () => {
   const replyReturn = setReplyRegisterReturn();
+  const replyDeletedRow = setReplyDeletedRowReturn();
 
   return {
     registerReply: jest.fn().mockResolvedValue(replyReturn),
@@ -12,6 +16,6 @@ export const mockReplyService = () => {
         content: modifyDto.content,
       };
     }),
-    removeReply: jest.fn(),
+    removeReply: jest.fn().mockResolvedValue(replyDeletedRow),
   };
 };

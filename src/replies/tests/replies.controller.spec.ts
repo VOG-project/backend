@@ -6,7 +6,10 @@ import {
   setReplyModifyDto,
   setReplyRegisterDto,
 } from './dummies/replies.dto.dummy';
-import { setReplyRegisterReturn } from './dummies/replies.return.dummy';
+import {
+  setReplyDeletedRowReturn,
+  setReplyRegisterReturn,
+} from './dummies/replies.return.dummy';
 import { AuthGuard } from 'src/auth/guards/auth.guard';
 import { mockAuthGuard } from 'src/auth/tests/mocks/auth.guard.mock';
 
@@ -16,6 +19,7 @@ describe('RepliesController', () => {
   const replyRegisterDto = setReplyRegisterDto();
   const replyModifyDto = setReplyModifyDto();
   const replyReturn = setReplyRegisterReturn();
+  const replyDeletedRow = setReplyDeletedRowReturn();
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -52,6 +56,13 @@ describe('RepliesController', () => {
         content: replyModifyDto.content,
       });
       expect(replyService.modifyReply).toHaveBeenCalledTimes(1);
+    });
+  });
+
+  describe('Remove Reply Data', () => {
+    it('SUCCESS: 답글 데이터를 삭제하고 답글 엔티티에서 삭제된 row 개수 반환', async () => {
+      expect(await replyController.removeReply(2)).toEqual(replyDeletedRow);
+      expect(replyService.removeReply).toHaveBeenCalledTimes(1);
     });
   });
 });
