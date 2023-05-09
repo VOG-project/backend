@@ -1,7 +1,7 @@
-import { setLikeListReturnDummy } from '../dummies/like.return.dummy';
+import { setLikeListReturn } from '../dummies/like.return.dummy';
 
 export const mockLikeService = () => {
-  const likeList = setLikeListReturnDummy();
+  const likeList = setLikeListReturn();
 
   return {
     registerLike: jest.fn().mockResolvedValue(likeList),
