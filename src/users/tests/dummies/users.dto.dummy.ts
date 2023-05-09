@@ -1,7 +1,7 @@
 import { UserCreateRequest } from 'src/users/dto/create.user.dto';
 import { UserModificationNicknameRequest } from 'src/users/dto/modify.user.dto';
 
-export const setRegisterDtoDummy = (): UserCreateRequest => {
+export const setUserRegisterDto = (): UserCreateRequest => {
   return {
     oauthId: 'Sb35YY9N_bZgbfSW1jDYkjCcgKrEEHUQ8CLTn',
     provider: 'naver',
@@ -10,7 +10,7 @@ export const setRegisterDtoDummy = (): UserCreateRequest => {
   };
 };
 
-export const setUpdateDtoDummy = (): UserModificationNicknameRequest => {
+export const setUserUpdateDto = (): UserModificationNicknameRequest => {
   return {
     nickname: '뚜루뚜뚜',
   };

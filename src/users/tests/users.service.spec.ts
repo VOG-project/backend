@@ -5,15 +5,15 @@ import { AuthService } from 'src/auth/auth.service';
 import { mockAuthService } from 'src/auth/tests/mocks/auth.service.mock';
 import { mockUserRepository } from './mocks/users.repository.mock';
 import {
-  setDeletedRowReturnDummy,
-  setUserReturnDummy,
+  setUserDeletedRowReturn,
+  setUserReturn,
 } from './dummies/users.return.dummy';
 
 describe('UserService', () => {
   let userService: UserService;
   let userRepository: UserRepository;
-  const userReturn = setUserReturnDummy();
-  const deletedUserReturn = setDeletedRowReturnDummy();
+  const userReturn = setUserReturn();
+  const deletedUserReturn = setUserDeletedRowReturn();
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({

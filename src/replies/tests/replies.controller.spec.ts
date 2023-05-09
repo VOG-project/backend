@@ -49,7 +49,6 @@ describe('RepliesController', () => {
   });
 
   describe('Modify Reply Data', () => {
-    // SUCCESS CASE: replyId = 2
     it('SUCCESS: 답글 데이터를 수정하고 업데이트된 데이터 반환', async () => {
       expect(await replyController.modifyReply(replyModifyDto, 2)).toEqual({
         ...replyReturn,
