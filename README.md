@@ -1,3 +1,8 @@
+# TalkGG
+![aw3gaw3gw3](https://github.com/VOG-project/backend/assets/81323697/83d5a683-62ab-4cda-8f8e-eace4b734fa4)
+
+
+
 ## 📃 개요
 
 - 서비스명: TalkGG
