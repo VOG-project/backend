@@ -2,8 +2,8 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { LikeRepository } from '../like.repository';
 import { LikeService } from '../like.service';
 import { mockLikeRepository } from './mocks/like.repository.mock';
-import { setLikeRegisterDtoDummy } from './dummies/like.dto.dummy';
-import { setLikeListReturnDummy } from './dummies/like.return.dummy';
+import { setLikeRegisterDto } from './dummies/like.dto.dummy';
+import { setLikeListReturn } from './dummies/like.return.dummy';
 import { UserRepository } from 'src/users/users.repository';
 import { mockUserRepository } from 'src/users/tests/mocks/users.repository.mock';
 import { PostsRepository } from 'src/posts/posts.repository';
@@ -14,8 +14,8 @@ describe('LikeService', () => {
   let likeRepository: LikeRepository;
   let userRepository: UserRepository;
   let postRepository: PostsRepository;
-  const likeDto = setLikeRegisterDtoDummy();
-  const likeList = setLikeListReturnDummy();
+  const likeDto = setLikeRegisterDto();
+  const likeList = setLikeListReturn();
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({

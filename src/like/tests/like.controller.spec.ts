@@ -4,14 +4,14 @@ import { LikeService } from '../like.service';
 import { mockLikeService } from './mocks/like.service.mock';
 import { AuthGuard } from 'src/auth/guards/auth.guard';
 import { mockAuthGuard } from 'src/auth/tests/mocks/auth.guard.mock';
-import { setLikeRegisterDtoDummy } from './dummies/like.dto.dummy';
-import { setLikeListReturnDummy } from './dummies/like.return.dummy';
+import { setLikeRegisterDto } from './dummies/like.dto.dummy';
+import { setLikeListReturn } from './dummies/like.return.dummy';
 
 describe('LikeController', () => {
   let likeController: LikeController;
   let likeService: LikeService;
-  const likeDto = setLikeRegisterDtoDummy();
-  const likeList = setLikeListReturnDummy();
+  const likeDto = setLikeRegisterDto();
+  const likeList = setLikeListReturn();
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({

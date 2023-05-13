@@ -1,6 +1,6 @@
 import { LikeCreatRequest } from 'src/like/dto/create.like.dto';
 
-export const setLikeRegisterDtoDummy = (): LikeCreatRequest => {
+export const setLikeRegisterDto = (): LikeCreatRequest => {
   return {
     userId: 35,
   };

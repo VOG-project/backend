@@ -1,7 +1,7 @@
-import { setUserReturnDummy } from 'src/users/tests/dummies/users.return.dummy';
+import { setUserReturn } from 'src/users/tests/dummies/users.return.dummy';
 
 export const mockUploadService = () => {
-  const userReturn = setUserReturnDummy();
+  const userReturn = setUserReturn();
 
   return {
     deleteUserProfileImageFile: jest.fn(),

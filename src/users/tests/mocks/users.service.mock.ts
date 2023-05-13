@@ -1,11 +1,11 @@
 import {
-  setDeletedRowReturnDummy,
-  setUserReturnDummy,
+  setUserDeletedRowReturn,
+  setUserReturn,
 } from '../dummies/users.return.dummy';
 
 export const mockUserService = () => {
-  const userReturn = setUserReturnDummy();
-  const deletedUserReturn = setDeletedRowReturnDummy();
+  const userReturn = setUserReturn();
+  const deletedUserReturn = setUserDeletedRowReturn();
 
   return {
     modifyUser: jest.fn().mockResolvedValue(userReturn),

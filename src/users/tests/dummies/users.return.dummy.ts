@@ -1,7 +1,7 @@
 import { PostDeletedCountReturn } from 'src/posts/dto/return.post.dto';
 import { UserEntireDataReturn } from 'src/users/dto/return.user.dto';
 
-export const setUserReturnDummy = (): UserEntireDataReturn => {
+export const setUserReturn = (): UserEntireDataReturn => {
   return {
     id: 35,
     oauthId: 'Sb35YY9N_bZgbfSW1jDYkjCcgKrEEHUQ8CLTn',
@@ -14,7 +14,7 @@ export const setUserReturnDummy = (): UserEntireDataReturn => {
   };
 };
 
-export const setDeletedRowReturnDummy = (): PostDeletedCountReturn => {
+export const setUserDeletedRowReturn = (): PostDeletedCountReturn => {
   return {
     deletedCount: 1,
   };

@@ -112,10 +112,13 @@ export class PostsService {
     }
 
     await this.postRepository.update(postModificationRequest, postId);
-
     const modifiedPost = await this.postRepository.findPostAndUserById(postId);
-    // 수정된 데이터를 캐싱하기 위해 redis에 저장합니다.
-    await this.registerPostToCache(postId, modifiedPost);
+
+    const isCachedPost = await this.postRepository.checkCached(postId);
+    if (isCachedPost) {
+      // 수정된 데이터를 캐싱하기 위해 redis에 저장합니다.
+      await this.registerPostToCache(postId, modifiedPost);
+    }
     const view = await this.postRepository.findViewByPostId(postId);
 
     return { ...modifiedPost, view };

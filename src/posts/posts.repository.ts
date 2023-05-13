@@ -242,6 +242,14 @@ export class PostsRepository {
     }
   }
 
+  async checkCached(postId: number) {
+    try {
+      return await this.redisForCache.exists(postId.toString());
+    } catch (err) {
+      throw new HttpException(`[REDIS ERROR] checkCached: ${err.message}`, 500);
+    }
+  }
+
   async findPostAndUserById(id: number): Promise<PostEntireDataReturn> {
     try {
       return await this.postModel
