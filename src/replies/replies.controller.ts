@@ -47,11 +47,11 @@ export class RepliesController {
 
   @Patch(':replyId')
   @ApiOperation({
-    summary: '댓글 수정 API',
+    summary: '답글 수정 API',
     tags: ['Replies'],
   })
   @ApiResponse({
-    description: '수정한 댓글에 대한 모든 데이터를 반환합니다.',
+    description: '수정한 답글에 대한 모든 데이터를 반환합니다.',
     status: 201,
   })
   async modifyReply(
