@@ -1,3 +1,5 @@
 export const mockAuthGuard = () => {
-  canActivate: jest.fn(() => true);
+  return {
+    canActivate: jest.fn((): boolean => true),
+  };
 };
