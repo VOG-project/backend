@@ -75,13 +75,13 @@ describe('RepliesController', () => {
   });
 
   describe('RemoveReply', () => {
-    const DeletedCountReturn = ReplyDeletedRowCountReturn;
+    const deletedCountReturn = ReplyDeletedRowCountReturn;
     const replyId = 1;
 
     it('SUCCESS: 답글 Id에 해당하는 답글 데이터 삭제 후, Reply 엔터티에서 삭제된 row 개수 반환', async () => {
       const res = await repliesController.removeReply(replyId);
 
-      expect(res).toStrictEqual(DeletedCountReturn);
+      expect(res).toStrictEqual(deletedCountReturn);
       expect(repliesService.removeReply).toBeCalledTimes(1);
       expect(repliesService.removeReply).toBeCalledWith(replyId);
     });
