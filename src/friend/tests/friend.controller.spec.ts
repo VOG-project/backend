@@ -9,7 +9,6 @@ import {
   FriendReturn,
   UserReturn,
 } from './dummies/friend.return.dummy';
-import { HttpException } from '@nestjs/common';
 
 describe('FriendController', () => {
   let friendController: FriendController;
@@ -25,6 +24,7 @@ describe('FriendController', () => {
             registerFriend: jest.fn(() => UserReturn),
             getFriends: jest.fn(() => FriendReturn),
             removeFriend: jest.fn(() => FriendDeletedRowCountReturn),
+            searchFriend: jest.fn(() => UserReturn),
           },
         },
       ],
@@ -135,5 +135,16 @@ describe('FriendController', () => {
     });
   });
 
-  
+  describe('SearchFriend', () => {
+    const nickname = '테스트';
+    const userReturn = UserReturn;
+
+    it('SUCCESS: nickname과 일치하는 친구 유저 데이터 반환', async () => {
+      const result = await friendService.searchFriend(nickname);
+
+      expect(result).toStrictEqual(userReturn);
+      expect(friendService.searchFriend).toBeCalledTimes(1);
+      expect(friendService.searchFriend).toBeCalledWith(nickname);
+    });
+  });
 });
