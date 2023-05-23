@@ -57,10 +57,10 @@ export class FriendController {
     type: FriendFollowingReturn,
     status: 200,
   })
-  getFriends(
+  async getFriends(
     @Param('userId', ParseIntPipe) userId: number,
   ): Promise<FriendFollowingReturn[]> {
-    return this.friendService.getFriends(userId);
+    return await this.friendService.getFriends(userId);
   }
 
   @Patch(':userId')
@@ -73,11 +73,11 @@ export class FriendController {
     type: FriendDeletedCountReturn,
     status: 200,
   })
-  removeFriend(
+  async removeFriend(
     @Body() friendDeleteRequest: FriendDeleteRequest,
     @Param('userId', ParseIntPipe) userId: number,
   ): Promise<FriendDeletedCountReturn> {
-    return this.friendService.removeFriend(userId, friendDeleteRequest);
+    return await this.friendService.removeFriend(userId, friendDeleteRequest);
   }
 
   @Get('search/:nickname')
@@ -90,9 +90,9 @@ export class FriendController {
     type: UserEntireDataReturn,
     status: 200,
   })
-  searchFriend(
+  async searchFriend(
     @Param('nickname') nickname: string,
   ): Promise<UserEntireDataReturn> {
-    return this.friendService.searchFriend(nickname);
+    return await this.friendService.searchFriend(nickname);
   }
 }
