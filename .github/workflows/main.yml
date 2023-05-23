@@ -22,7 +22,7 @@ jobs:
         node-version: 16.19.0
         cache: 'npm'
     - run: npm install
-    - run: npm test replies
+    - run: npm test replies friend
 
   build:
     needs: test
