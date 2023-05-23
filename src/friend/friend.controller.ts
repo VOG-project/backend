@@ -40,11 +40,11 @@ export class FriendController {
     type: UserEntireDataReturn,
     status: 201,
   })
-  registerFriend(
+  async registerFriend(
     @Body() friendCreateRequest: FriendCreateRequest,
     @Param('userId', ParseIntPipe) userId: number,
   ): Promise<UserEntireDataReturn> {
-    return this.friendService.registerFriend(userId, friendCreateRequest);
+    return await this.friendService.registerFriend(userId, friendCreateRequest);
   }
 
   @Get(':userId')
