@@ -2,7 +2,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { FriendService } from '../friend.service';
 import { FriendRepository } from './../friend.repository';
 import { FriendRegisterDto } from './dummies/friend.dto.dummy';
-import { UserReturn } from './dummies/friend.return.dummy';
+import { FriendReturn, UserReturn } from './dummies/friend.return.dummy';
 import { UserRepository } from 'src/users/users.repository';
 
 describe('FriendService', () => {
@@ -16,7 +16,10 @@ describe('FriendService', () => {
         FriendService,
         {
           provide: FriendRepository,
-          useValue: { create: jest.fn() },
+          useValue: {
+            create: jest.fn(),
+            findFreindsByUserId: jest.fn(() => FriendReturn),
+          },
         },
         {
           provide: UserRepository,
@@ -88,5 +91,19 @@ describe('FriendService', () => {
     //     friendDummyDto.targetId,
     //   );
     // });
+  });
+
+  describe('GetFriends', () => {
+    const userId = 1;
+    const friendReturn = FriendReturn;
+    it('SUCCESS: userId에 해당하는 유저가 추가한 친구 데이터를 반환', async () => {
+      const result = await friendService.getFriends(userId);
+
+      expect(result).toStrictEqual(friendReturn);
+      expect(userRepository.findOneById).toBeCalledTimes(1);
+      expect(userRepository.findOneById).toBeCalledWith(userId);
+      expect(friendRepository.findFreindsByUserId).toBeCalledTimes(1);
+      expect(friendRepository.findFreindsByUserId).toBeCalledWith(userId);
+    });
   });
 });
