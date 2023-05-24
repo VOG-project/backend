@@ -6,5 +6,5 @@ export const FriendRegisterDto: FriendCreateRequest = {
 };
 
 export const FriendDeleteDto: FriendDeleteRequest = {
-  targetId: 1,
+  targetId: 10,
 };
