@@ -69,5 +69,24 @@ describe('FriendService', () => {
       expect(userRepository.findOneById).toBeCalledTimes(1);
       expect(userRepository.findOneById).toBeCalledWith(userId);
     });
+
+    // it('EXCEPTION: targetId에 해당하는 유저 데이터가 없을 경우 에러 메세지 및 404 상태 코드 발생', async () => {
+    //   const tempUserId = 1;
+    //   jest
+    //     .spyOn(userRepository, 'findOneById')
+    //     .mockImplementationOnce((userId: number): any => {
+    //       return userId === 1 ? true : undefined;
+    //     });
+
+    //   expect(
+    //     async () =>
+    //       await friendService.registerFriend(tempUserId, friendDummyDto),
+    //   ).rejects.toThrow('친구 추가하려는 대상은 존재하지 않는 유저입니다.');
+    //   expect(userRepository.findOneById).toBeCalledTimes(2);
+    //   expect(userRepository.findOneById).toBeCalledWith(1);
+    //   expect(userRepository.findOneById).toBeCalledWith(
+    //     friendDummyDto.targetId,
+    //   );
+    // });
   });
 });
