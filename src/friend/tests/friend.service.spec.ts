@@ -139,5 +139,14 @@ describe('FriendService', () => {
         friendDummyDto.targetId,
       );
     });
+
+    it('EXCEPTION: userId와 targetId가 일치할 경우 에러 메세지 및 400 상태 코드 발생', async () => {
+      const tempUserId = 10;
+
+      expect(
+        async () =>
+          await friendService.removeFriend(tempUserId, friendDummyDto),
+      ).rejects.toThrow('자기 자신은 친구 삭제할 수 없습니다.');
+    });
   });
 });
