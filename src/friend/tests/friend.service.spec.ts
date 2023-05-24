@@ -49,5 +49,11 @@ describe('FriendService', () => {
         friendDummyDto.targetId,
       );
     });
+
+    it('EXCEPTION: userId와 targetId가 같은 경우 에러 메세지 및 400 상태 코드 발생', async () => {
+      expect(
+        async () => await friendService.registerFriend(10, friendDummyDto),
+      ).rejects.toThrow('자기 자신은 친구로 추가할 수 없습니다.');
+    });
   });
 });
