@@ -105,5 +105,17 @@ describe('FriendService', () => {
       expect(friendRepository.findFreindsByUserId).toBeCalledTimes(1);
       expect(friendRepository.findFreindsByUserId).toBeCalledWith(userId);
     });
+
+    it('EXCEPTION: userId에 해당하는 유저 데이터가 없을 경우 에러 메세지 및 404 상태 코드 발생 ', async () => {
+      jest
+        .spyOn(userRepository, 'findOneById')
+        .mockImplementationOnce(() => undefined);
+
+      expect(
+        async () => await friendService.getFriends(userId),
+      ).rejects.toThrow('존재하지 않는 유저입니다.');
+      expect(userRepository.findOneById).toBeCalledTimes(1);
+      expect(userRepository.findOneById).toBeCalledWith(userId);
+    });
   });
 });
