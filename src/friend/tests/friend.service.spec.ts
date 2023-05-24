@@ -55,5 +55,19 @@ describe('FriendService', () => {
         async () => await friendService.registerFriend(10, friendDummyDto),
       ).rejects.toThrow('자기 자신은 친구로 추가할 수 없습니다.');
     });
+
+    it('EXCEPTION: userId에 해당하는 유저 데이터가 없을 경우 에러 메세지 및 404 상태 코드 발생', async () => {
+      jest
+        .spyOn(userRepository, 'findOneById')
+        .mockImplementationOnce(() => undefined);
+
+      expect(
+        async () => await friendService.registerFriend(userId, friendDummyDto),
+      ).rejects.toThrow(
+        '친구 등록을 시도하는 유저는 존재하지 않는 유저입니다.',
+      );
+      expect(userRepository.findOneById).toBeCalledTimes(1);
+      expect(userRepository.findOneById).toBeCalledWith(userId);
+    });
   });
 });
