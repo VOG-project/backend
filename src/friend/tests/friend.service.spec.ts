@@ -28,7 +28,10 @@ describe('FriendService', () => {
         },
         {
           provide: UserRepository,
-          useValue: { findOneById: jest.fn(() => UserReturn) },
+          useValue: {
+            findOneById: jest.fn(() => UserReturn),
+            findByNickname: jest.fn(() => UserReturn),
+          },
         },
       ],
     }).compile();
@@ -147,6 +150,19 @@ describe('FriendService', () => {
         async () =>
           await friendService.removeFriend(tempUserId, friendDummyDto),
       ).rejects.toThrow('자기 자신은 친구 삭제할 수 없습니다.');
+    });
+  });
+
+  describe('SearchFriend', () => {
+    it('SUCCESS: nickname에 해당하는 유저 데이터 반환', async () => {
+      const nickname = '테스트';
+      const userReturn = UserReturn;
+
+      const result = await friendService.searchFriend(nickname);
+
+      expect(result).toStrictEqual(userReturn);
+      expect(userRepository.findByNickname).toBeCalledTimes(1);
+      expect(userRepository.findByNickname).toBeCalledWith(nickname);
     });
   });
 });
