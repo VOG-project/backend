@@ -80,7 +80,6 @@ export class FriendService {
    * 친구 목록 중 특정 닉네임을 가진 유저 데이터를 반환합니다.
    */
   async searchFriend(nickname: string): Promise<UserEntireDataReturn> {
-    const user = await this.userRepository.findByNickname(nickname);
-    return user;
+    return await this.userRepository.findByNickname(nickname);
   }
 }
