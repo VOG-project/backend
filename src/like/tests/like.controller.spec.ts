@@ -19,6 +19,7 @@ describe('LikeController', () => {
           useValue: {
             registerLike: jest.fn(() => LikeUsers),
             cancelLike: jest.fn(() => LikeUsers),
+            getLikeUser: jest.fn(() => LikeUsers),
           },
         },
       ],
@@ -56,6 +57,19 @@ describe('LikeController', () => {
       expect(result).toStrictEqual(likeUsersReturn);
       expect(likeService.cancelLike).toBeCalledTimes(1);
       expect(likeService.cancelLike).toBeCalledWith(postId, likeDummyDto);
+    });
+  });
+
+  describe('GetLikeUser', () => {
+    it('SUCCESS: postId에 해당하는 게시물에 좋아요를 누른 userId를 반환', async () => {
+      const postId = 1;
+      const likeUsersReturn = LikeUsers;
+
+      const result = await likeController.getLikeUser(postId);
+
+      expect(result).toStrictEqual(likeUsersReturn);
+      expect(likeService.getLikeUser).toBeCalledTimes(1);
+      expect(likeService.getLikeUser).toBeCalledWith(postId);
     });
   });
 });
