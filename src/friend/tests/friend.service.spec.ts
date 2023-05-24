@@ -1,8 +1,12 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { FriendService } from '../friend.service';
 import { FriendRepository } from './../friend.repository';
-import { FriendRegisterDto } from './dummies/friend.dto.dummy';
-import { FriendReturn, UserReturn } from './dummies/friend.return.dummy';
+import { FriendDeleteDto, FriendRegisterDto } from './dummies/friend.dto.dummy';
+import {
+  FriendDeletedRowCountReturn,
+  FriendReturn,
+  UserReturn,
+} from './dummies/friend.return.dummy';
 import { UserRepository } from 'src/users/users.repository';
 
 describe('FriendService', () => {
@@ -19,6 +23,7 @@ describe('FriendService', () => {
           useValue: {
             create: jest.fn(),
             findFreindsByUserId: jest.fn(() => FriendReturn),
+            deleteFriend: jest.fn(() => FriendDeletedRowCountReturn),
           },
         },
         {
@@ -116,6 +121,23 @@ describe('FriendService', () => {
       ).rejects.toThrow('존재하지 않는 유저입니다.');
       expect(userRepository.findOneById).toBeCalledTimes(1);
       expect(userRepository.findOneById).toBeCalledWith(userId);
+    });
+  });
+
+  describe('RemoveFriend', () => {
+    const friendDummyDto = FriendDeleteDto;
+    const userId = 1;
+    const friendDeletedCount = FriendDeletedRowCountReturn;
+
+    it('SUCCESS: targetId에 해당하는 친구 데이터를 삭제하고 삭제된 row 개수 반환', async () => {
+      const result = await friendService.removeFriend(userId, friendDummyDto);
+
+      expect(result).toStrictEqual(friendDeletedCount);
+      expect(friendRepository.deleteFriend).toBeCalledTimes(1);
+      expect(friendRepository.deleteFriend).toBeCalledWith(
+        userId,
+        friendDummyDto.targetId,
+      );
     });
   });
 });
