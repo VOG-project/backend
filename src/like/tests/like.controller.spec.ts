@@ -3,7 +3,7 @@ import { LikeController } from '../like.controller';
 import { LikeService } from '../like.service';
 import { AuthGuard } from 'src/auth/guards/auth.guard';
 import { mockAuthGuard } from 'src/auth/tests/mocks/auth.guard.mock';
-import { LikeRegisterDto } from './dummies/like.dto.dummy';
+import { LikeDeleteDto, LikeRegisterDto } from './dummies/like.dto.dummy';
 import { LikeUsers } from './dummies/like.return.dummy';
 
 describe('LikeController', () => {
@@ -18,6 +18,7 @@ describe('LikeController', () => {
           provide: LikeService,
           useValue: {
             registerLike: jest.fn(() => LikeUsers),
+            cancelLike: jest.fn(() => LikeUsers),
           },
         },
       ],
@@ -41,6 +42,20 @@ describe('LikeController', () => {
       expect(result).toStrictEqual(likeUsersReturn);
       expect(likeService.registerLike).toBeCalledTimes(1);
       expect(likeService.registerLike).toBeCalledWith(postId, likeDummyDto);
+    });
+  });
+
+  describe('CancelLike', () => {
+    it('SUCCESS: Dto에 포함된 userId와 postId를 입력 받아 좋아요 취소 및 postId에 해당하는 게시물에 좋아요를 누른 userId 반환', async () => {
+      const likeDummyDto = LikeDeleteDto;
+      const postId = 1;
+      const likeUsersReturn = LikeUsers;
+
+      const result = await likeController.cancelLike(likeDummyDto, postId);
+
+      expect(result).toStrictEqual(likeUsersReturn);
+      expect(likeService.cancelLike).toBeCalledTimes(1);
+      expect(likeService.cancelLike).toBeCalledWith(postId, likeDummyDto);
     });
   });
 });
