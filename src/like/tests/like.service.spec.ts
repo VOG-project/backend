@@ -5,6 +5,7 @@ import { LikeRegisterDto } from './dummies/like.dto.dummy';
 import { LikeUsers, PostReturn, UserReturn } from './dummies/like.return.dummy';
 import { UserRepository } from './../../users/users.repository';
 import { PostsRepository } from './../../posts/posts.repository';
+import { HttpException } from '@nestjs/common';
 
 describe('LikeService', () => {
   let likeService: LikeService;
@@ -71,9 +72,20 @@ describe('LikeService', () => {
         async () => await likeService.registerLike(postId, likeDummyDto),
       ).rejects.toThrow('존재하지 않는 유저입니다.');
       expect(userRepository.findOneById).toBeCalledTimes(1);
-      expect(userRepository.findOneById).toBeCalledWith(postId);
+      expect(userRepository.findOneById).toBeCalledWith(likeDummyDto.userId);
     });
 
-    
+    it('EXCEPTION: postId에 해당하는 게시물이 없을 경우 에러메세지 및 404 상태코드 발생', async () => {
+      jest
+        .spyOn(postRepository, 'findOneById')
+        .mockImplementationOnce(() => null);
+
+      expect(
+        async () => await likeService.registerLike(postId, likeDummyDto),
+      ).rejects.toThrow(new HttpException('존재하지 않는 게시물입니다.', 404));
+      expect(userRepository.findOneById).toBeCalledTimes(1);
+      expect(userRepository.findOneById).toBeCalledWith(likeDummyDto.userId);
+      //expect(postRepository.findOneById).toBeCalledTimes(1);
+    });
   });
 });
