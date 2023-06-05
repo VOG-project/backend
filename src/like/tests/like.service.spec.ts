@@ -2,7 +2,7 @@ import { LikeRepository } from '../like.repository';
 import { LikeService } from './../like.service';
 import { Test, TestingModule } from '@nestjs/testing';
 import { LikeRegisterDto } from './dummies/like.dto.dummy';
-import { LikeUsers } from './dummies/like.return.dummy';
+import { LikeUsers, PostReturn, UserReturn } from './dummies/like.return.dummy';
 import { UserRepository } from './../../users/users.repository';
 import { PostsRepository } from './../../posts/posts.repository';
 
@@ -18,15 +18,18 @@ describe('LikeService', () => {
         LikeService,
         {
           provide: LikeRepository,
-          useValue: { findLikeUsersByPostId: jest.fn(), createLike: jest.fn() },
+          useValue: {
+            findLikeUsersByPostId: jest.fn(() => LikeUsers),
+            createLike: jest.fn(),
+          },
         },
         {
           provide: UserRepository,
-          useValue: { findOneById: jest.fn() },
+          useValue: { findOneById: jest.fn(() => UserReturn) },
         },
         {
           provide: PostsRepository,
-          useValue: { findOneById: jest.fn() },
+          useValue: { findOneById: jest.fn(() => PostReturn) },
         },
       ],
     }).compile();
@@ -45,6 +48,17 @@ describe('LikeService', () => {
       const result = await likeService.registerLike(postId, likeDummyDto);
 
       expect(result).toStrictEqual(likeUsersReturn);
+      expect(userRepository.findOneById).toBeCalledTimes(1);
+      expect(userRepository.findOneById).toBeCalledWith(likeDummyDto.userId);
+      expect(postRepository.findOneById).toBeCalledTimes(1);
+      expect(postRepository.findOneById).toBeCalledWith(postId);
+      expect(likeRepository.createLike).toBeCalledTimes(1);
+      expect(likeRepository.createLike).toBeCalledWith(
+        postId,
+        likeDummyDto.userId,
+      );
+      expect(likeRepository.findLikeUsersByPostId).toBeCalledTimes(1);
+      expect(likeRepository.findLikeUsersByPostId).toBeCalledWith(postId);
     });
   });
 });
