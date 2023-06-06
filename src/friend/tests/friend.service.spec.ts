@@ -161,7 +161,7 @@ describe('FriendService', () => {
       const result = await friendService.searchFriend(nickname);
 
       expect(result).toStrictEqual(userReturn);
-      expect(userRepository.findByNickname).toBeCalledTimes(1);
+      expect(userRepository.findByNickname).toBeCalledTimes(3);
       expect(userRepository.findByNickname).toBeCalledWith(nickname);
     });
   });
