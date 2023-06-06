@@ -1,4 +1,4 @@
-name: Test Before Merging Dev Branch
+name: Test Before Merging Main Branch
 
 on:
   pull_request:
