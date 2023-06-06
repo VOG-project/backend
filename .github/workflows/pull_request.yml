@@ -1,0 +1,19 @@
+name: Test Before Merging Main Branch
+
+on:
+  pull_request:
+    branches: ['main']
+
+jobs:
+  test:
+    runs-on: ubuntu-20.04
+    steps:
+    - name: Checkout Source Code
+      uses: actions/checkout@v3
+    - name: Setup node.js 16.19.0
+      uses: actions/setup-node@v3
+      with:
+        node-version: 16.19.0
+        cache: 'npm'
+    - run: npm install
+    - run: npm test replies friend like
