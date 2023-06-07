@@ -48,7 +48,7 @@ describe('FriendController', () => {
       );
 
       expect(result).toStrictEqual(userReturn);
-      expect(friendService.registerFriend).toBeCalledTimes(15);
+      expect(friendService.registerFriend).toBeCalledTimes(1);
       expect(friendService.registerFriend).toBeCalledWith(
         userId,
         friendDummyDto,
