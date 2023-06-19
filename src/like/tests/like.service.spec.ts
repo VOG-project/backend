@@ -141,6 +141,8 @@ describe('LikeService', () => {
         expect(userRepository.findOneById).toBeCalledWith(likeDummyDto.userId);
         expect(postRepository.findOneById).toBeCalledTimes(1);
         expect(postRepository.findOneById).toBeCalledWith(postId);
+        expect(likeRepository.findLikeUsersByPostId).toBeCalledTimes(2);
+        expect(likeRepository.findLikeUsersByPostId).toBeCalledWith(postId);
       } catch (err) {
         expect(err.status).toBe(404);
         expect(err.response).toBe('존재하지 않는 게시물입니다.');
