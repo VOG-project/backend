@@ -80,12 +80,14 @@ describe('LikeService', () => {
         .spyOn(postRepository, 'findOneById')
         .mockImplementationOnce(() => null);
 
+      // 이거 왜 호출 안되냐고
+      //expect(postRepository.findOneById).toBeCalledTimes(1);
+
       expect(
         async () => await likeService.registerLike(postId, likeDummyDto),
       ).rejects.toThrow(new HttpException('존재하지 않는 게시물입니다.', 404));
       expect(userRepository.findOneById).toBeCalledTimes(1);
       expect(userRepository.findOneById).toBeCalledWith(likeDummyDto.userId);
-      //expect(postRepository.findOneById).toBeCalledTimes(1);
     });
   });
 });
