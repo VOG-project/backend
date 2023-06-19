@@ -114,6 +114,19 @@ describe('LikeService', () => {
       expect(likeRepository.findLikeUsersByPostId).toBeCalledWith(postId);
     });
 
-    
+    it('EXCEPTION: userId에 해당하는 유저가 없을 경우 에러메세지 및 404 상태코드 발생', async () => {
+      jest
+        .spyOn(userRepository, 'findOneById')
+        .mockImplementationOnce(() => null);
+
+      try {
+        await likeService.cancelLike(postId, likeDummyDto);
+        expect(userRepository.findOneById).toBeCalledTimes(1);
+        expect(userRepository.findOneById).toBeCalledWith(likeDummyDto.userId);
+      } catch (err) {
+        expect(err.status).toBe(404);
+        expect(err.response).toBe('존재하지 않는 유저입니다.');
+      }
+    });
   });
 });
