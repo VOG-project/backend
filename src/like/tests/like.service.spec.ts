@@ -147,4 +147,37 @@ describe('LikeService', () => {
       }
     });
   });
+
+  describe('GetLikeUser', () => {
+    const postId = 1;
+    const likeUsersReturn = LikeUsers;
+
+    it('SUCCESS: postId에 해당하는 게시물에 좋아요를 등록한 userId 배열 반환', async () => {
+      const result = await likeService.getLikeUser(postId);
+
+      expect(result).toStrictEqual(likeUsersReturn);
+      expect(postRepository.findOneById).toBeCalledTimes(1);
+      expect(postRepository.findOneById).toBeCalledWith(postId);
+      expect(likeRepository.findLikeUsersByPostId).toBeCalledTimes(1);
+      expect(likeRepository.findLikeUsersByPostId).toBeCalledWith(postId);
+    });
+
+    it('EXCEPTION: postId에 해당하는 게시물이 없을 경우 에러메세지 및 404 상태코드 발생', async () => {
+      jest
+        .spyOn(postRepository, 'findOneById')
+        .mockImplementationOnce(() => null);
+
+      try {
+        await likeService.getLikeUser(postId);
+
+        expect(postRepository.findOneById).toBeCalledTimes(1);
+        expect(postRepository.findOneById).toBeCalledWith(postId);
+        expect(likeRepository.findLikeUsersByPostId).toBeCalledTimes(1);
+        expect(likeRepository.findLikeUsersByPostId).toBeCalledWith(postId);
+      } catch (err) {
+        expect(err.status).toBe(404);
+        expect(err.response).toBe('존재하지 않는 게시물입니다.');
+      }
+    });
+  });
 });
