@@ -3,8 +3,14 @@ import { PostsController } from '../posts.controller';
 import { PostsService } from '../posts.service';
 import { AuthGuard } from 'src/auth/guards/auth.guard';
 import { mockAuthGuard } from 'src/auth/tests/mocks/auth.guard.mock';
-import { PostRegisterDummyDto } from './dummies/posts.dto.dummy';
-import { PostEntireReturn } from './dummies/posts.return.dummy';
+import {
+  PostRegisterDummyDto,
+  PostSearchDummyCondition,
+} from './dummies/posts.dto.dummy';
+import {
+  PostEntireReturn,
+  PostSearchReturn,
+} from './dummies/posts.return.dummy';
 
 describe('PostsController', () => {
   let postsController: PostsController;
@@ -16,7 +22,10 @@ describe('PostsController', () => {
       providers: [
         {
           provide: PostsService,
-          useValue: { registerPost: jest.fn(() => PostEntireReturn) },
+          useValue: {
+            registerPost: jest.fn(() => PostEntireReturn),
+            searchPost: jest.fn(() => PostSearchReturn),
+          },
         },
       ],
     })
@@ -38,6 +47,19 @@ describe('PostsController', () => {
       expect(result).toStrictEqual(postReturn);
       expect(postsService.registerPost).toBeCalledTimes(1);
       expect(postsService.registerPost).toBeCalledWith(postDummyDto);
+    });
+  });
+
+  describe('searchPost', () => {
+    const postSearchConditionDummy = PostSearchDummyCondition;
+    const postSearchReturnDummy = PostSearchReturn;
+
+    it('SUCCESS: 댓글 검색 및 검색된 데이터 반환', async () => {
+      const result = await postsController.searchPost(postSearchConditionDummy);
+
+      expect(result).toStrictEqual(postSearchReturnDummy);
+      expect(postsService.searchPost).toBeCalledTimes(1);
+      expect(postsService.searchPost).toBeCalledWith(postSearchConditionDummy);
     });
   });
 });
