@@ -4,6 +4,7 @@ import { PostsService } from '../posts.service';
 import { AuthGuard } from 'src/auth/guards/auth.guard';
 import { mockAuthGuard } from 'src/auth/tests/mocks/auth.guard.mock';
 import {
+  PostGetDummyCondition,
   PostRegisterDummyDto,
   PostSearchDummyCondition,
 } from './dummies/posts.dto.dummy';
@@ -25,6 +26,7 @@ describe('PostsController', () => {
           useValue: {
             registerPost: jest.fn(() => PostEntireReturn),
             searchPost: jest.fn(() => PostSearchReturn),
+            getPostList: jest.fn(() => PostSearchReturn),
           },
         },
       ],
@@ -50,7 +52,7 @@ describe('PostsController', () => {
     });
   });
 
-  describe('searchPost', () => {
+  describe('SearchPost', () => {
     const postSearchConditionDummy = PostSearchDummyCondition;
     const postSearchReturnDummy = PostSearchReturn;
 
@@ -60,6 +62,19 @@ describe('PostsController', () => {
       expect(result).toStrictEqual(postSearchReturnDummy);
       expect(postsService.searchPost).toBeCalledTimes(1);
       expect(postsService.searchPost).toBeCalledWith(postSearchConditionDummy);
+    });
+  });
+
+  describe('GetPostList', () => {
+    const postGetConditionDummy = PostGetDummyCondition;
+    const postGetReturnDummy = PostSearchReturn;
+
+    it('SUCCESS: 게시판 category와 page를 전달하면 최신 순으로 10개씩 게시물 리스트 반환', async () => {
+      const result = await postsController.getPostList(postGetConditionDummy);
+
+      expect(result).toStrictEqual(postGetReturnDummy);
+      expect(postsService.getPostList).toBeCalledTimes(1);
+      expect(postsService.getPostList).toBeCalledWith(postGetConditionDummy);
     });
   });
 });
