@@ -1,5 +1,8 @@
 import { PostCreateRequest } from 'src/posts/dto/create.post.dto';
-import { PostSearchCondition } from 'src/posts/dto/get.post.dto';
+import {
+  PostGetListCondition,
+  PostSearchCondition,
+} from 'src/posts/dto/get.post.dto';
 
 export const PostRegisterDummyDto: PostCreateRequest = {
   writerId: 1,
@@ -13,4 +16,9 @@ export const PostSearchDummyCondition: PostSearchCondition = {
   page: 1,
   board: 'free',
   keyword: '꾸꾸까까',
+};
+
+export const PostGetDummyCondition: PostGetListCondition = {
+  board: 'free',
+  page: 1,
 };

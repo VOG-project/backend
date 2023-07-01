@@ -1,7 +1,6 @@
 import {
   PostEntireDataReturn,
   PostListReturn,
-  PostPagenationReturn,
 } from 'src/posts/dto/return.post.dto';
 
 export const PostEntireReturn: PostEntireDataReturn = {
