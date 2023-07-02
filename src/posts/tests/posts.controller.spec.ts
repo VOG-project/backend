@@ -5,11 +5,13 @@ import { AuthGuard } from 'src/auth/guards/auth.guard';
 import { mockAuthGuard } from 'src/auth/tests/mocks/auth.guard.mock';
 import {
   PostGetDummyCondition,
+  PostModificationDummyRequest,
   PostRegisterDummyDto,
   PostSearchDummyCondition,
 } from './dummies/posts.dto.dummy';
 import {
   PostEntireReturn,
+  PostRemovedCountReturn,
   PostSearchReturn,
 } from './dummies/posts.return.dummy';
 
@@ -27,6 +29,9 @@ describe('PostsController', () => {
             registerPost: jest.fn(() => PostEntireReturn),
             searchPost: jest.fn(() => PostSearchReturn),
             getPostList: jest.fn(() => PostSearchReturn),
+            getPost: jest.fn(() => PostEntireReturn),
+            modifyPost: jest.fn(() => PostEntireReturn),
+            removePost: jest.fn(() => PostRemovedCountReturn),
           },
         },
       ],
@@ -75,6 +80,51 @@ describe('PostsController', () => {
       expect(result).toStrictEqual(postGetReturnDummy);
       expect(postsService.getPostList).toBeCalledTimes(1);
       expect(postsService.getPostList).toBeCalledWith(postGetConditionDummy);
+    });
+  });
+
+  describe('GetPost', () => {
+    const postId = 1;
+    const postReturn = PostEntireReturn;
+
+    it('SUCCESS: postId에 해당하는 게시물 데이터를 반환', async () => {
+      const result = await postsController.getPost(postId);
+
+      expect(result).toStrictEqual(postReturn);
+      expect(postsService.getPost).toBeCalledTimes(1);
+      expect(postsService.getPost).toBeCalledWith(postId);
+    });
+  });
+
+  describe('ModifyPost', () => {
+    const postModificationRequestDummy = PostModificationDummyRequest;
+    const postId = 1;
+    const postReturn = PostEntireReturn;
+
+    it('SUCCESS: title, content와 postId를 받고 postId에 해당하는 게시물을 수정하고 해당 데이터를 반환', async () => {
+      const result = await postsController.modifyPost(
+        postModificationRequestDummy,
+        postId,
+      );
+
+      expect(result).toStrictEqual(postReturn);
+      expect(postsService.modifyPost).toBeCalledTimes(1);
+      expect(postsService.modifyPost).toBeCalledWith(
+        postModificationRequestDummy,
+        postId,
+      );
+    });
+  });
+
+  describe('RemovePost', () => {
+    const postId = 1;
+    const postRemovedCount = PostRemovedCountReturn;
+    it('SUCCESS: postId에 해당하는 게시물 데이터 삭제', async () => {
+      const result = await postsController.removePost(postId);
+
+      expect(result).toStrictEqual(postRemovedCount);
+      expect(postsService.removePost).toBeCalledTimes(1);
+      expect(postsService.removePost).toBeCalledWith(postId);
     });
   });
 });

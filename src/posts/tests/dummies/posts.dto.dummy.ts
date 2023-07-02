@@ -3,6 +3,7 @@ import {
   PostGetListCondition,
   PostSearchCondition,
 } from 'src/posts/dto/get.post.dto';
+import { PostModificationRequest } from 'src/posts/dto/modify.post.dto';
 
 export const PostRegisterDummyDto: PostCreateRequest = {
   writerId: 1,
@@ -21,4 +22,9 @@ export const PostSearchDummyCondition: PostSearchCondition = {
 export const PostGetDummyCondition: PostGetListCondition = {
   board: 'free',
   page: 1,
+};
+
+export const PostModificationDummyRequest: PostModificationRequest = {
+  title: '수정된 타이틀',
+  content: '타이틀타이틀',
 };

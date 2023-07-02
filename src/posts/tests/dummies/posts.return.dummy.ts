@@ -1,4 +1,5 @@
 import {
+  PostDeletedCountReturn,
   PostEntireDataReturn,
   PostListReturn,
 } from 'src/posts/dto/return.post.dto';
@@ -29,4 +30,8 @@ export const PostSearchReturn: PostListReturn = {
     nickname: '꾸꾸까까',
     profileUrl: 'https://vog-image-s2.amazonaws.com/user/default.jpg',
   },
+};
+
+export const PostRemovedCountReturn: PostDeletedCountReturn = {
+  deletedCount: 1,
 };
