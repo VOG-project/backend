@@ -5,6 +5,7 @@ import { AuthGuard } from 'src/auth/guards/auth.guard';
 import { mockAuthGuard } from 'src/auth/tests/mocks/auth.guard.mock';
 import {
   PostGetDummyCondition,
+  PostModificationDummyRequest,
   PostRegisterDummyDto,
   PostSearchDummyCondition,
 } from './dummies/posts.dto.dummy';
@@ -28,6 +29,7 @@ describe('PostsController', () => {
             searchPost: jest.fn(() => PostSearchReturn),
             getPostList: jest.fn(() => PostSearchReturn),
             getPost: jest.fn(() => PostEntireReturn),
+            modifyPost: jest.fn(() => PostEntireReturn),
           },
         },
       ],
@@ -89,6 +91,26 @@ describe('PostsController', () => {
       expect(result).toStrictEqual(postReturn);
       expect(postsService.getPost).toBeCalledTimes(1);
       expect(postsService.getPost).toBeCalledWith(postId);
+    });
+  });
+
+  describe('ModifyPost', () => {
+    const postModificationRequestDummy = PostModificationDummyRequest;
+    const postId = 1;
+    const postReturn = PostEntireReturn;
+
+    it('SUCCESS: title, content와 postId를 받고 postId에 해당하는 게시물을 수정하고 해당 데이터를 반환', async () => {
+      const result = await postsController.modifyPost(
+        postModificationRequestDummy,
+        postId,
+      );
+
+      expect(result).toStrictEqual(postReturn);
+      expect(postsService.modifyPost).toBeCalledTimes(1);
+      expect(postsService.modifyPost).toBeCalledWith(
+        postModificationRequestDummy,
+        postId,
+      );
     });
   });
 });
