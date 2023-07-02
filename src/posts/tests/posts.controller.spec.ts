@@ -27,6 +27,7 @@ describe('PostsController', () => {
             registerPost: jest.fn(() => PostEntireReturn),
             searchPost: jest.fn(() => PostSearchReturn),
             getPostList: jest.fn(() => PostSearchReturn),
+            getPost: jest.fn(() => PostEntireReturn),
           },
         },
       ],
@@ -75,6 +76,19 @@ describe('PostsController', () => {
       expect(result).toStrictEqual(postGetReturnDummy);
       expect(postsService.getPostList).toBeCalledTimes(1);
       expect(postsService.getPostList).toBeCalledWith(postGetConditionDummy);
+    });
+  });
+
+  describe('GetPost', () => {
+    const postId = 1;
+    const postReturn = PostEntireReturn;
+
+    it('SUCCESS: postId에 해당하는 게시물 데이터를 반환', async () => {
+      const result = await postsController.getPost(postId);
+
+      expect(result).toStrictEqual(postReturn);
+      expect(postsService.getPost).toBeCalledTimes(1);
+      expect(postsService.getPost).toBeCalledWith(postId);
     });
   });
 });
