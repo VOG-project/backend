@@ -11,6 +11,7 @@ import {
 } from './dummies/posts.dto.dummy';
 import {
   PostEntireReturn,
+  PostRemovedCountReturn,
   PostSearchReturn,
 } from './dummies/posts.return.dummy';
 
@@ -30,6 +31,7 @@ describe('PostsController', () => {
             getPostList: jest.fn(() => PostSearchReturn),
             getPost: jest.fn(() => PostEntireReturn),
             modifyPost: jest.fn(() => PostEntireReturn),
+            removePost: jest.fn(() => PostRemovedCountReturn),
           },
         },
       ],
@@ -111,6 +113,18 @@ describe('PostsController', () => {
         postModificationRequestDummy,
         postId,
       );
+    });
+  });
+
+  describe('RemovePost', () => {
+    const postId = 1;
+    const postRemovedCount = PostRemovedCountReturn;
+    it('SUCCESS: postId에 해당하는 게시물 데이터 삭제', async () => {
+      const result = await postsController.removePost(postId);
+
+      expect(result).toStrictEqual(postRemovedCount);
+      expect(postsService.removePost).toBeCalledTimes(1);
+      expect(postsService.removePost).toBeCalledWith(postId);
     });
   });
 });
