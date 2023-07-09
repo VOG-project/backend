@@ -11,6 +11,7 @@ describe('PostsService', () => {
   let postsRepository: PostsRepository;
   let likeRepository: LikeRepository;
   let commentRepository: CommentsRepository;
+  let jsonBuiltInObj: JSON;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -26,6 +27,9 @@ describe('PostsService', () => {
             }),
             createView: jest.fn(),
             findOneById: jest.fn(() => PostEntireReturn),
+            checkExist: jest.fn(() => true),
+            addView: jest.fn(() => 10),
+            findCachingPost: jest.fn(),
           },
         },
         {
@@ -60,6 +64,36 @@ describe('PostsService', () => {
       expect(postsRepository.createView).toBeCalledWith(postId);
       expect(postsRepository.findOneById).toBeCalledTimes(1);
       expect(postsRepository.findOneById).toBeCalledWith(postId);
+    });
+  });
+
+  //describe('GetPostList', () => {});
+
+  describe('GetPost', () => {
+    const postId = 1;
+    const postReturn = PostEntireReturn;
+    const postReturnStringify = JSON.stringify(postReturn);
+
+    it('SUCCESS: postId에 해당하는 데이터 반환(캐싱 데이터가 존재할 때)', async () => {
+      jest
+        .spyOn(postsRepository, 'findCachingPost')
+        .mockImplementationOnce(async () => {
+          return postReturnStringify;
+        });
+
+      jest.spyOn(JSON, 'parse').mockImplementationOnce(() => {
+        return postReturn;
+      });
+
+      const result = await postsService.getPost(postId);
+
+      expect(result).toStrictEqual(postReturn);
+      expect(postsRepository.checkExist).toBeCalledTimes(1);
+      expect(postsRepository.checkExist).toBeCalledWith(postId);
+      expect(postsRepository.addView).toBeCalledTimes(1);
+      expect(postsRepository.addView).toBeCalledWith(postId);
+      expect(postsRepository.findCachingPost).toBeCalledTimes(1);
+      expect(postsRepository.findCachingPost).toBeCalledWith(postId);
     });
   });
 });
