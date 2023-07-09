@@ -141,4 +141,19 @@ describe('PostsService', () => {
       }
     });
   });
+
+  describe('RegisterPostToCache', () => {
+    const postId = 1;
+    const postReturn = PostEntireReturn;
+
+    it('SUCCESS: redis에 게시물 데이터를 캐싱', async () => {
+      await postsService.registerPostToCache(postId, postReturn);
+
+      expect(postsRepository.writeCachingPost).toBeCalledTimes(1);
+      expect(postsRepository.writeCachingPost).toBeCalledWith(
+        postId,
+        postReturn,
+      );
+    });
+  });
 });
