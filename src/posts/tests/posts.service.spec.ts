@@ -30,6 +30,11 @@ describe('PostsService', () => {
             checkExist: jest.fn(() => true),
             addView: jest.fn(() => 10),
             findCachingPost: jest.fn(),
+            findPostAndUserById: jest.fn(() => {
+              const { view, ...post } = PostEntireReturn;
+              return post;
+            }),
+            writeCachingPost: jest.fn(),
           },
         },
         {
@@ -73,6 +78,7 @@ describe('PostsService', () => {
     const postId = 1;
     const postReturn = PostEntireReturn;
     const postReturnStringify = JSON.stringify(postReturn);
+    const { view, ...postWithoutView } = PostEntireReturn;
 
     it('SUCCESS: postId에 해당하는 데이터 반환(캐싱 데이터가 존재할 때)', async () => {
       jest
@@ -94,6 +100,31 @@ describe('PostsService', () => {
       expect(postsRepository.addView).toBeCalledWith(postId);
       expect(postsRepository.findCachingPost).toBeCalledTimes(1);
       expect(postsRepository.findCachingPost).toBeCalledWith(postId);
+    });
+
+    it('SUCCESS: postId에 해당하는 데이터 반환(캐싱 데이터가 존재하지 않을 때)', async () => {
+      jest
+        .spyOn(postsRepository, 'findCachingPost')
+        .mockImplementationOnce(async () => {
+          return '';
+        });
+
+      const result = await postsService.getPost(postId);
+
+      expect(result).toStrictEqual(postReturn);
+      expect(postsRepository.checkExist).toBeCalledTimes(1);
+      expect(postsRepository.checkExist).toBeCalledWith(postId);
+      expect(postsRepository.addView).toBeCalledTimes(1);
+      expect(postsRepository.addView).toBeCalledWith(postId);
+      expect(postsRepository.findCachingPost).toBeCalledTimes(1);
+      expect(postsRepository.findCachingPost).toBeCalledWith(postId);
+      expect(postsRepository.findPostAndUserById).toBeCalledTimes(1);
+      expect(postsRepository.findPostAndUserById).toBeCalledWith(postId);
+      expect(postsRepository.writeCachingPost).toBeCalledTimes(1);
+      expect(postsRepository.writeCachingPost).toBeCalledWith(
+        postId,
+        postWithoutView,
+      );
     });
   });
 });
