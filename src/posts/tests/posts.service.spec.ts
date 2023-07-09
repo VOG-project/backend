@@ -11,7 +11,6 @@ describe('PostsService', () => {
   let postsRepository: PostsRepository;
   let likeRepository: LikeRepository;
   let commentRepository: CommentsRepository;
-  let jsonBuiltInObj: JSON;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -125,6 +124,21 @@ describe('PostsService', () => {
         postId,
         postWithoutView,
       );
+    });
+
+    it('EXCEPTION: postId에 해당하는 데이터가 존재하지 않을 때', async () => {
+      jest
+        .spyOn(postsRepository, 'checkExist')
+        .mockImplementationOnce(() => Promise.resolve(false));
+
+      try {
+        await postsService.getPost(postId);
+        expect(postsRepository.checkExist).toBeCalledTimes(1);
+        expect(postsRepository.checkExist).toBeCalledWith(postId);
+      } catch (err) {
+        expect(err.status).toBe(404);
+        expect(err.response).toBe('존재하지 않는 게시물입니다.');
+      }
     });
   });
 });
